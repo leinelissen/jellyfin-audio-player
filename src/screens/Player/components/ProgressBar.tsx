@@ -1,8 +1,11 @@
-import React from 'react';
-import { useTrackPlayerProgress } from 'react-native-track-player';
+import React, { Component } from 'react';
+import TrackPlayer, { State as PlayerState } from 'react-native-track-player';
 import styled from 'styled-components/native';
-import { View, Text } from 'react-native';
-import { padStart } from 'lodash';
+import { View, Text, Dimensions } from 'react-native';
+import { padStart, debounce } from 'lodash';
+import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
+
+const Screen = Dimensions.get('screen');
 
 const Container = styled.View`
     width: 100%;
@@ -24,7 +27,7 @@ const PositionIndicator = styled.View<{ progress: number }>`
     border-radius: 100px;
     border: 1px solid #eee;
     background-color: white;
-    transform: translateX(-10px) translateY(-8.5px);
+    transform: translateX(${props => props.translation ? props.translation - 20  : -10}px) translateY(-8.5px);
     position: absolute;
     top: 0;
     left: ${props => props.progress * 100}%;
@@ -46,20 +49,100 @@ function getMinutes(seconds: number): number {
     return Math.floor(seconds / 60);
 }
 
-export default function ProgressBar() {
-    const { position, duration } = useTrackPlayerProgress(500);
+interface State {
+    position: number;
+    duration: number;
+    gesture?: {
+        previousState?: PlayerState;
+        translation?: number;
+    }
+}
 
-    return (
-        <>
-            <Container>
-                <Bar progress={position / duration} />
-                <PositionIndicator progress={position / duration} />
-            </Container>
-            <NumberBar>
-                <Text>0:00</Text>
-                <Text>{getMinutes(position)}:{getSeconds(position)}</Text>
-                <Text>{getMinutes(duration)}:{getSeconds(duration)}</Text>
-            </NumberBar>
-        </>
-    );
+export default class ProgressBar extends Component<{}, State> {
+    state: State = {
+        position: 0,
+        duration: 0,
+    }
+
+    timer: number = 0;
+
+    componentDidMount() {
+        this.timer = setInterval(this.updateProgress, 500);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
+    }
+
+    updateProgress = async () => {
+        const [position, duration] = await Promise.all([
+            TrackPlayer.getPosition(),
+            TrackPlayer.getDuration(),
+        ]);
+
+        this.setState({ position, duration });
+    }
+
+    handleGesture = async (event: PanGestureHandlerGestureEvent) => {
+        // Check if the gesture has started, and if it has not, prepare the player
+        if (!this.state.gesture) {
+            // Pause the player and store the previous state
+            TrackPlayer.getState()
+                .then((previousState) => this.setState({ gesture: { previousState }}))
+                .then(() => TrackPlayer.pause());
+            
+        }
+
+        // Set relative translation in state
+        this.setState({ 
+            gesture: { 
+                previousState: this.state.gesture?.previousState,
+                translation: event.nativeEvent?.absoluteX,
+            },
+        });
+
+        // Trigger the end of gesture function
+        this.handleEndOfGesture();
+    }
+
+    handleEndOfGesture = debounce(() => {
+        // Calculate and set the new position
+        const { gesture, duration } = this.state;
+        const progress = Math.min(Math.max((gesture?.translation || 0) / Screen.width, 0), 1);
+        const position = Math.floor(duration * progress);
+        TrackPlayer.seekTo(position);
+
+        // Restart the player
+        if (this.state.gesture?.previousState === TrackPlayer.STATE_PLAYING) {
+            TrackPlayer.play();
+        }
+
+        this.setState({ gesture: undefined, position });
+    }, 500);
+
+    render() {
+        const { position, duration, gesture } = this.state;
+        const progress = gesture
+            ? Math.min(Math.max((gesture?.translation || 0) / Screen.width, 0), 1)
+            : position / duration;
+            
+        return (
+            <>
+                <PanGestureHandler onGestureEvent={this.handleGesture}>
+                    <Container>
+                        <Bar progress={progress} />
+                        <PositionIndicator progress={progress} />
+                    </Container>
+                </PanGestureHandler>
+                <NumberBar>
+                    <Text>0:00</Text>
+                    {gesture
+                        ? <Text>{getMinutes(duration * progress)}:{getSeconds(duration * progress)}</Text>
+                        : <Text>{getMinutes(position)}:{getSeconds(position)}</Text>
+                    }
+                    <Text>{getMinutes(duration)}:{getSeconds(duration)}</Text>
+                </NumberBar>
+            </>
+        );
+    }
 }
