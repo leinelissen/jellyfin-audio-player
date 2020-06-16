@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TrackPlayer, { State as PlayerState } from 'react-native-track-player';
 import styled from 'styled-components/native';
-import { View, Text, Dimensions } from 'react-native';
+import { Text, Dimensions } from 'react-native';
 import { padStart, debounce } from 'lodash';
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 
@@ -14,20 +14,24 @@ const Container = styled.View`
     position: relative;
 `;
 
-const Bar = styled.View<{ progress: number }>`
+interface ProgressProp {
+    progress: number;
+}
+
+const Bar = styled.View<ProgressProp>`
     background-color: salmon;
     height: 4px;
     border-radius: 2px;
-    width: ${props => props.progress * 100}%;
+    width: ${(props: ProgressProp) => props.progress * 100}%;
 `;
 
-const PositionIndicator = styled.View<{ progress: number }>`
+const PositionIndicator = styled.View<ProgressProp>`
     width: 20px;
     height: 20px;
     border-radius: 100px;
     border: 1px solid #eee;
     background-color: white;
-    transform: translateX(${props => props.translation ? props.translation - 20  : -10}px) translateY(-8.5px);
+    transform: translateX(-10px) translateY(-8.5px);
     position: absolute;
     top: 0;
     left: ${props => props.progress * 100}%;
