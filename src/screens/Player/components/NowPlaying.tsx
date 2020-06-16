@@ -18,16 +18,11 @@ const Artwork = styled.Image`
 export default function NowPlaying() {
     const track = useCurrentTrack();
 
-    // GUARD: Don't render anything if nothing is playing
-    if (!track) {
-        return null;
-    }
-
     return (
         <View style={{ alignItems: 'center' }}>
-            <Artwork style={{ flex: 1 }} source={{ uri: track.artwork }} />
-            <Text style={{ fontWeight: 'bold', fontSize: 24, marginBottom: 12 }} >{track.artist}</Text>
-            <Text style={{ fontSize: 18, marginBottom: 12, textAlign: 'center', paddingLeft: 20, paddingRight: 20 }}>{track.title}</Text>
+            <Artwork style={{ flex: 1 }} source={{ uri: track?.artwork }} />
+            <Text style={{ fontWeight: 'bold', fontSize: 24, marginBottom: 12 }} >{track?.artist}</Text>
+            <Text style={{ fontSize: 18, marginBottom: 12, textAlign: 'center', paddingLeft: 20, paddingRight: 20 }}>{track?.title}</Text>
         </View>
     );
 }

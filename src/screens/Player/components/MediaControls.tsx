@@ -23,10 +23,12 @@ const Container = styled.View`
 const Buttons = styled.View`
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
 `;
 
 const Button = styled.View`
-    margin: 20px;
+    margin: 20px 40px;
 `;
 
 export default function MediaControls() {
