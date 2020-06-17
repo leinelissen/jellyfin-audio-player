@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { Provider } from 'react-redux';
 import TrackPlayer from 'react-native-track-player';
+import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer } from '@react-navigation/native';
 import Routes from '../screens';
+import store, { persistedStore } from '../store';
 
 interface State {
     isReady: boolean;
@@ -34,9 +37,13 @@ export default class App extends Component<State> {
         }
 
         return (
-            <NavigationContainer>
-                <Routes />
-            </NavigationContainer>
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistedStore}>    
+                    <NavigationContainer>
+                        <Routes />
+                    </NavigationContainer>
+                </PersistGate>
+            </Provider>
         );
     }
 }

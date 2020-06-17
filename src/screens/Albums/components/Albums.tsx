@@ -1,19 +1,13 @@
-import React, { Component, useCallback } from 'react';
-import { retrieveAlbums, getImage } from '../../../utility/JellyfinApi';
-import { Album, RootStackParamList } from '../types';
+import React, { useCallback, useEffect } from 'react';
+import { useGetImage } from '../../../utility/JellyfinApi';
+import { Album, NavigationProp } from '../types';
 import { Text, SafeAreaView, FlatList, Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { StackNavigationProp } from '@react-navigation/stack';
-
-interface Props {
-    navigation: StackNavigationProp<RootStackParamList, 'Albums'>;
-}
-
-interface State {
-    albums: Album[];
-    refreshing: boolean;
-}
+import { useDispatch } from 'react-redux';
+import { useTypedSelector } from '../../../store';
+import { fetchAllAlbums } from '../../../store/music/actions';
+import { useNavigation } from '@react-navigation/native';
 
 const Screen = Dimensions.get('screen');
 
@@ -57,51 +51,44 @@ const TouchableAlbumItem: React.FC<TouchableAlbumItemProps>  = ({ id, onPress, c
     );
 };
 
-class Albums extends Component<Props, State> {
-    state: State = {
-        albums: [],
-        refreshing: false,
-    }
-
-    componentDidMount() {
-        this.retrieveData();
-    }
-
-    retrieveData = async () => {
-        this.setState({ refreshing: true });
-        const albums = await retrieveAlbums() as Album[];
-        this.setState({ albums, refreshing: false });
-    }
+const Albums: React.FC = () => {
+    // Retrieve data from store
+    const { ids, entities: albums } = useTypedSelector((state) => state.music.albums);
+    const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
     
-    selectAlbum = (id: string) => {
-        const album = this.state.albums.find((d) => d.Id === id) as Album;
-        this.props.navigation.navigate('Album', { id, album });
-    }
+    // Initialise helpers
+    const dispatch = useDispatch();
+    const navigation = useNavigation<NavigationProp>();
+    const getImage = useGetImage();
 
-    render() {
-        const { albums, refreshing } = this.state;
+    // Set callbacks
+    const retrieveData = useCallback(() => dispatch(fetchAllAlbums()), [dispatch]);
+    const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
+    
+    // Retrieve data on mount
+    useEffect(() => { retrieveData(); }, []);
+    
+    return (
+        <SafeAreaView>
+            <Container>
+                <FlatList
+                    data={ids as string[]} 
+                    refreshing={isLoading}
+                    onRefresh={retrieveData}
+                    numColumns={2}
+                    keyExtractor={d => d}
+                    renderItem={({ item }) => (
+                        <TouchableAlbumItem id={item} onPress={selectAlbum}>
+                            <AlbumImage source={{ uri: getImage(item) }} />
+                            <Text>{albums[item]?.Name}</Text>
+                            <Text style={{ opacity: 0.5 }}>{albums[item]?.AlbumArtist}</Text>
+                        </TouchableAlbumItem>
+                    )}
+                />
+            </Container>
+        </SafeAreaView>
+    );
+};
 
-        return (
-            <SafeAreaView>
-                <Container>
-                    <FlatList
-                        data={albums} 
-                        keyExtractor={(item: Album) => item.Id}
-                        refreshing={refreshing}
-                        onRefresh={this.retrieveData}
-                        numColumns={2}
-                        renderItem={({ item }: { item: Album }) => (
-                            <TouchableAlbumItem id={item.Id} onPress={this.selectAlbum}>
-                                <AlbumImage source={{ uri: getImage(item.Id) }} />
-                                <Text>{item.Name}</Text>
-                                <Text style={{ opacity: 0.5 }}>{item.AlbumArtist}</Text>
-                            </TouchableAlbumItem>
-                        )}
-                    />
-                </Container>
-            </SafeAreaView>
-        );
-    }
-}
 
 export default Albums;

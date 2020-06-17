@@ -1,4 +1,4 @@
-import { StackNavigationProp } from '@react-navigation/stack';
+import { Dictionary } from 'lodash';
 
 export interface UserData {
     PlaybackPositionTicks: number;
@@ -40,6 +40,7 @@ export interface Album {
     ImageTags: ImageTags;
     BackdropImageTags: any[];
     LocationType: string;
+    Tracks?: string[];
 }
 
 export interface AlbumTrack {
@@ -65,9 +66,10 @@ export interface AlbumTrack {
     MediaType: string;
 }
 
-export type StackParams = {
-    Albums: undefined;
-    Album: { id: string, album: Album };
-};
-
-export type NavigationProp = StackNavigationProp<StackParams>; 
+export interface State {
+    albums: {
+        ids: string[];
+        entities: Dictionary<Album>;
+        isLoading: boolean;
+    }
+}

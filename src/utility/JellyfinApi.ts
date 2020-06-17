@@ -1,15 +1,18 @@
 import { Track } from 'react-native-track-player';
+import { AppState, useTypedSelector } from '../store';
+import { AlbumTrack } from '../store/music/types';
 
-const JELLYFIN_SERVER = '***REMOVED***';
-const API_KEY = '***REMOVED***';
-const DEVICE_ID =
-  '***REMOVED***';
-const USER_ID = '***REMOVED***';
+type Credentials = AppState['settings']['jellyfin'];
 
-const trackOptions: Record<string, string> = {
-    DeviceId: DEVICE_ID,
-    UserId: USER_ID,
-    api_key: API_KEY,
+function generateConfig(credentials: Credentials): RequestInit {
+    return {
+        headers: {
+            'X-Emby-Authorization': `MediaBrowser Client="", Device="", DeviceId="", Version="", Token="${credentials?.access_token}"`
+        }
+    };
+}
+
+const baseTrackOptions: Record<string, string> = {
     // Not sure where this number refers to, but setting it to 140000000 appears
     // to do wonders for making stuff work
     MaxStreamingBitrate: '140000000',
@@ -24,37 +27,33 @@ const trackOptions: Record<string, string> = {
     Container: 'mp3,aac,m4a,m4b|aac,alac,m4a,m4b|alac',
     AudioCodec: 'aac',
     static: 'true',
-    // These last few options appear to be redundant
-    // EnableRedirection: 'true',
-    // EnableRemoteMedia: 'false',
-    // // this should be generated client-side and is intended to be a unique value per stream URL
-    // PlaySessionId: Math.floor(Math.random() * 10000000).toString(),
-    // StartTimeTicks: '0',
 };
 
-const trackParams = new URLSearchParams(trackOptions).toString();
 
 /**
  * Generate a track object from a Jellyfin ItemId so that
  * react-native-track-player can easily consume it.
  */
-export async function generateTrack(ItemId: string): Promise<Track> {
-    // First off, fetch all the metadata for this particular track from the
-    // Jellyfin server
-    const track = await fetch(`${JELLYFIN_SERVER}/Users/${USER_ID}/Items/${ItemId}?api_key=${API_KEY}`)
-        .then(response => response.json());
-
+export function generateTrack(track: AlbumTrack, credentials: Credentials): Track {
     // Also construct the URL for the stream
-    const url = encodeURI(`${JELLYFIN_SERVER}/Audio/${ItemId}/universal.mp3?${trackParams}`);
+    const trackOptions = {
+        ...baseTrackOptions,
+        UserId: credentials?.user_id || '',
+        api_key: credentials?.access_token || '',
+        DeviceId: credentials?.device_id || '',
+    };
+    const trackParams = new URLSearchParams(trackOptions).toString();
+    const url = encodeURI(`${credentials?.uri}/Audio/${track.Id}/universal.mp3?${trackParams}`);
 
     return {
-        id: ItemId,
+        id: track.Id,
         url,
         title: track.Name,
         artist: track.Artists.join(', '),
         album: track.Album,
-        genre: Array.isArray(track.Genres) ? track.Genres[0] : undefined,
-        artwork: getImage(ItemId),
+        // genre: Array.isArray(track.Genres) ? track.Genres[0] : undefined,
+        artwork: getImage(track.Id, credentials),
+        ...generateConfig(credentials),
     };
 }
 
@@ -66,10 +65,6 @@ const albumOptions = {
     Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo',
     ImageTypeLimit: '1',
     EnableImageTypes: 'Primary,Backdrop,Banner,Thumb',
-    api_key: API_KEY,
-    // StartIndex: '0',
-    // Limit: '100',
-    // ParentId: '7e64e319657a9516ec78490da03edccb',
 };
 
 const albumParams = new URLSearchParams(albumOptions).toString();
@@ -77,8 +72,10 @@ const albumParams = new URLSearchParams(albumOptions).toString();
 /**
  * Retrieve all albums that are available on the Jellyfin server
  */
-export async function retrieveAlbums() {
-    const albums = await fetch(`${JELLYFIN_SERVER}/Users/${USER_ID}/Items?${albumParams}`)
+export async function retrieveAlbums(credentials: Credentials) {
+    const config = generateConfig(credentials);
+    console.log(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${albumParams}`);
+    const albums = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${albumParams}`, config)
         .then(response => response.json());
 
     return albums.Items;
@@ -87,20 +84,25 @@ export async function retrieveAlbums() {
 /**
  * Retrieve a single album from the Emby server
  */
-export async function retrieveAlbumTracks(ItemId: string) {
+export async function retrieveAlbumTracks(ItemId: string, credentials: Credentials) {
     const singleAlbumOptions = {
         ParentId: ItemId,
         SortBy: 'SortName',
-        api_key: API_KEY,    
     };
     const singleAlbumParams = new URLSearchParams(singleAlbumOptions).toString();
 
-    const album = await fetch(`${JELLYFIN_SERVER}/Users/${USER_ID}/Items?${singleAlbumParams}`)
+    const config = generateConfig(credentials);
+    const album = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${singleAlbumParams}`, config)
         .then(response => response.json());
 
     return album.Items;
 }
 
-export function getImage(ItemId: string): string {
-    return encodeURI(`${JELLYFIN_SERVER}/Items/${ItemId}/Images/Primary?format=jpeg`);
+export function getImage(ItemId: string, credentials: Credentials): string {
+    return encodeURI(`${credentials?.uri}/Items/${ItemId}/Images/Primary?format=jpeg`);
+}
+
+export function useGetImage() {
+    const credentials = useTypedSelector((state) => state.settings.jellyfin);
+    return (ItemId: string) => getImage(ItemId, credentials);
 }
