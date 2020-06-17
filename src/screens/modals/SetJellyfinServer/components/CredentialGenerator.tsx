@@ -30,12 +30,23 @@ class CredentialGenerator extends Component<Props> {
 
     handleMessage = (event: WebViewMessageEvent) => {
         // GUARD: Something must be returned for this thing to work
+        console.log(event.nativeEvent.data);
         if (!event.nativeEvent.data) {
             return;
         }
 
+        // Parse the content
+        const data = JSON.parse(event.nativeEvent.data);
+
+        if (!data.deviceId 
+            || !data.credentials?.Servers?.length 
+            || !data.credentials?.Servers[0]?.UserId 
+            || !data.credentials?.Servers[0]?.AccessToken) {
+            return;
+        }
+
         // If a message is received, the credentials should be there
-        const { credentials: { Servers: [ credentials ] }, deviceId } = JSON.parse(event.nativeEvent.data);
+        const { credentials: { Servers: [ credentials ] }, deviceId } = data;
         this.props.onCredentialsRetrieved({
             uri: credentials.ManualAddress,
             user_id: credentials.UserId,
