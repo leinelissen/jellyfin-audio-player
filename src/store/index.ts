@@ -21,7 +21,9 @@ const persistedReducer = persistReducer(persistConfig, reducers);
 
 const store = configureStore({
     reducer: persistedReducer,
-    middleware: getDefaultMiddleware({ serializableCheck: false }).concat(logger, ),
+    middleware: getDefaultMiddleware({ serializableCheck: false, immutableCheck: false }).concat(
+        logger
+    ),
 });
 
 export type AppState = ReturnType<typeof store.getState>;

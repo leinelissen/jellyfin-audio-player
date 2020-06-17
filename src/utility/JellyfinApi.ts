@@ -51,9 +51,7 @@ export function generateTrack(track: AlbumTrack, credentials: Credentials): Trac
         title: track.Name,
         artist: track.Artists.join(', '),
         album: track.Album,
-        // genre: Array.isArray(track.Genres) ? track.Genres[0] : undefined,
         artwork: getImage(track.Id, credentials),
-        ...generateConfig(credentials),
     };
 }
 

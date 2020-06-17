@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import TrackPlayer from 'react-native-track-player';
 import { StackParams } from '../types';
-import { Text, ScrollView, Dimensions, Button, TouchableOpacity } from 'react-native';
+import { Text, ScrollView, Dimensions, Button, TouchableOpacity, RefreshControl } from 'react-native';
 import { generateTrack, useGetImage } from '../../../utility/JellyfinApi';
 import styled from 'styled-components/native';
 import { useRoute, RouteProp } from '@react-navigation/native';
@@ -51,6 +51,7 @@ const Album: React.FC = () => {
     const { params: { id } } = useRoute<Route>();
     const tracks = useTypedSelector((state) => state.music.tracks.entities);
     const album = useTypedSelector((state) => state.music.albums.entities[id]);
+    const isLoading = useTypedSelector((state) => state.music.tracks.isLoading);
     const credentials = useTypedSelector((state) => state.settings.jellyfin);
 
     // Retrieve helpers
@@ -72,12 +73,18 @@ const Album: React.FC = () => {
         await TrackPlayer.skip(album.Tracks[0]);
         TrackPlayer.play();
     }, [tracks, credentials]);
+    const refresh = useCallback(() => { dispatch(fetchTracksByAlbum(id)); }, [id]);
 
     // Retrieve album tracks on load
-    useEffect(() => { dispatch(fetchTracksByAlbum(id)); }, []);
+    useEffect(refresh, []);
 
     return (
-        <ScrollView style={{ backgroundColor: '#f6f6f6', padding: 20, paddingBottom: 50 }}>
+        <ScrollView
+            style={{ backgroundColor: '#f6f6f6', padding: 20, paddingBottom: 50 }}
+            refreshControl={
+                <RefreshControl refreshing={isLoading} onRefresh={refresh} />
+            }
+        >
             <AlbumImage source={{ uri: getImage(album.Id) }} />
             <Text style={{ fontSize: 36, fontWeight: 'bold' }} >{album?.Name}</Text>
             <Text style={{ fontSize: 24, opacity: 0.5, marginBottom: 24 }}>{album?.AlbumArtist}</Text>
