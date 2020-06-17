@@ -24,6 +24,7 @@ export default class App extends Component<State> {
                 TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
                 TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
                 TrackPlayer.CAPABILITY_STOP,
+                TrackPlayer.CAPABILITY_SEEK_TO,
             ]
         });
         this.setState({ isReady: true });

@@ -29,4 +29,9 @@ export default async function() {
     TrackPlayer.addEventListener('remote-stop', () => {
         TrackPlayer.destroy();
     });
+
+    TrackPlayer.addEventListener('remote-seek', (event) => {
+        TrackPlayer.seekTo(event.position);
+    });
+    
 }
