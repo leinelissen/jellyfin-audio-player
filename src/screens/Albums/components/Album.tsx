@@ -7,8 +7,10 @@ import styled from 'styled-components/native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { useDispatch } from 'react-redux';
+import { differenceInDays } from 'date-fns';
 import { useTypedSelector } from '../../../store';
 import { fetchTracksByAlbum } from '../../../store/music/actions';
+import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '../../../CONSTANTS';
 
 type Route = RouteProp<StackParams, 'Album'>;
 
@@ -77,7 +79,11 @@ const Album: React.FC = () => {
     const refresh = useCallback(() => { dispatch(fetchTracksByAlbum(id)); }, [id]);
 
     // Retrieve album tracks on load
-    useEffect(refresh, []);
+    useEffect(() => {
+        if (!album?.lastRefreshed || differenceInDays(album.lastRefreshed, new Date()) > ALBUM_CACHE_AMOUNT_OF_DAYS) {
+            refresh();
+        }
+    }, []);
 
     return (
         <ScrollView

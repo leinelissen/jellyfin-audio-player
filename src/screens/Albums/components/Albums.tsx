@@ -5,10 +5,12 @@ import { Text, SafeAreaView, FlatList, Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
-import { useTypedSelector } from '../../../store';
-import { fetchAllAlbums } from '../../../store/music/actions';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import { differenceInDays } from 'date-fns';
+import { useTypedSelector } from '../../../store';
+import { fetchAllAlbums } from '../../../store/music/actions';
+import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '../../../CONSTANTS';
 
 const Screen = Dimensions.get('screen');
 
@@ -56,6 +58,7 @@ const Albums: React.FC = () => {
     // Retrieve data from store
     const { ids, entities: albums } = useTypedSelector((state) => state.music.albums);
     const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
+    const lastRefreshed = useTypedSelector((state) => state.music.lastRefreshed);
     
     // Initialise helpers
     const dispatch = useDispatch();
@@ -67,7 +70,11 @@ const Albums: React.FC = () => {
     const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
     
     // Retrieve data on mount
-    useEffect(() => { retrieveData(); }, []);
+    useEffect(() => { 
+        if (!lastRefreshed || differenceInDays(lastRefreshed, new Date()) > ALBUM_CACHE_AMOUNT_OF_DAYS) {
+            retrieveData(); 
+        }
+    }, []);
     
     return (
         <SafeAreaView>

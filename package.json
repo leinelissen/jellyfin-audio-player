@@ -25,6 +25,7 @@
     "@types/lodash": "^4.14.155",
     "@types/redux-logger": "^3.0.8",
     "@types/styled-components": "^5.1.0",
+    "date-fns": "^2.14.0",
     "lodash": "^4.17.15",
     "react": "16.11.0",
     "react-native": "0.62.2",

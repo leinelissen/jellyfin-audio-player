@@ -1,0 +1,1 @@
+export const ALBUM_CACHE_AMOUNT_OF_DAYS = 7;

@@ -1,7 +1,22 @@
 import { fetchAllAlbums, albumAdapter, fetchTracksByAlbum, trackAdapter } from './actions';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
+import { Album, AlbumTrack } from './types';
 
-const initialState = {
+export interface State {
+    albums: {
+        isLoading: boolean;
+        entities: Dictionary<Album>;
+        ids: EntityId[];
+    },
+    tracks: {
+        isLoading: boolean;
+        entities: Dictionary<AlbumTrack>;
+        ids: EntityId[];
+    },
+    lastRefreshed?: Date,
+}
+
+const initialState: State = {
     albums: {
         ...albumAdapter.getInitialState(),
         isLoading: false,
@@ -20,6 +35,7 @@ const music = createSlice({
         builder.addCase(fetchAllAlbums.fulfilled, (state, { payload }) => {
             albumAdapter.setAll(state.albums, payload);
             state.albums.isLoading = false;
+            state.lastRefreshed = new Date();
         });
         builder.addCase(fetchAllAlbums.pending, (state) => { state.albums.isLoading = true; });
         builder.addCase(fetchAllAlbums.rejected, (state) => { state.albums.isLoading = false; });
@@ -30,6 +46,7 @@ const music = createSlice({
             const album = state.albums.entities[payload[0].AlbumId];
             if (album) {
                 album.Tracks = payload.map(d => d.Id);
+                album.lastRefreshed = new Date();
             }
             state.tracks.isLoading = false;
         });

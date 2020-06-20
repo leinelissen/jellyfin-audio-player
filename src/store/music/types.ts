@@ -41,6 +41,7 @@ export interface Album {
     BackdropImageTags: any[];
     LocationType: string;
     Tracks?: string[];
+    lastRefreshed?: Date;
 }
 
 export interface AlbumTrack {
