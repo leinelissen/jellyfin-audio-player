@@ -39,7 +39,7 @@ export default class App extends Component<State> {
 
         return (
             <Provider store={store}>
-                <PersistGate loading={null} persistor={persistedStore}>    
+                <PersistGate loading={null} persistor={persistedStore}>
                     <NavigationContainer>
                         <Routes />
                     </NavigationContainer>

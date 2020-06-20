@@ -5,6 +5,7 @@ import { Text, ScrollView, Dimensions, Button, TouchableOpacity, RefreshControl 
 import { generateTrack, useGetImage } from '../../../utility/JellyfinApi';
 import styled from 'styled-components/native';
 import { useRoute, RouteProp } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../../store';
 import { fetchTracksByAlbum } from '../../../store/music/actions';
@@ -13,7 +14,7 @@ type Route = RouteProp<StackParams, 'Album'>;
 
 const Screen = Dimensions.get('screen');
 
-const AlbumImage = styled.Image`
+const AlbumImage = styled(FastImage)`
     border-radius: 10px;
     width: ${Screen.width * 0.6}px;
     height: ${Screen.width * 0.6}px;

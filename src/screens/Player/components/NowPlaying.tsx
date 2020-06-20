@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text, Dimensions, Image, View } from 'react-native';
+import { Text, Dimensions, View } from 'react-native';
 import useCurrentTrack from '../../../utility/useCurrentTrack';
 import styled from 'styled-components/native';
+import FastImage from 'react-native-fast-image';
 
 const Screen = Dimensions.get('screen');
 
-const Artwork = styled.Image`
+const Artwork = styled(FastImage)`
     border-radius: 10px;
     background-color: #fbfbfb;
     width: ${Screen.width * 0.8}px;

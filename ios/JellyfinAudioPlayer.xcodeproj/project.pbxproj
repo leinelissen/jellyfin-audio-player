@@ -17,6 +17,7 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* JellyfinAudioPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* JellyfinAudioPlayerTests.m */; };
 		463612208457EBB4B723000A /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 842AB597D56E84A4ACDC4735 /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a */; };
+		4F46F441249A56FF00308470 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
 		9C3FCC29E5AD02738E8E3F28 /* libPods-JellyfinAudioPlayer-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D43C7610851B9666193E3F6 /* libPods-JellyfinAudioPlayer-tvOSTests.a */; };
 		A807E2BB233D6F9347D8A95C /* libPods-JellyfinAudioPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71370E61E2CC6BD9372ADCF3 /* libPods-JellyfinAudioPlayer.a */; };
 		A9112B4690DCDB63E46B6C30 /* libPods-JellyfinAudioPlayer-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E35451F7979C52C1692C4C9F /* libPods-JellyfinAudioPlayer-tvOS.a */; };
@@ -341,6 +342,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F46F441249A56FF00308470 /* main.jsbundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
@@ -376,7 +378,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		05D2621E5320B14963E6BA49 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '../../../store';
 import { fetchAllAlbums } from '../../../store/music/actions';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 const Screen = Dimensions.get('screen');
 
@@ -24,7 +25,7 @@ const AlbumItem = styled.View`
     padding: 10px;
 `;
 
-const AlbumImage = styled.Image`
+const AlbumImage = styled(FastImage)`
     border-radius: 10px;
     width: ${Screen.width / 2 - 40}px;
     height: ${Screen.width / 2 - 40}px;
