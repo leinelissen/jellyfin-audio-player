@@ -33,7 +33,7 @@ export default function Queue() {
         <View>
             <Text style={{ marginTop: 20, marginBottom: 20 }}>Queue</Text>
             {queue.map((track, i) => (
-                <TouchableHandler id={track.id} onPress={playTrack} key={track.id}>
+                <TouchableHandler id={track.id} onPress={playTrack} key={i}>
                     <QueueItem active={currentTrack?.id === track.id} key={i} alreadyPlayed={i < currentIndex}>
                         <Text style={{marginBottom: 2}}>{track.title}</Text>
                         <Text style={{ opacity: 0.5 }}>{track.artist}</Text>
