@@ -35,13 +35,14 @@ export interface Album {
     PrimaryImageAspectRatio: number;
     Artists: string[];
     ArtistItems: ArtistItem[];
-    AlbumArtist: string;
+    AlbumArtist?: string;
     AlbumArtists: AlbumArtist[];
     ImageTags: ImageTags;
     BackdropImageTags: any[];
     LocationType: string;
     Tracks?: string[];
     lastRefreshed?: number;
+    DateCreated: string;
 }
 
 export interface AlbumTrack {

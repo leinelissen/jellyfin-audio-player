@@ -1,4 +1,4 @@
-import { fetchAllAlbums, albumAdapter, fetchTracksByAlbum, trackAdapter } from './actions';
+import { fetchAllAlbums, albumAdapter, fetchTracksByAlbum, trackAdapter, fetchRecentAlbums } from './actions';
 import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
 import { Album, AlbumTrack } from './types';
 
@@ -32,6 +32,9 @@ const music = createSlice({
     initialState,
     reducers: {},
     extraReducers: builder => {
+        /**
+         * Fetch All albums
+         */
         builder.addCase(fetchAllAlbums.fulfilled, (state, { payload }) => {
             albumAdapter.setAll(state.albums, payload);
             state.albums.isLoading = false;
@@ -39,6 +42,20 @@ const music = createSlice({
         });
         builder.addCase(fetchAllAlbums.pending, (state) => { state.albums.isLoading = true; });
         builder.addCase(fetchAllAlbums.rejected, (state) => { state.albums.isLoading = false; });
+        
+        /**
+         * Fetch most recent albums
+         */
+        builder.addCase(fetchRecentAlbums.fulfilled, (state, { payload }) => {
+            albumAdapter.upsertMany(state.albums, payload);
+            state.albums.isLoading = false;
+        });
+        builder.addCase(fetchRecentAlbums.pending, (state) => { state.albums.isLoading = true; });
+        builder.addCase(fetchRecentAlbums.rejected, (state) => { state.albums.isLoading = false; });
+        
+        /**
+         * Fetch tracks by album
+         */
         builder.addCase(fetchTracksByAlbum.fulfilled, (state, { payload }) => {
             trackAdapter.setAll(state.tracks, payload);
 

@@ -40,6 +40,7 @@ export interface Album {
     ImageTags: ImageTags;
     BackdropImageTags: any[];
     LocationType: string;
+    DateCreated: string;
 }
 
 export interface AlbumTrack {
@@ -68,6 +69,7 @@ export interface AlbumTrack {
 export type StackParams = {
     Albums: undefined;
     Album: { id: string, album: Album };
+    RecentAlbums: undefined;
 };
 
 export type NavigationProp = StackNavigationProp<StackParams>; 

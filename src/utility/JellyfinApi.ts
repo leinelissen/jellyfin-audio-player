@@ -60,7 +60,7 @@ const albumOptions = {
     SortOrder: 'Ascending',
     IncludeItemTypes: 'MusicAlbum',
     Recursive: 'true',
-    Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo',
+    Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated',
     ImageTypeLimit: '1',
     EnableImageTypes: 'Primary,Backdrop,Banner,Thumb',
 };
@@ -72,11 +72,37 @@ const albumParams = new URLSearchParams(albumOptions).toString();
  */
 export async function retrieveAlbums(credentials: Credentials) {
     const config = generateConfig(credentials);
-    console.log(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${albumParams}`);
     const albums = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${albumParams}`, config)
         .then(response => response.json());
 
     return albums.Items;
+}
+
+const latestAlbumsOptions = {
+    IncludeItemTypes: 'MusicAlbum',
+    Fields: 'DateCreated',
+    SortOrder: 'Ascending',
+};
+
+
+/**
+ * Retrieve the most recently added albums on the Jellyfin server 
+ */
+export async function retrieveRecentAlbums(credentials: Credentials, numberOfAlbums = 24) {
+    const config = generateConfig(credentials);
+
+    // Generate custom config based on function input
+    const options = {
+        ...latestAlbumsOptions,
+        Limit: numberOfAlbums.toString(),
+    };
+    const params = new URLSearchParams(options).toString();
+
+    // Retrieve albums
+    const albums = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items/Latest?${params}`, config)
+        .then(response => response.json());
+
+    return albums;
 }
 
 /**

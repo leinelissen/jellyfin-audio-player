@@ -2,7 +2,7 @@ import { configureStore, getDefaultMiddleware, combineReducers } from '@reduxjs/
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import { persistStore, persistReducer } from 'redux-persist';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 
 const persistConfig = {
     key: 'root',
@@ -22,7 +22,7 @@ const persistedReducer = persistReducer(persistConfig, reducers);
 const store = configureStore({
     reducer: persistedReducer,
     middleware: getDefaultMiddleware({ serializableCheck: false, immutableCheck: false }).concat(
-        logger
+        // logger
     ),
 });
 

@@ -1,43 +1,22 @@
 import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
 import { Album, NavigationProp } from '../types';
-import { Text, SafeAreaView, FlatList, Dimensions } from 'react-native';
-import styled from 'styled-components/native';
+import { Text, SafeAreaView, FlatList } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import FastImage from 'react-native-fast-image';
 import { differenceInDays } from 'date-fns';
 import { useTypedSelector } from 'store';
 import { fetchAllAlbums } from 'store/music/actions';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
 import TouchableHandler from 'components/TouchableHandler';
-
-const Screen = Dimensions.get('screen');
-
-const Container = styled.View`
-    /* flex-direction: row;
-    flex-wrap: wrap;
-    flex: 1; */
-    padding: 10px;
-    background-color: #f6f6f6;
-`;
-
-const AlbumItem = styled.View`
-    width: ${Screen.width / 2 - 10}px;
-    padding: 10px;
-`;
-
-const AlbumImage = styled(FastImage)`
-    border-radius: 10px;
-    width: ${Screen.width / 2 - 40}px;
-    height: ${Screen.width / 2 - 40}px;
-    background-color: #fefefe;
-    margin-bottom: 5px;
-`;
+import ListContainer from './components/ListContainer';
+import AlbumImage, { AlbumItem } from './components/AlbumImage';
+import { useAlbumsByArtist } from 'store/music/selectors';
 
 const Albums: React.FC = () => {
     // Retrieve data from store
-    const { ids, entities: albums } = useTypedSelector((state) => state.music.albums);
+    const { entities: albums } = useTypedSelector((state) => state.music.albums);
+    const ids = useAlbumsByArtist();
     const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
     const lastRefreshed = useTypedSelector((state) => state.music.lastRefreshed);
     
@@ -60,7 +39,7 @@ const Albums: React.FC = () => {
     
     return (
         <SafeAreaView>
-            <Container>
+            <ListContainer>
                 <FlatList
                     data={ids as string[]} 
                     refreshing={isLoading}
@@ -77,7 +56,7 @@ const Albums: React.FC = () => {
                         </TouchableHandler>
                     )}
                 />
-            </Container>
+            </ListContainer>
         </SafeAreaView>
     );
 };
