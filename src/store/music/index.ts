@@ -13,7 +13,7 @@ export interface State {
         entities: Dictionary<AlbumTrack>;
         ids: EntityId[];
     },
-    lastRefreshed?: Date,
+    lastRefreshed?: number,
 }
 
 const initialState: State = {
@@ -35,7 +35,7 @@ const music = createSlice({
         builder.addCase(fetchAllAlbums.fulfilled, (state, { payload }) => {
             albumAdapter.setAll(state.albums, payload);
             state.albums.isLoading = false;
-            state.lastRefreshed = new Date();
+            state.lastRefreshed = new Date().getTime();
         });
         builder.addCase(fetchAllAlbums.pending, (state) => { state.albums.isLoading = true; });
         builder.addCase(fetchAllAlbums.rejected, (state) => { state.albums.isLoading = false; });
@@ -46,7 +46,7 @@ const music = createSlice({
             const album = state.albums.entities[payload[0].AlbumId];
             if (album) {
                 album.Tracks = payload.map(d => d.Id);
-                album.lastRefreshed = new Date();
+                album.lastRefreshed = new Date().getTime();
             }
             state.tracks.isLoading = false;
         });

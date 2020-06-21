@@ -4,9 +4,9 @@ import TrackPlayer, { usePlaybackState, Track } from 'react-native-track-player'
 /**
  * This hook retrieves the current playing track from TrackPlayer
  */
-export default function useQueue(): Track[] | undefined {
+export default function useQueue(): Track[] {
     const state = usePlaybackState();
-    const [queue, setQueue] = useState<Track[]>();
+    const [queue, setQueue] = useState<Track[]>([]);
 
     useEffect(() => {
         TrackPlayer.getQueue().then(setQueue);

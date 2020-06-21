@@ -51,7 +51,7 @@ const Album: React.FC = () => {
 
     // Retrieve album tracks on load
     useEffect(() => {
-        if (!album?.lastRefreshed || differenceInDays(album.lastRefreshed, new Date()) > ALBUM_CACHE_AMOUNT_OF_DAYS) {
+        if (!album?.lastRefreshed || differenceInDays(album?.lastRefreshed, new Date()) > ALBUM_CACHE_AMOUNT_OF_DAYS) {
             refresh();
         }
     }, []);
