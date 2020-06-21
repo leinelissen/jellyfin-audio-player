@@ -17,7 +17,7 @@ export default function usePlayAlbum() {
         const trackIds = album?.Tracks;
 
         // GUARD: Check that the album actually has tracks
-        if (!album || !trackIds?.length || !tracks.length) {
+        if (!album || !trackIds?.length) {
             return;
         }
 
