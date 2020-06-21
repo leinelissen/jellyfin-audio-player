@@ -4,7 +4,7 @@ import TrackPlayer from 'react-native-track-player';
 import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer } from '@react-navigation/native';
 import Routes from '../screens';
-import store, { persistedStore } from '../store';
+import store, { persistedStore } from 'store';
 
 interface State {
     isReady: boolean;

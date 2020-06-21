@@ -4,7 +4,7 @@ import { Picker } from '@react-native-community/picker';
 import { ScrollView } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 import { useSelector } from 'react-redux';
-import { AppState } from '../../store';
+import { AppState } from 'store';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '..';
 

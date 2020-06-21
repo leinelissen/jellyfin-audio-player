@@ -1,7 +1,7 @@
 import { createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { Album, AlbumTrack } from './types';
 import { AsyncThunkAPI } from '..';
-import { retrieveAlbums, retrieveAlbumTracks } from '../../utility/JellyfinApi';
+import { retrieveAlbums, retrieveAlbumTracks } from 'utility/JellyfinApi';
 
 export const albumAdapter = createEntityAdapter<Album>({
     selectId: album => album.Id,

@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { Text, Button, View } from 'react-native';
-import Modal from '../../../components/Modal';
-import Input from '../../../components/Input';
-import { setJellyfinCredentials } from '../../../store/settings/actions';
+import Modal from 'components/Modal';
+import Input from 'components/Input';
+import { setJellyfinCredentials } from 'store/settings/actions';
 import { useDispatch } from 'react-redux';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import CredentialGenerator from './components/CredentialGenerator';

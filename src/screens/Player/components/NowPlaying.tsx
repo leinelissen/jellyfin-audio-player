@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Dimensions, View } from 'react-native';
-import useCurrentTrack from '../../../utility/useCurrentTrack';
+import useCurrentTrack from 'utility/useCurrentTrack';
 import styled from 'styled-components/native';
 import FastImage from 'react-native-fast-image';
 

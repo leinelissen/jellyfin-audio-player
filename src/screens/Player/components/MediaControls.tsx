@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlay, faPause, faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components/native';
-import { useHasQueue } from '../../../utility/useQueue';
+import { useHasQueue } from 'utility/useQueue';
 
 const MAIN_SIZE = 48;
 const BUTTON_SIZE = 32;

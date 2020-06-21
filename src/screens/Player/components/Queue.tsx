@@ -1,8 +1,8 @@
 import React from 'react';
-import useQueue from '../../../utility/useQueue';
+import useQueue from 'utility/useQueue';
 import { View, Text } from 'react-native';
 import styled, { css } from 'styled-components/native';
-import useCurrentTrack from '../../../utility/useCurrentTrack';
+import useCurrentTrack from 'utility/useCurrentTrack';
 
 const QueueItem = styled.View<{ active?: boolean, alreadyPlayed?: boolean }>`
     padding: 10px;

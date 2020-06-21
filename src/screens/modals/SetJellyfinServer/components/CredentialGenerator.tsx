@@ -1,7 +1,7 @@
 import React, { Component, createRef } from 'react';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { debounce } from 'lodash';
-import { AppState } from '../../../../store';
+import { AppState } from 'store';
 
 interface Props {
     serverUrl: string;

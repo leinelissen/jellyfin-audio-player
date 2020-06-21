@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect } from 'react';
-import { useGetImage } from '../../../utility/JellyfinApi';
+import { useGetImage } from 'utility/JellyfinApi';
 import { Album, NavigationProp } from '../types';
 import { Text, SafeAreaView, FlatList, Dimensions } from 'react-native';
 import styled from 'styled-components/native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { differenceInDays } from 'date-fns';
-import { useTypedSelector } from '../../../store';
-import { fetchAllAlbums } from '../../../store/music/actions';
-import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '../../../CONSTANTS';
+import { useTypedSelector } from 'store';
+import { fetchAllAlbums } from 'store/music/actions';
+import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
+import TouchableHandler from 'components/TouchableHandler';
 
 const Screen = Dimensions.get('screen');
 
@@ -35,25 +35,6 @@ const AlbumImage = styled(FastImage)`
     margin-bottom: 5px;
 `;
 
-interface TouchableAlbumItemProps {
-    id: string;
-    onPress: (id: string) => void;
-}
-
-const TouchableAlbumItem: React.FC<TouchableAlbumItemProps>  = ({ id, onPress, children }) => {
-    const handlePress = useCallback(() => {
-        return onPress(id);
-    }, [id]);
-
-    return (
-        <TouchableOpacity onPress={handlePress}>
-            <AlbumItem>
-                {children}
-            </AlbumItem>
-        </TouchableOpacity>
-    );
-};
-
 const Albums: React.FC = () => {
     // Retrieve data from store
     const { ids, entities: albums } = useTypedSelector((state) => state.music.albums);
@@ -71,6 +52,7 @@ const Albums: React.FC = () => {
     
     // Retrieve data on mount
     useEffect(() => { 
+        // GUARD: Only refresh this API call every set amounts of days
         if (!lastRefreshed || differenceInDays(lastRefreshed, new Date()) > ALBUM_CACHE_AMOUNT_OF_DAYS) {
             retrieveData(); 
         }
@@ -86,11 +68,13 @@ const Albums: React.FC = () => {
                     numColumns={2}
                     keyExtractor={d => d}
                     renderItem={({ item }) => (
-                        <TouchableAlbumItem id={item} onPress={selectAlbum}>
-                            <AlbumImage source={{ uri: getImage(item) }} />
-                            <Text>{albums[item]?.Name}</Text>
-                            <Text style={{ opacity: 0.5 }}>{albums[item]?.AlbumArtist}</Text>
-                        </TouchableAlbumItem>
+                        <TouchableHandler id={item} onPress={selectAlbum}>
+                            <AlbumItem>
+                                <AlbumImage source={{ uri: getImage(item) }} />
+                                <Text>{albums[item]?.Name}</Text>
+                                <Text style={{ opacity: 0.5 }}>{albums[item]?.AlbumArtist}</Text>
+                            </AlbumItem>
+                        </TouchableHandler>
                     )}
                 />
             </Container>
