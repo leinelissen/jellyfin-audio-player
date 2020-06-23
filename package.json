@@ -36,7 +36,7 @@
     "react-native-screens": "^2.8.0",
     "react-native-svg": "^12.1.0",
     "react-native-swift": "^1.2.3",
-    "react-native-track-player": "github:react-native-kit/react-native-track-player",
+    "react-native-track-player": "github:leinelissen/react-native-track-player",
     "react-native-webview": "^10.3.1",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
