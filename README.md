@@ -1,0 +1,1 @@
+An attempt at making a streaming audio app for the Jellyfin ecosystem
