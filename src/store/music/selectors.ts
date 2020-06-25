@@ -1,6 +1,8 @@
-import { useTypedSelector } from 'store';
+import { useTypedSelector, AppState } from 'store';
 import { parseISO } from 'date-fns';
-import { Album } from './types';
+import { ALPHABET_LETTERS } from 'CONSTANTS';
+import { createSelector, EntityId } from '@reduxjs/toolkit';
+import { SectionListData } from 'react-native';
 
 /**
  * Retrieves a list of the n most recent albums
@@ -20,9 +22,11 @@ export function useRecentAlbums(amount: number) {
     return sorted.slice(0, amount);
 }
 
-export function useAlbumsByArtist() {
-    const albums = useTypedSelector((state) => state.music.albums.entities);
-    const albumIds = useTypedSelector((state) => state.music.albums.ids);
+/**
+ * Sort all albums by AlbumArtist
+ */
+function albumsByArtist(state: AppState['music']['albums']) {
+    const { entities: albums, ids: albumIds } = state;
 
     const sorted = [...albumIds].sort((a, b) => {
         const albumA = albums[a];
@@ -40,3 +44,36 @@ export function useAlbumsByArtist() {
 
     return sorted;
 }
+
+export const selectAlbumsByArtist = createSelector(
+    (state: AppState) => state.music.albums,
+    albumsByArtist,
+);
+
+export type SectionedId = SectionListData<EntityId>;
+
+/**
+ * Splits a set of albums into a list that is split by alphabet letters
+ */
+function splitByAlphabet(state: AppState['music']['albums']): SectionedId[] {
+    const { entities: albums } = state;
+    const albumIds = albumsByArtist(state);
+    const sections: SectionedId[] = ALPHABET_LETTERS.split('').map((l) => ({ label: l, data: [] }));
+
+    albumIds.forEach((id) => {
+        const album = albums[id];
+        const letter = album?.AlbumArtist?.toUpperCase().charAt(0);
+        const index = letter ? ALPHABET_LETTERS.indexOf(letter) : 26;
+        (sections[index >= 0 ? index : 26].data as Array<EntityId>).push(id);
+    });
+
+    return sections;
+}
+
+/**
+ * Wrap splitByAlphabet into a memoized selector
+ */
+export const selectAlbumsByAlphabet = createSelector(
+    (state: AppState) => state.music.albums,
+    splitByAlphabet,
+);

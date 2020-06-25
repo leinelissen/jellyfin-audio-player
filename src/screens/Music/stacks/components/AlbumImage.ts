@@ -7,6 +7,7 @@ const Screen = Dimensions.get('screen');
 export const AlbumItem = styled.View`
     width: ${Screen.width / 2 - 10}px;
     padding: 10px;
+    height: 220px;
 `;
 
 const AlbumImage = styled(FastImage)`

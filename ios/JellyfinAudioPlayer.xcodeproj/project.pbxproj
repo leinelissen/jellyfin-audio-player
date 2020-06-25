@@ -45,7 +45,7 @@
 		00E356EE1AD99517003FC87E /* JellyfinAudioPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JellyfinAudioPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* JellyfinAudioPlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JellyfinAudioPlayerTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* JellyfinAudioPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JellyfinAudioPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Jellyfin Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Jellyfin Player.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = JellyfinAudioPlayer/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = JellyfinAudioPlayer/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -190,7 +190,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* JellyfinAudioPlayer.app */,
+				13B07F961A680F5B00A75B9A /* Jellyfin Player.app */,
 				00E356EE1AD99517003FC87E /* JellyfinAudioPlayerTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* JellyfinAudioPlayer-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* JellyfinAudioPlayer-tvOSTests.xctest */,
@@ -237,7 +237,7 @@
 			);
 			name = JellyfinAudioPlayer;
 			productName = JellyfinAudioPlayer;
-			productReference = 13B07F961A680F5B00A75B9A /* JellyfinAudioPlayer.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Jellyfin Player.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E47A1E0B4A5D006451C7 /* JellyfinAudioPlayer-tvOS */ = {
@@ -651,7 +651,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = JellyfinAudioPlayer;
+				PRODUCT_NAME = "Jellyfin Player";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -674,7 +674,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = JellyfinAudioPlayer;
+				PRODUCT_NAME = "Jellyfin Player";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
