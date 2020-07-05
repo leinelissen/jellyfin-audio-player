@@ -7,6 +7,7 @@ module.exports = {
         'eslint:recommended',
         'plugin:react/recommended',
         'plugin:@typescript-eslint/eslint-recommended',
+        'plugin:react-hooks/recommended',
         // "plugin:@typescript-eslint/recommended"
     ],
     globals: {
@@ -23,7 +24,8 @@ module.exports = {
     },
     plugins: [
         'react',
-        '@typescript-eslint'
+        '@typescript-eslint',
+        'react-hooks'
     ],
     rules: {
         indent: [

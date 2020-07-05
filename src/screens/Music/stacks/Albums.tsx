@@ -14,6 +14,7 @@ import AlbumImage, { AlbumItem } from './components/AlbumImage';
 import { selectAlbumsByAlphabet, SectionedId } from 'store/music/selectors';
 import AlphabetScroller from 'components/AlphabetScroller';
 import { EntityId } from '@reduxjs/toolkit';
+import styled from 'styled-components/native';
 
 interface VirtualizedItemInfo {
     section: SectionedId,
@@ -33,18 +34,31 @@ type VirtualizedSectionList = { _subExtractor: (index: number) => VirtualizedIte
 
 function generateSection({ section }: { section: SectionedId }) {
     return (
-        <SectionHeading label={section.label} />
+        <SectionHeading label={section.label} key={section.label} />
     );
 }
 
-class SectionHeading extends PureComponent<{ label: string }> {
+const SectionContainer = styled.View`
+    background-color: #f6f6f6;
+    border-bottom-color: #eee;
+    border-bottom-width: 1px;
+    height: 50px;
+    justify-content: center;
+`;
+
+const SectionText = styled.Text`
+    font-size: 24px;
+    font-weight: bold;
+`;
+
+class SectionHeading extends PureComponent<{ label: string }> {    
     render() {
         const { label } = this.props;
 
         return (
-            <View style={{ backgroundColor: '#f6f6f6', borderBottomColor: '#eee', borderBottomWidth: 1, height: 50, justifyContent: 'center'  }}>
-                <Text style={{ fontSize: 24, fontWeight: 'bold'}}>{label}</Text>
-            </View>
+            <SectionContainer>
+                <SectionText>{label}</SectionText>
+            </SectionContainer>
         );
     }
 }
@@ -57,6 +71,10 @@ interface GeneratedAlbumItemProps {
     onPress: (id: string) => void;
 }
 
+const HalfOpacity = styled.Text`
+    opacity: 0.5;
+`;
+
 class GeneratedAlbumItem extends PureComponent<GeneratedAlbumItemProps> {
     render() {
         const { id, imageUrl, name, artist, onPress } = this.props;
@@ -66,24 +84,12 @@ class GeneratedAlbumItem extends PureComponent<GeneratedAlbumItemProps> {
                 <AlbumItem>
                     <AlbumImage source={{ uri: imageUrl }} />
                     <Text numberOfLines={1}>{name}</Text>
-                    <Text numberOfLines={1} style={{ opacity: 0.5 }}>{artist}</Text>
+                    <HalfOpacity numberOfLines={1}>{artist}</HalfOpacity>
                 </AlbumItem>
             </TouchableHandler>
         );
     }
 }
-
-// const getItemLayout: any = sectionListGetItemLayout({
-//     getItemHeight: (rowData, sectionIndex, rowIndex) => {
-//         console.log(sectionIndex, rowIndex, rowData);
-//         if (sectionIndex === 0) { return 0; }
-//         else if (rowIndex % 2 > 0) { return 0; }
-//         return 220;
-//     },
-//     getSectionHeaderHeight: () => 50,
-//     // getSeparatorHeight: () => 1 / PixelRatio.get(),
-//     // listHeaderHeight: 0,
-// });
 
 const Albums: React.FC = () => {
     // Retrieve data from store
@@ -120,6 +126,7 @@ const Albums: React.FC = () => {
         // current item.
         const previousRows = data?.filter((row, i) => i < sectionIndex)
             .reduce((sum, row) => sum + Math.ceil(row.data.length / 2), 0) || 0;
+
     
         // We must also calcuate the offset, total distance from the top of the
         // screen. First off, we'll account for each sectionIndex that is shown up
@@ -130,8 +137,6 @@ const Albums: React.FC = () => {
         const itemOffset = 220 * (previousRows + currentRows);
         const offset = headingOffset + itemOffset;
     
-        // console.log(index, sectionIndex, itemIndex, previousRows, currentRows, offset);
-    
         return { index, length, offset };
     }, [listRef]);
 
@@ -141,14 +146,14 @@ const Albums: React.FC = () => {
     const selectLetter = useCallback((sectionIndex: number) => { 
         listRef.current?.scrollToLocation({ sectionIndex, itemIndex: 0, animated: false, }); 
     }, [listRef]);
-    const generateItem = ({ item, index, section }: { item: EntityId, index: number, section: SectionedId }) => {
+    const generateItem = useCallback(({ item, index, section }: { item: EntityId, index: number, section: SectionedId }) => {
         if (index % 2 === 1) {
-            return null;
+            return <View key={item} />;
         }
         const nextItem = section.data[index + 1];
 
         return (
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row' }} key={item}>
                 <GeneratedAlbumItem
                     id={item}
                     imageUrl={getImage(item as string)}
@@ -167,7 +172,7 @@ const Albums: React.FC = () => {
                 }
             </View>
         );
-    };
+    }, [albums, getImage, selectAlbum]);
 
     // Retrieve data on mount
     useEffect(() => { 
@@ -175,7 +180,7 @@ const Albums: React.FC = () => {
         if (!lastRefreshed || differenceInDays(lastRefreshed, new Date()) > ALBUM_CACHE_AMOUNT_OF_DAYS) {
             retrieveData(); 
         }
-    }, []);
+    });
     
     return (
         <SafeAreaView>
@@ -186,8 +191,8 @@ const Albums: React.FC = () => {
                     refreshing={isLoading}
                     onRefresh={retrieveData}
                     getItemLayout={getItemLayout}
-                    keyExtractor={(d) => d as string}
                     ref={listRef}
+                    keyExtractor={(item, index) => `${item}_${index}`}
                     onScrollToIndexFailed={console.log}
                     renderSectionHeader={generateSection}
                     renderItem={generateItem}
