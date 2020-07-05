@@ -16,10 +16,12 @@ import ListButton from 'components/ListButton';
 const NavigationHeader: React.FC = () => {
     const navigation = useNavigation();
     const handleAllAlbumsClick = useCallback(() => { navigation.navigate('Albums'); }, [navigation]);
+    const handleSearchClick = useCallback(() => { navigation.navigate('Search'); }, [navigation]);
     
     return (
         <ListContainer>
             <ListButton onPress={handleAllAlbumsClick}>All Albums</ListButton>
+            <ListButton onPress={handleSearchClick}>Search</ListButton>
             <Header>Recent Albums</Header>
         </ListContainer>
     );
