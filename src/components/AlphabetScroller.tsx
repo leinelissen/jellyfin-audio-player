@@ -35,6 +35,8 @@ const Container = styled.View`
 const Letter = styled.Text`
     text-align: center;
     padding: 1px 0;
+    font-size: 12px;
+    color: salmon;
 `;
 
 interface Props {
@@ -62,7 +64,7 @@ const AlphabetScroller: React.FC<Props> = ({ onSelect }) => {
             setIndex(newIndex);
             onSelect(newIndex);
         }
-    }, [height, index]);
+    }, [height, index, onSelect]);
 
     return (
         <Container>
