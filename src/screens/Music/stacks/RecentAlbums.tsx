@@ -45,7 +45,7 @@ const RecentAlbums: React.FC = () => {
     console.log(recentAlbums.map((d) => albums[d]?.DateCreated));
     
     // Retrieve data on mount
-    useEffect(() => { retrieveData(); }, []);
+    useEffect(() => { retrieveData(); }, [retrieveData]);
     
     return (
         <SafeAreaView>
