@@ -45,16 +45,16 @@ const Album: React.FC = () => {
     const playAlbum = usePlayAlbum();
 
     // Setup callbacks
-    const selectAlbum = useCallback(() => { playAlbum(id); }, [playAlbum]);
+    const selectAlbum = useCallback(() => { playAlbum(id); }, [playAlbum, id]);
     const selectTrack = usePlayTrack();
-    const refresh = useCallback(() => { dispatch(fetchTracksByAlbum(id)); }, [id]);
+    const refresh = useCallback(() => { dispatch(fetchTracksByAlbum(id)); }, [id, dispatch]);
 
     // Retrieve album tracks on load
     useEffect(() => {
         if (!album?.lastRefreshed || differenceInDays(album?.lastRefreshed, new Date()) > ALBUM_CACHE_AMOUNT_OF_DAYS) {
             refresh();
         }
-    }, []);
+    }, [album?.lastRefreshed, refresh]);
 
     // GUARD: If there is no album, we cannot render a thing
     if (!album) {

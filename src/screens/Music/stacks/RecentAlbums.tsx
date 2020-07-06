@@ -42,8 +42,6 @@ const RecentAlbums: React.FC = () => {
     const retrieveData = useCallback(() => dispatch(fetchRecentAlbums()), [dispatch]);
     const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
     
-    console.log(recentAlbums.map((d) => albums[d]?.DateCreated));
-    
     // Retrieve data on mount
     useEffect(() => { retrieveData(); }, [retrieveData]);
     

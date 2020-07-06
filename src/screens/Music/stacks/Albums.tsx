@@ -193,7 +193,6 @@ const Albums: React.FC = () => {
                     getItemLayout={getItemLayout}
                     ref={listRef}
                     keyExtractor={(item, index) => `${item}_${index}`}
-                    onScrollToIndexFailed={console.log}
                     renderSectionHeader={generateSection}
                     renderItem={generateItem}
                 />

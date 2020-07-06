@@ -30,7 +30,6 @@ class CredentialGenerator extends Component<Props> {
 
     handleMessage = (event: WebViewMessageEvent) => {
         // GUARD: Something must be returned for this thing to work
-        console.log(event.nativeEvent.data);
         if (!event.nativeEvent.data) {
             return;
         }
