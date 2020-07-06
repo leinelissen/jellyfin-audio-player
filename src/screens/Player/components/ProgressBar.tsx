@@ -52,7 +52,6 @@ export default class ProgressBar extends Component<{}, State> {
     }
 
     handleGesture = async (gesture: number) => {
-        console.log(gesture);
         // Set relative translation in state
         this.setState({ gesture });
     }

@@ -59,8 +59,8 @@ const RecentAlbums: React.FC = () => {
                         <TouchableHandler id={item} onPress={selectAlbum}>
                             <AlbumItem>
                                 <AlbumImage source={{ uri: getImage(item) }} />
-                                <Text>{albums[item]?.Name}</Text>
-                                <Text style={{ opacity: 0.5 }}>{albums[item]?.AlbumArtist}</Text>
+                                <Text numberOfLines={1}>{albums[item]?.Name}</Text>
+                                <Text numberOfLines={1} style={{ opacity: 0.5 }}>{albums[item]?.AlbumArtist}</Text>
                             </AlbumItem>
                         </TouchableHandler>
                     )}

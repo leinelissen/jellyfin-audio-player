@@ -1,5 +1,5 @@
 import React from 'react';
-import TrackPlayer, { usePlaybackState, STATE_PLAYING, STATE_PAUSED, Track } from 'react-native-track-player';
+import TrackPlayer, { usePlaybackState, STATE_PLAYING, STATE_PAUSED } from 'react-native-track-player';
 import { TouchableOpacity } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlay, faPause, faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +15,6 @@ const next = () => TrackPlayer.skipToNext();
 const previous = () => TrackPlayer.skipToPrevious();
 
 const Container = styled.View`
-    /* */
     align-items: center;
     margin: 20px 0;
 `;
