@@ -242,11 +242,13 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
   - React-jsinspector (0.62.2)
-  - react-native-safe-area-context (3.0.5):
+  - react-native-safe-area-context (3.0.7):
+    - React
+  - react-native-slider (3.0.0):
     - React
   - react-native-track-player (1.2.3):
     - React
-  - react-native-webview (10.3.1):
+  - react-native-webview (10.3.2):
     - React
   - React-RCTActionSheet (0.62.2):
     - React-Core/RCTActionSheetHeaders (= 0.62.2)
@@ -311,7 +313,7 @@ PODS:
     - React
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPicker (1.6.3):
+  - RNCPicker (1.6.5):
     - React
   - RNFastImage (8.1.5):
     - React
@@ -321,7 +323,7 @@ PODS:
     - React
   - RNReanimated (1.9.0):
     - React
-  - RNScreens (2.8.0):
+  - RNScreens (2.9.0):
     - React
   - RNSVG (12.1.0):
     - React
@@ -374,6 +376,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-track-player (from `../node_modules/react-native-track-player`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -447,6 +450,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
   react-native-track-player:
     :path: "../node_modules/react-native-track-player"
   react-native-webview:
@@ -519,9 +524,10 @@ SPEC CHECKSUMS:
   React-jsi: b6dc94a6a12ff98e8877287a0b7620d365201161
   React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
-  react-native-safe-area-context: e768fca90207ee68924b3d0877633f2ce9cc9d68
+  react-native-safe-area-context: c39fc20a20cd66ebf1d56c6f8b8711142fbfee98
+  react-native-slider: 05f11678260cb27c3d00a2dd1558b623be3ec8d2
   react-native-track-player: ba2416753b58f3cdf9db5a07daa65876d659f925
-  react-native-webview: 40bbeb6d011226f34cb83f845aeb0fdf515cfc5f
+  react-native-webview: e2c0bce9a1a7c7edd4eb30f0c3016fce216245ce
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
   React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0
   React-RCTBlob: a332773f0ebc413a0ce85942a55b064471587a71
@@ -534,11 +540,11 @@ SPEC CHECKSUMS:
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNCPicker: 1c63b084bcbcd33d159a83144543f3bda4cd1793
+  RNCPicker: 55b9b4240d0a9eba8733d02616775d4040de2e7d
   RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
-  RNScreens: 62211832af51e0aebcf6e8c36bcf7dd65592f244
+  RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNTableView: e8723c30aec3b259222a12e7d05d763566286a46
   SDWebImage: e3eae2eda88578db0685a0c88597fdadd9433f05
