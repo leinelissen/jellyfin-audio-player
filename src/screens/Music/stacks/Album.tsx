@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { StackParams } from '../types';
 import { Text, ScrollView, Dimensions, Button, RefreshControl } from 'react-native';
 import { useGetImage } from 'utility/JellyfinApi';
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { useDispatch } from 'react-redux';
@@ -13,6 +13,7 @@ import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
 import usePlayAlbum from 'utility/usePlayAlbum';
 import usePlayTrack from 'utility/usePlayTrack';
 import TouchableHandler from 'components/TouchableHandler';
+import useCurrentTrack from 'utility/useCurrentTrack';
 
 type Route = RouteProp<StackParams, 'Album'>;
 
@@ -25,11 +26,17 @@ const AlbumImage = styled(FastImage)`
     margin: 10px auto;
 `;
 
-const TrackContainer = styled.View`
+const TrackContainer = styled.View<{isPlaying: boolean}>`
     padding: 15px;
     border-bottom-width: 1px;
     border-bottom-color: #eee;
     flex-direction: row;
+
+    ${props => props.isPlaying && css`
+        background-color: #FF3C0016;
+        margin: 0 -20px;
+        padding: 15px 35px;
+    `}
 `;
 
 const Album: React.FC = () => {
@@ -43,6 +50,7 @@ const Album: React.FC = () => {
     const dispatch = useDispatch();
     const getImage = useGetImage();
     const playAlbum = usePlayAlbum();
+    const currentTrack = useCurrentTrack();
 
     // Setup callbacks
     const selectAlbum = useCallback(() => { playAlbum(id); }, [playAlbum, id]);
@@ -74,8 +82,10 @@ const Album: React.FC = () => {
             <Button title="Play Album" onPress={selectAlbum} />
             {album?.Tracks?.length ? album.Tracks.map((trackId) =>
                 <TouchableHandler key={trackId} id={trackId} onPress={selectTrack}>
-                    <TrackContainer>
-                        <Text style={{ width: 20, opacity: 0.5, marginRight: 5 }}>{tracks[trackId]?.IndexNumber}</Text>
+                    <TrackContainer isPlaying={trackId === currentTrack?.id}>
+                        <Text style={{ width: 20, opacity: 0.5, marginRight: 5 }}>
+                            {tracks[trackId]?.IndexNumber}
+                        </Text>
                         <Text>{tracks[trackId]?.Name}</Text>
                     </TrackContainer>
                 </TouchableHandler>

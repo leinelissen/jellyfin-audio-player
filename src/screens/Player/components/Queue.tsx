@@ -13,7 +13,7 @@ const QueueItem = styled.View<{ active?: boolean, alreadyPlayed?: boolean }>`
 
     ${props => props.active && css`
         font-weight: 900;
-        background-color: #ff8c6922;
+        background-color: #FF3C0016;
         padding: 20px 35px;
         margin: 0 -25px;
     `}

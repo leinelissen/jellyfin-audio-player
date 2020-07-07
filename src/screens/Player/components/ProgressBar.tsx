@@ -72,7 +72,7 @@ export default class ProgressBar extends Component<{}, State> {
                     maximumValue={duration || 0}
                     onValueChange={this.handleGesture}
                     onSlidingComplete={this.handleEndOfGesture}
-                    minimumTrackTintColor={'#ff8c69'}
+                    minimumTrackTintColor={'#FF3C00'}
                     disabled={!duration}
                 />
                 <NumberBar>

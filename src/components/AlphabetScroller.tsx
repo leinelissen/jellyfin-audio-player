@@ -29,7 +29,7 @@ const Letter = styled.Text`
     text-align: center;
     padding: 1px 0;
     font-size: 12px;
-    color: salmon;
+    color: #FF3C00;
 `;
 
 interface Props {

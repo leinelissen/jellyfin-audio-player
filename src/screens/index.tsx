@@ -47,7 +47,7 @@ function Screens() {
                 }
             })}
             tabBarOptions={{
-                activeTintColor: 'salmon',
+                activeTintColor: '#FF3C00',
                 inactiveTintColor: 'gray',
             }}
         >
