@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
 import { Album, NavigationProp } from '../types';
-import { Text, SafeAreaView, FlatList, View } from 'react-native';
+import { Text, SafeAreaView, FlatList } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useTypedSelector } from 'store';

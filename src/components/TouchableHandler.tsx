@@ -13,7 +13,7 @@ interface TouchableHandlerProps {
 const TouchableHandler: React.FC<TouchableHandlerProps>  = ({ id, onPress, children }) => {
     const handlePress = useCallback(() => {
         return onPress(id);
-    }, [id]);
+    }, [id, onPress]);
 
     return (
         <TouchableOpacity onPress={handlePress}>

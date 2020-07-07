@@ -32,5 +32,5 @@ export default function usePlayTrack() {
         // Then we'll skip to it and play it
         await TrackPlayer.skip(trackId);
         TrackPlayer.play();
-    }, [credentials, tracks]);
+    }, [credentials, tracks, queue]);
 }

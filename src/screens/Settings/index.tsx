@@ -22,7 +22,7 @@ const Input = styled.TextInput`
 export default function Settings() {
     const { jellyfin, bitrate } = useSelector((state: AppState) => state.settings);
     const navigation = useNavigation<NavigationProp>();
-    const handleClick = useCallback(() => navigation.navigate('SetJellyfinServer'), []);
+    const handleClick = useCallback(() => navigation.navigate('SetJellyfinServer'), [navigation]);
 
     return (
         <ScrollView>

@@ -36,7 +36,7 @@ function Screens() {
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
+                tabBarIcon: function TabBarIcon({ color, size }) {
                     const Icon = getIcon(route.name);
 
                     if (!Icon) {

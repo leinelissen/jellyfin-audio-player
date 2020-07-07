@@ -1,25 +1,18 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
 import { ALPHABET_LETTERS } from 'CONSTANTS';
 import { View, LayoutChangeEvent } from 'react-native';
-import { TouchableWithoutFeedback, PanGestureHandler, PanGestureHandlerGestureEvent, TapGestureHandler, TapGestureHandlerGestureEvent } from 'react-native-gesture-handler';
+import { 
+    PanGestureHandler, 
+    PanGestureHandlerGestureEvent, 
+    TapGestureHandler, 
+    TapGestureHandlerGestureEvent 
+} from 'react-native-gesture-handler';
 
 interface LetterContainerProps {
     onPress: (letter: string) => void;
     letter: string;
 }
-
-const LetterContainer: React.FC<LetterContainerProps> = ({ children, letter, onPress }) => {
-    const handlePress = useCallback(() => {
-        onPress(letter);
-    }, [letter, onPress]);
-
-    return (
-        <TouchableWithoutFeedback onPress={handlePress}>
-            {children}
-        </TouchableWithoutFeedback>
-    );
-};
 
 const Container = styled.View`
     position: absolute;
