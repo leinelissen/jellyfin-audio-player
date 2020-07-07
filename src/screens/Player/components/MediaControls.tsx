@@ -1,13 +1,14 @@
 import React from 'react';
 import TrackPlayer, { usePlaybackState, STATE_PLAYING, STATE_PAUSED } from 'react-native-track-player';
 import { TouchableOpacity } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlay, faPause, faBackward, faForward } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components/native';
 import { useHasQueue } from 'utility/useQueue';
+import ForwardIcon from 'assets/forwards.svg';
+import BackwardIcon from 'assets/backwards.svg';
+import PlayIcon from 'assets/play.svg';
+import PauseIcon from 'assets/pause.svg';
 
-const MAIN_SIZE = 48;
-const BUTTON_SIZE = 32;
+const BUTTON_SIZE = 40;
 
 const pause = () => TrackPlayer.pause();
 const play = () => TrackPlayer.play();
@@ -51,7 +52,7 @@ export function PreviousButton() {
 
     return (
         <TouchableOpacity onPress={previous} disabled={!hasQueue} style={{ opacity: hasQueue ? 1 : 0.5 }}>
-            <FontAwesomeIcon icon={faBackward} size={BUTTON_SIZE} />
+            <BackwardIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill="#000" />
         </TouchableOpacity>
     );
 }
@@ -61,7 +62,7 @@ export function NextButton() {
 
     return (
         <TouchableOpacity onPress={next} disabled={!hasQueue} style={{ opacity: hasQueue ? 1 : 0.5 }}>
-            <FontAwesomeIcon icon={faForward} size={BUTTON_SIZE} />
+            <ForwardIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill="#000" />
         </TouchableOpacity>
     );
 }
@@ -73,19 +74,19 @@ export function MainButton() {
         case STATE_PLAYING:
             return (
                 <TouchableOpacity onPress={pause}>
-                    <FontAwesomeIcon icon={faPause} size={MAIN_SIZE} />
+                    <PauseIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill="#000" />
                 </TouchableOpacity>
             );
         case STATE_PAUSED:
             return (
                 <TouchableOpacity onPress={play}>
-                    <FontAwesomeIcon icon={faPlay} size={MAIN_SIZE} />
+                    <PlayIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill="#000" />
                 </TouchableOpacity>
             );
         default:
             return (
                 <TouchableOpacity onPress={pause} disabled>
-                    <FontAwesomeIcon icon={faPause} size={MAIN_SIZE} />
+                    <PauseIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill="#000" />
                 </TouchableOpacity>
             );
     }

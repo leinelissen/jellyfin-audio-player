@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import TrackPlayer from 'react-native-track-player';
 import styled from 'styled-components/native';
 import { Text } from 'react-native';
-import { padStart } from 'lodash';
 import Slider from '@react-native-community/slider';
 
 const NumberBar = styled.View`
@@ -13,7 +12,7 @@ const NumberBar = styled.View`
 `;
 
 function getSeconds(seconds: number): string {
-    return padStart(String(Math.floor(seconds % 60).toString()), 2, '0');
+    return Math.floor(seconds % 60).toString().padStart(2, '0');
 }
 
 function getMinutes(seconds: number): number {

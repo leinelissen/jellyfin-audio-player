@@ -12,9 +12,6 @@
     "build:ios": "react-native bundle --entry-file='index.ts' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.29",
-    "@fortawesome/free-solid-svg-icons": "^5.13.1",
-    "@fortawesome/react-native-fontawesome": "^0.2.5",
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/picker": "^1.6.5",
@@ -38,6 +35,7 @@
     "react-native-screens": "^2.9.0",
     "react-native-section-list-get-item-layout": "^2.2.3",
     "react-native-svg": "^12.1.0",
+    "react-native-svg-transformer": "^0.14.3",
     "react-native-swift": "^1.2.3",
     "react-native-tableview": "^3.0.0",
     "react-native-track-player": "github:leinelissen/react-native-track-player",

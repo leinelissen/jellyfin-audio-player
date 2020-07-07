@@ -1,4 +1,4 @@
-import { Dictionary } from 'lodash';
+import { Dictionary } from '@reduxjs/toolkit';
 
 export interface UserData {
     PlaybackPositionTicks: number;

@@ -1,8 +1,9 @@
 import React from 'react';
 import { TouchableOpacityProps, Text } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import ChevronRight from 'assets/chevron-right.svg';
 import styled from 'styled-components/native';
+
+const BUTTON_SIZE = 14;
 
 const Container = styled.TouchableOpacity`
     padding: 18px 0;
@@ -16,7 +17,7 @@ const ListButton: React.FC<TouchableOpacityProps> = ({ children, ...props }) => 
     return (
         <Container {...props}>
             <Text style={{ color: 'salmon', fontSize: 16 }}>{children}</Text>
-            <FontAwesomeIcon style={{ color: 'salmon' }} icon={faChevronRight} />
+            <ChevronRight width={BUTTON_SIZE} height={BUTTON_SIZE} fill="salmon" />
         </Container>
     );
 };
