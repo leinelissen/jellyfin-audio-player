@@ -1,6 +1,7 @@
 import { fetchAllAlbums, albumAdapter, fetchTracksByAlbum, trackAdapter, fetchRecentAlbums } from './actions';
 import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
 import { Album, AlbumTrack } from './types';
+import { setJellyfinCredentials } from 'store/settings/actions';
 
 export interface State {
     albums: {
@@ -69,6 +70,9 @@ const music = createSlice({
         });
         builder.addCase(fetchTracksByAlbum.pending, (state) => { state.tracks.isLoading = true; });
         builder.addCase(fetchTracksByAlbum.rejected, (state) => { state.tracks.isLoading = false; });
+        
+        // Reset any caches we have when a new server is set
+        builder.addCase(setJellyfinCredentials, () => initialState);
     }
 });
 
