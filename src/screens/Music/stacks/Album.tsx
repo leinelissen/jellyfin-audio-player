@@ -33,7 +33,7 @@ const TrackContainer = styled.View<{isPlaying: boolean}>`
     flex-direction: row;
 
     ${props => props.isPlaying && css`
-        background-color: ${THEME_COLOR};
+        background-color: ${THEME_COLOR}16;
         margin: 0 -20px;
         padding: 15px 35px;
     `}
