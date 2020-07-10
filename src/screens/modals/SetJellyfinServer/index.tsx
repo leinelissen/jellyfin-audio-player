@@ -6,6 +6,7 @@ import { setJellyfinCredentials } from 'store/settings/actions';
 import { useDispatch } from 'react-redux';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import CredentialGenerator from './components/CredentialGenerator';
+import { THEME_COLOR } from 'CONSTANTS';
 
 export default function SetJellyfinServer() {
     // State for first screen
@@ -40,7 +41,12 @@ export default function SetJellyfinServer() {
                         autoCapitalize="none"
                         autoCorrect={false}
                     />
-                    <Button title="Set server" onPress={() => setIsLogginIn(true)} disabled={!serverUrl?.length} />
+                    <Button
+                        title="Set server"
+                        onPress={() => setIsLogginIn(true)}
+                        disabled={!serverUrl?.length} 
+                        color={THEME_COLOR}
+                    />
                 </View>
             )}
         </Modal>

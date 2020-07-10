@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components/native';
 import useCurrentTrack from 'utility/useCurrentTrack';
 import TouchableHandler from 'components/TouchableHandler';
 import usePlayTrack from 'utility/usePlayTrack';
+import { THEME_COLOR } from 'CONSTANTS';
 
 const QueueItem = styled.View<{ active?: boolean, alreadyPlayed?: boolean }>`
     padding: 10px;
@@ -13,7 +14,7 @@ const QueueItem = styled.View<{ active?: boolean, alreadyPlayed?: boolean }>`
 
     ${props => props.active && css`
         font-weight: 900;
-        background-color: #FF3C0016;
+        background-color: ${THEME_COLOR}16;
         padding: 20px 35px;
         margin: 0 -25px;
     `}

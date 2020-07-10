@@ -9,6 +9,7 @@ import Settings from './Settings';
 import PlayPauseIcon from 'assets/play-pause-fill.svg';
 import NotesIcon from 'assets/notes.svg';
 import GearIcon from 'assets/gear.svg';
+import { THEME_COLOR } from 'CONSTANTS';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,7 +48,7 @@ function Screens() {
                 }
             })}
             tabBarOptions={{
-                activeTintColor: '#FF3C00',
+                activeTintColor: THEME_COLOR,
                 inactiveTintColor: 'gray',
             }}
         >

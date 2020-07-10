@@ -3,6 +3,7 @@ import TrackPlayer from 'react-native-track-player';
 import styled from 'styled-components/native';
 import { Text } from 'react-native';
 import Slider from '@react-native-community/slider';
+import { THEME_COLOR } from 'CONSTANTS';
 
 const NumberBar = styled.View`
     flex-direction: row;
@@ -72,7 +73,7 @@ export default class ProgressBar extends Component<{}, State> {
                     maximumValue={duration || 0}
                     onValueChange={this.handleGesture}
                     onSlidingComplete={this.handleEndOfGesture}
-                    minimumTrackTintColor={'#FF3C00'}
+                    minimumTrackTintColor={THEME_COLOR}
                     disabled={!duration}
                 />
                 <NumberBar>

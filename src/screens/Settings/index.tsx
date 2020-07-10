@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from 'store';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '..';
+import { THEME_COLOR } from 'CONSTANTS';
 
 const InputContainer = styled.View`
     margin: 10px 0;
@@ -41,7 +42,7 @@ export default function Settings() {
                         <Text>Jellyfin User ID</Text>
                         <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.user_id} editable={false} />
                     </InputContainer>
-                    <Button title="Set Jellyfin server" onPress={handleClick} />
+                    <Button title="Set Jellyfin server" onPress={handleClick} color={THEME_COLOR} />
                     <InputContainer>
                         <Text>Bitrate</Text>
                         <Picker selectedValue={bitrate}>

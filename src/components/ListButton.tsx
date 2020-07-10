@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacityProps, Text } from 'react-native';
 import ChevronRight from 'assets/chevron-right.svg';
 import styled from 'styled-components/native';
+import { THEME_COLOR } from 'CONSTANTS';
 
 const BUTTON_SIZE = 14;
 
@@ -16,8 +17,8 @@ const Container = styled.TouchableOpacity`
 const ListButton: React.FC<TouchableOpacityProps> = ({ children, ...props }) => {
     return (
         <Container {...props}>
-            <Text style={{ color: '#FF3C00', fontSize: 16 }}>{children}</Text>
-            <ChevronRight width={BUTTON_SIZE} height={BUTTON_SIZE} fill="#FF3C00" />
+            <Text style={{ color: THEME_COLOR, fontSize: 16 }}>{children}</Text>
+            <ChevronRight width={BUTTON_SIZE} height={BUTTON_SIZE} fill={THEME_COLOR} />
         </Container>
     );
 };

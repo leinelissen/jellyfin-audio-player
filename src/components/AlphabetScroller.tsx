@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
-import { ALPHABET_LETTERS } from 'CONSTANTS';
+import { ALPHABET_LETTERS, THEME_COLOR } from 'CONSTANTS';
 import { View, LayoutChangeEvent } from 'react-native';
 import { 
     PanGestureHandler, 
@@ -29,7 +29,7 @@ const Letter = styled.Text`
     text-align: center;
     padding: 1px 0;
     font-size: 12px;
-    color: #FF3C00;
+    color: ${THEME_COLOR};
 `;
 
 interface Props {

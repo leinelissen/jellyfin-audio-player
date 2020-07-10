@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { differenceInDays } from 'date-fns';
 import { useTypedSelector } from 'store';
 import { fetchTracksByAlbum } from 'store/music/actions';
-import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
+import { ALBUM_CACHE_AMOUNT_OF_DAYS, THEME_COLOR } from 'CONSTANTS';
 import usePlayAlbum from 'utility/usePlayAlbum';
 import usePlayTrack from 'utility/usePlayTrack';
 import TouchableHandler from 'components/TouchableHandler';
@@ -33,7 +33,7 @@ const TrackContainer = styled.View<{isPlaying: boolean}>`
     flex-direction: row;
 
     ${props => props.isPlaying && css`
-        background-color: #FF3C0016;
+        background-color: ${THEME_COLOR};
         margin: 0 -20px;
         padding: 15px 35px;
     `}
@@ -79,7 +79,7 @@ const Album: React.FC = () => {
             <AlbumImage source={{ uri: getImage(album?.Id) }} />
             <Text style={{ fontSize: 36, fontWeight: 'bold' }} >{album?.Name}</Text>
             <Text style={{ fontSize: 24, opacity: 0.5, marginBottom: 24 }}>{album?.AlbumArtist}</Text>
-            <Button title="Play Album" onPress={selectAlbum} />
+            <Button title="Play Album" onPress={selectAlbum} color={THEME_COLOR} />
             {album?.Tracks?.length ? album.Tracks.map((trackId) =>
                 <TouchableHandler key={trackId} id={trackId} onPress={selectTrack}>
                     <TrackContainer isPlaying={trackId === currentTrack?.id}>
