@@ -23,14 +23,17 @@ export default function usePlayTrack() {
         }
 
         // GUARD: Check if the track is already in the queue
-        if (!queue?.some((t) => t.id === trackId)) {
-            // If it is not, we must then generate it, and add it to the queue
-            const newTrack = generateTrack(track, credentials);
-            await TrackPlayer.add([ newTrack ]);
-        }
+        const trackInstances = queue.filter((t) => t.id.startsWith(trackId));
+
+        // Generate the new track for the queue
+        const newTrack = {
+            ...(trackInstances.length ? trackInstances[0] : generateTrack(track, credentials)),
+            id: `${trackId}_${trackInstances.length}`
+        };
+        await TrackPlayer.add([ newTrack ]);
 
         // Then we'll skip to it and play it
-        await TrackPlayer.skip(trackId);
+        await TrackPlayer.skip(newTrack.id);
         TrackPlayer.play();
     }, [credentials, tracks, queue]);
 }

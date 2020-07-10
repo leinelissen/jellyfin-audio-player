@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import useQueue from 'utility/useQueue';
 import { View, Text } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import useCurrentTrack from 'utility/useCurrentTrack';
 import TouchableHandler from 'components/TouchableHandler';
-import usePlayTrack from 'utility/usePlayTrack';
+import TrackPlayer from 'react-native-track-player';
 import { THEME_COLOR } from 'CONSTANTS';
 
 const QueueItem = styled.View<{ active?: boolean, alreadyPlayed?: boolean }>`
@@ -28,7 +28,10 @@ export default function Queue() {
     const queue = useQueue();
     const currentTrack = useCurrentTrack();
     const currentIndex = queue.findIndex(d => d.id === currentTrack?.id);
-    const playTrack = usePlayTrack();
+    const playTrack = useCallback(async (trackId: string) => {
+        await TrackPlayer.skip(trackId);
+        await TrackPlayer.play();
+    }, []);
 
     return (
         <View>

@@ -82,7 +82,7 @@ const Album: React.FC = () => {
             <Button title="Play Album" onPress={selectAlbum} color={THEME_COLOR} />
             {album?.Tracks?.length ? album.Tracks.map((trackId) =>
                 <TouchableHandler key={trackId} id={trackId} onPress={selectTrack}>
-                    <TrackContainer isPlaying={trackId === currentTrack?.id}>
+                    <TrackContainer isPlaying={currentTrack?.id.startsWith(trackId) || false}>
                         <Text style={{ width: 20, opacity: 0.5, marginRight: 5 }}>
                             {tracks[trackId]?.IndexNumber}
                         </Text>
