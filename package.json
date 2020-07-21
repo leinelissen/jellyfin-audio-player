@@ -25,7 +25,7 @@
     "@types/styled-components": "^5.1.0",
     "date-fns": "^2.14.0",
     "fuse.js": "^6.4.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-fast-image": "^8.1.5",
