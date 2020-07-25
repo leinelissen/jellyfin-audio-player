@@ -93,12 +93,3 @@ target 'JellyfinAudioPlayer' do
     flipper_post_install(installer)
   end
 end
-
-target 'JellyfinAudioPlayer-tvOS' do
-  # Pods for JellyfinAudioPlayer-tvOS
-
-  target 'JellyfinAudioPlayer-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-end
