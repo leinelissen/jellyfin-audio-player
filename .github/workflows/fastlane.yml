@@ -7,15 +7,10 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '12'
     - name: Install Node dependencies
       run: npm install
-    - name: Install and CocoaPods and defined pods
-      run: |
-        brew install cocoapods
-        pod install --project-directory=./ios
+    - name: Install CocoaPods dependencies
+      run: pod install --project-directory=./ios
     - name: Run fastlane setup
       env:
         APPLE_ACCOUNT: ${{ secrets.APPLE_ACCOUNT }}
@@ -29,8 +24,8 @@ jobs:
         TEAM_ID: ${{ secrets.TEAM_ID }}
       run: |
         fastlane beta --verbose
+    - uses: actions/upload-artifact@v2
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
       with:
         name: my-artifact
         path: output/*.ipa
