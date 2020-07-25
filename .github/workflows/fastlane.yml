@@ -17,12 +17,6 @@ jobs:
         TEAM_ID: ${{ secrets.TEAM_ID }}
       run: |
         cd ios
-        fastlane setup --verbose
-    - name: Run fastlane build
-      env:
-        APPLE_ACCOUNT: ${{ secrets.APPLE_ACCOUNT }}
-        TEAM_ID: ${{ secrets.TEAM_ID }}
-      run: |
         fastlane beta --verbose
     - name: Upload artifact
       uses: actions/upload-artifact@v2
