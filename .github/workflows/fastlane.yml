@@ -24,8 +24,8 @@ jobs:
         TEAM_ID: ${{ secrets.TEAM_ID }}
       run: |
         fastlane beta --verbose
-    - uses: actions/upload-artifact@v2
     - name: Upload artifact
+      uses: actions/upload-artifact@v2
       with:
         name: my-artifact
         path: output/*.ipa
