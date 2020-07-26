@@ -42,5 +42,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
+        name: jellyfin-audio-player-android.apk
         path: android/app/build/outputs/**/*.apk
-
