@@ -10,7 +10,6 @@ import {
     DefaultTheme,
     DarkTheme,
 } from '@react-navigation/native';
-import { colors } from './Colors';
 
 interface State {
     isReady: boolean;
@@ -54,8 +53,6 @@ export default class App extends Component<{}, State> {
         if (!isReady) {
             return null;
         }
-
-        console.log(colorScheme);
 
         return (
             <Provider store={store}>

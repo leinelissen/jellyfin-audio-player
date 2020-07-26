@@ -7,6 +7,7 @@ import ForwardIcon from 'assets/forwards.svg';
 import BackwardIcon from 'assets/backwards.svg';
 import PlayIcon from 'assets/play.svg';
 import PauseIcon from 'assets/pause.svg';
+import { useColorScheme } from 'react-native-appearance';
 
 const BUTTON_SIZE = 40;
 
@@ -32,61 +33,64 @@ const Button = styled.View`
 `;
 
 export default function MediaControls() {
+    const scheme = useColorScheme();
+    const fill = scheme === 'dark' ? '#ffffff' : '#000000';
+
     return (
         <Container>
             <Buttons>
                 <Button>
-                    <PreviousButton />
+                    <PreviousButton fill={fill} />
                 </Button>
-                <MainButton />
+                <MainButton fill={fill} />
                 <Button>
-                    <NextButton />
+                    <NextButton fill={fill} />
                 </Button>
             </Buttons>
         </Container>
     );
 }
 
-export function PreviousButton() {
+export function PreviousButton({ fill }: { fill: string }) {
     const hasQueue = useHasQueue();
 
     return (
         <TouchableOpacity onPress={previous} disabled={!hasQueue} style={{ opacity: hasQueue ? 1 : 0.5 }}>
-            <BackwardIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill="#000" />
+            <BackwardIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />
         </TouchableOpacity>
     );
 }
 
-export function NextButton() {
+export function NextButton({ fill }: { fill: string }) {
     const hasQueue = useHasQueue();
 
     return (
         <TouchableOpacity onPress={next} disabled={!hasQueue} style={{ opacity: hasQueue ? 1 : 0.5 }}>
-            <ForwardIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill="#000" />
+            <ForwardIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />
         </TouchableOpacity>
     );
 }
 
-export function MainButton() {
+export function MainButton({ fill }: { fill: string }) {
     const state = usePlaybackState();
 
     switch (state) {
         case STATE_PLAYING:
             return (
                 <TouchableOpacity onPress={pause}>
-                    <PauseIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill="#000" />
+                    <PauseIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />
                 </TouchableOpacity>
             );
         case STATE_PAUSED:
             return (
                 <TouchableOpacity onPress={play}>
-                    <PlayIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill="#000" />
+                    <PlayIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />
                 </TouchableOpacity>
             );
         default:
             return (
                 <TouchableOpacity onPress={pause} disabled>
-                    <PauseIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill="#000" />
+                    <PauseIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />
                 </TouchableOpacity>
             );
     }
