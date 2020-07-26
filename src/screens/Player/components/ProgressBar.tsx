@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TrackPlayer from 'react-native-track-player';
 import styled from 'styled-components/native';
-import { Text } from 'react-native';
+import { Text, Platform } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { THEME_COLOR } from 'CONSTANTS';
 
@@ -74,6 +74,7 @@ export default class ProgressBar extends Component<{}, State> {
                     onValueChange={this.handleGesture}
                     onSlidingComplete={this.handleEndOfGesture}
                     minimumTrackTintColor={THEME_COLOR}
+                    thumbTintColor={Platform.OS === 'android' ? THEME_COLOR : undefined}
                     disabled={!duration}
                 />
                 <NumberBar>
