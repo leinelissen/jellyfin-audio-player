@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import TrackPlayer from 'react-native-track-player';
 import { PersistGate } from 'redux-persist/integration/react';
-import { AppearanceProvider, Appearance } from 'react-native-appearance';
+import { AppearanceProvider, Appearance, AppearanceListener } from 'react-native-appearance';
 import Routes from '../screens';
 import store, { persistedStore } from 'store';
 import {
@@ -10,15 +10,19 @@ import {
     DefaultTheme,
     DarkTheme,
 } from '@react-navigation/native';
+import { colors } from './Colors';
 
 interface State {
     isReady: boolean;
+    colorScheme?: string;
 }
 
-export default class App extends Component<State> {
-    state = {
-        isReady: false
+export default class App extends Component<{}, State> {
+    state: State = {
+        isReady: false,
     };
+
+    subscription = null;
 
     async componentDidMount() {
         await TrackPlayer.setupPlayer();
@@ -32,22 +36,32 @@ export default class App extends Component<State> {
                 TrackPlayer.CAPABILITY_SEEK_TO,
             ]
         });
-        this.setState({ isReady: true });
+        this.subscription = Appearance.addChangeListener(this.setScheme);
+        this.setState({ isReady: true, colorScheme: Appearance.getColorScheme() });
+    }
+    
+    componentWillUnmount() {
+        this.subscription?.remove();
+    }
+
+    setScheme: AppearanceListener = ({ colorScheme }) => {
+        this.setState({ colorScheme });
     }
     
     render() {
-        const { isReady } = this.state;
-        const scheme = Appearance.getColorScheme();
+        const { isReady, colorScheme } = this.state;
 
         if (!isReady) {
             return null;
         }
 
+        console.log(colorScheme);
+
         return (
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistedStore}>
                     <AppearanceProvider>
-                        <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+                        <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                             <Routes />
                         </NavigationContainer>
                     </AppearanceProvider>
