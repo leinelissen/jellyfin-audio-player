@@ -28,13 +28,13 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Install fastlane
-      run: sudo gem install fastlane
+      run: sudo bundle install -j 6
     - name: Install Node dependencies
       run: npm install
     - name: Generate APK
-      run: fastlane android beta
+      run: bundle exec fastlane android beta
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        path: android/build/outputs/**/*.apk
+        path: android/app/build/outputs/**/*.apk
 
