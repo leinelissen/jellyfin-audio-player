@@ -7,12 +7,15 @@ import Queue from './components/Queue';
 
 const Container = styled.ScrollView`
     background-color: #fff;
-    padding: 25px;
 `;
+
+const containerStyle = {
+    padding: 25,
+};
 
 export default function Player() {
     return (
-        <Container>
+        <Container contentContainerStyle={containerStyle}>
             <NowPlaying />
             <MediaControls />
             <ProgressBar />

@@ -71,7 +71,8 @@ const Album: React.FC = () => {
 
     return (
         <ScrollView
-            style={{ backgroundColor: '#f6f6f6', padding: 20, paddingBottom: 50 }}
+            style={{ backgroundColor: '#f6f6f6' }}
+            contentContainerStyle={{ padding: 20, paddingBottom: 50 }}
             refreshControl={
                 <RefreshControl refreshing={isLoading} onRefresh={refresh} />
             }
