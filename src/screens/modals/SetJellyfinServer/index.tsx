@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import CredentialGenerator from './components/CredentialGenerator';
 import { THEME_COLOR } from 'CONSTANTS';
+import { colors } from 'components/Colors';
 
 export default function SetJellyfinServer() {
     // State for first screen
@@ -31,8 +32,8 @@ export default function SetJellyfinServer() {
                     onCredentialsRetrieved={saveCredentials}
                 />
             ) : (
-                <View style={{ padding: 20}}>
-                    <Text>Please enter your Jellyfin server URL first. Make sure to include the protocol and port</Text>
+                <View style={{ padding: 20 }}>
+                    <Text style={colors.text}>Please enter your Jellyfin server URL first. Make sure to include the protocol and port</Text>
                     <Input
                         placeholder="https://jellyfin.yourserver.io/"
                         onChangeText={setServerUrl}
@@ -40,6 +41,7 @@ export default function SetJellyfinServer() {
                         keyboardType="url"
                         autoCapitalize="none"
                         autoCorrect={false}
+                        style={colors.input}
                     />
                     <Button
                         title="Set server"

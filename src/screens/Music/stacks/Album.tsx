@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { StackParams } from '../types';
-import { Text, ScrollView, Dimensions, Button, RefreshControl } from 'react-native';
+import { Text, ScrollView, Dimensions, Button, RefreshControl, StyleSheet } from 'react-native';
 import { useGetImage } from 'utility/JellyfinApi';
 import styled, { css } from 'styled-components/native';
 import { useRoute, RouteProp } from '@react-navigation/native';
@@ -14,10 +14,31 @@ import usePlayAlbum from 'utility/usePlayAlbum';
 import usePlayTrack from 'utility/usePlayTrack';
 import TouchableHandler from 'components/TouchableHandler';
 import useCurrentTrack from 'utility/useCurrentTrack';
+import { colors } from 'components/Colors';
 
 type Route = RouteProp<StackParams, 'Album'>;
 
 const Screen = Dimensions.get('screen');
+
+const styles = StyleSheet.create({
+    name: {
+        ...colors.text,
+        fontSize: 36, 
+        fontWeight: 'bold'
+    },
+    artist: {
+        ...colors.text,
+        fontSize: 24,
+        opacity: 0.5,
+        marginBottom: 24
+    },
+    index: {
+        ...colors.text,
+        width: 20,
+        opacity: 0.5,
+        marginRight: 5
+    }
+});
 
 const AlbumImage = styled(FastImage)`
     border-radius: 10px;
@@ -29,7 +50,6 @@ const AlbumImage = styled(FastImage)`
 const TrackContainer = styled.View<{isPlaying: boolean}>`
     padding: 15px;
     border-bottom-width: 1px;
-    border-bottom-color: #eee;
     flex-direction: row;
 
     ${props => props.isPlaying && css`
@@ -71,23 +91,22 @@ const Album: React.FC = () => {
 
     return (
         <ScrollView
-            style={{ backgroundColor: '#f6f6f6' }}
             contentContainerStyle={{ padding: 20, paddingBottom: 50 }}
             refreshControl={
                 <RefreshControl refreshing={isLoading} onRefresh={refresh} />
             }
         >
-            <AlbumImage source={{ uri: getImage(album?.Id) }} />
-            <Text style={{ fontSize: 36, fontWeight: 'bold' }} >{album?.Name}</Text>
-            <Text style={{ fontSize: 24, opacity: 0.5, marginBottom: 24 }}>{album?.AlbumArtist}</Text>
+            <AlbumImage source={{ uri: getImage(album?.Id) }} style={colors.imageBackground} />
+            <Text style={styles.name} >{album?.Name}</Text>
+            <Text style={styles.artist}>{album?.AlbumArtist}</Text>
             <Button title="Play Album" onPress={selectAlbum} color={THEME_COLOR} />
             {album?.Tracks?.length ? album.Tracks.map((trackId) =>
                 <TouchableHandler key={trackId} id={trackId} onPress={selectTrack}>
-                    <TrackContainer isPlaying={currentTrack?.id.startsWith(trackId) || false}>
-                        <Text style={{ width: 20, opacity: 0.5, marginRight: 5 }}>
+                    <TrackContainer isPlaying={currentTrack?.id.startsWith(trackId) || false} style={colors.border}>
+                        <Text style={styles.index}>
                             {tracks[trackId]?.IndexNumber}
                         </Text>
-                        <Text>{tracks[trackId]?.Name}</Text>
+                        <Text style={colors.text}>{tracks[trackId]?.Name}</Text>
                     </TrackContainer>
                 </TouchableHandler>
             ) : undefined}

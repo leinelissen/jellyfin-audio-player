@@ -15,6 +15,7 @@ import { selectAlbumsByAlphabet, SectionedId } from 'store/music/selectors';
 import AlphabetScroller from 'components/AlphabetScroller';
 import { EntityId } from '@reduxjs/toolkit';
 import styled from 'styled-components/native';
+import { colors } from 'components/Colors';
 
 interface VirtualizedItemInfo {
     section: SectionedId,
@@ -39,8 +40,6 @@ function generateSection({ section }: { section: SectionedId }) {
 }
 
 const SectionContainer = styled.View`
-    background-color: #f6f6f6;
-    border-bottom-color: #eee;
     border-bottom-width: 1px;
     height: 50px;
     justify-content: center;
@@ -56,8 +55,8 @@ class SectionHeading extends PureComponent<{ label: string }> {
         const { label } = this.props;
 
         return (
-            <SectionContainer>
-                <SectionText>{label}</SectionText>
+            <SectionContainer style={colors.view}>
+                <SectionText style={colors.text}>{label}</SectionText>
             </SectionContainer>
         );
     }
@@ -82,9 +81,9 @@ class GeneratedAlbumItem extends PureComponent<GeneratedAlbumItemProps> {
         return (
             <TouchableHandler id={id as string} onPress={onPress}>
                 <AlbumItem>
-                    <AlbumImage source={{ uri: imageUrl }} />
-                    <Text numberOfLines={1}>{name}</Text>
-                    <HalfOpacity numberOfLines={1}>{artist}</HalfOpacity>
+                    <AlbumImage source={{ uri: imageUrl }} style={colors.imageBackground} />
+                    <Text numberOfLines={1} style={colors.text}>{name}</Text>
+                    <HalfOpacity style={colors.text} numberOfLines={1}>{artist}</HalfOpacity>
                 </AlbumItem>
             </TouchableHandler>
         );

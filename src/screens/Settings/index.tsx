@@ -8,6 +8,8 @@ import { AppState } from 'store';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '..';
 import { THEME_COLOR } from 'CONSTANTS';
+import { Header } from 'components/Typography';
+import { colors } from 'components/Colors';
 
 const InputContainer = styled.View`
     margin: 10px 0;
@@ -29,22 +31,22 @@ export default function Settings() {
         <ScrollView>
             <SafeAreaView>
                 <View style={{ padding: 20 }}>
-                    <Text style={{ fontSize: 36, marginBottom: 24, fontWeight: 'bold' }}>Settings</Text>
+                    <Header style={colors.text}>Settings</Header>
                     <InputContainer>
-                        <Text>Jellyfin Server URL</Text>
+                        <Text style={colors.text}>Jellyfin Server URL</Text>
                         <Input placeholder="https://jellyfin.yourserver.com/" value={jellyfin?.uri} editable={false} />
                     </InputContainer>
                     <InputContainer>
-                        <Text>Jellyfin Access Token</Text>
+                        <Text style={colors.text}>Jellyfin Access Token</Text>
                         <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.access_token} editable={false} />
                     </InputContainer>
                     <InputContainer>
-                        <Text>Jellyfin User ID</Text>
+                        <Text style={colors.text}>Jellyfin User ID</Text>
                         <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.user_id} editable={false} />
                     </InputContainer>
                     <Button title="Set Jellyfin server" onPress={handleClick} color={THEME_COLOR} />
                     <InputContainer>
-                        <Text>Bitrate</Text>
+                        <Text style={colors.text}>Bitrate</Text>
                         <Picker selectedValue={bitrate}>
                             <Picker.Item label="320kbps" value={140000000} />
                         </Picker>

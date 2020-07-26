@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useGetImage } from 'utility/JellyfinApi';
 import { NavigationProp } from '../types';
 import FastImage from 'react-native-fast-image';
+import { colors } from 'components/Colors';
 
 const Container = styled.View`
     padding: 0 20px;
@@ -20,7 +21,6 @@ const AlbumImage = styled(FastImage)`
     border-radius: 4px;
     width: 25px;
     height: 25px;
-    background-color: #fefefe;
     margin-right: 10px;
 `;
 
@@ -33,7 +33,6 @@ const HalfOpacity = styled.Text`
 const SearchResult = styled.View`
     flex-direction: row;
     align-items: center;
-    border-bottom-color: #ddd;
     border-bottom-width: 1px;
     margin-left: 15px;
     padding-right: 15px;
@@ -51,7 +50,7 @@ export default function Search() {
     const [searchTerm, setSearchTerm] = useState('');
     const albums = useTypedSelector(state => state.music.albums.entities);
     const [results, setResults] = useState<Fuse.FuseResult<Album>[]>([]);
-    let fuse = useRef<Fuse<Album, typeof fuseOptions>>();
+    const fuse = useRef<Fuse<Album, typeof fuseOptions>>();
 
     // Prepare helpers
     const navigation = useNavigation<NavigationProp>();
@@ -89,7 +88,7 @@ export default function Search() {
 
     const HeaderComponent = React.useMemo(() => (
         <Container>
-            <Input value={searchTerm} onChangeText={setSearchTerm} placeholder="Search..." />
+            <Input value={searchTerm} onChangeText={setSearchTerm} style={colors.input} placeholder="Search..." />
             {(searchTerm.length && !results.length) ? <Text>No results...</Text> : null}
         </Container>
     ), [searchTerm, results, setSearchTerm]);
@@ -105,13 +104,13 @@ export default function Search() {
             data={results}
             renderItem={({ item: { item: album } }) =>(
                 <TouchableHandler id={album.Id} onPress={selectAlbum}>
-                    <SearchResult>
+                    <SearchResult style={colors.border}>
                         <AlbumImage source={{ uri: getImage(album.Id) }} />
                         <View>
-                            <Text numberOfLines={1} ellipsizeMode="tail">
+                            <Text numberOfLines={1} ellipsizeMode="tail" style={colors.text}>
                                 {album.Name} - {album.AlbumArtist}
                             </Text>
-                            <HalfOpacity>Album</HalfOpacity>
+                            <HalfOpacity style={colors.text}>Album</HalfOpacity>
                         </View>
                     </SearchResult>
                 </TouchableHandler>

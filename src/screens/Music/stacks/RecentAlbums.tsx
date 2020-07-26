@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
 import { Album, NavigationProp } from '../types';
-import { Text, SafeAreaView, FlatList } from 'react-native';
+import { Text, SafeAreaView, FlatList, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { useTypedSelector } from 'store';
@@ -12,6 +12,14 @@ import AlbumImage, { AlbumItem } from './components/AlbumImage';
 import { useRecentAlbums } from 'store/music/selectors';
 import { Header } from 'components/Typography';
 import ListButton from 'components/ListButton';
+import { colors } from 'components/Colors';
+
+const styles = StyleSheet.create({
+    artist: {
+        ...colors.text,
+        opacity: 0.5,
+    }
+});
 
 const NavigationHeader: React.FC = () => {
     const navigation = useNavigation();
@@ -22,7 +30,7 @@ const NavigationHeader: React.FC = () => {
         <ListContainer>
             <ListButton onPress={handleAllAlbumsClick}>All Albums</ListButton>
             <ListButton onPress={handleSearchClick}>Search</ListButton>
-            <Header>Recent Albums</Header>
+            <Header style={colors.text}>Recent Albums</Header>
         </ListContainer>
     );
 };
@@ -58,9 +66,9 @@ const RecentAlbums: React.FC = () => {
                     renderItem={({ item }) => (
                         <TouchableHandler id={item} onPress={selectAlbum}>
                             <AlbumItem>
-                                <AlbumImage source={{ uri: getImage(item) }} />
-                                <Text numberOfLines={1}>{albums[item]?.Name}</Text>
-                                <Text numberOfLines={1} style={{ opacity: 0.5 }}>{albums[item]?.AlbumArtist}</Text>
+                                <AlbumImage source={{ uri: getImage(item) }} style={colors.imageBackground} />
+                                <Text style={colors.text} numberOfLines={1}>{albums[item]?.Name}</Text>
+                                <Text style={styles.artist} numberOfLines={1}>{albums[item]?.AlbumArtist}</Text>
                             </AlbumItem>
                         </TouchableHandler>
                     )}

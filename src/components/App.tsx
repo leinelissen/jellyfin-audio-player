@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import TrackPlayer from 'react-native-track-player';
 import { PersistGate } from 'redux-persist/integration/react';
-import { NavigationContainer } from '@react-navigation/native';
+import { AppearanceProvider, Appearance } from 'react-native-appearance';
 import Routes from '../screens';
 import store, { persistedStore } from 'store';
+import {
+    NavigationContainer,
+    DefaultTheme,
+    DarkTheme,
+} from '@react-navigation/native';
 
 interface State {
     isReady: boolean;
@@ -32,6 +37,7 @@ export default class App extends Component<State> {
     
     render() {
         const { isReady } = this.state;
+        const scheme = Appearance.getColorScheme();
 
         if (!isReady) {
             return null;
@@ -40,9 +46,11 @@ export default class App extends Component<State> {
         return (
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistedStore}>
-                    <NavigationContainer>
-                        <Routes />
-                    </NavigationContainer>
+                    <AppearanceProvider>
+                        <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+                            <Routes />
+                        </NavigationContainer>
+                    </AppearanceProvider>
                 </PersistGate>
             </Provider>
         );

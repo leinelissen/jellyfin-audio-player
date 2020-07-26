@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 import { Text, Platform } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { THEME_COLOR } from 'CONSTANTS';
+import { colors } from 'components/Colors';
 
 const NumberBar = styled.View`
     flex-direction: row;
@@ -78,8 +79,8 @@ export default class ProgressBar extends Component<{}, State> {
                     disabled={!duration}
                 />
                 <NumberBar>
-                    <Text>{getMinutes(gesture || position)}:{getSeconds(gesture || position)}</Text>
-                    <Text>{getMinutes(duration)}:{getSeconds(duration)}</Text>
+                    <Text style={colors.text}>{getMinutes(gesture || position)}:{getSeconds(gesture || position)}</Text>
+                    <Text style={colors.text}>{getMinutes(duration)}:{getSeconds(duration)}</Text>
                 </NumberBar>
             </>
         );

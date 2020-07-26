@@ -1,19 +1,37 @@
 import React from 'react';
-import { Text, Dimensions, View } from 'react-native';
+import { Text, Dimensions, View, StyleSheet } from 'react-native';
 import useCurrentTrack from 'utility/useCurrentTrack';
 import styled from 'styled-components/native';
 import FastImage from 'react-native-fast-image';
+import { colors } from 'components/Colors';
 
 const Screen = Dimensions.get('screen');
 
 const Artwork = styled(FastImage)`
     border-radius: 10px;
-    background-color: #fbfbfb;
     width: ${Screen.width * 0.8}px;
     height: ${Screen.width * 0.8}px;
     margin: 25px auto;
     display: flex;
+    flex: 1;
 `;
+
+const styles = StyleSheet.create({
+    artist: {
+        ...colors.text,
+        fontWeight: 'bold',
+        fontSize: 24,
+        marginBottom: 12,
+    },
+    title: {
+        ...colors.text,
+        fontSize: 18,
+        marginBottom: 12,
+        textAlign: 'center',
+        paddingLeft: 20,
+        paddingRight: 20,
+    }
+});
 
 
 export default function NowPlaying() {
@@ -21,9 +39,9 @@ export default function NowPlaying() {
 
     return (
         <View style={{ alignItems: 'center' }}>
-            <Artwork style={{ flex: 1 }} source={{ uri: track?.artwork }} />
-            <Text style={{ fontWeight: 'bold', fontSize: 24, marginBottom: 12 }} >{track?.artist}</Text>
-            <Text style={{ fontSize: 18, marginBottom: 12, textAlign: 'center', paddingLeft: 20, paddingRight: 20 }}>{track?.title}</Text>
+            <Artwork style={colors.imageBackground} source={{ uri: track?.artwork }} />
+            <Text style={styles.artist} >{track?.artist}</Text>
+            <Text style={styles.title}>{track?.title}</Text>
         </View>
     );
 }

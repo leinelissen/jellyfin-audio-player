@@ -14,7 +14,6 @@ const AlbumImage = styled(FastImage)`
     border-radius: 10px;
     width: ${Screen.width / 2 - 40}px;
     height: ${Screen.width / 2 - 40}px;
-    background-color: #fefefe;
     margin-bottom: 5px;
 `;
 
