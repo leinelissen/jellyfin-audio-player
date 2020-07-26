@@ -1,0 +1,23 @@
+default_platform(:ios)
+
+platform :ios do
+    lane :beta do
+        enable_automatic_code_signing
+        build_app(
+            scheme: "JellyfinAudioPlayer",
+            export_method: "development",
+            output_directory: "build",
+            workspace: "ios/JellyfinAudioPlayer.xcworkspace"
+        )
+    end
+end
+
+platform :android do
+  desc "Generate beta build"
+  lane :beta do
+    gradle(
+        task: "clean assembleRelease",
+        project_dir: "android"
+    )
+  end
+end

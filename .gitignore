@@ -63,3 +63,4 @@ buck-out/
 /ios/Pods/
 
 build/
+fastlane/report.xml

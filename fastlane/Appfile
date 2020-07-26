@@ -1,0 +1,2 @@
+package_name("org.leinelissen.jellyfinaudioplayer")
+app_identifier("org.leinelissen.JellyfinAudioPlayer")
