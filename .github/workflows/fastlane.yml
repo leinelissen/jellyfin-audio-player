@@ -27,12 +27,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
     - name: Install fastlane
-      run: sudo bundle install -j 6
+      run: |
+        gem install bundler
+        bundle install -j 6
     - name: Install Node dependencies
       run: npm install
     - name: Generate APK
-      run: bundle exec fastlane android beta
+      run: fastlane android beta
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
