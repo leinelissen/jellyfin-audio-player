@@ -43,6 +43,7 @@ const SectionContainer = styled.View`
     border-bottom-width: 1px;
     height: 50px;
     justify-content: center;
+    padding: 0 10px;
 `;
 
 const SectionText = styled.Text`
@@ -50,12 +51,14 @@ const SectionText = styled.Text`
     font-weight: bold;
 `;
 
+const sectionStyles = { ...colors.view, ...colors.border };
+
 class SectionHeading extends PureComponent<{ label: string }> {    
     render() {
         const { label } = this.props;
 
         return (
-            <SectionContainer style={colors.view}>
+            <SectionContainer style={sectionStyles}>
                 <SectionText style={colors.text}>{label}</SectionText>
             </SectionContainer>
         );
@@ -152,7 +155,7 @@ const Albums: React.FC = () => {
         const nextItem = section.data[index + 1];
 
         return (
-            <View style={{ flexDirection: 'row' }} key={item}>
+            <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }} key={item}>
                 <GeneratedAlbumItem
                     id={item}
                     imageUrl={getImage(item as string)}
@@ -183,19 +186,17 @@ const Albums: React.FC = () => {
     
     return (
         <SafeAreaView>
-            <ListContainer>
-                <AlphabetScroller onSelect={selectLetter} />
-                <SectionList
-                    sections={sections} 
-                    refreshing={isLoading}
-                    onRefresh={retrieveData}
-                    getItemLayout={getItemLayout}
-                    ref={listRef}
-                    keyExtractor={(item, index) => `${item}_${index}`}
-                    renderSectionHeader={generateSection}
-                    renderItem={generateItem}
-                />
-            </ListContainer>
+            <AlphabetScroller onSelect={selectLetter} />
+            <SectionList
+                sections={sections} 
+                refreshing={isLoading}
+                onRefresh={retrieveData}
+                getItemLayout={getItemLayout}
+                ref={listRef}
+                keyExtractor={(item, index) => `${item}_${index}`}
+                renderSectionHeader={generateSection}
+                renderItem={generateItem}
+            />
         </SafeAreaView>
     );
 };

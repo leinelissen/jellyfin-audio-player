@@ -16,7 +16,7 @@ const Container = styled.TouchableOpacity`
 
 const ListButton: React.FC<TouchableOpacityProps> = ({ children, ...props }) => {
     return (
-        <Container {...props} style={colors.borderColor}>
+        <Container {...props} style={colors.border}>
             <Text style={{ color: THEME_COLOR, fontSize: 16 }}>{children}</Text>
             <ChevronRight width={BUTTON_SIZE} height={BUTTON_SIZE} fill={THEME_COLOR} />
         </Container>
