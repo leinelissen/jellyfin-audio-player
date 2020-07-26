@@ -16,11 +16,13 @@
 default_platform(:ios)
 
 platform :ios do
-  lane :beta do
-    enable_automatic_code_signing
-    build_app(scheme: "JellyfinAudioPlayer",
-              export_method: "development",
-              output_directory: "../build",
-              workspace: "JellyfinAudioPlayer.xcworkspace")
-  end
+    lane :beta do
+        enable_automatic_code_signing
+        build_app(
+            scheme: "JellyfinAudioPlayer",
+            export_method: "development",
+            output_directory: "../build",
+            workspace: "JellyfinAudioPlayer.xcworkspace"
+        )
+    end
 end
