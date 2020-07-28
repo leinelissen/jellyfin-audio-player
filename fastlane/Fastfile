@@ -2,7 +2,10 @@ default_platform(:ios)
 
 platform :ios do
     lane :beta do
-        enable_automatic_code_signing
+        enable_automatic_code_signing(
+          use_automatic_signing: true,
+          path: "ios/JellyfinAudioPlayer.xcodeproj"
+        )
         build_app(
             scheme: "JellyfinAudioPlayer",
             export_method: "development",
