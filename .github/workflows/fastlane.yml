@@ -27,6 +27,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Set outputs
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
     - name: Set up Ruby 2.6
       uses: actions/setup-ruby@v1
       with:
@@ -42,5 +45,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: jellyfin-audio-player-android-${{GITHUB_SHA::8}}.apk
+        name: jellyfin-audio-player-android-${{ steps.vars.outputs.sha_short }}.apk
         path: android/app/build/outputs/**/*.apk
