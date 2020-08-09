@@ -33,7 +33,9 @@ export default function SetJellyfinServer() {
                 />
             ) : (
                 <View style={{ padding: 20 }}>
-                    <Text style={colors.text}>Please enter your Jellyfin server URL first. Make sure to include the protocol and port</Text>
+                    <Text style={colors.text}>
+                        Please enter your Jellyfin server URL. Make sure to include the protocol and port
+                    </Text>
                     <Input
                         placeholder="https://jellyfin.yourserver.io/"
                         onChangeText={setServerUrl}

@@ -10,6 +10,8 @@ import PlayPauseIcon from 'assets/play-pause-fill.svg';
 import NotesIcon from 'assets/notes.svg';
 import GearIcon from 'assets/gear.svg';
 import { THEME_COLOR } from 'CONSTANTS';
+import { useTypedSelector } from 'store';
+import Onboarding from './Onboarding';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,6 +36,14 @@ function getIcon(route: string): React.FC<any> | null {
 }
 
 function Screens() {
+    const isOnboardingComplete = useTypedSelector(state => state.settings.isOnboardingComplete);
+    
+    // GUARD: If onboarding has not been completed, we instead render the
+    // onboarding component, so that the user can get setup in the app.
+    if (!isOnboardingComplete) {
+        return <Onboarding />;
+    }
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({

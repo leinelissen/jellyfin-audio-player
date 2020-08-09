@@ -1,12 +1,14 @@
 import { configureStore, getDefaultMiddleware, combineReducers } from '@reduxjs/toolkit';
 import { useSelector, TypedUseSelectorHook } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistStore, persistReducer, PersistConfig } from 'redux-persist';
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 // import logger from 'redux-logger';
 
-const persistConfig = {
+const persistConfig: PersistConfig<AppState> = {
     key: 'root',
     storage: AsyncStorage,
+    stateReconciler: autoMergeLevel2
 };
 
 import settings from './settings';
@@ -26,7 +28,7 @@ const store = configureStore({
     ),
 });
 
-export type AppState = ReturnType<typeof store.getState>;
+export type AppState = ReturnType<typeof reducers>;
 export type AppDispatch = typeof store.dispatch;
 export type AsyncThunkAPI = { state: AppState, dispatch: AppDispatch };
 export const useTypedSelector: TypedUseSelectorHook<AppState> = useSelector;
