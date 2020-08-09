@@ -15,6 +15,8 @@ function generateConfig(credentials: Credentials): RequestInit {
 const baseTrackOptions: Record<string, string> = {
     // Not sure where this number refers to, but setting it to 140000000 appears
     // to do wonders for making stuff work
+    // NOTE: Apparently setting a bitrate is as of yet unsupported in the
+    // Jellyfin core, and hence this value is not used
     MaxStreamingBitrate: '140000000',
     MaxSampleRate: '48000',
     // This must be set to support client seeking
@@ -44,6 +46,8 @@ export function generateTrack(track: AlbumTrack, credentials: Credentials): Trac
     };
     const trackParams = new URLSearchParams(trackOptions).toString();
     const url = encodeURI(`${credentials?.uri}/Audio/${track.Id}/universal.mp3?${trackParams}`);
+    
+    console.log(url);
 
     return {
         id: track.Id,

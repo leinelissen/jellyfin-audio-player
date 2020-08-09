@@ -45,12 +45,13 @@ export default function Settings() {
                         <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.user_id} editable={false} />
                     </InputContainer>
                     <Button title="Set Jellyfin server" onPress={handleClick} color={THEME_COLOR} />
-                    <InputContainer>
+                    {/* The bitrate setting is hidden for now, since Jellyfin does not appear to support custom bitrates */}
+                    {/* <InputContainer>
                         <Text style={colors.text}>Bitrate</Text>
                         <Picker selectedValue={bitrate}>
                             <Picker.Item label="320kbps" value={140000000} />
                         </Picker>
-                    </InputContainer>
+                    </InputContainer> */}
                 </View>
             </SafeAreaView>
         </ScrollView>

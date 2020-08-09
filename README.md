@@ -15,7 +15,6 @@ This is a [React Native](https://reactnative.dev/)-based audio streaming app for
 
 ### Features being considered
 * Downloading music for offline playback
-* Support for codec selection (lossy/lossless) and bitrate
 * Searching based on track names
 
 ## Getting Started
