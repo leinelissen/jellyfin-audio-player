@@ -46,8 +46,6 @@ export function generateTrack(track: AlbumTrack, credentials: Credentials): Trac
     };
     const trackParams = new URLSearchParams(trackOptions).toString();
     const url = encodeURI(`${credentials?.uri}/Audio/${track.Id}/universal.mp3?${trackParams}`);
-    
-    console.log(url);
 
     return {
         id: track.Id,

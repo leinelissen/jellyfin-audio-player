@@ -32,7 +32,7 @@ export default function SetJellyfinServer() {
                     onCredentialsRetrieved={saveCredentials}
                 />
             ) : (
-                <View style={{ padding: 20 }}>
+                <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={colors.text}>
                         Please enter your Jellyfin server URL. Make sure to include the protocol and port
                     </Text>
@@ -43,7 +43,7 @@ export default function SetJellyfinServer() {
                         keyboardType="url"
                         autoCapitalize="none"
                         autoCorrect={false}
-                        style={colors.input}
+                        style={{ ...colors.input, width: '100%' }}
                     />
                     <Button
                         title="Set server"

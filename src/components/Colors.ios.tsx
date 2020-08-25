@@ -22,5 +22,6 @@ export const colors = StyleSheet.create({
     },
     input: {
         backgroundColor: PlatformColor('systemGray5Color'),
+        color: PlatformColor('label'),
     }
 });

@@ -13,8 +13,6 @@ const styles = StyleSheet.create({
     }
 });
 
-console.log(JSON.stringify(styles));
-
 export default function Player() {
     return (
         <ScrollView contentContainerStyle={styles.inner} style={styles.outer}>

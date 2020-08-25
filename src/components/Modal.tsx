@@ -11,8 +11,6 @@ const Background = styled.View`
 const Container = styled.View`
     border-radius: 20px;
     flex: 1;
-    justify-content: center;
-    align-items: center;
 `;
 
 const Modal: React.FC = ({ children }) => {

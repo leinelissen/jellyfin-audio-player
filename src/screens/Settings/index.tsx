@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, Text, SafeAreaView, Button } from 'react-native';
-import { Picker } from '@react-native-community/picker';
+import { View, Text, SafeAreaView, Button, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 import { useSelector } from 'react-redux';
@@ -16,7 +15,6 @@ const InputContainer = styled.View`
 `;
 
 const Input = styled.TextInput`
-    background-color: #fbfbfb;
     padding: 15px;
     margin-top: 5px;
     border-radius: 5px;
@@ -34,15 +32,15 @@ export default function Settings() {
                     <Header style={colors.text}>Settings</Header>
                     <InputContainer>
                         <Text style={colors.text}>Jellyfin Server URL</Text>
-                        <Input placeholder="https://jellyfin.yourserver.com/" value={jellyfin?.uri} editable={false} />
+                        <Input placeholder="https://jellyfin.yourserver.com/" value={jellyfin?.uri} editable={false} style={colors.input} />
                     </InputContainer>
                     <InputContainer>
                         <Text style={colors.text}>Jellyfin Access Token</Text>
-                        <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.access_token} editable={false} />
+                        <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.access_token} editable={false} style={colors.input} />
                     </InputContainer>
                     <InputContainer>
                         <Text style={colors.text}>Jellyfin User ID</Text>
-                        <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.user_id} editable={false} />
+                        <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.user_id} editable={false} style={colors.input} />
                     </InputContainer>
                     <Button title="Set Jellyfin server" onPress={handleClick} color={THEME_COLOR} />
                     {/* The bitrate setting is hidden for now, since Jellyfin does not appear to support custom bitrates */}
