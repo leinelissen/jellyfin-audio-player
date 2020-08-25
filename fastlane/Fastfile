@@ -1,10 +1,10 @@
 default_platform(:ios)
 
 platform :ios do
-    lane :beta do
-        enable_automatic_code_signing(
-          use_automatic_signing: true,
-          path: "ios/JellyfinAudioPlayer.xcodeproj"
+    lane :alpha do
+        get_certificates(
+            development: true,
+            output_path: 'certificates/'
         )
         build_app(
             scheme: "JellyfinAudioPlayer",
@@ -13,14 +13,38 @@ platform :ios do
             workspace: "ios/JellyfinAudioPlayer.xcworkspace"
         )
     end
+    lane :beta do 
+        get_certificates(
+            output_path: 'certificates/'
+        )
+        get_provisioning_profile(
+            output_path: 'certificates/',
+            filename: "provisioning.mobileprovision",
+            fail_on_name_taken: true,
+        )
+        update_code_signing_settings(
+            use_automatic_signing: true,
+            path: "ios/JellyfinAudioPlayer.xcodeproj"
+        )
+        increment_build_number(
+            xcodeproj: "ios/JellyfinAudioPlayer.xcodeproj"
+        )
+        build_app(
+            scheme: "JellyfinAudioPlayer",
+            output_directory: "build",
+            workspace: "ios/JellyfinAudioPlayer.xcworkspace",
+            export_method: "app-store",
+        )
+        upload_to_testflight
+    end
 end
 
 platform :android do
-  desc "Generate beta build"
-  lane :beta do
-    gradle(
-        task: "clean assembleRelease",
-        project_dir: "android"
-    )
-  end
+    desc "Generate beta build"
+    lane :beta do
+        gradle(
+            task: "clean assembleRelease",
+            project_dir: "android"
+        )
+    end
 end

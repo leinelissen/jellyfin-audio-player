@@ -64,3 +64,5 @@ buck-out/
 
 build/
 fastlane/report.xml
+fastlane/Appfile
+certificates/
