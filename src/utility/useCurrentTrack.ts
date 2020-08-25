@@ -17,12 +17,19 @@ export default function useCurrentTrack(): Track | undefined {
                 return;
             }
 
+            // GUARD: Only retrieve new track if it is different from the one we
+            // have currently in state.
+            if (currentTrackId === track?.id){
+                return;
+            }
+
+            // If it is different, retrieve the track and save it
             const currentTrack = await TrackPlayer.getTrack(currentTrackId);
             setTrack(currentTrack);
         };
 
         fetchTrack();
-    }, [state]);
+    }, [state, track, setTrack]);
 
     return track;
 }

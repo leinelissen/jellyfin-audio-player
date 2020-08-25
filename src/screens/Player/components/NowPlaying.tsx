@@ -12,8 +12,6 @@ const Artwork = styled(FastImage)`
     width: ${Screen.width * 0.8}px;
     height: ${Screen.width * 0.8}px;
     margin: 25px auto;
-    display: flex;
-    flex: 1;
 `;
 
 const styles = StyleSheet.create({
@@ -36,10 +34,17 @@ const styles = StyleSheet.create({
 
 export default function NowPlaying() {
     const track = useCurrentTrack();
+    console.log(track?.artwork);
 
     return (
         <View style={{ alignItems: 'center' }}>
-            <Artwork style={colors.imageBackground} source={{ uri: track?.artwork }} />
+            <Artwork
+                style={colors.imageBackground}
+                source={{ 
+                    uri: track?.artwork,
+                    priority: FastImage.priority.high,
+                }} 
+            />
             <Text style={styles.artist} >{track?.artist}</Text>
             <Text style={styles.title}>{track?.title}</Text>
         </View>
