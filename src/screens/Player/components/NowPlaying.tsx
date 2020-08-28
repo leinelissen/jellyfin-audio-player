@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
 
 export default function NowPlaying() {
     const track = useCurrentTrack();
-    console.log(track?.artwork);
 
     return (
         <View style={{ alignItems: 'center' }}>

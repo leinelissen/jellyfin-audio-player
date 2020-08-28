@@ -26,7 +26,7 @@ const baseTrackOptions: Record<string, string> = {
     // react-native-track-player. This is set to be merged and released very
     // soon: https://github.com/react-native-kit/react-native-track-player/pull/950
     // Container: 'mp3',
-    Container: 'mp3,aac,m4a,m4b|aac,alac,m4a,m4b|alac',
+    Container: 'mp3,aac,m4a,m4b|aac,alac,m4a,m4b|alac,flac',
     AudioCodec: 'aac',
     static: 'true',
 };
@@ -45,7 +45,7 @@ export function generateTrack(track: AlbumTrack, credentials: Credentials): Trac
         DeviceId: credentials?.device_id || '',
     };
     const trackParams = new URLSearchParams(trackOptions).toString();
-    const url = encodeURI(`${credentials?.uri}/Audio/${track.Id}/universal.mp3?${trackParams}`);
+    const url = encodeURI(`${credentials?.uri}/Audio/${track.Id}/universal?${trackParams}`);
 
     return {
         id: track.Id,
