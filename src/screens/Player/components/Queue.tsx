@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import useQueue from 'utility/useQueue';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import useCurrentTrack from 'utility/useCurrentTrack';
 import TouchableHandler from 'components/TouchableHandler';
@@ -23,6 +23,10 @@ const QueueItem = styled.View<{ active?: boolean, alreadyPlayed?: boolean, isDar
     `}
 `;
 
+const ClearQueue = styled.View`
+    margin: 20px 0;
+`;
+
 const styles = StyleSheet.create({
     title: {
         ...colors.text,
@@ -41,6 +45,9 @@ export default function Queue() {
     const playTrack = useCallback(async (trackId: string) => {
         await TrackPlayer.skip(trackId);
         await TrackPlayer.play();
+    }, []);
+    const clearQueue = useCallback(async () => {
+        await TrackPlayer.reset();
     }, []);
 
     return (
@@ -62,6 +69,9 @@ export default function Queue() {
                     </QueueItem>
                 </TouchableHandler>
             ))}
+            <ClearQueue>
+                <Button title="Clear Queue" color={THEME_COLOR} onPress={clearQueue} />
+            </ClearQueue>
         </View>
     );
 }

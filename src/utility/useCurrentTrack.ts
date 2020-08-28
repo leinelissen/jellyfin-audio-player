@@ -14,7 +14,7 @@ export default function useCurrentTrack(): Track | undefined {
         
             // GUARD: Only fetch current track if there is a current track
             if (!currentTrackId) {
-                return;
+                setTrack(undefined);
             }
 
             // GUARD: Only retrieve new track if it is different from the one we
