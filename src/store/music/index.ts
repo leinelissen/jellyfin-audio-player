@@ -31,7 +31,9 @@ const initialState: State = {
 const music = createSlice({
     name: 'music',
     initialState,
-    reducers: {},
+    reducers: {
+        reset: () => initialState,
+    },
     extraReducers: builder => {
         /**
          * Fetch All albums
