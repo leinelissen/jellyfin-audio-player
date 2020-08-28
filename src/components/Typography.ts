@@ -5,3 +5,8 @@ export const Header = styled.Text`
     font-size: 36px;
     font-weight: bold;
 `;
+
+export const SubHeader = styled.Text`
+    font-size: 24px;
+    margin: 12px 0;
+`;
