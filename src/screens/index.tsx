@@ -12,8 +12,10 @@ import GearIcon from 'assets/gear.svg';
 import { THEME_COLOR } from 'CONSTANTS';
 import { useTypedSelector } from 'store';
 import Onboarding from './Onboarding';
+import TrackPopupMenu from './modals/TrackPopupMenu';
+import { ModalStackParams } from './types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<ModalStackParams>();
 const Tab = createBottomTabNavigator();
 
 type Screens = {
@@ -84,6 +86,7 @@ export default function Routes() {
         }}>
             <Stack.Screen name="Screens" component={Screens} />
             <Stack.Screen name="SetJellyfinServer" component={SetJellyfinServer} />
+            <Stack.Screen name="TrackPopupMenu" component={TrackPopupMenu} />
         </Stack.Navigator>
     );
 }

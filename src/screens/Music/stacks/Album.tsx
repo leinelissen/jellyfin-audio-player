@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StackParams } from '../types';
 import { Text, ScrollView, Dimensions, Button, RefreshControl, StyleSheet } from 'react-native';
 import { useGetImage } from 'utility/JellyfinApi';
 import styled, { css } from 'styled-components/native';
-import { useRoute, RouteProp } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { useDispatch } from 'react-redux';
 import { differenceInDays } from 'date-fns';
@@ -11,10 +11,10 @@ import { useTypedSelector } from 'store';
 import { fetchTracksByAlbum } from 'store/music/actions';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS, THEME_COLOR } from 'CONSTANTS';
 import usePlayAlbum from 'utility/usePlayAlbum';
-import usePlayTrack from 'utility/usePlayTrack';
 import TouchableHandler from 'components/TouchableHandler';
 import useCurrentTrack from 'utility/useCurrentTrack';
 import { colors } from 'components/Colors';
+import TrackPlayer from 'react-native-track-player';
 
 type Route = RouteProp<StackParams, 'Album'>;
 
@@ -71,11 +71,26 @@ const Album: React.FC = () => {
     const getImage = useGetImage();
     const playAlbum = usePlayAlbum();
     const currentTrack = useCurrentTrack();
+    const navigation = useNavigation();
 
     // Setup callbacks
     const selectAlbum = useCallback(() => { playAlbum(id); }, [playAlbum, id]);
-    const selectTrack = usePlayTrack();
     const refresh = useCallback(() => { dispatch(fetchTracksByAlbum(id)); }, [id, dispatch]);
+    const selectTrack = useCallback(async (trackId) => {
+        const tracks = await playAlbum(id, false);
+        
+        if (tracks) {
+            const track = tracks.find((t) => t.id.startsWith(trackId));
+
+            if (track) {
+                await TrackPlayer.skip(track.id);
+                await TrackPlayer.play();
+            }
+        }
+    }, [playAlbum, id]);
+    const longPressTrack = useCallback((trackId: string) => { 
+        navigation.navigate('TrackPopupMenu', { trackId }); 
+    }, [navigation]);
 
     // Retrieve album tracks on load
     useEffect(() => {
@@ -101,7 +116,12 @@ const Album: React.FC = () => {
             <Text style={styles.artist}>{album?.AlbumArtist}</Text>
             <Button title="Play Album" onPress={selectAlbum} color={THEME_COLOR} />
             {album?.Tracks?.length ? album.Tracks.map((trackId) =>
-                <TouchableHandler key={trackId} id={trackId} onPress={selectTrack}>
+                <TouchableHandler
+                    key={trackId}
+                    id={trackId}
+                    onPress={selectTrack}
+                    onLongPress={longPressTrack}
+                >
                     <TrackContainer isPlaying={currentTrack?.id.startsWith(trackId) || false} style={colors.border}>
                         <Text style={styles.index}>
                             {tracks[trackId]?.IndexNumber}

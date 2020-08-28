@@ -13,9 +13,11 @@ const persistConfig: PersistConfig<AppState> = {
 
 import settings from './settings';
 import music from './music';
+import player from './player';
 
 const reducers = combineReducers({
     settings,
+    player: player.reducer,
     music: music.reducer,
 });
 
