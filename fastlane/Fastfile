@@ -7,7 +7,7 @@ platform :ios do
             output_path: 'certificates/'
         )
         build_app(
-            scheme: "JellyfinAudioPlayer",
+            scheme: "Jellyfin Player",
             export_method: "development",
             output_directory: "build",
             workspace: "ios/JellyfinAudioPlayer.xcworkspace"
@@ -30,7 +30,7 @@ platform :ios do
             xcodeproj: "ios/JellyfinAudioPlayer.xcodeproj"
         )
         build_app(
-            scheme: "JellyfinAudioPlayer",
+            scheme: "Jellyfin Player",
             output_directory: "build",
             workspace: "ios/JellyfinAudioPlayer.xcworkspace",
             export_method: "app-store",

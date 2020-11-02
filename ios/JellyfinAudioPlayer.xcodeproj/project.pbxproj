@@ -13,6 +13,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		463612208457EBB4B723000A /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 842AB597D56E84A4ACDC4735 /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a */; };
+		4FA1B23D2550A94C007A035E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1B23C2550A94C007A035E /* File.swift */; };
 		A807E2BB233D6F9347D8A95C /* libPods-JellyfinAudioPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71370E61E2CC6BD9372ADCF3 /* libPods-JellyfinAudioPlayer.a */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,8 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = JellyfinAudioPlayer/main.m; sourceTree = "<group>"; };
 		2710519FCC41B05FDE6738DF /* Pods-JellyfinAudioPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer/Pods-JellyfinAudioPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		39572B38534BBDBB596C8C95 /* Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig"; sourceTree = "<group>"; };
+		4FA1B23B2550A94B007A035E /* JellyfinAudioPlayer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JellyfinAudioPlayer-Bridging-Header.h"; sourceTree = "<group>"; };
+		4FA1B23C2550A94C007A035E /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		590BEA7DE65819C5B5FDAD06 /* Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer-tvOSTests/Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		71370E61E2CC6BD9372ADCF3 /* libPods-JellyfinAudioPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JellyfinAudioPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D43C7610851B9666193E3F6 /* libPods-JellyfinAudioPlayer-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JellyfinAudioPlayer-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,6 +102,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				4FA1B23C2550A94C007A035E /* File.swift */,
+				4FA1B23B2550A94B007A035E /* JellyfinAudioPlayer-Bridging-Header.h */,
 			);
 			name = JellyfinAudioPlayer;
 			sourceTree = "<group>";
@@ -222,7 +227,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 238P3C58WC;
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1210;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -398,6 +403,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				4FA1B23D2550A94C007A035E /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -429,6 +435,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8DAD3DCD6450C4255A20940E /* Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 238P3C58WC;
@@ -454,6 +461,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 39572B38534BBDBB596C8C95 /* Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -481,7 +489,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 238P3C58WC;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -498,6 +506,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.moeilijkedingen.jellyfinaudioplayer;
 				PRODUCT_NAME = "Jellyfin Player";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "JellyfinAudioPlayer-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -511,7 +520,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 238P3C58WC;
 				INFOPLIST_FILE = JellyfinAudioPlayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -524,6 +533,7 @@
 				PRODUCT_NAME = "Jellyfin Player";
 				PROVISIONING_PROFILE = "915c5213-22f6-4f9d-8065-2a06300f9bfb";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "JellyfinAudioPlayer-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -577,7 +587,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
@@ -632,7 +642,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
