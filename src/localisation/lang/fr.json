@@ -1,0 +1,19 @@
+{
+    "play-next": "Lire ensuite",
+    "play-album": "Jouer l'album",
+    "add-to-queue": "Ajouter à la file d'attente",
+    "clear-queue": "Vider la fille d'attente",
+    "no-results": "Pas de résultats...",
+    "album": "Album",
+    "onboarding-welcome": "Bienvenue !",
+    "onboarding-intro": "Jellyfin Audio Player vous permettra de diffuser votre bibliothèque musicale de n'importe où, avec un support de la lecture en arrière plan et la diffusion à distance.",
+    "onboarding-cta": "Pour utiliser Jellyfin Audio Player, vous avez besoin d'un serveur Jellyfin. Cliquez sur le bouton ci-dessous pour entrer l'adresse de votre serveur Jellyfin et vous y connecter.",
+    "set-jellyfin-server": "Configurer le serveur Jellyfin",
+    "set-jellyfin-server-instruction": "Veuillez entrer l'URL de votre serveur Jellyfin. Assurez-vous d'inclure le protocole et le port",
+    "jellyfin-server-url": "URL du serveur Jellyfin",
+    "jellyfin-access-token": "Jeton d'accès à la Jellyfin",
+    "jellyfin-user-id": "ID utilisateur Jellyfin",
+    "setting-cache": "Cache",
+    "setting-cache-description": "Si vous avez mis à jour votre bibliothèque Jellyfin mais que l'application conserve toujours des ressources en cache, vous pouvez vider le cache en utilisant ce bouton. Cela forcera l'application à récupérer l’intégralité de bibliothèque.",
+    "reset-cache": "Réinitialiser le cache"
+}
