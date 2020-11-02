@@ -7,6 +7,7 @@ import { NavigationProp } from 'screens';
 import { useTypedSelector } from 'store';
 import { useDispatch } from 'react-redux';
 import { setOnboardingStatus } from 'store/settings/actions';
+import { t } from '@localisation';
 
 const Container = styled.SafeAreaView`
     background-color: ${THEME_COLOR};
@@ -57,16 +58,16 @@ function Onboarding() {
             <TextContainer contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
                 <Logo source={require('../../assets/app-icon-white.png')} />
                 <Text >
-                    Welcome!
+                    {t('onboarding-welcome')}
                 </Text>
                 <Text>
-                    Jellyfin Audio Player will allow you to stream your music library from anywhere, with full support for background audio and casting. 
+                    {t('onboarding-intro')}
                 </Text>
                 <Text>
-                    In order to get started, you need a Jellyfin server. Click the button below to enter your Jellyfin server address and login to it.
+                    {t('onboarding-cta')}
                 </Text>
                 <ButtonContainer>
-                    <Button title="Set Jellyfin Server" color="#ffffff" onPress={handleClick} />
+                    <Button title={t('set-jellyfin-server')} color="#ffffff" onPress={handleClick} />
                 </ButtonContainer>
             </TextContainer>
         </Container>

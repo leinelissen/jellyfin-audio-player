@@ -8,6 +8,7 @@ import { THEME_COLOR } from 'CONSTANTS';
 import { SubHeader } from 'components/Typography';
 import styled from 'styled-components/native';
 import usePlayTrack from 'utility/usePlayTrack';
+import { t } from '@localisation';
 
 type Route = RouteProp<ModalStackParams, 'TrackPopupMenu'>;
 
@@ -48,8 +49,8 @@ function TrackPopupMenu() {
                 <SubHeader>{track?.Name}</SubHeader>
                 <Text>{track?.Album} - {track?.AlbumArtist}</Text>
                 <Buttons>
-                    <Button title="Play Next" color={THEME_COLOR} onPress={handlePlayNext} />
-                    <Button title="Add to Queue" color={THEME_COLOR} onPress={handleAddToQueue} />
+                    <Button title={t('play-next')} color={THEME_COLOR} onPress={handlePlayNext} />
+                    <Button title={t('add-to-queue')} color={THEME_COLOR} onPress={handleAddToQueue} />
                 </Buttons>
             </Container>
         </Modal>

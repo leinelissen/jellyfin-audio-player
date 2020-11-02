@@ -14,6 +14,7 @@ import { useTypedSelector } from 'store';
 import Onboarding from './Onboarding';
 import TrackPopupMenu from './modals/TrackPopupMenu';
 import { ModalStackParams } from './types';
+import { t } from '@localisation';
 
 const Stack = createStackNavigator<ModalStackParams>();
 const Tab = createBottomTabNavigator();
@@ -64,9 +65,9 @@ function Screens() {
                 inactiveTintColor: 'gray',
             }}
         >
-            <Tab.Screen name="NowPlaying" component={Player} options={{ tabBarLabel: 'Now Playing' }} />
-            <Tab.Screen name="Music" component={Music} />
-            <Tab.Screen name="Settings" component={Settings} />
+            <Tab.Screen name="NowPlaying" component={Player} options={{ tabBarLabel: t('now-playing') }} />
+            <Tab.Screen name="Music" component={Music} options={{ tabBarLabel: t('music') }} />
+            <Tab.Screen name="Settings" component={Settings} options={{ tabBarLabel: t('settings') }} />
         </Tab.Navigator>
     );
 }

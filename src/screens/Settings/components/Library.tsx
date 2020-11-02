@@ -7,6 +7,7 @@ import { SubHeader } from 'components/Typography';
 import { colors } from 'components/Colors';
 import { NavigationProp } from '../..';
 import { useTypedSelector } from 'store';
+import { t } from '@localisation';
 
 const InputContainer = styled.View`
     margin: 10px 0;
@@ -25,20 +26,20 @@ export default function LibrarySettings() {
 
     return (
         <>
-            <SubHeader>Jellyfin Library</SubHeader>
+            <SubHeader>{t('jellyfin-library')}</SubHeader>
             <InputContainer>
-                <Text style={colors.text}>Jellyfin Server URL</Text>
+                <Text style={colors.text}>{t('jellyfin-server-url')}</Text>
                 <Input placeholder="https://jellyfin.yourserver.com/" value={jellyfin?.uri} editable={false} style={colors.input} />
             </InputContainer>
             <InputContainer>
-                <Text style={colors.text}>Jellyfin Access Token</Text>
+                <Text style={colors.text}>{t('jellyfin-access-token')}</Text>
                 <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.access_token} editable={false} style={colors.input} />
             </InputContainer>
             <InputContainer>
-                <Text style={colors.text}>Jellyfin User ID</Text>
+                <Text style={colors.text}>{t('jellyfin-user-id')}</Text>
                 <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.user_id} editable={false} style={colors.input} />
             </InputContainer>
-            <Button title="Set Jellyfin server" onPress={handleSetLibrary} color={THEME_COLOR} />
+            <Button title={t('set-jellyfin-server')} onPress={handleSetLibrary} color={THEME_COLOR} />
         </>
     );
 }

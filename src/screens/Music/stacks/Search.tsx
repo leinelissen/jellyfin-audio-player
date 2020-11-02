@@ -12,6 +12,7 @@ import { useGetImage } from 'utility/JellyfinApi';
 import { NavigationProp } from '../types';
 import FastImage from 'react-native-fast-image';
 import { colors } from 'components/Colors';
+import { t } from '@localisation';
 
 const Container = styled.View`
     padding: 0 20px;
@@ -88,8 +89,8 @@ export default function Search() {
 
     const HeaderComponent = React.useMemo(() => (
         <Container>
-            <Input value={searchTerm} onChangeText={setSearchTerm} style={colors.input} placeholder="Search..." />
-            {(searchTerm.length && !results.length) ? <Text>No results...</Text> : null}
+            <Input value={searchTerm} onChangeText={setSearchTerm} style={colors.input} placeholder={t('search') + '...'} />
+            {(searchTerm.length && !results.length) ? <Text>{t('no-results')}</Text> : null}
         </Container>
     ), [searchTerm, results, setSearchTerm]);
 
@@ -110,7 +111,7 @@ export default function Search() {
                             <Text numberOfLines={1} ellipsizeMode="tail" style={colors.text}>
                                 {album.Name} - {album.AlbumArtist}
                             </Text>
-                            <HalfOpacity style={colors.text}>Album</HalfOpacity>
+                            <HalfOpacity style={colors.text}>{t('album')}</HalfOpacity>
                         </View>
                     </SearchResult>
                 </TouchableHandler>

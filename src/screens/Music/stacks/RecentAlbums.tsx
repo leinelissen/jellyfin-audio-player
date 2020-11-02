@@ -13,6 +13,7 @@ import { useRecentAlbums } from 'store/music/selectors';
 import { Header } from 'components/Typography';
 import ListButton from 'components/ListButton';
 import { colors } from 'components/Colors';
+import { t } from '@localisation';
 
 const styles = StyleSheet.create({
     artist: {
@@ -28,9 +29,9 @@ const NavigationHeader: React.FC = () => {
     
     return (
         <ListContainer>
-            <ListButton onPress={handleAllAlbumsClick}>All Albums</ListButton>
-            <ListButton onPress={handleSearchClick}>Search</ListButton>
-            <Header style={colors.text}>Recent Albums</Header>
+            <ListButton onPress={handleAllAlbumsClick}>{t('all-albums')}</ListButton>
+            <ListButton onPress={handleSearchClick}>{t('search')}</ListButton>
+            <Header style={colors.text}>{t('recent-albums')}</Header>
         </ListContainer>
     );
 };

@@ -8,6 +8,7 @@ import { useNavigation, StackActions } from '@react-navigation/native';
 import CredentialGenerator from './components/CredentialGenerator';
 import { THEME_COLOR } from 'CONSTANTS';
 import { colors } from 'components/Colors';
+import { t } from '@localisation';
 
 export default function SetJellyfinServer() {
     // State for first screen
@@ -34,7 +35,7 @@ export default function SetJellyfinServer() {
             ) : (
                 <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={colors.text}>
-                        Please enter your Jellyfin server URL. Make sure to include the protocol and port
+                        {t('set-jellyfin-server-instruction')}
                     </Text>
                     <Input
                         placeholder="https://jellyfin.yourserver.io/"
@@ -46,7 +47,7 @@ export default function SetJellyfinServer() {
                         style={{ ...colors.input, width: '100%' }}
                     />
                     <Button
-                        title="Set server"
+                        title={t('set-jellyfin-server')}
                         onPress={() => setIsLogginIn(true)}
                         disabled={!serverUrl?.length} 
                         color={THEME_COLOR}

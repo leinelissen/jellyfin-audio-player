@@ -7,6 +7,7 @@ import TouchableHandler from 'components/TouchableHandler';
 import TrackPlayer from 'react-native-track-player';
 import { THEME_COLOR } from 'CONSTANTS';
 import { colors } from 'components/Colors';
+import { t } from '@localisation';
 
 const QueueItem = styled.View<{ active?: boolean, alreadyPlayed?: boolean, isDark?: boolean }>`
     padding: 10px;
@@ -52,7 +53,7 @@ export default function Queue() {
 
     return (
         <View>
-            <Text style={{ marginTop: 20, marginBottom: 20 }}>Queue</Text>
+            <Text style={{ marginTop: 20, marginBottom: 20 }}>{t('queue')}</Text>
             {queue.map((track, i) => (
                 <TouchableHandler id={track.id} onPress={playTrack} key={i}>
                     <QueueItem 
@@ -70,7 +71,7 @@ export default function Queue() {
                 </TouchableHandler>
             ))}
             <ClearQueue>
-                <Button title="Clear Queue" color={THEME_COLOR} onPress={clearQueue} />
+                <Button title={t('clear-queue')} color={THEME_COLOR} onPress={clearQueue} />
             </ClearQueue>
         </View>
     );

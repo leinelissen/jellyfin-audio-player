@@ -15,6 +15,7 @@ import TouchableHandler from 'components/TouchableHandler';
 import useCurrentTrack from 'utility/useCurrentTrack';
 import { colors } from 'components/Colors';
 import TrackPlayer from 'react-native-track-player';
+import { t } from '@localisation';
 
 type Route = RouteProp<StackParams, 'Album'>;
 
@@ -114,7 +115,7 @@ const Album: React.FC = () => {
             <AlbumImage source={{ uri: getImage(album?.Id) }} style={colors.imageBackground} />
             <Text style={styles.name} >{album?.Name}</Text>
             <Text style={styles.artist}>{album?.AlbumArtist}</Text>
-            <Button title="Play Album" onPress={selectAlbum} color={THEME_COLOR} />
+            <Button title={t('play-album')} onPress={selectAlbum} color={THEME_COLOR} />
             {album?.Tracks?.length ? album.Tracks.map((trackId) =>
                 <TouchableHandler
                     key={trackId}

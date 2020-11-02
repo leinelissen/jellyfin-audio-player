@@ -6,6 +6,7 @@ import Album from './stacks/Album';
 import RecentAlbums from './stacks/RecentAlbums';
 import Search from './stacks/Search';
 import { THEME_COLOR } from 'CONSTANTS';
+import { t } from '@localisation';
 
 const Stack = createStackNavigator<StackParams>();
 
@@ -17,10 +18,10 @@ const navigationOptions = {
 function MusicStack() {
     return (
         <Stack.Navigator initialRouteName="RecentAlbums" screenOptions={navigationOptions}>
-            <Stack.Screen name="RecentAlbums" component={RecentAlbums} options={{ headerTitle: 'Recent Albums' }} />
-            <Stack.Screen name="Albums" component={Albums} />
-            <Stack.Screen name="Album" component={Album} />
-            <Stack.Screen name="Search" component={Search} />
+            <Stack.Screen name="RecentAlbums" component={RecentAlbums} options={{ headerTitle: t('recent-albums') }} />
+            <Stack.Screen name="Albums" component={Albums} options={{ headerTitle: t('albums') }} />
+            <Stack.Screen name="Album" component={Album} options={{ headerTitle: t('album') }} />
+            <Stack.Screen name="Search" component={Search} options={{ headerTitle: t('search') }} />
         </Stack.Navigator>
     );
 }
