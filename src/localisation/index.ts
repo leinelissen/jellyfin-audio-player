@@ -6,6 +6,7 @@ import { LocaleKeys } from './types';
 const localeGetters: Record<string, () => object> = {
     en: () => require('./lang/en/locale.json'),
     fr: () => require('./lang/fr/locale.json'),
+    nl: () => require('./lang/nl/locale.json'),
 };
 
 // Have RNLocalize pick the best locale from the languages on offer
