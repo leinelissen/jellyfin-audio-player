@@ -66,3 +66,6 @@ build/
 fastlane/report.xml
 fastlane/Appfile
 certificates/
+
+.env
+sentry.properties

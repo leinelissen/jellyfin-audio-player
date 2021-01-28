@@ -36,6 +36,42 @@ platform :ios do
             export_method: "app-store",
         )
         upload_to_testflight
+        build_number = get_build_number(
+            xcodeproj: "ios/JellyfinAudioPlayer.xcodeproj"
+        )
+        Dir.chdir("..") do
+            sh(
+                "npx", "react-native", "bundle", 
+                "--dev", "false",
+                "--platform", "ios",
+                "--entry-file", "index.js",
+                "--bundle-output", "build/index.ios.bundle",
+                "--sourcemap-output", "build/index.ios.bundle.map"
+            )
+        end
+
+        sentry_create_release(
+            version: "1.0+#{build_number}",
+            app_identifier: 'nl.moeilijkedingen.jellyfinaudioplayer',
+            finalize: true
+        )
+        sentry_upload_dsym(
+            dsym_path: 'build/Jellyfin Player.app.dSYM.zip',
+            info_plist: 'ios/JellyfinAudioPlayer/Info.plist',
+        )
+        sentry_upload_file(
+            version: "1.0+#{build_number}",
+            app_identifier: 'nl.moeilijkedingen.jellyfinaudioplayer',
+            dist: build_number,
+            file: 'build/index.ios.bundle',
+        )
+        sentry_upload_sourcemap(
+            version: "1.0+#{build_number}",
+            app_identifier: 'nl.moeilijkedingen.jellyfinaudioplayer',
+            dist: build_number,
+            sourcemap: 'build/index.ios.bundle.map',
+            rewrite: true
+        )
     end
 end
 
