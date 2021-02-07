@@ -9,7 +9,7 @@ import { SENTRY_DSN } from '@env';
 
 if (SENTRY_DSN) {
     Sentry.init({
-        dsn: SENTRY_DSN,
+        dsn: SENTRY_DSN
     });
 }
 
