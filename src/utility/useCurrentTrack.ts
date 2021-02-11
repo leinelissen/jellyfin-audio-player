@@ -24,8 +24,15 @@ export default function useCurrentTrack(): Track | undefined {
             }
 
             // If it is different, retrieve the track and save it
-            const currentTrack = await TrackPlayer.getTrack(currentTrackId);
-            setTrack(currentTrack);
+            try {
+                const currentTrack = await TrackPlayer.getTrack(currentTrackId);
+                setTrack(currentTrack);
+            } catch {
+                // Due to the async nature, a track might be removed at the
+                // point when we try to retrieve it. If this happens, we'll just
+                // smother the error and wait for a new track update to
+                // finish.
+            }
         };
 
         fetchTrack();
