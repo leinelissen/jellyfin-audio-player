@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { StackParams } from '../types';
-import { Text, ScrollView, Dimensions, Button, RefreshControl, StyleSheet } from 'react-native';
+import { Text, ScrollView, Dimensions, RefreshControl, StyleSheet, View } from 'react-native';
 import { useGetImage } from 'utility/JellyfinApi';
 import styled, { css } from 'styled-components/native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
@@ -13,9 +13,11 @@ import { ALBUM_CACHE_AMOUNT_OF_DAYS, THEME_COLOR } from 'CONSTANTS';
 import usePlayAlbum from 'utility/usePlayAlbum';
 import TouchableHandler from 'components/TouchableHandler';
 import useCurrentTrack from 'utility/useCurrentTrack';
-import { colors } from 'components/Colors';
 import TrackPlayer from 'react-native-track-player';
 import { t } from '@localisation';
+import Button from 'components/Button';
+import Play from 'assets/play.svg';
+import useDefaultStyles from 'components/Colors';
 
 type Route = RouteProp<StackParams, 'Album'>;
 
@@ -23,18 +25,15 @@ const Screen = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
     name: {
-        ...colors.text,
         fontSize: 36, 
         fontWeight: 'bold'
     },
     artist: {
-        ...colors.text,
         fontSize: 24,
         opacity: 0.5,
         marginBottom: 24
     },
     index: {
-        ...colors.text,
         width: 20,
         opacity: 0.5,
         marginRight: 5
@@ -61,6 +60,8 @@ const TrackContainer = styled.View<{isPlaying: boolean}>`
 `;
 
 const Album: React.FC = () => {
+    const defaultStyles = useDefaultStyles();
+
     // Retrieve state
     const { params: { id } } = useRoute<Route>();
     const tracks = useTypedSelector((state) => state.music.tracks.entities);
@@ -112,25 +113,27 @@ const Album: React.FC = () => {
                 <RefreshControl refreshing={isLoading} onRefresh={refresh} />
             }
         >
-            <AlbumImage source={{ uri: getImage(album?.Id) }} style={colors.imageBackground} />
-            <Text style={styles.name} >{album?.Name}</Text>
-            <Text style={styles.artist}>{album?.AlbumArtist}</Text>
-            <Button title={t('play-album')} onPress={selectAlbum} color={THEME_COLOR} />
-            {album?.Tracks?.length ? album.Tracks.map((trackId) =>
-                <TouchableHandler
-                    key={trackId}
-                    id={trackId}
-                    onPress={selectTrack}
-                    onLongPress={longPressTrack}
-                >
-                    <TrackContainer isPlaying={currentTrack?.id.startsWith(trackId) || false} style={colors.border}>
-                        <Text style={styles.index}>
-                            {tracks[trackId]?.IndexNumber}
-                        </Text>
-                        <Text style={colors.text}>{tracks[trackId]?.Name}</Text>
-                    </TrackContainer>
-                </TouchableHandler>
-            ) : undefined}
+            <AlbumImage source={{ uri: getImage(album?.Id) }} style={defaultStyles.imageBackground} />
+            <Text style={[ defaultStyles.text, styles.name ]} >{album?.Name}</Text>
+            <Text style={[ defaultStyles.text, styles.artist ]}>{album?.AlbumArtist}</Text>
+            <Button title={t('play-album')} icon={Play} onPress={selectAlbum} />
+            <View style={{ marginTop: 15 }}>
+                {album?.Tracks?.length ? album.Tracks.map((trackId) =>
+                    <TouchableHandler
+                        key={trackId}
+                        id={trackId}
+                        onPress={selectTrack}
+                        onLongPress={longPressTrack}
+                    >
+                        <TrackContainer isPlaying={currentTrack?.id.startsWith(trackId) || false} style={defaultStyles.border}>
+                            <Text style={[ defaultStyles.text, styles.index ]}>
+                                {tracks[trackId]?.IndexNumber}
+                            </Text>
+                            <Text style={defaultStyles.text}>{tracks[trackId]?.Name}</Text>
+                        </TrackContainer>
+                    </TouchableHandler>
+                ) : undefined}
+            </View>
         </ScrollView>
     );
 };

@@ -1,14 +1,16 @@
 import React, { useCallback } from 'react';
 import Modal from 'components/Modal';
-import { Text, Button } from 'react-native';
 import { useNavigation, StackActions, useRoute, RouteProp } from '@react-navigation/native';
 import { ModalStackParams } from 'screens/types';
 import { useTypedSelector } from 'store';
-import { THEME_COLOR } from 'CONSTANTS';
 import { SubHeader } from 'components/Typography';
 import styled from 'styled-components/native';
 import usePlayTrack from 'utility/usePlayTrack';
 import { t } from '@localisation';
+import Button from 'components/Button';
+import PlayIcon from 'assets/play.svg';
+import QueueAppendIcon from 'assets/queue-append.svg';
+import Text from 'components/Text';
 
 type Route = RouteProp<ModalStackParams, 'TrackPopupMenu'>;
 
@@ -19,7 +21,11 @@ const Container = styled.View`
 const Buttons = styled.View`
     margin-top: 20px;
     flex-direction: row;
-    justify-content: space-around;
+    /* justify-content: space-around; */
+`;
+
+const ButtonSpacing = styled.View`
+    width: 8px;
 `;
 
 function TrackPopupMenu() {
@@ -49,8 +55,9 @@ function TrackPopupMenu() {
                 <SubHeader>{track?.Name}</SubHeader>
                 <Text>{track?.Album} - {track?.AlbumArtist}</Text>
                 <Buttons>
-                    <Button title={t('play-next')} color={THEME_COLOR} onPress={handlePlayNext} />
-                    <Button title={t('add-to-queue')} color={THEME_COLOR} onPress={handleAddToQueue} />
+                    <Button title={t('play-next')} icon={PlayIcon} onPress={handlePlayNext} />
+                    <ButtonSpacing />
+                    <Button title={t('add-to-queue')} icon={QueueAppendIcon} onPress={handleAddToQueue} />
                 </Buttons>
             </Container>
         </Modal>

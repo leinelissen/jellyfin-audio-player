@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import TrackPlayer, { usePlaybackState, STATE_PLAYING, STATE_PAUSED } from 'react-native-track-player';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, useColorScheme } from 'react-native';
 import styled from 'styled-components/native';
 import { useHasQueue } from 'utility/useQueue';
 import ForwardIcon from 'assets/forwards.svg';
@@ -9,7 +9,6 @@ import PlayIcon from 'assets/play.svg';
 import PauseIcon from 'assets/pause.svg';
 import RepeatIcon from 'assets/repeat.svg';
 // import ShuffleIcon from 'assets/shuffle.svg';
-import { useColorScheme } from 'react-native-appearance';
 import { THEME_COLOR } from 'CONSTANTS';
 
 const BUTTON_SIZE = 40;

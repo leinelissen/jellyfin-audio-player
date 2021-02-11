@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 import { Text, Platform } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { THEME_COLOR } from 'CONSTANTS';
-import { colors } from 'components/Colors';
+import { DefaultStylesProvider } from 'components/Colors';
 
 const NumberBar = styled.View`
     flex-direction: row;
@@ -65,24 +65,29 @@ export default class ProgressBar extends Component<{}, State> {
 
     render() {
         const { position, duration, gesture } = this.state;
-
+        
         return (
-            <>
-                <Slider
-                    value={gesture || position}
-                    minimumValue={0}
-                    maximumValue={duration || 0}
-                    onValueChange={this.handleGesture}
-                    onSlidingComplete={this.handleEndOfGesture}
-                    minimumTrackTintColor={THEME_COLOR}
-                    thumbTintColor={Platform.OS === 'android' ? THEME_COLOR : undefined}
-                    disabled={!duration}
-                />
-                <NumberBar>
-                    <Text style={colors.text}>{getMinutes(gesture || position)}:{getSeconds(gesture || position)}</Text>
-                    <Text style={colors.text}>{getMinutes(duration)}:{getSeconds(duration)}</Text>
-                </NumberBar>
-            </>
+            <DefaultStylesProvider>
+                {defaultStyle => (
+                    <>
+                        <Slider
+                            value={gesture || position}
+                            minimumValue={0}
+                            maximumValue={duration || 0}
+                            onValueChange={this.handleGesture}
+                            onSlidingComplete={this.handleEndOfGesture}
+                            minimumTrackTintColor={THEME_COLOR}
+                            thumbTintColor={Platform.OS === 'android' ? THEME_COLOR : undefined}
+                            disabled={!duration}
+                        />
+                        <NumberBar>
+                            <Text style={defaultStyle.text}>{getMinutes(gesture || position)}:{getSeconds(gesture || position)}</Text>
+                            <Text style={defaultStyle.text}>{getMinutes(duration)}:{getSeconds(duration)}</Text>
+                        </NumberBar>
+                    </>
+                )
+                }
+            </DefaultStylesProvider>
         );
     }
 }

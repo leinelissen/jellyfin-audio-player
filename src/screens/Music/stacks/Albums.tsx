@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, PureComponent, ReactText } from 'react';
+import React, { useCallback, useEffect, useRef, ReactText } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
 import { Album, NavigationProp } from '../types';
 import { Text, SafeAreaView, SectionList, View } from 'react-native';
@@ -9,13 +9,12 @@ import { useTypedSelector } from 'store';
 import { fetchAllAlbums } from 'store/music/actions';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
 import TouchableHandler from 'components/TouchableHandler';
-import ListContainer from './components/ListContainer';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
 import { selectAlbumsByAlphabet, SectionedId } from 'store/music/selectors';
 import AlphabetScroller from 'components/AlphabetScroller';
 import { EntityId } from '@reduxjs/toolkit';
 import styled from 'styled-components/native';
-import { colors } from 'components/Colors';
+import useDefaultStyles from 'components/Colors';
 
 interface VirtualizedItemInfo {
     section: SectionedId,
@@ -51,19 +50,16 @@ const SectionText = styled.Text`
     font-weight: bold;
 `;
 
-const sectionStyles = { ...colors.view, ...colors.border };
+const SectionHeading = React.memo(function SectionHeading(props: { label: string }) {
+    const defaultStyles = useDefaultStyles();
+    const { label } = props;
 
-class SectionHeading extends PureComponent<{ label: string }> {    
-    render() {
-        const { label } = this.props;
-
-        return (
-            <SectionContainer style={sectionStyles}>
-                <SectionText style={colors.text}>{label}</SectionText>
-            </SectionContainer>
-        );
-    }
-}
+    return (
+        <SectionContainer style={defaultStyles.sectionHeading}>
+            <SectionText style={defaultStyles.text}>{label}</SectionText>
+        </SectionContainer>
+    );
+});
 
 interface GeneratedAlbumItemProps {
     id: ReactText;
@@ -77,21 +73,20 @@ const HalfOpacity = styled.Text`
     opacity: 0.5;
 `;
 
-class GeneratedAlbumItem extends PureComponent<GeneratedAlbumItemProps> {
-    render() {
-        const { id, imageUrl, name, artist, onPress } = this.props;
+const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: GeneratedAlbumItemProps) {
+    const defaultStyles = useDefaultStyles();
+    const { id, imageUrl, name, artist, onPress } = props;
 
-        return (
-            <TouchableHandler id={id as string} onPress={onPress}>
-                <AlbumItem>
-                    <AlbumImage source={{ uri: imageUrl }} style={colors.imageBackground} />
-                    <Text numberOfLines={1} style={colors.text}>{name}</Text>
-                    <HalfOpacity style={colors.text} numberOfLines={1}>{artist}</HalfOpacity>
-                </AlbumItem>
-            </TouchableHandler>
-        );
-    }
-}
+    return (
+        <TouchableHandler id={id as string} onPress={onPress}>
+            <AlbumItem>
+                <AlbumImage source={{ uri: imageUrl }} style={defaultStyles.imageBackground} />
+                <Text numberOfLines={1} style={defaultStyles.text}>{name}</Text>
+                <HalfOpacity style={defaultStyles.text} numberOfLines={1}>{artist}</HalfOpacity>
+            </AlbumItem>
+        </TouchableHandler>
+    );
+});
 
 const Albums: React.FC = () => {
     // Retrieve data from store

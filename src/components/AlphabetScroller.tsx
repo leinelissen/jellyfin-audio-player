@@ -9,10 +9,10 @@ import {
     TapGestureHandlerGestureEvent 
 } from 'react-native-gesture-handler';
 
-interface LetterContainerProps {
-    onPress: (letter: string) => void;
-    letter: string;
-}
+// interface LetterContainerProps {
+//     onPress: (letter: string) => void;
+//     letter: string;
+// }
 
 const Container = styled.View`
     position: absolute;

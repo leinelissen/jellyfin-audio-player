@@ -1,13 +1,14 @@
 import React, { useCallback } from 'react';
 import useQueue from 'utility/useQueue';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import useCurrentTrack from 'utility/useCurrentTrack';
 import TouchableHandler from 'components/TouchableHandler';
 import TrackPlayer from 'react-native-track-player';
-import { THEME_COLOR } from 'CONSTANTS';
-import { colors } from 'components/Colors';
 import { t } from '@localisation';
+import useDefaultStyles from 'components/Colors';
+import Text from 'components/Text';
+import Button from 'components/Button';
 
 const QueueItem = styled.View<{ active?: boolean, alreadyPlayed?: boolean, isDark?: boolean }>`
     padding: 10px;
@@ -29,17 +30,13 @@ const ClearQueue = styled.View`
 `;
 
 const styles = StyleSheet.create({
-    title: {
-        ...colors.text,
-        marginBottom: 2,
-    },
-    artist: {
-        ...colors.text,
-        opacity: 0.5,
+    trackTitle: {
+        marginBottom: 2
     }
 });
 
 export default function Queue() {
+    const defaultStyles = useDefaultStyles();
     const queue = useQueue();
     const currentTrack = useCurrentTrack();
     const currentIndex = queue.findIndex(d => d.id === currentTrack?.id);
@@ -60,18 +57,18 @@ export default function Queue() {
                         active={currentTrack?.id === track.id}
                         key={i}
                         alreadyPlayed={i < currentIndex}
-                        style={{
-                            ...colors.border,
-                            ...currentTrack?.id === track.id ? colors.activeBackground : {},
-                        }}
+                        style={[
+                            defaultStyles.border,
+                            currentTrack?.id === track.id ? defaultStyles.activeBackground : {},
+                        ]}
                     >
-                        <Text style={styles.title}>{track.title}</Text>
-                        <Text style={styles.artist}>{track.artist}</Text>
+                        <Text style={styles.trackTitle}>{track.title}</Text>
+                        <Text style={defaultStyles.textHalfOpacity}>{track.artist}</Text>
                     </QueueItem>
                 </TouchableHandler>
             ))}
             <ClearQueue>
-                <Button title={t('clear-queue')} color={THEME_COLOR} onPress={clearQueue} />
+                <Button title={t('clear-queue')} onPress={clearQueue} />
             </ClearQueue>
         </View>
     );

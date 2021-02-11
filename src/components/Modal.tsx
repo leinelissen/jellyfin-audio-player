@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components/native';
 import { SafeAreaView, Pressable } from 'react-native';
-import { colors } from './Colors';
 import { useNavigation, StackActions } from '@react-navigation/native';
+import useDefaultStyles from './Colors';
 
 interface Props {
     fullSize?: boolean;
@@ -24,15 +24,16 @@ const Container = styled(Pressable)<Pick<Props, 'fullSize'>>`
 `;
 
 const Modal: React.FC<Props> = ({ children, fullSize = true }) => {
+    const defaultStyles = useDefaultStyles();
     const navigation = useNavigation();
     const closeModal = useCallback(() => {
         navigation.dispatch(StackActions.popToTop());    
     }, [navigation]);
 
     return (
-        <Background style={colors.modal} onPress={closeModal}>
+        <Background style={defaultStyles.modal} onPress={closeModal}>
             <SafeAreaView style={{ flex: 1 }}>
-                <Container style={colors.view} fullSize={fullSize}>
+                <Container style={defaultStyles.modalInner} fullSize={fullSize}>
                     {children}
                 </Container>
             </SafeAreaView>

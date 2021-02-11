@@ -11,8 +11,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useGetImage } from 'utility/JellyfinApi';
 import { NavigationProp } from '../types';
 import FastImage from 'react-native-fast-image';
-import { colors } from 'components/Colors';
 import { t } from '@localisation';
+import useDefaultStyles from 'components/Colors';
 
 const Container = styled.View`
     padding: 0 20px;
@@ -47,6 +47,8 @@ const fuseOptions = {
 };
 
 export default function Search() {
+    const defaultStyles = useDefaultStyles();
+
     // Prepare state
     const [searchTerm, setSearchTerm] = useState('');
     const albums = useTypedSelector(state => state.music.albums.entities);
@@ -89,10 +91,10 @@ export default function Search() {
 
     const HeaderComponent = React.useMemo(() => (
         <Container>
-            <Input value={searchTerm} onChangeText={setSearchTerm} style={colors.input} placeholder={t('search') + '...'} />
-            {(searchTerm.length && !results.length) ? <Text>{t('no-results')}</Text> : null}
+            <Input value={searchTerm} onChangeText={setSearchTerm} style={defaultStyles.input} placeholder={t('search') + '...'} />
+            {(searchTerm.length && !results.length) ? <Text style={{ textAlign: 'center' }}>{t('no-results')}</Text> : null}
         </Container>
-    ), [searchTerm, results, setSearchTerm]);
+    ), [searchTerm, results, setSearchTerm, defaultStyles]);
 
     // GUARD: We cannot search for stuff unless Fuse is loaded with results.
     // Therefore we delay rendering to when we are certain it's there.
@@ -105,13 +107,13 @@ export default function Search() {
             data={results}
             renderItem={({ item: { item: album } }) =>(
                 <TouchableHandler id={album.Id} onPress={selectAlbum}>
-                    <SearchResult style={colors.border}>
+                    <SearchResult style={defaultStyles.border}>
                         <AlbumImage source={{ uri: getImage(album.Id) }} />
                         <View>
-                            <Text numberOfLines={1} ellipsizeMode="tail" style={colors.text}>
+                            <Text numberOfLines={1} ellipsizeMode="tail" style={defaultStyles.text}>
                                 {album.Name} - {album.AlbumArtist}
                             </Text>
-                            <HalfOpacity style={colors.text}>{t('album')}</HalfOpacity>
+                            <HalfOpacity style={defaultStyles.text}>{t('album')}</HalfOpacity>
                         </View>
                     </SearchResult>
                 </TouchableHandler>

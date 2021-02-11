@@ -93,6 +93,6 @@ export default function Routes() {
 }
 
 export type NavigationProp = CompositeNavigationProp<
-    StackNavigationProp<Routes>,
-    BottomTabNavigationProp<Screens>
+StackNavigationProp<Routes>,
+BottomTabNavigationProp<Screens>
 >;

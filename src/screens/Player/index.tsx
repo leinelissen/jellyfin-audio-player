@@ -4,18 +4,19 @@ import MediaControls from './components/MediaControls';
 import ProgressBar from './components/ProgressBar';
 import NowPlaying from './components/NowPlaying';
 import Queue from './components/Queue';
-import { colors } from 'components/Colors';
+import useDefaultStyles from 'components/Colors';
 
 const styles = StyleSheet.create({
-    outer: colors.view,
     inner: {
         padding: 25,
     }
 });
 
 export default function Player() {
+    const defaultStyles = useDefaultStyles();
+    
     return (
-        <ScrollView contentContainerStyle={styles.inner} style={styles.outer}>
+        <ScrollView contentContainerStyle={styles.inner} style={defaultStyles.view}>
             <NowPlaying />
             <MediaControls />
             <ProgressBar />

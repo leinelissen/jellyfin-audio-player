@@ -8,7 +8,7 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:react-hooks/recommended',
-        // "plugin:@typescript-eslint/recommended"
+        // 'plugin:@typescript-eslint/recommended'
     ],
     globals: {
         Atomics: 'readonly',
@@ -28,14 +28,15 @@ module.exports = {
         'react-hooks'
     ],
     rules: {
-        indent: [
+        indent: 'off',
+        '@typescript-eslint/indent': [
             'error',
             4,
             {
                 SwitchCase: 1,
             }
         ],
-        "linebreak-style": [
+        'linebreak-style': [
             'error',
             'unix'
         ],
@@ -47,10 +48,10 @@ module.exports = {
             'error',
             'always'
         ],
-        "no-unused-vars": "off",
-        "react/prop-types": "off",
-        "@typescript-eslint/no-unused-vars": [
-          "error"
+        'no-unused-vars': 'off',
+        'react/prop-types': 'off',
+        '@typescript-eslint/no-unused-vars': [
+            'error'
         ]
     }
 };
