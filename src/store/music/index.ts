@@ -60,6 +60,10 @@ const music = createSlice({
          * Fetch tracks by album
          */
         builder.addCase(fetchTracksByAlbum.fulfilled, (state, { payload }) => {
+            if (!payload.length) {
+                return;
+            }
+
             trackAdapter.upsertMany(state.tracks, payload);
 
             // Also store all the track ids in the album
