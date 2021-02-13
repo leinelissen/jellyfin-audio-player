@@ -52,6 +52,7 @@
     "@babel/core": "^7.8.4",
     "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^2.0.0",
+    "@sentry/cli": "^1.62.0",
     "@types/i18n-js": "^3.8.0",
     "@types/jest": "^26.0.20",
     "@types/react-native": "^0.63.48",
