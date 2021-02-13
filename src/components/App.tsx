@@ -11,11 +11,12 @@ import {
 } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
 import { ColorSchemeContext, themes } from './Colors';
+import ErrorReportingAlert from 'utility/ErrorReportingAlert';
 
 export default function App(): JSX.Element {
     const colorScheme = useColorScheme();
+    // const colorScheme = 'dark';
     const theme = themes[colorScheme || 'light'];
-    // const theme = 'dark';
 
     useEffect(() => {
         async function setupTrackPlayer() {

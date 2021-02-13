@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setBitrate, setJellyfinCredentials, setOnboardingStatus } from './actions';
+import { setReceivedErrorReportingAlert, setBitrate, setJellyfinCredentials, setOnboardingStatus } from './actions';
 
 interface State {
     jellyfin?: {
@@ -10,11 +10,13 @@ interface State {
     }
     bitrate: number;
     isOnboardingComplete: boolean;
+    hasReceivedErrorReportingAlert: boolean;
 }
 
 const initialState: State = {
     bitrate: 140000000,
     isOnboardingComplete: false,
+    hasReceivedErrorReportingAlert: false,
 };
 
 const settings = createReducer(initialState, {
@@ -29,6 +31,10 @@ const settings = createReducer(initialState, {
     [setOnboardingStatus.type]: (state, action) => ({
         ...state,
         isOnboardingComplete: action.payload,
+    }),
+    [setReceivedErrorReportingAlert.type]: (state) => ({
+        ...state,
+        hasReceivedErrorReportingAlert: true,
     })
 });
 

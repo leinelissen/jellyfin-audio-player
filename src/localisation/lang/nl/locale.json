@@ -24,5 +24,19 @@
     "setting-cache": "Cache",
     "setting-cache-description": "Als je Jellyfin bibliotheek geüpdatet hebt, maar de app nog aan elementen uit de cache vasthoudt, kun je de cache geforceerd leegmaken met deze knop. Dit forceert de app om de bibliotheek weer vanaf het begin op te bouwen.",
     "reset-cache": "Leeg Cache",
-    "recent-albums": "Recente Albums"
+    "recent-albums": "Recente Albums",
+    "error-reporting": "Foutmeldingen Rapporteren",
+    "error-reporting-description": "Gedurende het gebruik van deze app kun je tegen fouten aanlopen. Het rapporteren van deze foutmeldingen helpt om een veiligere en stabielere app-ervaring te maken.",
+    "error-reporting-rationale": "Wanneer je foutmeldingen aanzet, wordt er elke keer als je een foutmelding krijgt een automatisch rapport gegenereerd en naar onze server gestuurd. Deze bevat behulpzame informatie, zoals apparaat, versies en de specifieke foutmelding.",
+    "why-use-tracking": "Waarom tracking gebruiken?",
+    "why-use-tracking-description": "Tracking helpt het versnellen van het ontwikkeltempo doordat we beter inzicht hebben op rare gevallen en dingen die we gemist hebben. Dit helpt met het stabieler en veiliger maken van de voor iedereen.",
+    "what-data-is-gathered": "Welke data wordt er verzameld?",
+    "what-data-is-gathered-description": "We loggen de foutmeldingen, je apparaattype, versienummers en een device id. Geen applicatiestaat wordt gedeeld in de rapportage. Het device id is een unieke hash die gereset kan worden in de instellingen van je apparaat. Wij kunnen geen verdere informatie afleiden van deze identifier.",
+    "where-is-data-stored": "Waar wordt de data opgeslagen?",
+    "where-is-data-stored-description": "De Sentry backend wordt door onszelf gehost op onze eigen infrastructuur. Niemand behalve wij heeft toegang tot de servers, databases, applicaties en data logs, en zeker geen Sentry-werknemers. De infrastructuur wordt gehost in de Europese Unie.",
+    "enable-error-reporting": "Wil je foutmeldingen rapporteren?",
+    "enable-error-reporting-description": "Dit helpt de appervaring te verbeteren door ons rapportages te sturen van crashes en andere foutmeldingen.",
+    "enable": "Zet aan",
+    "disable": "Zet uit",
+    "more-info": "Meer informatie"
 }

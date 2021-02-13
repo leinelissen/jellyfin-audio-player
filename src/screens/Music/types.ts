@@ -70,6 +70,7 @@ export type StackParams = {
     Albums: undefined;
     Album: { id: string, album: Album };
     RecentAlbums: undefined;
+    Search: undefined;
 };
 
 export type NavigationProp = StackNavigationProp<StackParams>; 

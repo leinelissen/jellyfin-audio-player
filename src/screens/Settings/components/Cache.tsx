@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import TrackPlayer from 'react-native-track-player';
-import { SubHeader } from 'components/Typography';
 import { useDispatch } from 'react-redux';
 import music from 'store/music';
 import { t } from '@localisation';
@@ -10,6 +9,10 @@ import Text from 'components/Text';
 
 const ClearCache = styled(Button)`
     margin-top: 16px;
+`;
+
+const Container = styled.ScrollView`
+    padding: 24px;
 `;
 
 export default function CacheSettings() {
@@ -23,10 +26,9 @@ export default function CacheSettings() {
     }, [dispatch]);
 
     return (
-        <>
-            <SubHeader>{t('setting-cache')}</SubHeader>
+        <Container>
             <Text>{t('setting-cache-description')}</Text>
             <ClearCache title={t('reset-cache')} onPress={handleClearCache} />
-        </>
+        </Container>
     );
 }

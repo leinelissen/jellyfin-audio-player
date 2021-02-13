@@ -15,6 +15,8 @@ import Onboarding from './Onboarding';
 import TrackPopupMenu from './modals/TrackPopupMenu';
 import { ModalStackParams } from './types';
 import { t } from '@localisation';
+import ErrorReportingAlert from 'utility/ErrorReportingAlert';
+import ErrorReportingPopup from './modals/ErrorReportingPopup';
 
 const Stack = createStackNavigator<ModalStackParams>();
 const Tab = createBottomTabNavigator();
@@ -48,27 +50,30 @@ function Screens() {
     }
 
     return (
-        <Tab.Navigator
-            screenOptions={({ route }) => ({
-                tabBarIcon: function TabBarIcon({ color, size }) {
-                    const Icon = getIcon(route.name);
+        <>
+            <ErrorReportingAlert />
+            <Tab.Navigator
+                screenOptions={({ route }) => ({
+                    tabBarIcon: function TabBarIcon({ color, size }) {
+                        const Icon = getIcon(route.name);
 
-                    if (!Icon) {
-                        return null;
+                        if (!Icon) {
+                            return null;
+                        }
+
+                        return <Icon fill={color} width={size} height={size} />;
                     }
-
-                    return <Icon fill={color} width={size} height={size} />;
-                }
-            })}
-            tabBarOptions={{
-                activeTintColor: THEME_COLOR,
-                inactiveTintColor: 'gray',
-            }}
-        >
-            <Tab.Screen name="NowPlaying" component={Player} options={{ tabBarLabel: t('now-playing') }} />
-            <Tab.Screen name="Music" component={Music} options={{ tabBarLabel: t('music') }} />
-            <Tab.Screen name="Settings" component={Settings} options={{ tabBarLabel: t('settings') }} />
-        </Tab.Navigator>
+                })}
+                tabBarOptions={{
+                    activeTintColor: THEME_COLOR,
+                    inactiveTintColor: 'gray',
+                }}
+            >
+                <Tab.Screen name="NowPlaying" component={Player} options={{ tabBarLabel: t('now-playing') }} />
+                <Tab.Screen name="Music" component={Music} options={{ tabBarLabel: t('music') }} />
+                <Tab.Screen name="Settings" component={Settings} options={{ tabBarLabel: t('settings') }} />
+            </Tab.Navigator>
+        </>
     );
 }
 
@@ -88,6 +93,7 @@ export default function Routes() {
             <Stack.Screen name="Screens" component={Screens} />
             <Stack.Screen name="SetJellyfinServer" component={SetJellyfinServer} />
             <Stack.Screen name="TrackPopupMenu" component={TrackPopupMenu} />
+            <Stack.Screen name="ErrorReporting" component={ErrorReportingPopup} />
         </Stack.Navigator>
     );
 }

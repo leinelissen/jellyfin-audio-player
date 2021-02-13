@@ -4,14 +4,8 @@ import TrackPlayer from 'react-native-track-player';
 import App from './src/components/App';
 import { name as appName } from './app.json';
 import PlaybackService from './src/utility/PlaybackService';
-import * as Sentry from '@sentry/react-native';
-import { SENTRY_DSN } from '@env';
+import { setupSentry } from 'utility/Sentry';
 
-if (SENTRY_DSN) {
-    Sentry.init({
-        dsn: SENTRY_DSN
-    });
-}
-
+setupSentry();
 AppRegistry.registerComponent(appName, () => App);
 TrackPlayer.registerPlaybackService(() => PlaybackService);

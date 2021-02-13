@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
-import { SubHeader } from 'components/Typography';
 import useDefaultStyles from 'components/Colors';
 import { NavigationProp } from '../..';
 import { useTypedSelector } from 'store';
@@ -19,6 +18,10 @@ const Input = styled.TextInput`
     border-radius: 5px;
 `;
 
+const Container = styled.ScrollView`
+    padding: 24px;
+`;
+
 export default function LibrarySettings() {
     const defaultStyles = useDefaultStyles();
     const { jellyfin } = useTypedSelector(state => state.settings);
@@ -26,8 +29,7 @@ export default function LibrarySettings() {
     const handleSetLibrary = useCallback(() => navigation.navigate('SetJellyfinServer'), [navigation]);
 
     return (
-        <>
-            <SubHeader>{t('jellyfin-library')}</SubHeader>
+        <Container>
             <InputContainer>
                 <Text style={defaultStyles.text}>{t('jellyfin-server-url')}</Text>
                 <Input placeholder="https://jellyfin.yourserver.com/" value={jellyfin?.uri} editable={false} style={defaultStyles.input} />
@@ -41,6 +43,6 @@ export default function LibrarySettings() {
                 <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.user_id} editable={false} style={defaultStyles.input} />
             </InputContainer>
             <Button title={t('set-jellyfin-server')} onPress={handleSetLibrary} />
-        </>
+        </Container>
     );
 }

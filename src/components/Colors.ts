@@ -16,7 +16,7 @@ function generateStyles(scheme: ColorSchemeName) {
             color: scheme === 'dark' ? '#ffffff88' : '#00000088',
         },
         view: {
-            backgroundColor: scheme === 'dark' ? '#111' : '#eee',
+            backgroundColor: scheme === 'dark' ? '#111' : '#f6f6f6',
         },
         border: {
             borderColor: scheme === 'dark' ? '#262626' : '#ddd',
@@ -43,6 +43,9 @@ function generateStyles(scheme: ColorSchemeName) {
         sectionHeading: {
             backgroundColor: scheme === 'dark' ? '#111' : '#eee',
             borderColor: scheme === 'dark' ? '#333' : '#ddd',
+        },
+        stackHeader: {
+            color: scheme === 'dark' ? 'white' : 'black'
         }
     });
 }

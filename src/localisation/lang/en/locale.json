@@ -24,5 +24,19 @@
     "setting-cache": "Cache",
     "setting-cache-description": "If you have updated your Jellyfin library, but the app is holding on to cached assets, you can forcefully clear the cache using this button. This will force the app to fetch the library from scratch.",
     "reset-cache": "Reset Cache",
-    "recent-albums": "Recent Albums"
+    "recent-albums": "Recent Albums",
+    "error-reporting": "Error Reporting",
+    "error-reporting-description": "During use of this app, you may encounter errors. Reporting these errors helps in creating a more secure and stable app experience.",
+    "error-reporting-rationale": "When you enable error reporting, every time an error occurs, a report is automatically created and sent to a server, along with helpful debugging information such as devices, versions and the specific error.",
+    "why-use-tracking": "Why use tracking?",
+    "why-use-tracking-description": "Tracking helps speed up development for this app by reporting weird edge cases and oversights. This helps make the app more stable and robust, thus increasing the app experience for everyone.",
+    "what-data-is-gathered": "What data is gathered?",
+    "what-data-is-gathered-description": "We log the error, device type, OS version, app version and device id. No application state is sent in any error reporting. The device id is a unique hash that can be reset in your device settings, and we cannot deduce any personal information from this identifier.",
+    "where-is-data-stored": "Where is data stored?",
+    "where-is-data-stored-description": "The Sentry backend is self-hosted on our own infrastructure. No-one but us has access to the servers, databases, application and data logs, least of all any Sentry staff. The infrastructure is hosted in the European Union.",
+    "enable-error-reporting": "Do you want to enable error reporting?",
+    "enable-error-reporting-description": "This helps improve the app experience by sending crash and error reports to us.",
+    "enable": "Enable",
+    "disable": "Disable",
+    "more-info": "More Info"
 }
