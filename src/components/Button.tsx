@@ -1,7 +1,7 @@
 import React, { useCallback, useState }  from 'react';
 import { SvgProps } from 'react-native-svg';
 import { 
-    PressableProps, 
+    PressableProps, ViewProps, 
 } from 'react-native';
 import { THEME_COLOR } from 'CONSTANTS';
 import styled, { css } from 'styled-components/native';
@@ -10,6 +10,7 @@ import useDefaultStyles from './Colors';
 interface ButtonProps extends PressableProps {
     icon?: React.FC<SvgProps>;
     title: string;
+    style?: ViewProps['style'];
 }
 
 interface PressableStyleProps {

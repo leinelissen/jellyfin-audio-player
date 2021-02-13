@@ -10,10 +10,12 @@ import {
     DarkTheme,
 } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
+import { ColorSchemeContext, themes } from './Colors';
 
 export default function App(): JSX.Element {
     const colorScheme = useColorScheme();
-    // const colorScheme = 'dark';
+    const theme = themes[colorScheme || 'light'];
+    // const theme = 'dark';
 
     useEffect(() => {
         async function setupTrackPlayer() {
@@ -35,9 +37,11 @@ export default function App(): JSX.Element {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistedStore}>
-                <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                    <Routes />
-                </NavigationContainer>
+                <ColorSchemeContext.Provider value={theme}>
+                    <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                        <Routes />
+                    </NavigationContainer>
+                </ColorSchemeContext.Provider>
             </PersistGate>
         </Provider>
     );

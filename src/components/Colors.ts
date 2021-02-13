@@ -1,10 +1,13 @@
 import { THEME_COLOR } from 'CONSTANTS';
-import { StyleSheet, useColorScheme } from 'react-native';
+import React from 'react';
+import { useContext } from 'react';
+import { ColorSchemeName, StyleSheet } from 'react-native';
 
-export default function useDefaultStyles() {
-    const scheme = useColorScheme();
-    // const scheme = 'dark';
-
+/**
+ * Function for generating both the dark and light stylesheets, so that they
+ * don't have to be generate on every individual component render
+ */
+function generateStyles(scheme: ColorSchemeName) {
     return StyleSheet.create({
         text: {
             color: scheme === 'dark' ? '#fff' : '#000',
@@ -44,10 +47,29 @@ export default function useDefaultStyles() {
     });
 }
 
+// Prerender both stylesheets
+export const themes: Record<'dark' | 'light', ReturnType<typeof generateStyles>> = {
+    'dark': generateStyles('dark'),
+    'light': generateStyles('light'),
+};
+
+// Create context for supplying the theming information
+export const ColorSchemeContext = React.createContext(themes.dark);
+
+/**
+ * Retrieves the default styles object in hook form 
+ */
+export default function useDefaultStyles() {
+    return useContext(ColorSchemeContext);
+}
+
 interface DefaultStylesProviderProps {
     children: (defaultStyles: ReturnType<typeof useDefaultStyles>) => JSX.Element;
 }
 
+/**
+ * A render props component to supply the defaultStyles object.
+ */
 export function DefaultStylesProvider(props: DefaultStylesProviderProps) {
     const defaultStyles = useDefaultStyles();
 
