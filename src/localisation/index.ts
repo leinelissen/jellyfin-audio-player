@@ -11,11 +11,16 @@ const localeGetters: Record<string, () => object> = {
 };
 
 // Have RNLocalize pick the best locale from the languages on offer
-const locale = findBestAvailableLanguage(Object.keys(localeGetters));
+let locale = findBestAvailableLanguage(Object.keys(localeGetters));
 
 // Check if the locale is correctly picked
 if (!locale || !locale.languageTag) {
-    throw new Error('Invalid locale selected');
+    // Some users might not list English as a fallback language, and hence might not
+    // be assigned a locale. In this case, we'll just default to English.
+    locale = {
+        languageTag: 'en',
+        isRTL: false,
+    };
 }
 
 // Set the key-value pairs for the different languages you want to support.
