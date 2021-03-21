@@ -53,7 +53,9 @@ export function generateTrack(track: AlbumTrack, credentials: Credentials): Trac
         title: track.Name,
         artist: track.Artists.join(', '),
         album: track.Album,
-        artwork: getImage(track.Id, credentials),
+        artwork: track.AlbumId
+            ? getImage(track.AlbumId, credentials)
+            : getImage(track.Id, credentials),
     };
 }
 
