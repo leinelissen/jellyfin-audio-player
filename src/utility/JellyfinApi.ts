@@ -22,11 +22,7 @@ const baseTrackOptions: Record<string, string> = {
     // This must be set to support client seeking
     TranscodingProtocol: 'hls',
     TranscodingContainer: 'ts',
-    // NOTE: We cannot send a comma-delimited list yet due to an issue with
-    // react-native-track-player. This is set to be merged and released very
-    // soon: https://github.com/react-native-kit/react-native-track-player/pull/950
-    // Container: 'mp3',
-    Container: 'mp3,aac,m4a,m4b|aac,alac,m4a,m4b|alac,flac',
+    Container: 'mp3,aac,m4a,m4b|aac,alac,m4a,m4b|alac,flac|ogg',
     AudioCodec: 'aac',
     static: 'true',
 };
