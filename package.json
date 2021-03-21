@@ -28,6 +28,7 @@
     "lodash": "^4.17.21",
     "react": "17.0.1",
     "react-native": "0.64.0",
+    "react-native-airplay-button": "^1.0.4",
     "react-native-collapsible": "^1.5.3",
     "react-native-dotenv": "^2.5.1",
     "react-native-fast-image": "^8.3.4",

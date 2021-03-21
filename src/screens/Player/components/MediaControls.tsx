@@ -10,6 +10,7 @@ import PauseIcon from 'assets/pause.svg';
 import RepeatIcon from 'assets/repeat.svg';
 // import ShuffleIcon from 'assets/shuffle.svg';
 import { THEME_COLOR } from 'CONSTANTS';
+import Casting from './Casting';
 
 const BUTTON_SIZE = 40;
 const BUTTON_SIZE_SMALL = 25;
@@ -54,9 +55,7 @@ export default function MediaControls() {
                 <Button>
                     <RepeatButton fill={fill} />
                 </Button>
-                <Button>
-                    {/* <ShuffleButton fill={fill} /> */}
-                </Button>
+                <Casting fill={fill} />
             </Buttons>
         </Container>
     );
