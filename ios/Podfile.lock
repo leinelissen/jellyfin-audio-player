@@ -261,13 +261,15 @@ PODS:
     - React-jsi (= 0.64.0)
     - React-perflogger (= 0.64.0)
   - React-jsinspector (0.64.0)
+  - react-native-airplay-button (1.0.4):
+    - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
   - react-native-slider (3.0.3):
     - React
-  - react-native-track-player (1.2.3):
+  - react-native-track-player (1.2.6):
     - React
-  - react-native-webview (11.2.3):
+  - react-native-webview (11.3.1):
     - React-Core
   - React-perflogger (0.64.0)
   - React-RCTActionSheet (0.64.0):
@@ -433,6 +435,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-airplay-button (from `../node_modules/react-native-airplay-button`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-track-player (from `../node_modules/react-native-track-player`)
@@ -511,6 +514,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-airplay-button:
+    :path: "../node_modules/react-native-airplay-button"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:
@@ -594,10 +599,11 @@ SPEC CHECKSUMS:
   React-jsi: 74341196d9547cbcbcfa4b3bbbf03af56431d5a1
   React-jsiexecutor: 06a9c77b56902ae7ffcdd7a4905f664adc5d237b
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
+  react-native-airplay-button: 6899e488bff6b4d87b33c1def54c919dad2e3803
   react-native-safe-area-context: e471852c5ed67eea4b10c5d9d43c1cebae3b231d
   react-native-slider: b733e17fdd31186707146debf1f04b5d94aa1a93
-  react-native-track-player: ba2416753b58f3cdf9db5a07daa65876d659f925
-  react-native-webview: 36561eaf7508e67f72d8c959b713bac841f3652e
+  react-native-track-player: 92eaa90aeb24ce1a7149f983c75128075004e7a2
+  react-native-webview: 30f048378c6cee522ed9bbbedbc34acb21e58188
   React-perflogger: 9c547d8f06b9bf00cb447f2b75e8d7f19b7e02af
   React-RCTActionSheet: 3080b6e12e0e1a5b313c8c0050699b5c794a1b11
   React-RCTAnimation: 3f96f21a497ae7dabf4d2f150ee43f906aaf516f
