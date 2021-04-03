@@ -13,21 +13,14 @@ interface ButtonProps extends PressableProps {
     style?: ViewProps['style'];
 }
 
-interface PressableStyleProps {
-    active: boolean;
-}
 
-const BaseButton = styled.Pressable<PressableStyleProps>`
+const BaseButton = styled.Pressable`
     padding: 16px;
     border-radius: 8px;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     flex-grow: 1;
-
-    ${props => props.active && css`
-        background-color: ${THEME_COLOR};
-    `}
 `;
 
 const ButtonText = styled.Text<{ active?: boolean }>`
@@ -51,8 +44,10 @@ export default function Button(props: ButtonProps) {
             {...rest}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
-            active={isPressed}
-            style={[ defaultStyles.button, props.style ]}
+            style={[ 
+                props.style, 
+                { backgroundColor: isPressed ? THEME_COLOR : defaultStyles.button.backgroundColor } 
+            ]}    
         >
             {Icon && 
                 <Icon
