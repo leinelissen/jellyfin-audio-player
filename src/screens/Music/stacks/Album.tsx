@@ -80,7 +80,7 @@ const Album: React.FC = () => {
     const refresh = useCallback(() => { dispatch(fetchTracksByAlbum(id)); }, [id, dispatch]);
     const selectTrack = useCallback(async (trackId) => {
         const tracks = await playAlbum(id, false);
-        
+
         if (tracks) {
             const track = tracks.find((t) => t.id.startsWith(trackId));
 

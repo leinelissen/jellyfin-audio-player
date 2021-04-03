@@ -11,7 +11,8 @@ import {
 } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
 import { ColorSchemeContext, themes } from './Colors';
-import ErrorReportingAlert from 'utility/ErrorReportingAlert';
+// import ErrorReportingAlert from 'utility/ErrorReportingAlert';
+import PlayerStateUpdater from './PlayerStateUpdater';
 
 export default function App(): JSX.Element {
     const colorScheme = useColorScheme();
@@ -41,6 +42,7 @@ export default function App(): JSX.Element {
                 <ColorSchemeContext.Provider value={theme}>
                     <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                         <Routes />
+                        <PlayerStateUpdater />
                     </NavigationContainer>
                 </ColorSchemeContext.Provider>
             </PersistGate>

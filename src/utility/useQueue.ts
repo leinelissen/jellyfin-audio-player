@@ -8,7 +8,7 @@ import { useTypedSelector } from 'store';
 export default function useQueue(): Track[] {
     const state = usePlaybackState();
     const [queue, setQueue] = useState<Track[]>([]);
-    const addedTrackCount = useTypedSelector(state => state.player);
+    const addedTrackCount = useTypedSelector(state => state.player.addedTrackCount);
 
     useEffect(() => {
         TrackPlayer.getQueue().then(setQueue);
