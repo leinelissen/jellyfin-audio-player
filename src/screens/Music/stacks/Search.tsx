@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Input from 'components/Input';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import styled from 'styled-components/native';
 import { useAppDispatch, useTypedSelector } from 'store';
 import Fuse from 'fuse.js';
@@ -14,9 +14,20 @@ import FastImage from 'react-native-fast-image';
 import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
 import { searchAndFetchAlbums } from 'store/music/actions';
+import { debounce } from 'lodash';
 
 const Container = styled.View`
     padding: 0 20px;
+    position: relative;
+`;
+
+const Loading = styled.View`
+    position: absolute;
+    right: 32px;
+    top: 0;
+    height: 100%;
+    flex: 1;
+    justify-content: center;
 `;
 
 const AlbumImage = styled(FastImage)`
@@ -69,14 +80,15 @@ export default function Search() {
     // Prepare state
     const [searchTerm, setSearchTerm] = useState('');
     const albums = useTypedSelector(state => state.music.albums.entities);
-    const [results, setResults] = useState<CombinedResults>([]);
-    // const [isLoading, setLoading] = useState(false);
+    const [fuseResults, setFuseResults] = useState<CombinedResults>([]);
+    const [jellyfinResults, setJellyfinResults] = useState<CombinedResults>([]);
+
+    const [isLoading, setLoading] = useState(false);
     const fuse = useRef<Fuse<Album>>();
 
     // Prepare helpers
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
-    const credentials = useTypedSelector(state => state.settings.jellyfin);
     const dispatch = useAppDispatch();
 
     /**
@@ -91,10 +103,52 @@ export default function Search() {
     }, [albums]);
 
     /**
+     * This function retrieves search results from Jellyfin. It is a seperate
+     * callback, so that we can make sure it is properly debounced and doesn't
+     * cause execessive jank in the interface.
+     */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const fetchJellyfinResults = useCallback(debounce(async (searchTerm: string, currentResults: CombinedResults) => {
+        // First, query the Jellyfin API
+        const { payload } = await dispatch(searchAndFetchAlbums({ term: searchTerm }));
+
+        // Convert the current results to album ids
+        const albumIds = currentResults.map(item => item.id);
+
+        // Parse the result in correct typescript form
+        const results = (payload as { results: (Album | AlbumTrack)[] }).results;
+
+        // Filter any results that are already displayed
+        const items = results.filter(item => (
+            !(item.Type === 'MusicAlbum' && albumIds.includes(item.Id))
+        // Then convert the results to proper result form
+        )).map((item) => ({
+            type: item.Type,
+            id: item.Id,
+            album: item.Type === 'Audio'
+                ? item.AlbumId
+                : undefined,
+            name: item.Type === 'Audio'
+                ? item.Name
+                : undefined,
+        }));
+
+        // Lastly, we'll merge the two and assign them to the state
+        setJellyfinResults([...items] as CombinedResults);
+
+        // Loading is now complete
+        setLoading(false);
+    }, 50), [dispatch, setJellyfinResults]);
+
+    /**
      * Whenever the search term changes, we gather results from Fuse and assign
      * them to state
      */
     useEffect(() => {
+        if (!searchTerm) {
+            return;
+        }
+
         const retrieveResults = async () => {
             // GUARD: In some extraordinary cases, Fuse might not be presented since
             // it is assigned via refs. In this case, we can't handle any searching.
@@ -111,36 +165,23 @@ export default function Search() {
                     album: undefined,
                     name: undefined,
                 }));
-            const albumIds = fuseResults.map(({ item }) => item.Id);
             
             // Assign the preliminary results
-            setResults(albums);
-
-            // Then query the Jellyfin API
-            const { payload } = await dispatch(searchAndFetchAlbums({ term: searchTerm }));
-
-            const items = (payload as 
-                { results: (Album | AlbumTrack)[] }
-            ).results.filter(item => (
-                !(item.Type === 'MusicAlbum' && albumIds.includes(item.Id))
-            )).map((item) => ({
-                type: item.Type,
-                id: item.Id,
-                album: item.Type === 'Audio'
-                    ? item.AlbumId
-                    : undefined,
-                name: item.Type === 'Audio'
-                    ? item.Name
-                    : undefined,
-            }));
-
-            // Then add those to the results
-            // console.log(results, items);
-            setResults([...albums, ...items] as CombinedResults);
+            setFuseResults(albums);
+            setLoading(true);
+            try {
+                // Wrap the call in a try/catch block so that we catch any
+                // network issues in search and just use local search if the
+                // network is unavailable
+                fetchJellyfinResults(searchTerm, albums);
+            } catch {
+                // Reset the loading indicator if the network fails
+                setLoading(false);
+            }
         };
 
         retrieveResults();
-    }, [searchTerm, setResults, fuse, credentials, dispatch]);
+    }, [searchTerm, setFuseResults, setLoading, fuse, fetchJellyfinResults]);
 
     // Handlers
     const selectAlbum = useCallback((id: string) => 
@@ -150,11 +191,17 @@ export default function Search() {
     const HeaderComponent = React.useMemo(() => (
         <Container>
             <Input value={searchTerm} onChangeText={setSearchTerm} style={defaultStyles.input} placeholder={t('search') + '...'} />
-            {(searchTerm.length && !results.length)
+            {isLoading && <Loading><ActivityIndicator /></Loading>}
+        </Container>
+    ), [searchTerm, setSearchTerm, defaultStyles, isLoading]);
+
+    const FooterComponent = React.useMemo(() => (
+        <Container>
+            {(searchTerm.length && !jellyfinResults.length && !fuseResults.length && !isLoading)
                 ? <Text style={{ textAlign: 'center' }}>{t('no-results')}</Text> 
                 : null}
         </Container>
-    ), [searchTerm, results, setSearchTerm, defaultStyles]);
+    ), [searchTerm, jellyfinResults, fuseResults, isLoading]);
 
     // GUARD: We cannot search for stuff unless Fuse is loaded with results.
     // Therefore we delay rendering to when we are certain it's there.
@@ -165,12 +212,14 @@ export default function Search() {
     return (
         <>
             <FlatList
-                data={results}
+                style={{ flex: 1 }}
+                data={[...jellyfinResults, ...fuseResults]}
                 renderItem={({ item: { id, type, album: trackAlbum, name: trackName } }: { item: AlbumResult | AudioResult }) => {
                     const album = albums[trackAlbum || id];
 
+                    // GUARD: If the album cannot be found in the store, we
+                    // cannot display it.
                     if (!album) {
-                        console.log('Couldnt find ', trackAlbum, id);
                         return null;
                     }
 
@@ -192,6 +241,7 @@ export default function Search() {
                 }}
                 keyExtractor={(item) => item.id}
                 ListHeaderComponent={HeaderComponent}
+                ListFooterComponent={FooterComponent}
                 extraData={[searchTerm, albums]}
             />
         </>

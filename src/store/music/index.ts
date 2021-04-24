@@ -77,9 +77,10 @@ const music = createSlice({
         builder.addCase(fetchTracksByAlbum.pending, (state) => { state.tracks.isLoading = true; });
         builder.addCase(fetchTracksByAlbum.rejected, (state) => { state.tracks.isLoading = false; });
         
+        builder.addCase(searchAndFetchAlbums.pending, (state) => { state.albums.isLoading = true; });
         builder.addCase(searchAndFetchAlbums.fulfilled, (state, { payload }) => {
-            console.log('INSERTING', payload.albums);
             albumAdapter.upsertMany(state.albums, payload.albums);
+            state.albums.isLoading = false;
         });
         
         // Reset any caches we have when a new server is set
