@@ -1,7 +1,7 @@
 import { createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { Album, AlbumTrack } from './types';
 import { AsyncThunkAPI } from '..';
-import { retrieveAlbums, retrieveAlbumTracks, retrieveRecentAlbums } from 'utility/JellyfinApi';
+import { retrieveAllAlbums, retrieveAlbumTracks, retrieveRecentAlbums, searchItem, retrieveAlbum } from 'utility/JellyfinApi';
 
 export const albumAdapter = createEntityAdapter<Album>({
     selectId: album => album.Id,
@@ -15,7 +15,7 @@ export const fetchAllAlbums = createAsyncThunk<Album[], undefined, AsyncThunkAPI
     '/albums/all',
     async (empty, thunkAPI) => {
         const credentials = thunkAPI.getState().settings.jellyfin;
-        return retrieveAlbums(credentials) as Promise<Album[]>;
+        return retrieveAllAlbums(credentials) as Promise<Album[]>;
     }
 );
 
@@ -43,5 +43,37 @@ export const fetchTracksByAlbum = createAsyncThunk<AlbumTrack[], string, AsyncTh
     async (ItemId, thunkAPI) => {
         const credentials = thunkAPI.getState().settings.jellyfin;
         return retrieveAlbumTracks(ItemId, credentials) as Promise<AlbumTrack[]>;
+    }
+);
+
+type SearchAndFetchResults = {
+    albums: Album[];
+    results: (Album | AlbumTrack)[]; 
+};
+
+export const searchAndFetchAlbums = createAsyncThunk<
+SearchAndFetchResults,
+{ term: string, limit?: number },
+AsyncThunkAPI
+>(
+    '/search',
+    async ({ term, limit = 24 }, thunkAPI) => {
+        const state = thunkAPI.getState();
+        const results = await searchItem(state.settings.jellyfin, term, limit);
+
+        const albums = await Promise.all(results.filter((item) => (
+            !state.music.albums.ids.includes(item.Type === 'MusicAlbum' ? item.Id : item.AlbumId)
+        )).map(async (item) => {
+            if (item.Type === 'MusicAlbum') {
+                return item;
+            }
+
+            return retrieveAlbum(state.settings.jellyfin, item.AlbumId);
+        }));
+
+        return {
+            albums,
+            results
+        };
     }
 );

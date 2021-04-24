@@ -38,5 +38,6 @@
     "enable-error-reporting-description": "This helps improve the app experience by sending crash and error reports to us.",
     "enable": "Enable",
     "disable": "Disable",
-    "more-info": "More Info"
+    "more-info": "More Info",
+    "track": "Track"
 }

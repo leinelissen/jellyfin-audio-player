@@ -1,4 +1,4 @@
-import { fetchAllAlbums, albumAdapter, fetchTracksByAlbum, trackAdapter, fetchRecentAlbums } from './actions';
+import { fetchAllAlbums, albumAdapter, fetchTracksByAlbum, trackAdapter, fetchRecentAlbums, searchAndFetchAlbums } from './actions';
 import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
 import { Album, AlbumTrack } from './types';
 import { setJellyfinCredentials } from 'store/settings/actions';
@@ -76,6 +76,11 @@ const music = createSlice({
         });
         builder.addCase(fetchTracksByAlbum.pending, (state) => { state.tracks.isLoading = true; });
         builder.addCase(fetchTracksByAlbum.rejected, (state) => { state.tracks.isLoading = false; });
+        
+        builder.addCase(searchAndFetchAlbums.fulfilled, (state, { payload }) => {
+            console.log('INSERTING', payload.albums);
+            albumAdapter.upsertMany(state.albums, payload.albums);
+        });
         
         // Reset any caches we have when a new server is set
         builder.addCase(setJellyfinCredentials, () => initialState);

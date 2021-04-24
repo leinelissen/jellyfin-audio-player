@@ -1,6 +1,6 @@
 import { Track } from 'react-native-track-player';
 import { AppState, useTypedSelector } from 'store';
-import { AlbumTrack } from 'store/music/types';
+import { Album, AlbumTrack } from 'store/music/types';
 
 type Credentials = AppState['settings']['jellyfin'];
 
@@ -70,12 +70,21 @@ const albumParams = new URLSearchParams(albumOptions).toString();
 /**
  * Retrieve all albums that are available on the Jellyfin server
  */
-export async function retrieveAlbums(credentials: Credentials) {
+export async function retrieveAllAlbums(credentials: Credentials) {
     const config = generateConfig(credentials);
     const albums = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${albumParams}`, config)
         .then(response => response.json());
 
     return albums.Items;
+}
+
+/**
+ * Retrieve a single album
+ */
+export async function retrieveAlbum(credentials: Credentials, id: string): Promise<Album> {
+    const config = generateConfig(credentials);
+    return fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items/${id}`, config)
+        .then(response => response.json());
 }
 
 const latestAlbumsOptions = {
@@ -122,11 +131,66 @@ export async function retrieveAlbumTracks(ItemId: string, credentials: Credentia
     return album.Items;
 }
 
+/**
+ * Retrieve an image URL for a given ItemId
+ */
 export function getImage(ItemId: string, credentials: Credentials): string {
     return encodeURI(`${credentials?.uri}/Items/${ItemId}/Images/Primary?format=jpeg`);
 }
 
+/**
+ * Create a hook that can convert ItemIds to image URLs
+ */
 export function useGetImage() {
     const credentials = useTypedSelector((state) => state.settings.jellyfin);
     return (ItemId: string) => getImage(ItemId, credentials);
 }
+
+const trackParams = {
+    SortBy: 'AlbumArtist,SortName',
+    SortOrder: 'Ascending',
+    IncludeItemTypes: 'Audio',
+    Recursive: 'true',
+    Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated',
+};
+
+/**
+ * Retrieve all possible tracks that can be found in Jellyfin
+ */
+export async function retrieveAllTracks(credentials: Credentials) {
+    const config = generateConfig(credentials);
+    const tracks = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${trackParams}`, config)
+        .then(response => response.json());
+
+    return tracks.Items;
+}
+
+const searchParams = {
+    IncludeItemTypes: 'Audio,MusicAlbum',
+    SortBy: 'Album,SortName',
+    SortOrder: 'Ascending',
+    Recursive: 'true',
+};
+
+/**
+ * Remotely search the Jellyfin library for a particular search term
+ */
+export async function searchItem(
+    credentials: Credentials,
+    term: string, limit = 24
+): Promise<(Album | AlbumTrack)[]> {
+    const config = generateConfig(credentials);
+
+    const params = new URLSearchParams({
+        ...searchParams,
+        SearchTerm: term,
+        Limit: limit.toString(),
+    }).toString();
+
+    const results = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${params}`, config)
+        .then(response => response.json());
+
+    return results.Items;
+}
+
+

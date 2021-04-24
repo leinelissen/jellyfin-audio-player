@@ -30,7 +30,7 @@ export interface Album {
     RunTimeTicks: number;
     ProductionYear: number;
     IsFolder: boolean;
-    Type: string;
+    Type: 'MusicAlbum';
     UserData: UserData;
     PrimaryImageAspectRatio: number;
     Artists: string[];
@@ -53,7 +53,7 @@ export interface AlbumTrack {
     ProductionYear: number;
     IndexNumber: number;
     IsFolder: boolean;
-    Type: string;
+    Type: 'Audio';
     UserData: UserData;
     Artists: string[];
     ArtistItems: ArtistItem[];
