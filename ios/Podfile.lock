@@ -267,9 +267,9 @@ PODS:
     - React-Core
   - react-native-slider (3.0.3):
     - React
-  - react-native-track-player (1.2.6):
-    - React
-  - react-native-webview (11.3.1):
+  - react-native-track-player (1.2.7):
+    - React-Core
+  - react-native-webview (11.4.2):
     - React-Core
   - React-perflogger (0.64.0)
   - React-RCTActionSheet (0.64.0):
@@ -347,9 +347,9 @@ PODS:
     - SDWebImageWebPCoder (~> 0.6.1)
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNLocalize (2.0.2):
+  - RNLocalize (2.0.3):
     - React-Core
-  - RNReanimated (2.0.0):
+  - RNReanimated (2.1.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -378,12 +378,12 @@ PODS:
     - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (2.18.1):
+  - RNScreens (3.1.1):
     - React-Core
-  - RNSentry (2.3.0):
+  - RNSentry (2.4.1):
     - React-Core
     - Sentry (= 6.1.4)
-  - RNSVG (12.1.0):
+  - RNSVG (12.1.1):
     - React
   - SDWebImage (5.10.4):
     - SDWebImage/Core (= 5.10.4)
@@ -602,8 +602,8 @@ SPEC CHECKSUMS:
   react-native-airplay-button: 6899e488bff6b4d87b33c1def54c919dad2e3803
   react-native-safe-area-context: e471852c5ed67eea4b10c5d9d43c1cebae3b231d
   react-native-slider: b733e17fdd31186707146debf1f04b5d94aa1a93
-  react-native-track-player: 92eaa90aeb24ce1a7149f983c75128075004e7a2
-  react-native-webview: 30f048378c6cee522ed9bbbedbc34acb21e58188
+  react-native-track-player: 878d6c66e4ae3a69f6a534c57c6c34a42e9b033f
+  react-native-webview: 90ccc4add19f940dfe6c89d30659aed8134f234d
   React-perflogger: 9c547d8f06b9bf00cb447f2b75e8d7f19b7e02af
   React-RCTActionSheet: 3080b6e12e0e1a5b313c8c0050699b5c794a1b11
   React-RCTAnimation: 3f96f21a497ae7dabf4d2f150ee43f906aaf516f
@@ -621,11 +621,11 @@ SPEC CHECKSUMS:
   RNCPicker: 914b557e20b3b8317b084aca9ff4b4edb95f61e4
   RNFastImage: d4870d58f5936111c56218dbd7fcfc18e65b58ff
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNLocalize: 47e22ef8c36df1d572e42a87c8ae22e3fcf551dd
-  RNReanimated: 64f6c5789f82818c07ba3c71864b73619cb23c76
-  RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
-  RNSentry: 4f6907f9a4a41058988ebaa17666e9a402b50ff2
-  RNSVG: ce9d996113475209013317e48b05c21ee988d42e
+  RNLocalize: 29e84ea169d3bca6c3b83584536c7f586a07fb98
+  RNReanimated: b8c8004b43446e3c2709fe64b2b41072f87428ad
+  RNScreens: bd1523c3bde7069b8e958e5a16e1fc7722ad0bdd
+  RNSentry: 824a6a0ec885428163fe6827aa08014f9962f223
+  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
   Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
