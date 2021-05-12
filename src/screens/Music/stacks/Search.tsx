@@ -78,6 +78,7 @@ export default function Search() {
     const defaultStyles = useDefaultStyles();
 
     // Prepare state
+    const [fuseIsReady, setFuseReady] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const albums = useTypedSelector(state => state.music.albums.entities);
     const [fuseResults, setFuseResults] = useState<CombinedResults>([]);
@@ -100,7 +101,8 @@ export default function Search() {
      */
     useEffect(() => {
         fuse.current = new Fuse(Object.values(albums) as Album[], fuseOptions);
-    }, [albums]);
+        setFuseReady(true);
+    }, [albums, setFuseReady]);
 
     /**
      * This function retrieves search results from Jellyfin. It is a seperate
@@ -205,7 +207,7 @@ export default function Search() {
 
     // GUARD: We cannot search for stuff unless Fuse is loaded with results.
     // Therefore we delay rendering to when we are certain it's there.
-    if (!fuse.current) {
+    if (!fuseIsReady) {
         return null;
     }
 
