@@ -72,27 +72,20 @@ const Album: React.FC = () => {
     const dispatch = useDispatch();
     const getImage = useGetImage();
     const playAlbum = usePlayAlbum();
-    const currentTrack = useCurrentTrack();
+    const { track: currentTrack } = useCurrentTrack();
     const navigation = useNavigation();
 
     // Setup callbacks
     const selectAlbum = useCallback(() => { playAlbum(id); }, [playAlbum, id]);
     const refresh = useCallback(() => { dispatch(fetchTracksByAlbum(id)); }, [id, dispatch]);
-    const selectTrack = useCallback(async (trackId) => {
-        const tracks = await playAlbum(id, false);
-
-        if (tracks) {
-            const track = tracks.find((t) => t.id.startsWith(trackId));
-
-            if (track) {
-                await TrackPlayer.skip(track.id);
-                await TrackPlayer.play();
-            }
-        }
+    const selectTrack = useCallback(async (index: number) => {
+        await playAlbum(id, false);
+        await TrackPlayer.skip(index);
+        await TrackPlayer.play();
     }, [playAlbum, id]);
-    const longPressTrack = useCallback((trackId: string) => { 
-        navigation.navigate('TrackPopupMenu', { trackId }); 
-    }, [navigation]);
+    const longPressTrack = useCallback((index: number) => { 
+        navigation.navigate('TrackPopupMenu', { trackId: album?.Tracks?.[index] }); 
+    }, [navigation, album]);
 
     // Retrieve album tracks on load
     useEffect(() => {
@@ -118,14 +111,14 @@ const Album: React.FC = () => {
             <Text style={[ defaultStyles.text, styles.artist ]}>{album?.AlbumArtist}</Text>
             <Button title={t('play-album')} icon={Play} onPress={selectAlbum} />
             <View style={{ marginTop: 15 }}>
-                {album?.Tracks?.length ? album.Tracks.map((trackId) =>
+                {album?.Tracks?.length ? album.Tracks.map((trackId, i) =>
                     <TouchableHandler
                         key={trackId}
-                        id={trackId}
+                        id={i}
                         onPress={selectTrack}
                         onLongPress={longPressTrack}
                     >
-                        <TrackContainer isPlaying={currentTrack?.id.startsWith(trackId) || false} style={defaultStyles.border}>
+                        <TrackContainer isPlaying={currentTrack?.backendId === trackId || false} style={defaultStyles.border}>
                             <Text style={[ defaultStyles.text, styles.index ]}>
                                 {tracks[trackId]?.IndexNumber}
                             </Text>

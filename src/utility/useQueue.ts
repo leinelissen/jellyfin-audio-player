@@ -1,18 +1,22 @@
-import { useEffect, useState } from 'react';
-import TrackPlayer, { usePlaybackState, Track } from 'react-native-track-player';
-import { useTypedSelector } from 'store';
+import { useCallback, useEffect, useState } from 'react';
+import TrackPlayer, { Event, Track, useTrackPlayerEvents } from 'react-native-track-player';
+import { useOnTrackAdded } from './AddedTrackEvents';
 
 /**
  * This hook retrieves the current playing track from TrackPlayer
  */
 export default function useQueue(): Track[] {
-    const state = usePlaybackState();
     const [queue, setQueue] = useState<Track[]>([]);
-    const addedTrackCount = useTypedSelector(state => state.player.addedTrackCount);
 
-    useEffect(() => {
-        TrackPlayer.getQueue().then(setQueue);
-    }, [state, addedTrackCount]);
+    // Define function that fetches the current queue
+    const updateQueue = useCallback(() => TrackPlayer.getQueue().then(setQueue), [setQueue]);
+
+    // Then define the triggers for updating it
+    useEffect(() => { updateQueue(); }, [updateQueue]);
+    useTrackPlayerEvents([ 
+        Event.PlaybackState,
+    ], updateQueue);
+    useOnTrackAdded(updateQueue);
 
     return queue;
 }

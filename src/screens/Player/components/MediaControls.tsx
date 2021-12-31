@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import TrackPlayer, { usePlaybackState, STATE_PLAYING, STATE_PAUSED } from 'react-native-track-player';
+import React, { useState, useCallback } from 'react';
+import TrackPlayer, { Event, State, usePlaybackState, useTrackPlayerEvents } from 'react-native-track-player';
 import { TouchableOpacity, useColorScheme } from 'react-native';
 import styled from 'styled-components/native';
 import { useHasQueue } from 'utility/useQueue';
@@ -84,16 +84,12 @@ export function NextButton({ fill }: { fill: string }) {
 export function RepeatButton({ fill }: { fill: string}) {
     const [isRepeating, setRepeating] = useState(false);
     const handlePress = useCallback(() => setRepeating(!isRepeating), [isRepeating, setRepeating]);
-    const listener = useRef<TrackPlayer.EmitterSubscription | null>(null);
     
     // The callback that should determine whether we need to repeeat or not
-    const handleEndEvent = useCallback(async () => {
+    useTrackPlayerEvents([Event.PlaybackQueueEnded], async () => {
         if (isRepeating) {
-            // Retrieve all current tracks
-            const tracks = await TrackPlayer.getQueue();
-
-            // Then skip to the first track
-            await TrackPlayer.skip(tracks[0].id);
+            // Skip to the first track
+            await TrackPlayer.skip(0);
 
             // Cautiously reset the seek time, as there might only be a single
             // item in queue.
@@ -102,19 +98,7 @@ export function RepeatButton({ fill }: { fill: string}) {
             // Then play the item
             await TrackPlayer.play();
         }
-    }, [isRepeating]);
-
-    // Subscribe to ended event handler so that we can restart the queue from
-    // the start if looping is enabled
-    useEffect(() => {
-        // Set the event listener
-        listener.current = TrackPlayer.addEventListener('playback-queue-ended', handleEndEvent);
-        
-        // Then clean up after
-        return function cleanup() {
-            listener?.current?.remove();
-        };
-    }, [handleEndEvent]);
+    });
 
     return (
         <TouchableOpacity onPress={handlePress} style={{ opacity: isRepeating ? 1 : 0.5 }}>
@@ -146,13 +130,13 @@ export function MainButton({ fill }: { fill: string }) {
     const state = usePlaybackState();
 
     switch (state) {
-        case STATE_PLAYING:
+        case State.Playing:
             return (
                 <TouchableOpacity onPress={pause}>
                     <PauseIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />
                 </TouchableOpacity>
             );
-        case STATE_PAUSED:
+        case State.Paused:
             return (
                 <TouchableOpacity onPress={play}>
                     <PlayIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />

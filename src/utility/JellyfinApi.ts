@@ -44,8 +44,8 @@ export function generateTrack(track: AlbumTrack, credentials: Credentials): Trac
     const url = encodeURI(`${credentials?.uri}/Audio/${track.Id}/universal?${trackParams}`);
 
     return {
-        id: track.Id,
         url,
+        backendId: track.Id,
         title: track.Name,
         artist: track.Artists.join(', '),
         album: track.Album,

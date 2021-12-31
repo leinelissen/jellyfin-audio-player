@@ -1,15 +1,29 @@
-import { Track } from 'react-native-track-player';
-import { useTypedSelector } from 'store';
+import { useCallback, useEffect, useState } from 'react';
+import TrackPlayer, { Event, Track, useTrackPlayerEvents } from 'react-native-track-player';
 
-const idEqual = (left: Track | undefined, right: Track | undefined) => {
-    return left?.id === right?.id;
-};
+interface CurrentTrackResponse {
+    track: Track | undefined;
+    index: number | undefined;
+}
 
 /**
  * This hook retrieves the current playing track from TrackPlayer
  */
-export default function useCurrentTrack(): Track | undefined {
-    const track = useTypedSelector(state => state.player.currentTrack, idEqual);
+export default function useCurrentTrack(): CurrentTrackResponse {
+    const [track, setTrack] = useState<Track | undefined>();
+    const [index, setIndex] = useState<number | undefined>();
+
+    // Retrieve the current track from the queue using the index
+    const retrieveCurrentTrack = useCallback(async () => {
+        const queue = await TrackPlayer.getQueue();
+        const currentTrackIndex = await TrackPlayer.getCurrentTrack();
+        setTrack(queue[currentTrackIndex]);
+        setIndex(currentTrackIndex);
+    }, [setTrack, setIndex]);
+
+    // Then execute the function on component mount and track changes
+    useEffect(() => { retrieveCurrentTrack(); }, [retrieveCurrentTrack]);
+    useTrackPlayerEvents([ Event.PlaybackTrackChanged ], retrieveCurrentTrack);
     
-    return track;
+    return { track, index };
 }

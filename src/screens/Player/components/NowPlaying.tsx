@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
 
 export default function NowPlaying() {
-    const track = useCurrentTrack();
+    const { track } = useCurrentTrack();
     const defaultStyles = useDefaultStyles();
 
     return (
@@ -40,7 +40,7 @@ export default function NowPlaying() {
             <Artwork
                 style={defaultStyles.imageBackground}
                 source={{ 
-                    uri: track?.artwork,
+                    uri: track?.artwork as string | undefined,
                     priority: FastImage.priority.high,
                 }} 
             />

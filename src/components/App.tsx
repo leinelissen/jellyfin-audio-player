@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { Capability } from 'react-native-track-player';
 import { PersistGate } from 'redux-persist/integration/react';
 import Routes from '../screens';
 import store, { persistedStore } from 'store';
@@ -12,7 +12,6 @@ import {
 import { useColorScheme } from 'react-native';
 import { ColorSchemeContext, themes } from './Colors';
 // import ErrorReportingAlert from 'utility/ErrorReportingAlert';
-import PlayerStateUpdater from './PlayerStateUpdater';
 
 export default function App(): JSX.Element {
     const colorScheme = useColorScheme();
@@ -24,12 +23,12 @@ export default function App(): JSX.Element {
             await TrackPlayer.setupPlayer();
             await TrackPlayer.updateOptions({
                 capabilities: [
-                    TrackPlayer.CAPABILITY_PLAY,
-                    TrackPlayer.CAPABILITY_PAUSE,
-                    TrackPlayer.CAPABILITY_SKIP_TO_NEXT,
-                    TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
-                    TrackPlayer.CAPABILITY_STOP,
-                    TrackPlayer.CAPABILITY_SEEK_TO,
+                    Capability.Play,
+                    Capability.Pause,
+                    Capability.SkipToNext,
+                    Capability.SkipToPrevious,
+                    Capability.Stop,
+                    Capability.SeekTo,
                 ]
             });
         }
@@ -42,7 +41,6 @@ export default function App(): JSX.Element {
                 <ColorSchemeContext.Provider value={theme}>
                     <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                         <Routes />
-                        <PlayerStateUpdater />
                     </NavigationContainer>
                 </ColorSchemeContext.Provider>
             </PersistGate>

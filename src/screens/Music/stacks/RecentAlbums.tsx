@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
-import { Album, NavigationProp } from '../types';
+import { NavigationProp } from '../types';
 import { Text, SafeAreaView, FlatList, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -14,6 +14,7 @@ import { Header } from 'components/Typography';
 import ListButton from 'components/ListButton';
 import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
+import { Album } from 'store/music/types';
 
 const styles = StyleSheet.create({
     columnWrapper: {

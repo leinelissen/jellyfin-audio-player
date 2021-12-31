@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { PropsWithChildren, useCallback } from 'react';
 import { Pressable, ViewStyle } from 'react-native';
 
-interface TouchableHandlerProps {
-    id: string;
-    onPress: (id: string) => void;
-    onLongPress?: (id: string) => void;
+interface TouchableHandlerProps<T = number> {
+    id: T;
+    onPress: (id: T) => void;
+    onLongPress?: (id: T) => void;
 }
 
 function TouchableStyles({ pressed }: { pressed: boolean }): ViewStyle {
@@ -19,7 +19,12 @@ function TouchableStyles({ pressed }: { pressed: boolean }): ViewStyle {
  * This is a generic handler that accepts id as a prop, and return it when it is
  * pressed. This comes in handy with lists in which albums / tracks need to be selected.
  */
-const TouchableHandler: React.FC<TouchableHandlerProps>  = ({ id, onPress, onLongPress, children }) => {
+function TouchableHandler<T>({ 
+    id,
+    onPress,
+    onLongPress,
+    children
+}: PropsWithChildren<TouchableHandlerProps<T>>): JSX.Element {
     const handlePress = useCallback(() => {
         return onPress(id);
     }, [id, onPress]);
@@ -37,6 +42,6 @@ const TouchableHandler: React.FC<TouchableHandlerProps>  = ({ id, onPress, onLon
             {children}
         </Pressable>
     );
-};
+}
 
 export default TouchableHandler;

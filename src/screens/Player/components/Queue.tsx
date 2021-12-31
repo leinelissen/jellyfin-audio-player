@@ -38,10 +38,9 @@ const styles = StyleSheet.create({
 export default function Queue() {
     const defaultStyles = useDefaultStyles();
     const queue = useQueue();
-    const currentTrack = useCurrentTrack();
-    const currentIndex = queue.findIndex(d => d.id === currentTrack?.id);
-    const playTrack = useCallback(async (trackId: string) => {
-        await TrackPlayer.skip(trackId);
+    const { index: currentIndex } = useCurrentTrack();
+    const playTrack = useCallback(async (index: number) => {
+        await TrackPlayer.skip(index);
         await TrackPlayer.play();
     }, []);
     const clearQueue = useCallback(async () => {
@@ -52,14 +51,14 @@ export default function Queue() {
         <View>
             <Text style={{ marginTop: 20, marginBottom: 20 }}>{t('queue')}</Text>
             {queue.map((track, i) => (
-                <TouchableHandler id={track.id} onPress={playTrack} key={i}>
+                <TouchableHandler id={i} onPress={playTrack} key={i}>
                     <QueueItem 
-                        active={currentTrack?.id === track.id}
+                        active={currentIndex === i}
                         key={i}
-                        alreadyPlayed={i < currentIndex}
+                        alreadyPlayed={currentIndex ? i < currentIndex : false}
                         style={[
                             defaultStyles.border,
-                            currentTrack?.id === track.id ? defaultStyles.activeBackground : {},
+                            currentIndex === i ? defaultStyles.activeBackground : {},
                         ]}
                     >
                         <Text style={styles.trackTitle}>{track.title}</Text>

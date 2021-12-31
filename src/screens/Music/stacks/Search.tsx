@@ -226,7 +226,7 @@ export default function Search() {
                     }
 
                     return (
-                        <TouchableHandler id={album.Id} onPress={selectAlbum}>
+                        <TouchableHandler<string> id={album.Id} onPress={selectAlbum}>
                             <SearchResult style={defaultStyles.border}>
                                 <AlbumImage source={{ uri: getImage(album.Id) }} />
                                 <View>

@@ -62,12 +62,11 @@ function Screens() {
                         }
 
                         return <Icon fill={color} width={size} height={size} />;
-                    }
+                    },
+                    tabBarActiveTintColor: THEME_COLOR,
+                    tabBarInactiveTintColor: 'gray',
+                    headerShown: false,
                 })}
-                tabBarOptions={{
-                    activeTintColor: THEME_COLOR,
-                    inactiveTintColor: 'gray',
-                }}
             >
                 <Tab.Screen name="NowPlaying" component={Player} options={{ tabBarLabel: t('now-playing') }} />
                 <Tab.Screen name="Music" component={Music} options={{ tabBarLabel: t('music') }} />
@@ -85,10 +84,12 @@ type Routes = {
 
 export default function Routes() {
     return (
-        <Stack.Navigator mode="modal" headerMode="none" screenOptions={{
+        <Stack.Navigator screenOptions={{
             cardStyle: {
                 backgroundColor: 'transparent'
-            }
+            },
+            presentation: 'modal',
+            headerShown: false,
         }}>
             <Stack.Screen name="Screens" component={Screens} />
             <Stack.Screen name="SetJellyfinServer" component={SetJellyfinServer} />
