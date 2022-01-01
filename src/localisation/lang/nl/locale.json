@@ -38,5 +38,11 @@
     "enable-error-reporting-description": "Dit helpt de appervaring te verbeteren door ons rapportages te sturen van crashes en andere foutmeldingen.",
     "enable": "Zet aan",
     "disable": "Zet uit",
-    "more-info": "Meer informatie"
+    "more-info": "Meer informatie",
+    "track": "Track",
+    "playlists": "Playlists",
+    "playlist": "Playlist",
+    "play-playlist": "Speel Playlist",
+    "shuffle-album": "Shuffle Album",
+    "shuffle-playlist": "Shuffle Playlist"
 }
