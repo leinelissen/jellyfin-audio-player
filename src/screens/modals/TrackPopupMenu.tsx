@@ -20,12 +20,11 @@ const Container = styled.View`
 
 const Buttons = styled.View`
     margin-top: 20px;
-    flex-direction: row;
-    /* justify-content: space-around; */
 `;
 
 const ButtonSpacing = styled.View`
     width: 8px;
+    height: 4px;
 `;
 
 function TrackPopupMenu() {

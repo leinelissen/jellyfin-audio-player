@@ -9,17 +9,20 @@ interface Props {
 }
 
 const Background = styled(Pressable)`
-    padding: 100px 25px;
     flex: 1;
     justify-content: center;
 `;
 
 const Container = styled(Pressable)<Pick<Props, 'fullSize'>>`
-    border-radius: 20px;
-    margin: auto 0;
-
+    margin: auto 20px;
+    padding: 4px;
+    border-radius: 8px;
+    overflow: hidden;
+    
     ${props => props.fullSize && css`
         flex: 1;
+        margin: auto 0;
+        border-radius: 0px;
     `}
 `;
 
