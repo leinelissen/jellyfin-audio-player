@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, ReactText } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
-import { Album, NavigationProp } from '../types';
+import { NavigationProp } from '../types';
 import { Text, SafeAreaView, SectionList, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +15,7 @@ import AlphabetScroller from 'components/AlphabetScroller';
 import { EntityId } from '@reduxjs/toolkit';
 import styled from 'styled-components/native';
 import useDefaultStyles from 'components/Colors';
+import { Album } from 'store/music/types';
 
 interface VirtualizedItemInfo {
     section: SectionedId,
@@ -92,7 +93,7 @@ const Albums: React.FC = () => {
     // Retrieve data from store
     const { entities: albums } = useTypedSelector((state) => state.music.albums);
     const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
-    const lastRefreshed = useTypedSelector((state) => state.music.lastRefreshed);
+    const lastRefreshed = useTypedSelector((state) => state.music.albums.lastRefreshed);
     const sections = useTypedSelector(selectAlbumsByAlphabet);
     
     // Initialise helpers

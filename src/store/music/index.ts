@@ -1,6 +1,16 @@
-import { fetchAllAlbums, albumAdapter, fetchTracksByAlbum, trackAdapter, fetchRecentAlbums, searchAndFetchAlbums } from './actions';
+import {
+    fetchAllAlbums,
+    albumAdapter,
+    fetchTracksByAlbum,
+    trackAdapter,
+    fetchRecentAlbums,
+    searchAndFetchAlbums,
+    playlistAdapter,
+    fetchAllPlaylists,
+    fetchTracksByPlaylist
+} from './actions';
 import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
-import { Album, AlbumTrack } from './types';
+import { Album, AlbumTrack, Playlist } from './types';
 import { setJellyfinCredentials } from 'store/settings/actions';
 
 export interface State {
@@ -8,13 +18,21 @@ export interface State {
         isLoading: boolean;
         entities: Dictionary<Album>;
         ids: EntityId[];
+        lastRefreshed?: number,
     },
     tracks: {
         isLoading: boolean;
         entities: Dictionary<AlbumTrack>;
         ids: EntityId[];
+        byAlbum: Dictionary<EntityId[]>;
+        byPlaylist: Dictionary<EntityId[]>;
     },
-    lastRefreshed?: number,
+    playlists: {
+        isLoading: boolean;
+        entities: Dictionary<Playlist>;
+        ids: EntityId[];
+        lastRefreshed?: number,
+    }
 }
 
 const initialState: State = {
@@ -25,7 +43,13 @@ const initialState: State = {
     tracks: {
         ...trackAdapter.getInitialState(),
         isLoading: false,
+        byAlbum: {},
+        byPlaylist: {},
     },
+    playlists: {
+        ...playlistAdapter.getInitialState(),
+        isLoading: false,
+    }
 };
 
 const music = createSlice({
@@ -41,7 +65,7 @@ const music = createSlice({
         builder.addCase(fetchAllAlbums.fulfilled, (state, { payload }) => {
             albumAdapter.setAll(state.albums, payload);
             state.albums.isLoading = false;
-            state.lastRefreshed = new Date().getTime();
+            state.albums.lastRefreshed = new Date().getTime();
         });
         builder.addCase(fetchAllAlbums.pending, (state) => { state.albums.isLoading = true; });
         builder.addCase(fetchAllAlbums.rejected, (state) => { state.albums.isLoading = false; });
@@ -59,7 +83,7 @@ const music = createSlice({
         /**
          * Fetch tracks by album
          */
-        builder.addCase(fetchTracksByAlbum.fulfilled, (state, { payload }) => {
+        builder.addCase(fetchTracksByAlbum.fulfilled, (state, { payload, meta }) => {
             if (!payload.length) {
                 return;
             }
@@ -67,9 +91,9 @@ const music = createSlice({
             trackAdapter.upsertMany(state.tracks, payload);
 
             // Also store all the track ids in the album
-            const album = state.albums.entities[payload[0].AlbumId];
+            state.tracks.byAlbum[meta.arg] = payload.map(d => d.Id);
+            const album = state.albums.entities[meta.arg];
             if (album) {
-                album.Tracks = payload.map(d => d.Id);
                 album.lastRefreshed = new Date().getTime();
             }
             state.tracks.isLoading = false;
@@ -82,6 +106,40 @@ const music = createSlice({
             albumAdapter.upsertMany(state.albums, payload.albums);
             state.albums.isLoading = false;
         });
+
+        /**
+         * Fetch all playlists
+         */
+        builder.addCase(fetchAllPlaylists.fulfilled, (state, { payload }) => {
+            playlistAdapter.setAll(state.playlists, payload);
+            state.playlists.isLoading = false;
+            state.playlists.lastRefreshed = new Date().getTime();
+        });
+        builder.addCase(fetchAllPlaylists.pending, (state) => { state.playlists.isLoading = true; });
+        builder.addCase(fetchAllPlaylists.rejected, (state) => { state.playlists.isLoading = false; });
+
+        /**
+         * Fetch tracks by playlist
+         */
+        builder.addCase(fetchTracksByPlaylist.fulfilled, (state, { payload, meta }) => {
+            if (!payload.length) {
+                return;
+            }
+
+            // Upsert the retrieved tracks
+            trackAdapter.upsertMany(state.tracks, payload);
+
+            // Also store all the track ids in the playlist
+            state.tracks.byPlaylist[meta.arg] = payload.map(d => d.Id);
+            state.tracks.isLoading = false;
+
+            const playlist = state.playlists.entities[meta.arg];
+            if (playlist) {
+                playlist.lastRefreshed = new Date().getTime();
+            }
+        });
+        builder.addCase(fetchTracksByPlaylist.pending, (state) => { state.tracks.isLoading = true; });
+        builder.addCase(fetchTracksByPlaylist.rejected, (state) => { state.tracks.isLoading = false; });
         
         // Reset any caches we have when a new server is set
         builder.addCase(setJellyfinCredentials, () => initialState);

@@ -39,5 +39,10 @@
     "enable": "Enable",
     "disable": "Disable",
     "more-info": "More Info",
-    "track": "Track"
+    "track": "Track",
+    "playlists": "Playlists",
+    "playlist": "Playlist",
+    "play-playlist": "Play Playlist",
+    "shuffle-album": "Shuffle Album",
+    "shuffle-playlist": "Shuffle Playlist"
 }

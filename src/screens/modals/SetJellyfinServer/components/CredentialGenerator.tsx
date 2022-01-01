@@ -14,7 +14,7 @@ class CredentialGenerator extends Component<Props> {
     handleStateChange = () => {
         // Call a debounced version to check if the credentials are there
         this.checkIfCredentialsAreThere();
-    }
+    };
 
     checkIfCredentialsAreThere = debounce(() => {
         // Inject some javascript to check if the credentials can be extracted
@@ -52,7 +52,7 @@ class CredentialGenerator extends Component<Props> {
             access_token: credentials.AccessToken,
             device_id: deviceId,
         });
-    }
+    };
 
     render() {
         const { serverUrl } = this.props;

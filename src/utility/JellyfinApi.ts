@@ -193,4 +193,43 @@ export async function searchItem(
     return results.Items;
 }
 
+const playlistOptions = {
+    SortBy: 'SortName',
+    SortOrder: 'Ascending',
+    IncludeItemTypes: 'Playlist',
+    Recursive: 'true',
+    Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated',
+    ImageTypeLimit: '1',
+    EnableImageTypes: 'Primary,Backdrop,Banner,Thumb',
+    MediaTypes: 'Audio',
+};
 
+/**
+ * Retrieve all albums that are available on the Jellyfin server
+ */
+export async function retrieveAllPlaylists(credentials: Credentials) {
+    const config = generateConfig(credentials);
+    const playlistParams = new URLSearchParams(playlistOptions).toString();
+    
+    const albums = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${playlistParams}`, config)
+        .then(response => response.json());
+
+    return albums.Items;
+}
+
+/**
+ * Retrieve all albums that are available on the Jellyfin server
+ */
+export async function retrievePlaylistTracks(ItemId: string, credentials: Credentials) {
+    const singlePlaylistOptions = {
+        SortBy: 'SortName',
+        UserId: credentials?.user_id || '',
+    };
+    const singlePlaylistParams = new URLSearchParams(singlePlaylistOptions).toString();
+
+    const config = generateConfig(credentials);
+    const playlists = await fetch(`${credentials?.uri}/Playlists/${ItemId}/Items?${singlePlaylistParams}`, config)
+        .then(response => response.json());
+
+    return playlists.Items;
+}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, Ref } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Input from 'components/Input';
 import { ActivityIndicator, Text, TextInput, View } from 'react-native';
 import styled from 'styled-components/native';

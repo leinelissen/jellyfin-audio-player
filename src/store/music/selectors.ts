@@ -55,7 +55,7 @@ export type SectionedId = SectionListData<EntityId>;
 /**
  * Splits a set of albums into a list that is split by alphabet letters
  */
-function splitByAlphabet(state: AppState['music']['albums']): SectionedId[] {
+function splitAlbumsByAlphabet(state: AppState['music']['albums']): SectionedId[] {
     const { entities: albums } = state;
     const albumIds = albumsByArtist(state);
     const sections: SectionedId[] = ALPHABET_LETTERS.split('').map((l) => ({ label: l, data: [] }));
@@ -75,5 +75,5 @@ function splitByAlphabet(state: AppState['music']['albums']): SectionedId[] {
  */
 export const selectAlbumsByAlphabet = createSelector(
     (state: AppState) => state.music.albums,
-    splitByAlphabet,
+    splitAlbumsByAlphabet,
 );

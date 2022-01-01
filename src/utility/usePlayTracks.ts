@@ -2,28 +2,30 @@ import { useTypedSelector } from 'store';
 import { useCallback } from 'react';
 import TrackPlayer, { Track } from 'react-native-track-player';
 import { generateTrack } from './JellyfinApi';
+import { EntityId } from '@reduxjs/toolkit';
+import { shuffle as shuffleArray } from 'lodash';
 
 /**
  * Generate a callback function that starts playing a full album given its
  * supplied id.
  */
-export default function usePlayAlbum() {
+export default function usePlayTracks() {
     const credentials = useTypedSelector(state => state.settings.jellyfin);
-    const albums = useTypedSelector(state => state.music.albums.entities);
     const tracks = useTypedSelector(state => state.music.tracks.entities);
 
-    return useCallback(async function playAlbum(albumId: string, play: boolean = true): Promise<Track[] | undefined> {
-        const album = albums[albumId];
-        const backendTrackIds = album?.Tracks;
-
-        // GUARD: Check if the album has songs
-        if (!backendTrackIds?.length) {
+    return useCallback(async function playTracks(
+        trackIds: EntityId[] | undefined,
+        play: boolean = true,
+        shuffle: boolean = false,
+    ): Promise<Track[] | undefined> {
+        if (!trackIds) {
             return;
         }
 
-        // Convert all backendTrackIds to the relevant format for react-native-track-player
-        const newTracks = backendTrackIds.map((trackId) => {
+        // Convert all trackIds to the relevant format for react-native-track-player
+        const newTracks = trackIds.map((trackId) => {
             const track = tracks[trackId];
+
             if (!trackId || !track) {
                 return;
             }
@@ -33,7 +35,7 @@ export default function usePlayAlbum() {
 
         // Clear the queue and add all tracks
         await TrackPlayer.reset();
-        await TrackPlayer.add(newTracks);
+        await TrackPlayer.add(shuffle ? shuffleArray(newTracks) : newTracks);
 
         // Play the queue
         if (play) {
@@ -41,5 +43,5 @@ export default function usePlayAlbum() {
         }
 
         return newTracks;
-    }, [credentials, albums, tracks]);
+    }, [credentials, tracks]);
 }

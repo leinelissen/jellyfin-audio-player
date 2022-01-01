@@ -1,7 +1,7 @@
 import { createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
-import { Album, AlbumTrack } from './types';
+import { Album, AlbumTrack, Playlist } from './types';
 import { AsyncThunkAPI } from '..';
-import { retrieveAllAlbums, retrieveAlbumTracks, retrieveRecentAlbums, searchItem, retrieveAlbum } from 'utility/JellyfinApi';
+import { retrieveAllAlbums, retrieveAlbumTracks, retrieveRecentAlbums, searchItem, retrieveAlbum, retrieveAllPlaylists, retrievePlaylistTracks } from 'utility/JellyfinApi';
 
 export const albumAdapter = createEntityAdapter<Album>({
     selectId: album => album.Id,
@@ -75,5 +75,32 @@ AsyncThunkAPI
             albums,
             results
         };
+    }
+);
+
+export const playlistAdapter = createEntityAdapter<Playlist>({
+    selectId: (playlist) => playlist.Id,
+    sortComparer: (a, b) => a.Name.localeCompare(b.Name),
+});
+
+/**
+ * Fetch all playlists available
+ */
+export const fetchAllPlaylists = createAsyncThunk<Playlist[], undefined, AsyncThunkAPI>(
+    '/playlists/all',
+    async (empty, thunkAPI) => {
+        const credentials = thunkAPI.getState().settings.jellyfin;
+        return retrieveAllPlaylists(credentials) as Promise<Playlist[]>;
+    }
+);
+
+/**
+ * Retrieve all tracks from a particular playlist
+ */
+export const fetchTracksByPlaylist = createAsyncThunk<AlbumTrack[], string, AsyncThunkAPI>(
+    '/tracks/byPlaylist',
+    async (ItemId, thunkAPI) => {
+        const credentials = thunkAPI.getState().settings.jellyfin;
+        return retrievePlaylistTracks(ItemId, credentials) as Promise<AlbumTrack[]>;
     }
 );

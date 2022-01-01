@@ -9,6 +9,7 @@ import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
 import Text from 'components/Text';
 import Button from 'components/Button';
+import { THEME_COLOR } from 'CONSTANTS';
 
 const QueueItem = styled.View<{ active?: boolean, alreadyPlayed?: boolean, isDark?: boolean }>`
     padding: 10px;
@@ -61,8 +62,8 @@ export default function Queue() {
                             currentIndex === i ? defaultStyles.activeBackground : {},
                         ]}
                     >
-                        <Text style={styles.trackTitle}>{track.title}</Text>
-                        <Text style={defaultStyles.textHalfOpacity}>{track.artist}</Text>
+                        <Text style={currentIndex === i ? { color: THEME_COLOR, fontWeight: '700' } : styles.trackTitle}>{track.title}</Text>
+                        <Text style={currentIndex === i ? { color: THEME_COLOR, fontWeight: '400' } : defaultStyles.textHalfOpacity}>{track.artist}</Text>
                     </QueueItem>
                 </TouchableHandler>
             ))}

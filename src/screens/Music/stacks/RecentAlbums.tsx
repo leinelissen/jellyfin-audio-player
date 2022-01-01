@@ -27,11 +27,13 @@ const NavigationHeader: React.FC = () => {
     const navigation = useNavigation();
     const defaultStyles = useDefaultStyles();
     const handleAllAlbumsClick = useCallback(() => { navigation.navigate('Albums'); }, [navigation]);
+    const handlePlaylistsClick = useCallback(() => { navigation.navigate('Playlists'); }, [navigation]);
     const handleSearchClick = useCallback(() => { navigation.navigate('Search'); }, [navigation]);
     
     return (
         <>
             <ListButton onPress={handleAllAlbumsClick}>{t('all-albums')}</ListButton>
+            <ListButton onPress={handlePlaylistsClick}>{t('playlists')}</ListButton>
             <ListButton onPress={handleSearchClick}>{t('search')}</ListButton>
             <ListContainer>
                 <Header style={defaultStyles.text}>{t('recent-albums')}</Header>
