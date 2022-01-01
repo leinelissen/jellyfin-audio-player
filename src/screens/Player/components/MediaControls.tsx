@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import TrackPlayer, { Event, State, usePlaybackState, useTrackPlayerEvents } from 'react-native-track-player';
 import { TouchableOpacity, useColorScheme } from 'react-native';
 import styled from 'styled-components/native';
-import { useHasQueue } from 'utility/useQueue';
+import { useHasNextQueue, useHasPreviousQueue } from 'utility/useQueue';
 import ForwardIcon from 'assets/forwards.svg';
 import BackwardIcon from 'assets/backwards.svg';
 import PlayIcon from 'assets/play.svg';
@@ -15,10 +15,10 @@ import Casting from './Casting';
 const BUTTON_SIZE = 40;
 const BUTTON_SIZE_SMALL = 25;
 
-const pause = () => TrackPlayer.pause();
-const play = () => TrackPlayer.play();
-const next = () => TrackPlayer.skipToNext();
-const previous = () => TrackPlayer.skipToPrevious();
+const pause = TrackPlayer.pause;
+const play = TrackPlayer.play;
+const next = TrackPlayer.skipToNext;
+const previous = TrackPlayer.skipToPrevious;
 
 const Container = styled.View`
     align-items: center;
@@ -62,7 +62,7 @@ export default function MediaControls() {
 }
 
 export function PreviousButton({ fill }: { fill: string }) {
-    const hasQueue = useHasQueue();
+    const hasQueue = useHasPreviousQueue();
 
     return (
         <TouchableOpacity onPress={previous} disabled={!hasQueue} style={{ opacity: hasQueue ? 1 : 0.5 }}>
@@ -72,7 +72,7 @@ export function PreviousButton({ fill }: { fill: string }) {
 }
 
 export function NextButton({ fill }: { fill: string }) {
-    const hasQueue = useHasQueue();
+    const hasQueue = useHasNextQueue();
 
     return (
         <TouchableOpacity onPress={next} disabled={!hasQueue} style={{ opacity: hasQueue ? 1 : 0.5 }}>

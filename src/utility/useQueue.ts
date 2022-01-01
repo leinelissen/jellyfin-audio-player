@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import TrackPlayer, { Event, Track, useTrackPlayerEvents } from 'react-native-track-player';
 import { useOnTrackAdded } from './AddedTrackEvents';
+import useCurrentTrack from './useCurrentTrack';
 
 /**
  * This hook retrieves the current playing track from TrackPlayer
@@ -24,7 +25,19 @@ export default function useQueue(): Track[] {
 /**
  * Shorthand helper to determine whether a queue exists
  */
-export function useHasQueue(): boolean {
+export function useHasNextQueue(): boolean {
+    const { index } = useCurrentTrack();
     const queue = useQueue();
-    return !!queue && queue.length > 1;
+
+    return queue?.length > 1 && (index || 0) < (queue.length - 1);
+}
+
+/**
+ * Shorthand helper to determine whether a queue exists
+ */
+export function useHasPreviousQueue(): boolean {
+    const { index } = useCurrentTrack();
+    const queue = useQueue();
+
+    return queue?.length > 1 && (index || 0) > 0;
 }
