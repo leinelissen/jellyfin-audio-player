@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StackParams } from './types';
+import { MusicStackParams } from './types';
 import Albums from './stacks/Albums';
 import Album from './stacks/Album';
 import RecentAlbums from './stacks/RecentAlbums';
@@ -11,7 +11,7 @@ import useDefaultStyles from 'components/Colors';
 import Playlists from './stacks/Playlists';
 import Playlist from './stacks/Playlist';
 
-const Stack = createStackNavigator<StackParams>();
+const Stack = createStackNavigator<MusicStackParams>();
 
 function MusicStack() {
     const defaultStyles = useDefaultStyles();

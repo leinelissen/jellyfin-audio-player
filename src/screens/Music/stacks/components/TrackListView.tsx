@@ -15,6 +15,7 @@ import useDefaultStyles from 'components/Colors';
 import usePlayTracks from 'utility/usePlayTracks';
 import { EntityId } from '@reduxjs/toolkit';
 import { WrappableButtonRow, WrappableButton } from 'components/WrappableButtonRow';
+import { MusicNavigationProp } from 'screens/Music/types';
 
 const Screen = Dimensions.get('screen');
 
@@ -85,7 +86,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const getImage = useGetImage();
     const playTracks = usePlayTracks();
     const { track: currentTrack } = useCurrentTrack();
-    const navigation = useNavigation();
+    const navigation = useNavigation<MusicNavigationProp>();
 
     // Setup callbacks
     const playEntity = useCallback(() => { playTracks(trackIds); }, [playTracks, trackIds]);

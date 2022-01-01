@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, ReactText } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
-import { NavigationProp } from '../types';
-import { Text, SafeAreaView, View, FlatList, ListRenderItem } from 'react-native';
+import { MusicNavigationProp } from '../types';
+import { Text, View, FlatList, ListRenderItem } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
@@ -12,7 +12,6 @@ import TouchableHandler from 'components/TouchableHandler';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
 import { EntityId } from '@reduxjs/toolkit';
 import useDefaultStyles from 'components/Colors';
-import { Playlist } from 'store/music/types';
 
 interface GeneratedAlbumItemProps {
     id: ReactText;
@@ -43,7 +42,7 @@ const Playlists: React.FC = () => {
     
     // Initialise helpers
     const dispatch = useDispatch();
-    const navigation = useNavigation<NavigationProp>();
+    const navigation = useNavigation<MusicNavigationProp>();
     const getImage = useGetImage();
     const listRef = useRef<FlatList<EntityId>>(null);
 
@@ -55,7 +54,9 @@ const Playlists: React.FC = () => {
 
     // Set callbacks
     const retrieveData = useCallback(() => dispatch(fetchAllPlaylists()), [dispatch]);
-    const selectAlbum = useCallback((id: string) => navigation.navigate('Playlist', { id, playlist: entities[id] as Playlist }), [navigation, entities]);
+    const selectAlbum = useCallback((id: string) => {
+        navigation.navigate('Playlist', { id });
+    }, [navigation]);
     const generateItem: ListRenderItem<EntityId> = useCallback(({ item, index }) => {
         if (index % 2 === 1) {
             return <View key={item} />;

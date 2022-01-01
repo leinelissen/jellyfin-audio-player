@@ -31,16 +31,18 @@ export default class ProgressBar extends Component<{}, State> {
     state: State = {
         position: 0,
         duration: 0,
-    }
+    };
 
-    timer: number = 0;
+    timer: NodeJS.Timeout | null = null;
 
     componentDidMount() {
         this.timer = setInterval(this.updateProgress, 500);
     }
 
     componentWillUnmount() {
-        clearInterval(this.timer);
+        if (this.timer) {
+            clearInterval(this.timer);
+        }
     }
 
     updateProgress = async () => {
@@ -50,18 +52,18 @@ export default class ProgressBar extends Component<{}, State> {
         ]);
 
         this.setState({ position, duration });
-    }
+    };
 
     handleGesture = async (gesture: number) => {
         // Set relative translation in state
         this.setState({ gesture });
-    }
+    };
 
     handleEndOfGesture = (position: number) => {
         // Calculate and set the new position
         TrackPlayer.seekTo(position);
         this.setState({ gesture: undefined, position });
-    }
+    };
 
     render() {
         const { position, duration, gesture } = this.state;

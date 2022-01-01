@@ -6,6 +6,7 @@ import { setReceivedErrorReportingAlert } from 'store/settings/actions';
 import { setSentryStatus } from './Sentry';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import { ModalNavigationProp } from 'screens/types';
 
 /**
  * This will send out an alert message asking the user if they want to enable
@@ -13,7 +14,7 @@ import { useDispatch } from 'react-redux';
  */
 export default function ErrorReportingAlert() {
     const { hasReceivedErrorReportingAlert } = useTypedSelector(state => state.settings);
-    const navigation = useNavigation();
+    const navigation = useNavigation<ModalNavigationProp>();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -53,7 +54,7 @@ export default function ErrorReportingAlert() {
             dispatch(setReceivedErrorReportingAlert());
         }
         
-    }, []);
+    }, [dispatch, hasReceivedErrorReportingAlert, navigation]);
 
     return null;
 }

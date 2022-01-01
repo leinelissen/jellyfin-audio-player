@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { StackParams } from '../types';
+import { MusicStackParams } from '../types';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from 'store';
 import TrackListView from './components/TrackListView';
@@ -8,7 +8,7 @@ import { differenceInDays } from 'date-fns';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
 import { t } from '@localisation';
 
-type Route = RouteProp<StackParams, 'Album'>;
+type Route = RouteProp<MusicStackParams, 'Album'>;
 
 const Album: React.FC = () => {
     const { params: { id } } = useRoute<Route>();

@@ -82,5 +82,8 @@
       "json",
       "node"
     ]
+  },
+  "overrides": {
+    "@types/react-native": "^0.66.10"
   }
 }

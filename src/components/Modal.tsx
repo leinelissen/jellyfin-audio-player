@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components/native';
-import { SafeAreaView, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import useDefaultStyles from './Colors';
 

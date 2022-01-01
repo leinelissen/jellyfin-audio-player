@@ -9,9 +9,10 @@ import { useNavigation } from '@react-navigation/native';
 import ListButton from 'components/ListButton';
 import { THEME_COLOR } from 'CONSTANTS';
 import Sentry from './components/Sentry';
+import { SettingsNavigationProp } from './types';
 
 export function SettingsList() {
-    const navigation = useNavigation();
+    const navigation = useNavigation<SettingsNavigationProp>();
     const handleLibraryClick = useCallback(() => { navigation.navigate('Library'); }, [navigation]);
     const handleCacheClick = useCallback(() => { navigation.navigate('Cache'); }, [navigation]);
     const handleSentryClick = useCallback(() => { navigation.navigate('Sentry'); }, [navigation]);

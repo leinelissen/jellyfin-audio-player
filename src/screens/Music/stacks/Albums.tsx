@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, ReactText } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
-import { NavigationProp } from '../types';
+import { MusicNavigationProp } from '../types';
 import { Text, SafeAreaView, SectionList, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -98,7 +98,7 @@ const Albums: React.FC = () => {
     
     // Initialise helpers
     const dispatch = useDispatch();
-    const navigation = useNavigation<NavigationProp>();
+    const navigation = useNavigation<MusicNavigationProp>();
     const getImage = useGetImage();
     const listRef = useRef<SectionList<EntityId>>(null);
 
