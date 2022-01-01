@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, Ref } from 'react';
 import Input from 'components/Input';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Text, TextInput, View } from 'react-native';
 import styled from 'styled-components/native';
 import { useAppDispatch, useTypedSelector } from 'store';
 import Fuse from 'fuse.js';
@@ -19,6 +19,10 @@ import { debounce } from 'lodash';
 const Container = styled.View`
     padding: 0 20px;
     position: relative;
+`;
+
+const FullSizeContainer = styled(Container)`
+    flex: 1;
 `;
 
 const Loading = styled.View`
@@ -80,12 +84,14 @@ export default function Search() {
     // Prepare state
     const [fuseIsReady, setFuseReady] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
-    const albums = useTypedSelector(state => state.music.albums.entities);
+    const [isLoading, setLoading] = useState(false);
     const [fuseResults, setFuseResults] = useState<CombinedResults>([]);
     const [jellyfinResults, setJellyfinResults] = useState<CombinedResults>([]);
 
-    const [isLoading, setLoading] = useState(false);
+    const albums = useTypedSelector(state => state.music.albums.entities);
+
     const fuse = useRef<Fuse<Album>>();
+    const searchElement = useRef<TextInput>(null);
 
     // Prepare helpers
     const navigation = useNavigation<NavigationProp>();
@@ -185,6 +191,13 @@ export default function Search() {
         retrieveResults();
     }, [searchTerm, setFuseResults, setLoading, fuse, fetchJellyfinResults]);
 
+    // Automatically focus on the text input on mount
+    useEffect(() => {
+        // Give the timeout a slight delay so the component has a chance to actually
+        // render the text input field.
+        setTimeout(() => searchElement.current?.focus(), 10);
+    }, []);
+
     // Handlers
     const selectAlbum = useCallback((id: string) => 
         navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]
@@ -192,18 +205,25 @@ export default function Search() {
 
     const HeaderComponent = React.useMemo(() => (
         <Container>
-            <Input value={searchTerm} onChangeText={setSearchTerm} style={defaultStyles.input} placeholder={t('search') + '...'} />
+            <Input
+                // @ts-expect-error Ref typing shenanigans
+                ref={searchElement}
+                value={searchTerm}
+                onChangeText={setSearchTerm}
+                style={defaultStyles.input}
+                placeholder={t('search') + '...'}
+            />
             {isLoading && <Loading><ActivityIndicator /></Loading>}
         </Container>
     ), [searchTerm, setSearchTerm, defaultStyles, isLoading]);
 
-    const FooterComponent = React.useMemo(() => (
-        <Container>
-            {(searchTerm.length && !jellyfinResults.length && !fuseResults.length && !isLoading)
-                ? <Text style={{ textAlign: 'center' }}>{t('no-results')}</Text> 
-                : null}
-        </Container>
-    ), [searchTerm, jellyfinResults, fuseResults, isLoading]);
+    // const FooterComponent = React.useMemo(() => (
+    //     <FullSizeContainer>
+    //         {(searchTerm.length && !jellyfinResults.length && !fuseResults.length && !isLoading)
+    //             ? <Text style={{ textAlign: 'center', opacity: 0.5 }}>{t('no-results')}</Text> 
+    //             : null}
+    //     </FullSizeContainer>
+    // ), [searchTerm, jellyfinResults, fuseResults, isLoading]);
 
     // GUARD: We cannot search for stuff unless Fuse is loaded with results.
     // Therefore we delay rendering to when we are certain it's there.
@@ -243,9 +263,14 @@ export default function Search() {
                 }}
                 keyExtractor={(item) => item.id}
                 ListHeaderComponent={HeaderComponent}
-                ListFooterComponent={FooterComponent}
+                // ListFooterComponent={FooterComponent}
                 extraData={[searchTerm, albums]}
             />
+            <FullSizeContainer>
+                {(searchTerm.length && !jellyfinResults.length && !fuseResults.length && !isLoading)
+                    ? <Text style={{ textAlign: 'center', opacity: 0.5, fontSize: 18 }}>{t('no-results')}</Text> 
+                    : null}
+            </FullSizeContainer>
         </>
     );
 }
