@@ -7,24 +7,17 @@ import { SubHeader } from 'components/Typography';
 import styled from 'styled-components/native';
 import usePlayTrack from 'utility/usePlayTrack';
 import { t } from '@localisation';
-import Button from 'components/Button';
 import PlayIcon from 'assets/play.svg';
 import QueueAppendIcon from 'assets/queue-append.svg';
 import Text from 'components/Text';
+import { WrappableButton, WrappableButtonRow } from 'components/WrappableButtonRow';
 
 type Route = RouteProp<ModalStackParams, 'TrackPopupMenu'>;
 
 const Container = styled.View`
     padding: 20px;
-`;
-
-const Buttons = styled.View`
-    margin-top: 20px;
-`;
-
-const ButtonSpacing = styled.View`
-    width: 8px;
-    height: 4px;
+    flex: 0 0 auto;
+    flex-direction: column;
 `;
 
 function TrackPopupMenu() {
@@ -51,13 +44,12 @@ function TrackPopupMenu() {
     return (
         <Modal fullSize={false}>
             <Container>
-                <SubHeader>{track?.Name}</SubHeader>
-                <Text>{track?.Album} - {track?.AlbumArtist}</Text>
-                <Buttons>
-                    <Button title={t('play-next')} icon={PlayIcon} onPress={handlePlayNext} />
-                    <ButtonSpacing />
-                    <Button title={t('add-to-queue')} icon={QueueAppendIcon} onPress={handleAddToQueue} />
-                </Buttons>
+                <SubHeader style={{ textAlign: 'center' }}>{track?.Name}</SubHeader>
+                <Text style={{ marginBottom: 18, textAlign: 'center' }}>{track?.Album} - {track?.AlbumArtist}</Text>
+                <WrappableButtonRow>
+                    <WrappableButton title={t('play-next')} icon={PlayIcon} onPress={handlePlayNext} />
+                    <WrappableButton title={t('add-to-queue')} icon={QueueAppendIcon} onPress={handleAddToQueue} />
+                </WrappableButtonRow>
             </Container>
         </Modal>
     );

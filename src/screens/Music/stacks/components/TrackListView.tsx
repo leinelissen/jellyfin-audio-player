@@ -9,12 +9,12 @@ import { THEME_COLOR } from 'CONSTANTS';
 import TouchableHandler from 'components/TouchableHandler';
 import useCurrentTrack from 'utility/useCurrentTrack';
 import TrackPlayer from 'react-native-track-player';
-import Button from 'components/Button';
 import Play from 'assets/play.svg';
 import Shuffle from 'assets/shuffle.svg';
 import useDefaultStyles from 'components/Colors';
 import usePlayTracks from 'utility/usePlayTracks';
 import { EntityId } from '@reduxjs/toolkit';
+import { WrappableButtonRow, WrappableButton } from 'components/WrappableButtonRow';
 
 const Screen = Dimensions.get('screen');
 
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     artist: {
         fontSize: 24,
         opacity: 0.5,
-        marginBottom: 24
+        marginBottom: 12
     },
     index: {
         width: 20,
@@ -109,10 +109,11 @@ const TrackListView: React.FC<TrackListViewProps> = ({
             <AlbumImage source={{ uri: getImage(entityId) }} style={defaultStyles.imageBackground} />
             <Text style={[ defaultStyles.text, styles.name ]} >{title}</Text>
             <Text style={[ defaultStyles.text, styles.artist ]}>{artist}</Text>
-            <Button title={playButtonText} icon={Play} onPress={playEntity} />
-            <View style={{ height: 4 }}></View>
-            <Button title={shuffleButtonText} icon={Shuffle} onPress={shuffleEntity} />
-            <View style={{ marginTop: 15 }}>
+            <WrappableButtonRow>
+                <WrappableButton title={playButtonText} icon={Play} onPress={playEntity} />
+                <WrappableButton title={shuffleButtonText} icon={Shuffle} onPress={shuffleEntity} />
+            </WrappableButtonRow>
+            <View style={{ marginTop: 8 }}>
                 {trackIds.map((trackId, i) =>
                     <TouchableHandler
                         key={trackId}

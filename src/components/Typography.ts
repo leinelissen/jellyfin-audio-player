@@ -10,4 +10,5 @@ export const Header = styled(Text)`
 export const SubHeader = styled(Text)`
     font-size: 24px;
     margin: 12px 0;
+    font-weight: 500;
 `;
