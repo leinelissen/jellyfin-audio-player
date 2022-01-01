@@ -93,17 +93,15 @@ const Playlists: React.FC = () => {
     });
     
     return (
-        <SafeAreaView>
-            <FlatList
-                data={ids} 
-                refreshing={isLoading}
-                onRefresh={retrieveData}
-                getItemLayout={getItemLayout}
-                ref={listRef}
-                keyExtractor={(item, index) => `${item}_${index}`}
-                renderItem={generateItem}
-            />
-        </SafeAreaView>
+        <FlatList
+            data={ids} 
+            refreshing={isLoading}
+            onRefresh={retrieveData}
+            getItemLayout={getItemLayout}
+            ref={listRef}
+            keyExtractor={(item, index) => `${item}_${index}`}
+            renderItem={generateItem}
+        />
     );
 };
 
