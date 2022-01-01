@@ -8,7 +8,7 @@
     "ios": "react-native run-ios --scheme \"Jellyfin Player\"",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx && tsc --noEmit",
     "build:ios": "react-native bundle --entry-file='index.ts' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
@@ -82,5 +82,8 @@
       "json",
       "node"
     ]
+  },
+  "overrides": {
+    "@types/react-native": "^0.66.10"
   }
 }

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components/native';
-import { SafeAreaView, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import useDefaultStyles from './Colors';
 
@@ -16,8 +16,9 @@ const Background = styled(Pressable)`
 const Container = styled(Pressable)<Pick<Props, 'fullSize'>>`
     margin: auto 20px;
     padding: 4px;
-    border-radius: 8px;
-    overflow: hidden;
+    border-radius: 12px;
+    flex: 0 0 auto;
+    background: salmon;
     
     ${props => props.fullSize && css`
         flex: 1;
@@ -35,11 +36,9 @@ const Modal: React.FC<Props> = ({ children, fullSize = true }) => {
 
     return (
         <Background style={defaultStyles.modal} onPress={closeModal}>
-            <SafeAreaView style={{ flex: 1 }}>
-                <Container style={defaultStyles.modalInner} fullSize={fullSize}>
-                    {children}
-                </Container>
-            </SafeAreaView>
+            <Container style={defaultStyles.modalInner} fullSize={fullSize}>
+                {children}
+            </Container>
         </Background>
     );
 };

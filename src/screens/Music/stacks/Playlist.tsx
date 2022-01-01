@@ -3,42 +3,42 @@ import { MusicStackParams } from '../types';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from 'store';
 import TrackListView from './components/TrackListView';
-import { fetchTracksByAlbum } from 'store/music/actions';
+import { fetchTracksByPlaylist } from 'store/music/actions';
 import { differenceInDays } from 'date-fns';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
 import { t } from '@localisation';
 
 type Route = RouteProp<MusicStackParams, 'Album'>;
 
-const Album: React.FC = () => {
+const Playlist: React.FC = () => {
     const { params: { id } } = useRoute<Route>();
     const dispatch = useAppDispatch();
 
     // Retrieve the album data from the store
-    const album = useTypedSelector((state) => state.music.albums.entities[id]);
-    const albumTracks = useTypedSelector((state) => state.music.tracks.byAlbum[id]);
+    const playlist = useTypedSelector((state) => state.music.playlists.entities[id]);
+    const playlistTracks = useTypedSelector((state) => state.music.tracks.byPlaylist[id]);
 
     // Define a function for refreshing this entity
-    const refresh = useCallback(() => dispatch(fetchTracksByAlbum(id)), [id, dispatch]);
+    const refresh = useCallback(() => dispatch(fetchTracksByPlaylist(id)), [dispatch, id]);
 
     // Auto-fetch the track data periodically
     useEffect(() => {
-        if (!album?.lastRefreshed || differenceInDays(album?.lastRefreshed, new Date()) > ALBUM_CACHE_AMOUNT_OF_DAYS) {
+        if (!playlist?.lastRefreshed || differenceInDays(playlist?.lastRefreshed, new Date()) > ALBUM_CACHE_AMOUNT_OF_DAYS) {
             refresh();
         }
-    }, [album?.lastRefreshed, refresh]);
+    }, [playlist?.lastRefreshed, refresh]);
 
     return (
         <TrackListView
-            trackIds={albumTracks || []}
-            title={album?.Name}
-            artist={album?.AlbumArtist}
+            trackIds={playlistTracks || []}
+            title={playlist?.Name}
             entityId={id}
             refresh={refresh}
-            playButtonText={t('play-album')}
-            shuffleButtonText={t('shuffle-album')}
+            listNumberingStyle='index'
+            playButtonText={t('play-playlist')}
+            shuffleButtonText={t('shuffle-playlist')}
         />
     );
 };
 
-export default Album;
+export default Playlist;

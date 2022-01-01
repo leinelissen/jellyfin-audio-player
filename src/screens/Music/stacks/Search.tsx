@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, Ref } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Input from 'components/Input';
 import { ActivityIndicator, Text, TextInput, View } from 'react-native';
 import styled from 'styled-components/native';
@@ -9,7 +9,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import TouchableHandler from 'components/TouchableHandler';
 import { useNavigation } from '@react-navigation/native';
 import { useGetImage } from 'utility/JellyfinApi';
-import { NavigationProp } from '../types';
+import { MusicNavigationProp } from '../types';
 import FastImage from 'react-native-fast-image';
 import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
@@ -94,7 +94,7 @@ export default function Search() {
     const searchElement = useRef<TextInput>(null);
 
     // Prepare helpers
-    const navigation = useNavigation<NavigationProp>();
+    const navigation = useNavigation<MusicNavigationProp>();
     const getImage = useGetImage();
     const dispatch = useAppDispatch();
 
@@ -206,7 +206,6 @@ export default function Search() {
     const HeaderComponent = React.useMemo(() => (
         <Container>
             <Input
-                // @ts-expect-error Ref typing shenanigans
                 ref={searchElement}
                 value={searchTerm}
                 onChangeText={setSearchTerm}

@@ -1,7 +1,7 @@
 import React, { useCallback, useState }  from 'react';
 import { SvgProps } from 'react-native-svg';
 import { 
-    PressableProps, ViewProps, 
+    PressableProps, ViewProps, View,
 } from 'react-native';
 import { THEME_COLOR } from 'CONSTANTS';
 import styled, { css } from 'styled-components/native';
@@ -12,7 +12,6 @@ interface ButtonProps extends PressableProps {
     title: string;
     style?: ViewProps['style'];
 }
-
 
 const BaseButton = styled.Pressable`
     padding: 16px;
@@ -32,7 +31,7 @@ const ButtonText = styled.Text<{ active?: boolean }>`
     `}
 `;
 
-export default function Button(props: ButtonProps) {
+const Button = React.forwardRef<View, ButtonProps>(function Button(props, ref) {
     const { icon: Icon, title, ...rest } = props;
     const defaultStyles = useDefaultStyles();
     const [isPressed, setPressed] = useState(false);
@@ -42,6 +41,7 @@ export default function Button(props: ButtonProps) {
     return (
         <BaseButton
             {...rest}
+            ref={ref}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
             style={[ 
@@ -62,4 +62,6 @@ export default function Button(props: ButtonProps) {
             <ButtonText active={isPressed}>{title}</ButtonText>
         </BaseButton>
     );
-}
+});
+
+export default Button;

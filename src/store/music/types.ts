@@ -75,3 +75,23 @@ export interface State {
         isLoading: boolean;
     }
 }
+
+export interface Playlist {
+    Name: string;
+    ServerId: string;
+    Id: string;
+    CanDelete: boolean;
+    SortName: string;
+    ChannelId?: any;
+    RunTimeTicks: number;
+    IsFolder: boolean;
+    Type: string;
+    UserData: UserData;
+    PrimaryImageAspectRatio: number;
+    ImageTags: ImageTags;
+    BackdropImageTags: any[];
+    LocationType: string;
+    MediaType: string;
+    Tracks?: string[];
+    lastRefreshed?: number;
+}

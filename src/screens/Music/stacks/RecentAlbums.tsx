@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
-import { NavigationProp } from '../types';
+import { MusicNavigationProp } from '../types';
 import { Text, SafeAreaView, FlatList, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -24,14 +24,16 @@ const styles = StyleSheet.create({
 });
 
 const NavigationHeader: React.FC = () => {
-    const navigation = useNavigation();
+    const navigation = useNavigation<MusicNavigationProp>();
     const defaultStyles = useDefaultStyles();
     const handleAllAlbumsClick = useCallback(() => { navigation.navigate('Albums'); }, [navigation]);
+    const handlePlaylistsClick = useCallback(() => { navigation.navigate('Playlists'); }, [navigation]);
     const handleSearchClick = useCallback(() => { navigation.navigate('Search'); }, [navigation]);
     
     return (
         <>
             <ListButton onPress={handleAllAlbumsClick}>{t('all-albums')}</ListButton>
+            <ListButton onPress={handlePlaylistsClick}>{t('playlists')}</ListButton>
             <ListButton onPress={handleSearchClick}>{t('search')}</ListButton>
             <ListContainer>
                 <Header style={defaultStyles.text}>{t('recent-albums')}</Header>
@@ -50,7 +52,7 @@ const RecentAlbums: React.FC = () => {
     
     // Initialise helpers
     const dispatch = useDispatch();
-    const navigation = useNavigation<NavigationProp>();
+    const navigation = useNavigation<MusicNavigationProp>();
     const getImage = useGetImage();
 
     // Set callbacks
