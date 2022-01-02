@@ -61,7 +61,6 @@ export function generateTrackUrl(trackId: string, credentials: Credentials) {
 
     const trackParams = new URLSearchParams(trackOptions).toString();
     const url = encodeURI(`${credentials?.uri}/Audio/${trackId}/universal?${trackParams}`);
-    console.log(url);
 
     return url;
 }
