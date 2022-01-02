@@ -44,5 +44,18 @@
     "playlist": "Playlist",
     "play-playlist": "Speel Playlist",
     "shuffle-album": "Shuffle Album",
-    "shuffle-playlist": "Shuffle Playlist"
+    "shuffle-playlist": "Shuffle Playlist",
+    "downloads": "Downloads",
+    "download-track": "Download Track",
+    "download-album": "Download Album",
+    "download-playlist": "Download Playlist",
+    "no-downloads": "Je hebt nog geen nummers gedownload",
+    "delete-track": "Verwijder Track",
+    "delete-all-tracks": "Verwijder alle nummbers",
+    "delete-album": "Verwijder Album",
+    "delete-playlist": "Verwijder Playlist",
+    "total-download-size": "Totale grootte downloads",
+    "retry-failed-downloads": "Probeer Mislukte Downloads Opnieuw",
+    "you-are-offline-message": "Je bent op dit moment offline. Je kunt alleen eerder gedownloade nummers afspelen."
+
 }
