@@ -26,7 +26,7 @@ export const downloadTrack = createAsyncThunk(
         // Actually kick off the download
         const { promise } = await downloadFile({
             fromUrl: url,
-            progressInterval: 50,
+            progressInterval: 250,
             background: true,
             begin: ({ jobId, contentLength }) => {
                 // Dispatch the initialization
