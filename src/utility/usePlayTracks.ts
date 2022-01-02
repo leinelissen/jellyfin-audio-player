@@ -5,6 +5,18 @@ import { generateTrack } from './JellyfinApi';
 import { EntityId } from '@reduxjs/toolkit';
 import { shuffle as shuffleArray } from 'lodash';
 
+interface PlayOptions {
+    play: boolean;
+    shuffle: boolean;
+    method: 'add-to-end' | 'add-after-currently-playing' | 'replace';
+}
+
+const defaults: PlayOptions = {
+    play: true,
+    shuffle: false,
+    method: 'replace',
+};
+
 /**
  * Generate a callback function that starts playing a full album given its
  * supplied id.
@@ -12,36 +24,92 @@ import { shuffle as shuffleArray } from 'lodash';
 export default function usePlayTracks() {
     const credentials = useTypedSelector(state => state.settings.jellyfin);
     const tracks = useTypedSelector(state => state.music.tracks.entities);
+    const downloads = useTypedSelector(state => state.downloads.entities);
 
     return useCallback(async function playTracks(
         trackIds: EntityId[] | undefined,
-        play: boolean = true,
-        shuffle: boolean = false,
+        options: Partial<PlayOptions> = {},
     ): Promise<Track[] | undefined> {
         if (!trackIds) {
             return;
         }
 
+        // Retrieve options and queue
+        const {
+            play,
+            shuffle,
+            method,
+        } = Object.assign({}, defaults, options);
+        const queue = await TrackPlayer.getQueue();
+
         // Convert all trackIds to the relevant format for react-native-track-player
-        const newTracks = trackIds.map((trackId) => {
+        const generatedTracks = trackIds.map((trackId) => {
             const track = tracks[trackId];
 
+            // GUARD: Check that the track actually exists in Redux
             if (!trackId || !track) {
                 return;
             }
 
-            return generateTrack(track, credentials);
+            // Retrieve the generated track from Jellyfin
+            const generatedTrack = generateTrack(track, credentials);
+
+            // Check if a downloaded version exists, and if so rewrite the URL
+            const download = downloads[trackId];
+            if (download?.location) {
+                generatedTrack.url = download.location;
+            }
+
+            return generatedTrack;
         }).filter((t): t is Track => typeof t !== 'undefined');
 
-        // Clear the queue and add all tracks
-        await TrackPlayer.reset();
-        await TrackPlayer.add(shuffle ? shuffleArray(newTracks) : newTracks);
+        // Potentially shuffle all tracks
+        const newTracks = shuffle ? shuffleArray(generatedTracks) : generatedTracks;
 
-        // Play the queue
-        if (play) {
-            await TrackPlayer.play();
+        // Then, we'll need to check where to add the track
+        switch(method) {
+            case 'add-to-end': {
+                await TrackPlayer.add(newTracks);
+
+                // Then we'll skip to it and play it
+                if (play) {
+                    await TrackPlayer.skip((await TrackPlayer.getQueue()).length - newTracks.length);
+                    await TrackPlayer.play();
+                }
+
+                break;
+            }
+            case 'add-after-currently-playing': {
+                // Try and locate the current track
+                const currentTrackIndex = await TrackPlayer.getCurrentTrack();
+                
+                // Since the argument is the id to insert the track BEFORE, we need
+                // to get the current track + 1
+                const targetTrack = currentTrackIndex >= 0 && queue.length > 1
+                    ? queue[currentTrackIndex + 1].id
+                    : undefined;
+                
+                // Depending on whether this track exists, we either add it there,
+                // or at the end of the queue.
+                await TrackPlayer.add(newTracks, targetTrack);
+    
+                if (play) {
+                    await TrackPlayer.skip(currentTrackIndex + 1);
+                    await TrackPlayer.play();
+                }
+
+                break;
+            }
+            case 'replace': {
+                await TrackPlayer.reset();
+                await TrackPlayer.add(newTracks);
+
+                if (play) {
+                    await TrackPlayer.play();
+                }
+
+                break;
+            }
         }
-
-        return newTracks;
-    }, [credentials, tracks]);
+    }, [credentials, downloads, tracks]);
 }

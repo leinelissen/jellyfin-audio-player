@@ -34,6 +34,7 @@ const ListButton: React.FC<TouchableOpacityProps> = ({ children, ...props }) => 
     const handlePressOut = useCallback(() => setPressed(false), []);
 
     return (
+        // @ts-expect-error styled-components has outdated react-native typings
         <Container
             {...props}
             onPressIn={handlePressIn}

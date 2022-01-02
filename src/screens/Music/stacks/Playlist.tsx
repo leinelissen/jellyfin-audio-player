@@ -1,18 +1,19 @@
 import React, { useCallback, useEffect } from 'react';
 import { MusicStackParams } from '../types';
 import { useRoute, RouteProp } from '@react-navigation/native';
-import { useAppDispatch, useTypedSelector } from 'store';
+import { useTypedSelector } from 'store';
 import TrackListView from './components/TrackListView';
 import { fetchTracksByPlaylist } from 'store/music/actions';
 import { differenceInDays } from 'date-fns';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
 import { t } from '@localisation';
+import { useDispatch } from 'react-redux';
 
 type Route = RouteProp<MusicStackParams, 'Album'>;
 
 const Playlist: React.FC = () => {
     const { params: { id } } = useRoute<Route>();
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
 
     // Retrieve the album data from the store
     const playlist = useTypedSelector((state) => state.music.playlists.entities[id]);
@@ -37,6 +38,8 @@ const Playlist: React.FC = () => {
             listNumberingStyle='index'
             playButtonText={t('play-playlist')}
             shuffleButtonText={t('shuffle-playlist')}
+            downloadButtonText={t('download-playlist')} 
+            deleteButtonText={t('delete-playlist')}
         />
     );
 };

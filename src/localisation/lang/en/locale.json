@@ -44,5 +44,16 @@
     "playlist": "Playlist",
     "play-playlist": "Play Playlist",
     "shuffle-album": "Shuffle Album",
-    "shuffle-playlist": "Shuffle Playlist"
+    "shuffle-playlist": "Shuffle Playlist",
+    "downloads": "Downloads",
+    "download-track": "Download Track",
+    "download-album": "Download Album",
+    "download-playlist": "Download Playlist",
+    "no-downloads": "You have not yet downloaded any tracks",
+    "delete-track": "Delete Track",
+    "delete-all-tracks": "Delete All Tracks",
+    "delete-album": "Delete Album",
+    "delete-playlist": "Delete Playlist",
+    "total-download-size": "Total Download Size",
+    "retry-failed-downloads": "Retry Failed Downloads"
 }

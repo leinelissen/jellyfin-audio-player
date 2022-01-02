@@ -33,7 +33,7 @@ export default class ProgressBar extends Component<{}, State> {
         duration: 0,
     };
 
-    timer: NodeJS.Timeout | null = null;
+    timer: number | null = null;
 
     componentDidMount() {
         this.timer = setInterval(this.updateProgress, 500);

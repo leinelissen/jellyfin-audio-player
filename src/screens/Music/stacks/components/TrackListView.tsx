@@ -16,6 +16,12 @@ import usePlayTracks from 'utility/usePlayTracks';
 import { EntityId } from '@reduxjs/toolkit';
 import { WrappableButtonRow, WrappableButton } from 'components/WrappableButtonRow';
 import { MusicNavigationProp } from 'screens/Music/types';
+import DownloadIcon from 'components/DownloadIcon';
+import CloudDownArrow from 'assets/cloud-down-arrow.svg';
+import Trash from 'assets/trash.svg';
+import { useDispatch } from 'react-redux';
+import { downloadTrack, removeDownloadedTrack } from 'store/downloads/actions';
+import { selectDownloadedTracks } from 'store/downloads/selectors';
 
 const Screen = Dimensions.get('screen');
 
@@ -44,14 +50,14 @@ const AlbumImage = styled(FastImage)`
 `;
 
 const TrackContainer = styled.View<{isPlaying: boolean}>`
-    padding: 15px;
+    padding: 15px 4px;
     border-bottom-width: 1px;
     flex-direction: row;
 
     ${props => props.isPlaying && css`
         background-color: ${THEME_COLOR}16;
         margin: 0 -20px;
-        padding: 15px 35px;
+        padding: 15px 24px;
     `}
 `;
 
@@ -63,6 +69,8 @@ interface TrackListViewProps {
     refresh: () => void;
     playButtonText: string;
     shuffleButtonText: string;
+    downloadButtonText: string;
+    deleteButtonText: string;
     listNumberingStyle?: 'album' | 'index';
 }
 
@@ -74,6 +82,8 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     refresh,
     playButtonText,
     shuffleButtonText,
+    downloadButtonText,
+    deleteButtonText,
     listNumberingStyle = 'album',
 }) => {
     const defaultStyles = useDefaultStyles();
@@ -81,24 +91,32 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     // Retrieve state
     const tracks = useTypedSelector((state) => state.music.tracks.entities);
     const isLoading = useTypedSelector((state) => state.music.tracks.isLoading);
+    const downloadedTracks = useTypedSelector(selectDownloadedTracks(trackIds));
 
     // Retrieve helpers
     const getImage = useGetImage();
     const playTracks = usePlayTracks();
     const { track: currentTrack } = useCurrentTrack();
     const navigation = useNavigation<MusicNavigationProp>();
+    const dispatch = useDispatch();
 
     // Setup callbacks
     const playEntity = useCallback(() => { playTracks(trackIds); }, [playTracks, trackIds]);
-    const shuffleEntity = useCallback(() => { playTracks(trackIds, true, true); }, [playTracks, trackIds]);
+    const shuffleEntity = useCallback(() => { playTracks(trackIds, { shuffle: true }); }, [playTracks, trackIds]);
     const selectTrack = useCallback(async (index: number) => {
-        await playTracks(trackIds, false);
+        await playTracks(trackIds, { play: false });
         await TrackPlayer.skip(index);
         await TrackPlayer.play();
     }, [playTracks, trackIds]);
     const longPressTrack = useCallback((index: number) => { 
         navigation.navigate('TrackPopupMenu', { trackId: trackIds[index] }); 
     }, [navigation, trackIds]);
+    const downloadAllTracks = useCallback(() => {
+        trackIds.forEach((trackId) => dispatch(downloadTrack(trackId)));
+    }, [dispatch, trackIds]);
+    const deleteAllTracks = useCallback(() => {
+        downloadedTracks.forEach((trackId) => dispatch(removeDownloadedTrack(trackId)));
+    }, [dispatch, downloadedTracks]);
 
     return (
         <ScrollView
@@ -145,9 +163,26 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                             >
                                 {tracks[trackId]?.Name}
                             </Text>
+                            <View style={{ marginLeft: 'auto' }}>
+                                <DownloadIcon trackId={trackId} />
+                            </View>
                         </TrackContainer>
                     </TouchableHandler>
                 )}
+                <WrappableButtonRow style={{ marginTop: 24 }}>
+                    <WrappableButton
+                        icon={CloudDownArrow}
+                        title={downloadButtonText}
+                        onPress={downloadAllTracks}
+                        disabled={downloadedTracks.length === trackIds.length}
+                    />
+                    <WrappableButton
+                        icon={Trash}
+                        title={deleteButtonText}
+                        onPress={deleteAllTracks}
+                        disabled={downloadedTracks.length === 0}
+                    />
+                </WrappableButtonRow>
             </View>
         </ScrollView>
     );

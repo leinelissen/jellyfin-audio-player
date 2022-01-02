@@ -10,10 +10,14 @@ import useDefaultStyles from 'components/Colors';
 import Text from 'components/Text';
 import Button from 'components/Button';
 import { THEME_COLOR } from 'CONSTANTS';
+import DownloadIcon from 'components/DownloadIcon';
 
 const QueueItem = styled.View<{ active?: boolean, alreadyPlayed?: boolean, isDark?: boolean }>`
     padding: 10px;
     border-bottom-width: 1px;
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: center;
 
     ${props => props.active && css`
         font-weight: 900;
@@ -62,8 +66,13 @@ export default function Queue() {
                             currentIndex === i ? defaultStyles.activeBackground : {},
                         ]}
                     >
-                        <Text style={currentIndex === i ? { color: THEME_COLOR, fontWeight: '700' } : styles.trackTitle}>{track.title}</Text>
-                        <Text style={currentIndex === i ? { color: THEME_COLOR, fontWeight: '400' } : defaultStyles.textHalfOpacity}>{track.artist}</Text>
+                        <View>
+                            <Text style={currentIndex === i ? { color: THEME_COLOR, fontWeight: '700' } : styles.trackTitle}>{track.title}</Text>
+                            <Text style={currentIndex === i ? { color: THEME_COLOR, fontWeight: '400' } : defaultStyles.textHalfOpacity}>{track.artist}</Text>
+                        </View>
+                        <View style={{ marginLeft: 'auto' }}>
+                            <DownloadIcon trackId={track.backendId} />
+                        </View>
                     </QueueItem>
                 </TouchableHandler>
             ))}

@@ -5,12 +5,17 @@ import { ModalStackParams } from 'screens/types';
 import { useTypedSelector } from 'store';
 import { SubHeader } from 'components/Typography';
 import styled from 'styled-components/native';
-import usePlayTrack from 'utility/usePlayTrack';
 import { t } from '@localisation';
 import PlayIcon from 'assets/play.svg';
+import DownloadIcon from 'assets/cloud-down-arrow.svg';
 import QueueAppendIcon from 'assets/queue-append.svg';
+import TrashIcon from 'assets/trash.svg';
 import Text from 'components/Text';
 import { WrappableButton, WrappableButtonRow } from 'components/WrappableButtonRow';
+import { useDispatch } from 'react-redux';
+import { downloadTrack, removeDownloadedTrack } from 'store/downloads/actions';
+import usePlayTracks from 'utility/usePlayTracks';
+import { selectIsDownloaded } from 'store/downloads/selectors';
 
 type Route = RouteProp<ModalStackParams, 'TrackPopupMenu'>;
 
@@ -21,25 +26,46 @@ const Container = styled.View`
 `;
 
 function TrackPopupMenu() {
-    // Retrieve helpers
+    // Retrieve trackId from route
     const { params: { trackId } } = useRoute<Route>();
+
+    // Retrieve helpers
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const playTracks = usePlayTracks();
+
+    // Retrieve data from store
     const track = useTypedSelector((state) => state.music.tracks.entities[trackId]);
-    const playTrack = usePlayTrack();
+    const isDownloaded = useTypedSelector(selectIsDownloaded(trackId));
 
     // Set callback to close the modal
     const closeModal = useCallback(() => {
         navigation.dispatch(StackActions.popToTop());    
     }, [navigation]);
 
+    // Callback for adding the track to the queue as the next song
     const handlePlayNext = useCallback(() => {
-        playTrack(trackId, false, false);
+        playTracks([trackId], { method: 'add-after-currently-playing', play: false });
         closeModal();
-    }, [playTrack, closeModal, trackId]);
+    }, [playTracks, closeModal, trackId]);
+
+    // Callback for adding the track to the end of the queue
     const handleAddToQueue = useCallback(() => {
-        playTrack(trackId, false, true);
+        playTracks([trackId], { method: 'add-to-end', play: false });
         closeModal();
-    }, [playTrack, closeModal, trackId]);
+    }, [playTracks, closeModal, trackId]);
+
+    // Callback for downloading the track
+    const handleDownload = useCallback(() => {
+        dispatch(downloadTrack(trackId));
+        closeModal();
+    }, [trackId, dispatch, closeModal]);
+
+    // Callback for removing the downloaded track
+    const handleDelete = useCallback(() => {
+        dispatch(removeDownloadedTrack(trackId));
+        closeModal();
+    }, [trackId, dispatch, closeModal]);
 
     return (
         <Modal fullSize={false}>
@@ -49,6 +75,11 @@ function TrackPopupMenu() {
                 <WrappableButtonRow>
                     <WrappableButton title={t('play-next')} icon={PlayIcon} onPress={handlePlayNext} />
                     <WrappableButton title={t('add-to-queue')} icon={QueueAppendIcon} onPress={handleAddToQueue} />
+                    {isDownloaded ? (
+                        <WrappableButton title={t('delete-track')} icon={TrashIcon} onPress={handleDelete} />
+                    ) : (
+                        <WrappableButton title={t('download-track')} icon={DownloadIcon} onPress={handleDownload} />
+                    )}
                 </WrappableButtonRow>
             </Container>
         </Modal>

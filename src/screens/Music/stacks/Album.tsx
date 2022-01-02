@@ -1,25 +1,26 @@
 import React, { useCallback, useEffect } from 'react';
 import { MusicStackParams } from '../types';
 import { useRoute, RouteProp } from '@react-navigation/native';
-import { useAppDispatch, useTypedSelector } from 'store';
+import { useTypedSelector } from 'store';
 import TrackListView from './components/TrackListView';
 import { fetchTracksByAlbum } from 'store/music/actions';
 import { differenceInDays } from 'date-fns';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
 import { t } from '@localisation';
+import { useDispatch } from 'react-redux';
 
 type Route = RouteProp<MusicStackParams, 'Album'>;
 
 const Album: React.FC = () => {
     const { params: { id } } = useRoute<Route>();
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
 
     // Retrieve the album data from the store
     const album = useTypedSelector((state) => state.music.albums.entities[id]);
     const albumTracks = useTypedSelector((state) => state.music.tracks.byAlbum[id]);
 
     // Define a function for refreshing this entity
-    const refresh = useCallback(() => dispatch(fetchTracksByAlbum(id)), [id, dispatch]);
+    const refresh = useCallback(() => { dispatch(fetchTracksByAlbum(id)); }, [id, dispatch]);
 
     // Auto-fetch the track data periodically
     useEffect(() => {
@@ -37,6 +38,8 @@ const Album: React.FC = () => {
             refresh={refresh}
             playButtonText={t('play-album')}
             shuffleButtonText={t('shuffle-album')}
+            downloadButtonText={t('download-album')}
+            deleteButtonText={t('delete-album')}
         />
     );
 };

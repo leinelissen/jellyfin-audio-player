@@ -20,6 +20,10 @@ const BaseButton = styled.Pressable`
     align-items: center;
     justify-content: center;
     flex-grow: 1;
+
+    ${(props) => props.disabled && css`
+        opacity: 0.25;
+    `}
 `;
 
 const ButtonText = styled.Text<{ active?: boolean }>`
@@ -32,7 +36,7 @@ const ButtonText = styled.Text<{ active?: boolean }>`
 `;
 
 const Button = React.forwardRef<View, ButtonProps>(function Button(props, ref) {
-    const { icon: Icon, title, ...rest } = props;
+    const { icon: Icon, title, disabled, ...rest } = props;
     const defaultStyles = useDefaultStyles();
     const [isPressed, setPressed] = useState(false);
     const handlePressIn = useCallback(() => setPressed(true), []);
@@ -41,6 +45,8 @@ const Button = React.forwardRef<View, ButtonProps>(function Button(props, ref) {
     return (
         <BaseButton
             {...rest}
+            disabled={disabled}
+            // @ts-expect-error styled-components has outdated react-native typings
             ref={ref}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
@@ -51,8 +57,8 @@ const Button = React.forwardRef<View, ButtonProps>(function Button(props, ref) {
         >
             {Icon && 
                 <Icon
-                    width={12}
-                    height={12}
+                    width={14}
+                    height={14}
                     fill={isPressed ? '#fff' : THEME_COLOR}
                     style={{ 
                         marginRight: 8,
