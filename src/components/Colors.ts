@@ -22,7 +22,7 @@ function generateStyles(scheme: ColorSchemeName) {
             borderColor: scheme === 'dark' ? '#262626' : '#ddd',
         },
         activeBackground: {
-            backgroundColor: `${THEME_COLOR}${scheme === 'dark' ? '66' : '16'}`,
+            backgroundColor: `${THEME_COLOR}${scheme === 'dark' ? '26' : '16'}`,
         },
         imageBackground: {
             backgroundColor: scheme === 'dark' ? '#333' : '#ddd',
