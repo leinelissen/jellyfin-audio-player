@@ -4,10 +4,11 @@ import { THEME_COLOR } from 'CONSTANTS';
 import styled from 'styled-components/native';
 import CloudSlash from 'assets/cloud-slash.svg';
 import { Text } from 'react-native';
+import { t } from '@localisation';
+import useDefaultStyles from 'components/Colors';
 
 const Well = styled.View`
     border-radius: 8px;
-    background-color: ${THEME_COLOR}22;
     flex: 1;
     flex-direction: row;
     align-items: center;
@@ -16,13 +17,16 @@ const Well = styled.View`
 `;
 
 function ConnectionNotice() {
+    const defaultStyles = useDefaultStyles();
     const { isInternetReachable } = useNetInfo();
 
     if (!isInternetReachable) {
         return (
-            <Well>
+            <Well style={defaultStyles.activeBackground}>
                 <CloudSlash width={24} height={24} fill={THEME_COLOR} />
-                <Text style={{ color: THEME_COLOR, marginLeft: 12 }}>You are currently offline. You can only play previously downloaded music.</Text>
+                <Text style={{ color: THEME_COLOR, marginLeft: 12 }}>
+                    {t('you-are-offline-message')}
+                </Text>
             </Well>
         );
     }

@@ -55,7 +55,6 @@ const TrackContainer = styled.View<{isPlaying: boolean}>`
     flex-direction: row;
 
     ${props => props.isPlaying && css`
-        background-color: ${THEME_COLOR}16;
         margin: 0 -20px;
         padding: 15px 24px;
     `}
@@ -140,7 +139,10 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                         onPress={selectTrack}
                         onLongPress={longPressTrack}
                     >
-                        <TrackContainer isPlaying={currentTrack?.backendId === trackId || false} style={defaultStyles.border}>
+                        <TrackContainer
+                            isPlaying={currentTrack?.backendId === trackId || false}
+                            style={[defaultStyles.border, currentTrack?.backendId === trackId || false ? defaultStyles.activeBackground : null ]}
+                        >
                             <Text
                                 style={[
                                     defaultStyles.text,

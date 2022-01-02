@@ -92,7 +92,7 @@ function Downloads() {
                 <DownloadIcon trackId={item} />
             </View>
             <View style={{ flexShrink: 1, marginRight: 8 }}>
-                <Text style={{ fontSize: 16, marginBottom: 4 }} numberOfLines={1}>
+                <Text style={[{ fontSize: 16, marginBottom: 4 }, defaultStyles.text]} numberOfLines={1}>
                     {tracks[item]?.Name}
                 </Text>
                 <Text style={[{ flexShrink: 1, fontSize: 11 }, defaultStyles.textHalfOpacity]} numberOfLines={1}>
