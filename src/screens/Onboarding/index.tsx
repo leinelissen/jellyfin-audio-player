@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { THEME_COLOR } from 'CONSTANTS';
-import { Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from 'screens';
 import { useTypedSelector } from 'store';
 import { useDispatch } from 'react-redux';
 import { setOnboardingStatus } from 'store/settings/actions';
 import { t } from '@localisation';
+import Button from 'components/Button';
 
 const Container = styled.SafeAreaView`
     background-color: ${THEME_COLOR};
@@ -67,7 +67,9 @@ function Onboarding() {
                     {t('onboarding-cta')}
                 </Text>
                 <ButtonContainer>
-                    <Button title={t('set-jellyfin-server')} color="#ffffff" onPress={handleClick} />
+                    <Button
+                        title={t('set-jellyfin-server')}
+                        onPress={handleClick}/>
                 </ButtonContainer>
             </TextContainer>
         </Container>
