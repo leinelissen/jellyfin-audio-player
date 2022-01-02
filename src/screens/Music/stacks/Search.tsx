@@ -265,11 +265,11 @@ export default function Search() {
                 // ListFooterComponent={FooterComponent}
                 extraData={[searchTerm, albums]}
             />
-            <FullSizeContainer>
-                {(searchTerm.length && !jellyfinResults.length && !fuseResults.length && !isLoading)
-                    ? <Text style={{ textAlign: 'center', opacity: 0.5, fontSize: 18 }}>{t('no-results')}</Text> 
-                    : null}
-            </FullSizeContainer>
+            {(searchTerm.length && !jellyfinResults.length && !fuseResults.length && !isLoading) ? (
+                <FullSizeContainer>
+                    <Text style={{ textAlign: 'center', opacity: 0.5, fontSize: 18 }}>{t('no-results')}</Text> 
+                </FullSizeContainer>
+            ) : null}
         </>
     );
 }
