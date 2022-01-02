@@ -17,7 +17,6 @@ import { EntityId } from '@reduxjs/toolkit';
 import { WrappableButtonRow, WrappableButton } from 'components/WrappableButtonRow';
 import { MusicNavigationProp } from 'screens/Music/types';
 import DownloadIcon from 'components/DownloadIcon';
-import Button from 'components/Button';
 import CloudDownArrow from 'assets/cloud-down-arrow.svg';
 import Trash from 'assets/trash.svg';
 import { useDispatch } from 'react-redux';

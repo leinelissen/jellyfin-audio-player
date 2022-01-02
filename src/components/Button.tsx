@@ -46,6 +46,7 @@ const Button = React.forwardRef<View, ButtonProps>(function Button(props, ref) {
         <BaseButton
             {...rest}
             disabled={disabled}
+            // @ts-expect-error styled-components has outdated react-native typings
             ref={ref}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}

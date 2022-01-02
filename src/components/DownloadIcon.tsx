@@ -5,7 +5,7 @@ import CloudExclamationMarkIcon from 'assets/cloud-exclamation-mark.svg';
 import InternalDriveIcon from 'assets/internal-drive.svg';
 import useDefaultStyles from './Colors';
 import { EntityId } from '@reduxjs/toolkit';
-import Svg, { Circle } from 'react-native-svg';
+import Svg, { Circle, CircleProps } from 'react-native-svg';
 import { Animated, Easing } from 'react-native';
 
 interface DownloadIconProps {
@@ -44,7 +44,9 @@ function DownloadIcon({ trackId, size = 16, fill }: DownloadIconProps) {
     // apply them to the circle using native props
     useEffect(() => {
         const subscription = offsetAnimation.addListener((offset) => {
-            circleRef.current?.setNativeProps({ strokeDashoffset: offset.value });
+            // @ts-expect-error undocumented functionality
+            const setNativeProps = circleRef.current?.setNativeProps as (props: CircleProps) => void | undefined;
+            setNativeProps?.({ strokeDashoffset: offset.value });
         });
 
         return () => offsetAnimation.removeListener(subscription);
@@ -78,6 +80,7 @@ function DownloadIcon({ trackId, size = 16, fill }: DownloadIconProps) {
                     cy={radius}
                     r={radius - 1}
                     stroke={iconFill}
+                    // @ts-expect-error react-native-svg has outdated react-native typings
                     ref={circleRef}
                     strokeWidth={1.5}
                     strokeDasharray={[ circumference, circumference ]}
