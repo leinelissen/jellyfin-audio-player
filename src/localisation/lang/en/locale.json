@@ -51,5 +51,7 @@
     "download-playlist": "Download Playlist",
     "no-downloads": "You have not yet downloaded any tracks",
     "delete-all-tracks": "Delete All Tracks",
+    "delete-album": "Delete Album",
+    "delete-playlist": "Delete Playlist",
     "total-download-size": "Total Download Size"
 }

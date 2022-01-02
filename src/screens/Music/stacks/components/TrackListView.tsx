@@ -19,8 +19,10 @@ import { MusicNavigationProp } from 'screens/Music/types';
 import DownloadIcon from 'components/DownloadIcon';
 import Button from 'components/Button';
 import CloudDownArrow from 'assets/cloud-down-arrow.svg';
+import Trash from 'assets/trash.svg';
 import { useDispatch } from 'react-redux';
-import { downloadTrack } from 'store/downloads/actions';
+import { downloadTrack, removeDownloadedTrack } from 'store/downloads/actions';
+import { selectDownloadedTracks } from 'store/downloads/selectors';
 
 const Screen = Dimensions.get('screen');
 
@@ -68,7 +70,8 @@ interface TrackListViewProps {
     refresh: () => void;
     playButtonText: string;
     shuffleButtonText: string;
-    downloadText: string;
+    downloadButtonText: string;
+    deleteButtonText: string;
     listNumberingStyle?: 'album' | 'index';
 }
 
@@ -80,7 +83,8 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     refresh,
     playButtonText,
     shuffleButtonText,
-    downloadText,
+    downloadButtonText,
+    deleteButtonText,
     listNumberingStyle = 'album',
 }) => {
     const defaultStyles = useDefaultStyles();
@@ -88,6 +92,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     // Retrieve state
     const tracks = useTypedSelector((state) => state.music.tracks.entities);
     const isLoading = useTypedSelector((state) => state.music.tracks.isLoading);
+    const downloadedTracks = useTypedSelector(selectDownloadedTracks(trackIds));
 
     // Retrieve helpers
     const getImage = useGetImage();
@@ -110,6 +115,9 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const downloadAllTracks = useCallback(() => {
         trackIds.forEach((trackId) => dispatch(downloadTrack(trackId)));
     }, [dispatch, trackIds]);
+    const deleteAllTracks = useCallback(() => {
+        downloadedTracks.forEach((trackId) => dispatch(removeDownloadedTrack(trackId)));
+    }, [dispatch, downloadedTracks]);
 
     return (
         <ScrollView
@@ -162,7 +170,20 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                         </TrackContainer>
                     </TouchableHandler>
                 )}
-                <Button icon={CloudDownArrow} title={downloadText} style={{ marginTop: 12 }} onPress={downloadAllTracks} />
+                <WrappableButtonRow style={{ marginTop: 24 }}>
+                    <WrappableButton
+                        icon={CloudDownArrow}
+                        title={downloadButtonText}
+                        onPress={downloadAllTracks}
+                        disabled={downloadedTracks.length === trackIds.length}
+                    />
+                    <WrappableButton
+                        icon={Trash}
+                        title={deleteButtonText}
+                        onPress={deleteAllTracks}
+                        disabled={downloadedTracks.length === 0}
+                    />
+                </WrappableButtonRow>
             </View>
         </ScrollView>
     );

@@ -37,7 +37,8 @@ const Playlist: React.FC = () => {
             listNumberingStyle='index'
             playButtonText={t('play-playlist')}
             shuffleButtonText={t('shuffle-playlist')}
-            downloadText={t('download-playlist')}
+            downloadButtonText={t('download-playlist')} 
+            deleteButtonText={t('delete-playlist')}
         />
     );
 };
