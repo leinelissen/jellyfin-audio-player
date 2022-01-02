@@ -60,9 +60,4 @@ static void InitializeFlipper(UIApplication *application) {
 #endif
 }
 
-- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
-{
-  [RNFSManager setCompletionHandlerForIdentifier:identifier completionHandler:completionHandler];
-}
-
 @end
