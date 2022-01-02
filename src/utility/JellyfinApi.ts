@@ -20,8 +20,8 @@ const baseTrackOptions: Record<string, string> = {
     MaxStreamingBitrate: '140000000',
     MaxSampleRate: '48000',
     // This must be set to support client seeking
-    TranscodingProtocol: 'hls',
-    TranscodingContainer: 'ts',
+    TranscodingProtocol: 'http',
+    TranscodingContainer: 'aac',
     Container: 'mp3,aac,m4a,m4b|aac,alac,m4a,m4b|alac,flac|ogg',
     AudioCodec: 'aac',
     static: 'true',
@@ -61,6 +61,7 @@ export function generateTrackUrl(trackId: string, credentials: Credentials) {
 
     const trackParams = new URLSearchParams(trackOptions).toString();
     const url = encodeURI(`${credentials?.uri}/Audio/${trackId}/universal?${trackParams}`);
+    console.log(url);
 
     return url;
 }
