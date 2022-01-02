@@ -34,14 +34,7 @@ const baseTrackOptions: Record<string, string> = {
  */
 export function generateTrack(track: AlbumTrack, credentials: Credentials): Track {
     // Also construct the URL for the stream
-    const trackOptions = {
-        ...baseTrackOptions,
-        UserId: credentials?.user_id || '',
-        api_key: credentials?.access_token || '',
-        DeviceId: credentials?.device_id || '',
-    };
-    const trackParams = new URLSearchParams(trackOptions).toString();
-    const url = encodeURI(`${credentials?.uri}/Audio/${track.Id}/universal?${trackParams}`);
+    const url = generateTrackUrl(track.Id, credentials);
 
     return {
         url,
@@ -53,6 +46,23 @@ export function generateTrack(track: AlbumTrack, credentials: Credentials): Trac
             ? getImage(track.AlbumId, credentials)
             : getImage(track.Id, credentials),
     };
+}
+
+/**
+ * Generate the track streaming url from the trackId
+ */
+export function generateTrackUrl(trackId: string, credentials: Credentials) {
+    const trackOptions = {
+        ...baseTrackOptions,
+        UserId: credentials?.user_id || '',
+        api_key: credentials?.access_token || '',
+        DeviceId: credentials?.device_id || '',
+    };
+
+    const trackParams = new URLSearchParams(trackOptions).toString();
+    const url = encodeURI(`${credentials?.uri}/Audio/${trackId}/universal?${trackParams}`);
+
+    return url;
 }
 
 const albumOptions = {

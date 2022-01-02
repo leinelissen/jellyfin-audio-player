@@ -3,7 +3,6 @@ import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import { persistStore, persistReducer, PersistConfig } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
-// import logger from 'redux-logger';
 
 const persistConfig: PersistConfig<AppState> = {
     key: 'root',
@@ -13,10 +12,12 @@ const persistConfig: PersistConfig<AppState> = {
 
 import settings from './settings';
 import music from './music';
+import downloads from './downloads';
 
 const reducers = combineReducers({
     settings,
     music: music.reducer,
+    downloads: downloads.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);
@@ -24,7 +25,8 @@ const persistedReducer = persistReducer(persistConfig, reducers);
 const store = configureStore({
     reducer: persistedReducer,
     middleware: getDefaultMiddleware({ serializableCheck: false, immutableCheck: false }).concat(
-        // logger
+        // logger,
+        __DEV__ ? require('redux-flipper').default() : undefined,
     ),
 });
 

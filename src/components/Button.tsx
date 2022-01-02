@@ -51,8 +51,8 @@ const Button = React.forwardRef<View, ButtonProps>(function Button(props, ref) {
         >
             {Icon && 
                 <Icon
-                    width={12}
-                    height={12}
+                    width={14}
+                    height={14}
                     fill={isPressed ? '#fff' : THEME_COLOR}
                     style={{ 
                         marginRight: 8,

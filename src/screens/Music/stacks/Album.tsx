@@ -37,6 +37,7 @@ const Album: React.FC = () => {
             refresh={refresh}
             playButtonText={t('play-album')}
             shuffleButtonText={t('shuffle-album')}
+            downloadText={t('download-album')}
         />
     );
 };

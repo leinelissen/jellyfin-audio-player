@@ -2,17 +2,21 @@ import React from 'react';
 import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
-import SetJellyfinServer from './modals/SetJellyfinServer';
+import { THEME_COLOR } from 'CONSTANTS';
+
 import Player from './Player';
 import Music from './Music';
 import Settings from './Settings';
+import Downloads from './Downloads';
+import Onboarding from './Onboarding';
+import TrackPopupMenu from './modals/TrackPopupMenu';
+import SetJellyfinServer from './modals/SetJellyfinServer';
+
 import PlayPauseIcon from 'assets/play-pause-fill.svg';
 import NotesIcon from 'assets/notes.svg';
 import GearIcon from 'assets/gear.svg';
-import { THEME_COLOR } from 'CONSTANTS';
+import DownloadsIcon from 'assets/arrow-down-to-line.svg';
 import { useTypedSelector } from 'store';
-import Onboarding from './Onboarding';
-import TrackPopupMenu from './modals/TrackPopupMenu';
 import { ModalStackParams } from './types';
 import { t } from '@localisation';
 import ErrorReportingAlert from 'utility/ErrorReportingAlert';
@@ -35,6 +39,8 @@ function getIcon(route: string): React.FC<any> | null {
             return NotesIcon;
         case 'Settings':
             return GearIcon;
+        case 'Downloads':
+            return DownloadsIcon;
         default:
             return null;
     }
@@ -70,6 +76,7 @@ function Screens() {
             >
                 <Tab.Screen name="NowPlaying" component={Player} options={{ tabBarLabel: t('now-playing') }} />
                 <Tab.Screen name="Music" component={Music} options={{ tabBarLabel: t('music') }} />
+                <Tab.Screen name="Downloads" component={Downloads} options={{ tabBarLabel: t('downloads')}} />
                 <Tab.Screen name="Settings" component={Settings} options={{ tabBarLabel: t('settings') }} />
             </Tab.Navigator>
         </>

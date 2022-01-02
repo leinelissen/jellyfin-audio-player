@@ -5,12 +5,15 @@ import { ModalStackParams } from 'screens/types';
 import { useTypedSelector } from 'store';
 import { SubHeader } from 'components/Typography';
 import styled from 'styled-components/native';
-import usePlayTrack from 'utility/usePlayTrack';
 import { t } from '@localisation';
 import PlayIcon from 'assets/play.svg';
+import DownloadIcon from 'assets/cloud-down-arrow.svg';
 import QueueAppendIcon from 'assets/queue-append.svg';
 import Text from 'components/Text';
 import { WrappableButton, WrappableButtonRow } from 'components/WrappableButtonRow';
+import { useDispatch } from 'react-redux';
+import { downloadTrack } from 'store/downloads/actions';
+import usePlayTracks from 'utility/usePlayTracks';
 
 type Route = RouteProp<ModalStackParams, 'TrackPopupMenu'>;
 
@@ -24,8 +27,9 @@ function TrackPopupMenu() {
     // Retrieve helpers
     const { params: { trackId } } = useRoute<Route>();
     const navigation = useNavigation();
+    const dispatch = useDispatch();
     const track = useTypedSelector((state) => state.music.tracks.entities[trackId]);
-    const playTrack = usePlayTrack();
+    const playTracks = usePlayTracks();
 
     // Set callback to close the modal
     const closeModal = useCallback(() => {
@@ -33,13 +37,17 @@ function TrackPopupMenu() {
     }, [navigation]);
 
     const handlePlayNext = useCallback(() => {
-        playTrack(trackId, false, false);
+        playTracks([trackId], { method: 'add-after-currently-playing', play: false });
         closeModal();
-    }, [playTrack, closeModal, trackId]);
+    }, [playTracks, closeModal, trackId]);
     const handleAddToQueue = useCallback(() => {
-        playTrack(trackId, false, true);
+        playTracks([trackId], { method: 'add-to-end', play: false });
         closeModal();
-    }, [playTrack, closeModal, trackId]);
+    }, [playTracks, closeModal, trackId]);
+    const handleDownload = useCallback(() => {
+        dispatch(downloadTrack(trackId));
+        closeModal();
+    }, [trackId, dispatch]);
 
     return (
         <Modal fullSize={false}>
@@ -49,6 +57,7 @@ function TrackPopupMenu() {
                 <WrappableButtonRow>
                     <WrappableButton title={t('play-next')} icon={PlayIcon} onPress={handlePlayNext} />
                     <WrappableButton title={t('add-to-queue')} icon={QueueAppendIcon} onPress={handleAddToQueue} />
+                    <WrappableButton title={t('download-track')} icon={DownloadIcon} onPress={handleDownload} />
                 </WrappableButtonRow>
             </Container>
         </Modal>

@@ -16,6 +16,11 @@ import usePlayTracks from 'utility/usePlayTracks';
 import { EntityId } from '@reduxjs/toolkit';
 import { WrappableButtonRow, WrappableButton } from 'components/WrappableButtonRow';
 import { MusicNavigationProp } from 'screens/Music/types';
+import DownloadIcon from 'components/DownloadIcon';
+import Button from 'components/Button';
+import CloudDownArrow from 'assets/cloud-down-arrow.svg';
+import { useDispatch } from 'react-redux';
+import { downloadTrack } from 'store/downloads/actions';
 
 const Screen = Dimensions.get('screen');
 
@@ -44,14 +49,14 @@ const AlbumImage = styled(FastImage)`
 `;
 
 const TrackContainer = styled.View<{isPlaying: boolean}>`
-    padding: 15px;
+    padding: 15px 4px;
     border-bottom-width: 1px;
     flex-direction: row;
 
     ${props => props.isPlaying && css`
         background-color: ${THEME_COLOR}16;
         margin: 0 -20px;
-        padding: 15px 35px;
+        padding: 15px 24px;
     `}
 `;
 
@@ -63,6 +68,7 @@ interface TrackListViewProps {
     refresh: () => void;
     playButtonText: string;
     shuffleButtonText: string;
+    downloadText: string;
     listNumberingStyle?: 'album' | 'index';
 }
 
@@ -74,6 +80,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     refresh,
     playButtonText,
     shuffleButtonText,
+    downloadText,
     listNumberingStyle = 'album',
 }) => {
     const defaultStyles = useDefaultStyles();
@@ -87,18 +94,22 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const playTracks = usePlayTracks();
     const { track: currentTrack } = useCurrentTrack();
     const navigation = useNavigation<MusicNavigationProp>();
+    const dispatch = useDispatch();
 
     // Setup callbacks
     const playEntity = useCallback(() => { playTracks(trackIds); }, [playTracks, trackIds]);
-    const shuffleEntity = useCallback(() => { playTracks(trackIds, true, true); }, [playTracks, trackIds]);
+    const shuffleEntity = useCallback(() => { playTracks(trackIds, { shuffle: true }); }, [playTracks, trackIds]);
     const selectTrack = useCallback(async (index: number) => {
-        await playTracks(trackIds, false);
+        await playTracks(trackIds, { play: false });
         await TrackPlayer.skip(index);
         await TrackPlayer.play();
     }, [playTracks, trackIds]);
     const longPressTrack = useCallback((index: number) => { 
         navigation.navigate('TrackPopupMenu', { trackId: trackIds[index] }); 
     }, [navigation, trackIds]);
+    const downloadAllTracks = useCallback(() => {
+        trackIds.forEach((trackId) => dispatch(downloadTrack(trackId)));
+    }, [dispatch, trackIds]);
 
     return (
         <ScrollView
@@ -145,9 +156,13 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                             >
                                 {tracks[trackId]?.Name}
                             </Text>
+                            <View style={{ marginLeft: 'auto' }}>
+                                <DownloadIcon trackId={trackId} />
+                            </View>
                         </TrackContainer>
                     </TouchableHandler>
                 )}
+                <Button icon={CloudDownArrow} title={downloadText} style={{ marginTop: 12 }} onPress={downloadAllTracks} />
             </View>
         </ScrollView>
     );
