@@ -35,7 +35,7 @@ export interface State {
     }
 }
 
-const initialState: State = {
+export const initialState: State = {
     albums: {
         ...albumAdapter.getInitialState(),
         isLoading: false,

@@ -7,7 +7,7 @@ interface State {
     ids: EntityId[];
 }
 
-const initialState: State = {
+export const initialState: State = {
     entities: {},
     ids: [],
 };
