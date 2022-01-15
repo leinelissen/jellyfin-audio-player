@@ -1,6 +1,6 @@
 default_platform(:ios)
 
-package = load_json(json_path: "../package.json")
+package = load_json(json_path: "package.json")
 
 platform :ios do
     lane :beta do 
@@ -73,7 +73,7 @@ platform :android do
             task: "assembleRelease",
             properties: {
                 'versionName' => package["version"],
-            }
+            },
             project_dir: "android"
         )
     end
