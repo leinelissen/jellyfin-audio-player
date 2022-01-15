@@ -1,15 +1,25 @@
 import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
-import { completeDownload, downloadAdapter, failDownload, initializeDownload, progressDownload, removeDownloadedTrack } from './actions';
+import {
+    completeDownload,
+    downloadAdapter,
+    failDownload,
+    initializeDownload,
+    progressDownload,
+    queueTrackForDownload,
+    removeDownloadedTrack
+} from './actions';
 import { DownloadEntity } from './types';
 
 interface State {
     entities: Dictionary<DownloadEntity>;
     ids: EntityId[];
+    queued: EntityId[];
 }
 
 export const initialState: State = {
     entities: {},
     ids: [],
+    queued: [],
 };
 
 const downloads = createSlice({
@@ -32,6 +42,7 @@ const downloads = createSlice({
             });
         });
         builder.addCase(completeDownload, (state, action) => {
+            // Update the item to be completed
             downloadAdapter.updateOne(state, {
                 id: action.payload.id,
                 changes: {
@@ -40,6 +51,11 @@ const downloads = createSlice({
                     isComplete: true,
                 }
             });
+
+            // Remove the item from the queue
+            const newSet = new Set(state.queued);
+            newSet.delete(action.payload.id);
+            state.queued = Array.from(newSet);
         });
         builder.addCase(failDownload, (state, action) => {
             downloadAdapter.updateOne(state, {
@@ -52,7 +68,17 @@ const downloads = createSlice({
             });
         });
         builder.addCase(removeDownloadedTrack.fulfilled, (state, action) => {
+            // Remove the download if it exists
             downloadAdapter.removeOne(state, action.meta.arg);
+
+            // Remove the item from the queue if it is in there
+            const newSet = new Set(state.queued);
+            newSet.delete(action.meta.arg);
+            state.queued = Array.from(newSet);
+        });
+        builder.addCase(queueTrackForDownload, (state, action) => {
+            const newSet = new Set(state.queued).add(action.payload);
+            state.queued = Array.from(newSet);
         });
     },
 });

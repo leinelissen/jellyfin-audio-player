@@ -11,6 +11,7 @@ import {
 } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
 import { ColorSchemeContext, themes } from './Colors';
+import DownloadManager from './DownloadManager';
 // import ErrorReportingAlert from 'utility/ErrorReportingAlert';
 
 export default function App(): JSX.Element {
@@ -41,6 +42,7 @@ export default function App(): JSX.Element {
                 <ColorSchemeContext.Provider value={theme}>
                     <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                         <Routes />
+                        <DownloadManager />
                     </NavigationContainer>
                 </ColorSchemeContext.Provider>
             </PersistGate>

@@ -20,7 +20,7 @@ import DownloadIcon from 'components/DownloadIcon';
 import CloudDownArrow from 'assets/cloud-down-arrow.svg';
 import Trash from 'assets/trash.svg';
 import { useDispatch } from 'react-redux';
-import { downloadTrack, removeDownloadedTrack } from 'store/downloads/actions';
+import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
 import { selectDownloadedTracks } from 'store/downloads/selectors';
 
 const Screen = Dimensions.get('screen');
@@ -111,7 +111,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
         navigation.navigate('TrackPopupMenu', { trackId: trackIds[index] }); 
     }, [navigation, trackIds]);
     const downloadAllTracks = useCallback(() => {
-        trackIds.forEach((trackId) => dispatch(downloadTrack(trackId)));
+        trackIds.forEach((trackId) => dispatch(queueTrackForDownload(trackId)));
     }, [dispatch, trackIds]);
     const deleteAllTracks = useCallback(() => {
         downloadedTracks.forEach((trackId) => dispatch(removeDownloadedTrack(trackId)));

@@ -10,7 +10,7 @@ import ArrowClockwise from 'assets/arrow-clockwise.svg';
 import { THEME_COLOR } from 'CONSTANTS';
 import { useDispatch } from 'react-redux';
 import { EntityId } from '@reduxjs/toolkit';
-import { downloadTrack, removeDownloadedTrack } from 'store/downloads/actions';
+import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
 import Button from 'components/Button';
 import { t } from 'i18n-js';
 import DownloadIcon from 'components/DownloadIcon';
@@ -51,7 +51,7 @@ function Downloads() {
 
     // Retry a single failed track
     const retryTrack = useCallback((id: EntityId) => {
-        dispatch(downloadTrack(id));
+        dispatch(queueTrackForDownload(id));
     }, [dispatch]);
 
     // Retry all failed tracks

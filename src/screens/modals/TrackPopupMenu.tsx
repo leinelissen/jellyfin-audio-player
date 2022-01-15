@@ -13,7 +13,7 @@ import TrashIcon from 'assets/trash.svg';
 import Text from 'components/Text';
 import { WrappableButton, WrappableButtonRow } from 'components/WrappableButtonRow';
 import { useDispatch } from 'react-redux';
-import { downloadTrack, removeDownloadedTrack } from 'store/downloads/actions';
+import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
 import usePlayTracks from 'utility/usePlayTracks';
 import { selectIsDownloaded } from 'store/downloads/selectors';
 
@@ -57,7 +57,7 @@ function TrackPopupMenu() {
 
     // Callback for downloading the track
     const handleDownload = useCallback(() => {
-        dispatch(downloadTrack(trackId));
+        dispatch(queueTrackForDownload(trackId));
         closeModal();
     }, [trackId, dispatch, closeModal]);
 

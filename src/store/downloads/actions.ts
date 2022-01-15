@@ -8,6 +8,7 @@ export const downloadAdapter = createEntityAdapter<DownloadEntity>({
     selectId: (entity) => entity.id,
 });
 
+export const queueTrackForDownload = createAction<EntityId>('download/queue');
 export const initializeDownload = createAction<{ id: EntityId, size?: number, jobId?: number }>('download/initialize');
 export const progressDownload = createAction<{ id: EntityId, progress: number, jobId?: number }>('download/progress');
 export const completeDownload = createAction<{ id: EntityId, location: string, size?: number }>('download/complete');
@@ -46,7 +47,7 @@ export const downloadTrack = createAsyncThunk(
 );
 
 export const removeDownloadedTrack = createAsyncThunk(
-    '/downloads/track/remove',
+    '/downloads/remove/track',
     async(id: EntityId) => {
         return unlink(`${DocumentDirectoryPath}/${id}.mp3`);
     }

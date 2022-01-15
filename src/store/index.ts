@@ -9,10 +9,10 @@ import music, { initialState as musicInitialState } from './music';
 import downloads, { initialState as downloadsInitialState } from './downloads';
 import { PersistState } from 'redux-persist/es/types';
 
-const persistConfig: PersistConfig<AppState> = {
+const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
     key: 'root',
     storage: AsyncStorage,
-    version: 1,
+    version: 2,
     stateReconciler: autoMergeLevel2,
     migrate: createMigrate({
         // @ts-expect-error migrations are poorly typed
@@ -22,6 +22,16 @@ const persistConfig: PersistConfig<AppState> = {
                 settings: state.settings,
                 downloads: downloadsInitialState,
                 music: musicInitialState
+            };
+        },
+        // @ts-expect-error migrations are poorly typed
+        2: (state: AppState) => {
+            return {
+                ...state,
+                downloads: {
+                    ...state.downloads,
+                    queued: []
+                }
             };
         }
     })
@@ -48,7 +58,7 @@ const store = configureStore({
     ),
 });
 
-export type AppState = ReturnType<typeof reducers>;
+export type AppState = ReturnType<typeof reducers> & { _persist: PersistState };
 export type AppDispatch = typeof store.dispatch;
 export type AsyncThunkAPI = { state: AppState, dispatch: AppDispatch };
 export const useTypedSelector: TypedUseSelectorHook<AppState> = useSelector;
