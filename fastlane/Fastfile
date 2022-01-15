@@ -1,18 +1,8 @@
 default_platform(:ios)
 
+package = load_json(json_path: "../package.json")
+
 platform :ios do
-    lane :alpha do
-        get_certificates(
-            development: true,
-            output_path: 'certificates/'
-        )
-        build_app(
-            scheme: "Jellyfin Player",
-            export_method: "development",
-            output_directory: "build",
-            workspace: "ios/JellyfinAudioPlayer.xcworkspace"
-        )
-    end
     lane :beta do 
         get_certificates(
             output_path: 'certificates/'
@@ -26,6 +16,7 @@ platform :ios do
             use_automatic_signing: true,
             path: "ios/JellyfinAudioPlayer.xcodeproj"
         )
+        increment_version_number(version_number: package["version"]);
         increment_build_number(
             xcodeproj: "ios/JellyfinAudioPlayer.xcodeproj"
         )
@@ -79,7 +70,10 @@ platform :android do
     desc "Generate beta build"
     lane :beta do
         gradle(
-            task: "clean assembleRelease",
+            task: "assembleRelease",
+            properties: {
+                'versionName' => package["version"],
+            }
             project_dir: "android"
         )
     end
