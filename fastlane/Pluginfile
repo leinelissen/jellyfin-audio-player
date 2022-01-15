@@ -4,3 +4,4 @@
 
 gem 'fastlane-plugin-sentry'
 gem 'fastlane-plugin-load_json'
+gem 'fastlane-plugin-versioning_android'

@@ -16,9 +16,12 @@ platform :ios do
             use_automatic_signing: true,
             path: "ios/JellyfinAudioPlayer.xcodeproj"
         )
-        increment_version_number(version_number: package["version"]);
+        increment_version_number(
+            version_number: package["version"],
+            xcodeproj: "ios/JellyfinAudioPlayer.xcodeproj",
+        );
         increment_build_number(
-            xcodeproj: "ios/JellyfinAudioPlayer.xcodeproj"
+            xcodeproj: "ios/JellyfinAudioPlayer.xcodeproj",
         )
         build_app(
             scheme: "Jellyfin Player",
@@ -28,7 +31,7 @@ platform :ios do
         )
         upload_to_testflight
         build_number = get_build_number(
-            xcodeproj: "ios/JellyfinAudioPlayer.xcodeproj"
+            xcodeproj: "ios/JellyfinAudioPlayer.xcodeproj",
         )
         Dir.chdir("..") do
             sh(
@@ -69,11 +72,15 @@ end
 platform :android do
     desc "Generate beta build"
     lane :beta do
+        android_set_version_name(
+            version_name: package['version'],
+            gradle_file: "android/app/build.gradle"
+        )
+        android_set_version_code(    
+            gradle_file: "android/app/build.gradle"
+        )
         gradle(
             task: "assembleRelease",
-            properties: {
-                'versionName' => package["version"],
-            },
             project_dir: "android"
         )
     end
