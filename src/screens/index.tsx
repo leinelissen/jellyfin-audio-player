@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBottomTabNavigator, BottomTabNavigationProp, BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { THEME_COLOR } from 'CONSTANTS';
@@ -12,10 +12,10 @@ import Onboarding from './Onboarding';
 import TrackPopupMenu from './modals/TrackPopupMenu';
 import SetJellyfinServer from './modals/SetJellyfinServer';
 
-import SearchIcon from 'assets/magnifying-glass.svg';
-import NotesIcon from 'assets/notes.svg';
-import GearIcon from 'assets/gear.svg';
-import DownloadsIcon from 'assets/arrow-down-to-line.svg';
+import SearchIcon from 'assets/icons/magnifying-glass.svg';
+import NotesIcon from 'assets/icons/notes.svg';
+import GearIcon from 'assets/icons/gear.svg';
+import DownloadsIcon from 'assets/icons/arrow-down-to-line.svg';
 import { useTypedSelector } from 'store';
 import { ModalStackParams } from './types';
 import { t } from '@localisation';

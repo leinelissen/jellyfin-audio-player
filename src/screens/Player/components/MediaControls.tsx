@@ -3,12 +3,12 @@ import TrackPlayer, { Event, State, usePlaybackState, useTrackPlayerEvents } fro
 import { TouchableOpacity, useColorScheme } from 'react-native';
 import styled from 'styled-components/native';
 import { useHasNextQueue, useHasPreviousQueue } from 'utility/useQueue';
-import ForwardIcon from 'assets/forwards.svg';
-import BackwardIcon from 'assets/backwards.svg';
-import PlayIcon from 'assets/play.svg';
-import PauseIcon from 'assets/pause.svg';
-import RepeatIcon from 'assets/repeat.svg';
-// import ShuffleIcon from 'assets/shuffle.svg';
+import ForwardIcon from 'assets/icons/forwards.svg';
+import BackwardIcon from 'assets/icons/backwards.svg';
+import PlayIcon from 'assets/icons/play.svg';
+import PauseIcon from 'assets/icons/pause.svg';
+import RepeatIcon from 'assets/icons/repeat.svg';
+// import ShuffleIcon from 'assets/icons/shuffle.svg';
 import { THEME_COLOR } from 'CONSTANTS';
 import Casting from './Casting';
 

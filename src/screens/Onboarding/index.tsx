@@ -56,7 +56,7 @@ function Onboarding() {
     return (
         <Container>
             <TextContainer contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
-                <Logo source={require('../../assets/app-icon-white.png')} />
+                <Logo source={require('../../assets/icons/app-icon-white.png')} />
                 <Text >
                     {t('onboarding-welcome')}
                 </Text>
