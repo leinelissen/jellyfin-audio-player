@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Input from 'components/Input';
-import { ActivityIndicator, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, SafeAreaView, Text, TextInput, View } from 'react-native';
 import styled from 'styled-components/native';
 import { useTypedSelector } from 'store';
 import Fuse from 'fuse.js';
@@ -234,7 +234,7 @@ export default function Search() {
     }
 
     return (
-        <>
+        <SafeAreaView style={{ flex: 1 }}>
             <FlatList
                 style={{ flex: 1 }}
                 data={[...jellyfinResults, ...fuseResults]}
@@ -273,6 +273,6 @@ export default function Search() {
                     <Text style={{ textAlign: 'center', opacity: 0.5, fontSize: 18 }}>{t('no-results')}</Text> 
                 </FullSizeContainer>
             ) : null}
-        </>
+        </SafeAreaView>
     );
 }

@@ -4,7 +4,6 @@ import { MusicStackParams } from './types';
 import Albums from './stacks/Albums';
 import Album from './stacks/Album';
 import RecentAlbums from './stacks/RecentAlbums';
-import Search from './stacks/Search';
 import { THEME_COLOR } from 'CONSTANTS';
 import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
@@ -26,7 +25,6 @@ function MusicStack() {
             <Stack.Screen name="Album" component={Album} options={{ headerTitle: t('album') }} />
             <Stack.Screen name="Playlists" component={Playlists} options={{ headerTitle: t('playlists') }} />
             <Stack.Screen name="Playlist" component={Playlist} options={{ headerTitle: t('playlist') }} />
-            <Stack.Screen name="Search" component={Search} options={{ headerTitle: t('search') }} />
         </Stack.Navigator>
     );
 }
