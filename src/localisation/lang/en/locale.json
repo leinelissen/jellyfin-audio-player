@@ -56,5 +56,9 @@
     "delete-playlist": "Delete Playlist",
     "total-download-size": "Total Download Size",
     "retry-failed-downloads": "Retry Failed Downloads",
-    "you-are-offline-message": "You are currently offline. You can only play previously downloaded music."
+    "you-are-offline-message": "You are currently offline. You can only play previously downloaded music.",
+    "all-tracks": "All Tracks",
+    "play-all-tracks": "Play All",
+    "shuffle-all-tracks": "Shuffle All",
+    "download-all-tracks": "Download All"
 }
