@@ -13,7 +13,7 @@ export default function NowPlaying() {
     const { track } = useCurrentTrack();
 
     return (
-        <View>
+        <View shouldRasterizeIOS={true} renderToHardwareTextureAndroid={true}>
             <Artwork
                 src={track?.artwork as string}
                 margin={80}

@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { useNavigation, StackActions, useRoute, RouteProp } from '@react-navigation/native';
+import { Dimensions } from 'react-native';
 import { StackParams } from '@/screens/types';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import { Header, SubHeader } from '@/components/Typography';
@@ -17,6 +18,7 @@ import usePlayTracks from '@/utility/usePlayTracks';
 import { selectIsDownloaded } from '@/store/downloads/selectors';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { ColoredBlurView } from '@/components/Colors';
+// import FastImage from '@d11/react-native-fast-image';
 
 type Route = RouteProp<StackParams, 'TrackPopupMenu'>;
 
@@ -26,6 +28,14 @@ const Container = styled.View`
     flex: 1 1 auto;
     flex-direction: column;
 `;
+
+const Screen = Dimensions.get('screen');
+// const AlbumImage = styled(FastImage)`
+//     border-radius: 10px;
+//     width: ${Screen.width * 0.6}px;
+//     height: ${Screen.width * 0.6}px;
+//     margin: 10px auto;
+// `;
 
 const Artwork = styled(CoverImage)`
     margin: 0 auto 25px auto;
@@ -44,6 +54,7 @@ function TrackPopupMenu() {
     // Retrieve data from store
     const track = useTypedSelector((state) => state.music.tracks.entities[trackId]);
     const isDownloaded = useTypedSelector(selectIsDownloaded(trackId));
+    const albumId = useTypedSelector((state) => state.music.albums.entities[state.music.tracks.entities[trackId].AlbumId]);
 
     // Set callback to close the modal
     const closeModal = useCallback(() => {
@@ -77,7 +88,8 @@ function TrackPopupMenu() {
     return (
         <ColoredBlurView>
             <Container>
-                <Artwork src={getImage(track)} />
+                {/* <AlbumImage source={{ uri: getImage(trackId) }} /> */}
+                <Artwork src={getImage(albumId)} />
                 <Header>{track?.Name}</Header>
                 <SubHeader style={{ marginBottom: 18 }}>{track?.AlbumArtist} {track?.Album ? '— ' + track?.Album : ''}</SubHeader>
                 <WrappableButtonRow>

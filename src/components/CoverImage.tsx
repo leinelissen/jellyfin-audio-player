@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Dimensions, ViewProps } from 'react-native';
+import { Dimensions, View, ViewProps } from 'react-native';
 import { Canvas, Blur, Image as SkiaImage, useImage, Offset, Mask, RoundedRect, Shadow } from '@shopify/react-native-skia';
 import useDefaultStyles, { useUserOrSystemScheme } from './Colors';
 import styled from 'styled-components/native';
@@ -39,7 +39,7 @@ const emptyAlbumDark = require('@/assets/images/empty-album-dark.png');
  * blur to the image in question. Additionally, we'll add some margin and radius
  * to the corners.
  */
-function CoverImage({
+const CoverImage = React.memo(function CoverImage({
     blurRadius = 256,
     opacity = 0.85,
     margin = 112,
@@ -59,6 +59,7 @@ function CoverImage({
     }, [blurRadius, margin]);
 
     return (
+        <View shouldRasterizeIOS={true} renderToHardwareTextureAndroid={true}>
         <Container size={imageSize} style={style}>
             <BlurContainer size={canvasSize} offset={blurRadius}>
                 <RoundedRect x={blurRadius} y={blurRadius} width={imageSize} height={imageSize} color={defaultStyles.imageBackground.backgroundColor} r={12}>
@@ -115,7 +116,8 @@ function CoverImage({
                 )}
             </BlurContainer>
         </Container>
+        </View>
     );
-}
+});
 
 export default CoverImage;
