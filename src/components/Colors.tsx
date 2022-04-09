@@ -1,7 +1,8 @@
+import { BlurView, BlurViewProperties } from '@react-native-community/blur';
 import { THEME_COLOR } from 'CONSTANTS';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useContext } from 'react';
-import { ColorSchemeName, StyleSheet } from 'react-native';
+import { ColorSchemeName, StyleSheet, useColorScheme } from 'react-native';
 
 /**
  * Function for generating both the dark and light stylesheets, so that they
@@ -11,12 +12,20 @@ function generateStyles(scheme: ColorSchemeName) {
     return StyleSheet.create({
         text: {
             color: scheme === 'dark' ? '#fff' : '#000',
+            fontSize: 14,
+            fontFamily: 'Inter',
         },
         textHalfOpacity: {
             color: scheme === 'dark' ? '#ffffff88' : '#00000088',
+            fontSize: 14,
+            // fontFamily: 'Inter',
+        },
+        textQuarterOpacity: {
+            color: scheme === 'dark' ? '#ffffff44' : '#00000044',
+            fontSize: 14,
         },
         view: {
-            backgroundColor: scheme === 'dark' ? '#111' : '#f6f6f6',
+            backgroundColor: scheme === 'dark' ? '#111' : '#fff',
         },
         border: {
             borderColor: scheme === 'dark' ? '#262626' : '#ddd',
@@ -25,7 +34,7 @@ function generateStyles(scheme: ColorSchemeName) {
             backgroundColor: `${THEME_COLOR}${scheme === 'dark' ? '26' : '16'}`,
         },
         imageBackground: {
-            backgroundColor: scheme === 'dark' ? '#333' : '#ddd',
+            backgroundColor: scheme === 'dark' ? '#161616' : '#eee',
         },
         modal: {
             backgroundColor: scheme === 'dark' ? '#22222200' : '#eeeeee00',
@@ -34,7 +43,7 @@ function generateStyles(scheme: ColorSchemeName) {
             backgroundColor: scheme === 'dark' ? '#000' : '#fff',
         },
         button: {
-            backgroundColor: scheme === 'dark' ? '#161616' : '#e6e6e6',
+            backgroundColor: scheme === 'dark' ? '#161616' : '#eee',
         },
         input: {
             backgroundColor: scheme === 'dark' ? '#161616' : '#e6e6e6',
@@ -77,4 +86,12 @@ export function DefaultStylesProvider(props: DefaultStylesProviderProps) {
     const defaultStyles = useDefaultStyles();
 
     return props.children(defaultStyles);
+}
+
+export function ColoredBlurView(props: PropsWithChildren<BlurViewProperties>) {
+    const scheme = useColorScheme();
+
+    return (
+        <BlurView {...props} blurType={scheme === 'dark' ? 'extraDark' : 'xlight'} />
+    );
 }

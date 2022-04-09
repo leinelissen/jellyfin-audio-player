@@ -283,6 +283,8 @@ PODS:
     - glog
   - react-native-airplay-button (1.1.0):
     - React-Core
+  - react-native-blur (0.8.0):
+    - React
   - react-native-flipper (0.127.0):
     - React-Core
   - react-native-netinfo (7.1.7):
@@ -441,6 +443,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-airplay-button (from `../node_modules/react-native-airplay-button`)
+  - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-flipper (from `../node_modules/react-native-flipper`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -530,6 +533,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-airplay-button:
     :path: "../node_modules/react-native-airplay-button"
+  react-native-blur:
+    :path: "../node_modules/@react-native-community/blur"
   react-native-flipper:
     :path: "../node_modules/react-native-flipper"
   react-native-netinfo:
@@ -622,6 +627,7 @@ SPEC CHECKSUMS:
   React-jsinspector: d0374f7509d407d2264168b6d0fad0b54e300b85
   React-logger: 933f80c97c633ee8965d609876848148e3fef438
   react-native-airplay-button: 90c7ba52402c8e92342003b8a1ff78dfb4357a9e
+  react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-flipper: b9e2e817604af8da0d5a9ba20a8516e780e30f3c
   react-native-netinfo: 27f287f2d191693f3b9d01a4273137fcf91c3b5d
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057

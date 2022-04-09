@@ -14,7 +14,7 @@ interface ButtonProps extends PressableProps {
 }
 
 const BaseButton = styled.Pressable`
-    padding: 16px;
+    padding: 12px;
     border-radius: 8px;
     flex-direction: row;
     align-items: center;
@@ -28,7 +28,8 @@ const BaseButton = styled.Pressable`
 
 const ButtonText = styled.Text<{ active?: boolean }>`
     color: ${THEME_COLOR};
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 14px;
 
     ${props => props.active && css`
         color: white;

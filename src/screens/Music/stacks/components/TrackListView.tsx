@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Text, ScrollView, Dimensions, RefreshControl, StyleSheet, View } from 'react-native';
+import { ScrollView, Dimensions, RefreshControl, StyleSheet, View, Image } from 'react-native';
 import { useGetImage } from 'utility/JellyfinApi';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
@@ -22,41 +22,43 @@ import Trash from 'assets/icons/trash.svg';
 import { useDispatch } from 'react-redux';
 import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
 import { selectDownloadedTracks } from 'store/downloads/selectors';
+import { Header, SubHeader } from 'components/Typography';
+import Text from 'components/Text';
+import { Shadow } from 'react-native-shadow-2';
 
 const Screen = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
-    name: {
-        fontSize: 36, 
-        fontWeight: 'bold'
-    },
-    artist: {
-        fontSize: 24,
-        opacity: 0.5,
-        marginBottom: 12
-    },
     index: {
-        width: 20,
-        opacity: 0.5,
-        marginRight: 5
-    }
+        width: 16,
+        marginRight: 8
+    },
+    activeText: {
+        color: THEME_COLOR,
+        fontWeight: '500',
+    },
 });
 
 const AlbumImage = styled(FastImage)`
-    border-radius: 10px;
-    width: ${Screen.width * 0.6}px;
-    height: ${Screen.width * 0.6}px;
-    margin: 10px auto;
+    border-radius: 12px;
+    height: ${Screen.width - 112}px;
+    width: ${Screen.width - 112}px;
 `;
 
-const TrackContainer = styled.View<{isPlaying: boolean}>`
-    padding: 15px 4px;
-    border-bottom-width: 1px;
+const AlbumImageContainer = styled.View`
+    margin: 0 12px 24px 12px;
+    flex: 1;
+    align-items: center;
+`;
+
+const TrackContainer = styled.View<{ isPlaying: boolean }>`
+    padding: 12px 4px;
     flex-direction: row;
+    border-radius: 6px;
 
     ${props => props.isPlaying && css`
-        margin: 0 -20px;
-        padding: 15px 24px;
+        margin: 0 -12px;
+        padding: 12px 16px;
     `}
 `;
 
@@ -119,14 +121,20 @@ const TrackListView: React.FC<TrackListViewProps> = ({
 
     return (
         <ScrollView
-            contentContainerStyle={{ padding: 20, paddingBottom: 50 }}
+            style={defaultStyles.view}
+            contentContainerStyle={{ padding: 32, paddingTop: 32, paddingBottom: 64 }}
             refreshControl={
                 <RefreshControl refreshing={isLoading} onRefresh={refresh} />
             }
         >
-            <AlbumImage source={{ uri: getImage(entityId) }} style={defaultStyles.imageBackground} />
-            <Text style={[ defaultStyles.text, styles.name ]} >{title}</Text>
-            <Text style={[ defaultStyles.text, styles.artist ]}>{artist}</Text>
+            <AlbumImageContainer>
+                <Shadow radius={12} distance={48} startColor="#00000017">
+                    <AlbumImage source={{ uri: getImage(entityId) }} style={defaultStyles.imageBackground} />
+                </Shadow>
+            </AlbumImageContainer>
+            <Image source={{ uri: getImage(entityId) }} blurRadius={100} style={{ height: 120, width: 120 }} />
+            <Header>{title}</Header>
+            <SubHeader>{artist}</SubHeader>
             <WrappableButtonRow>
                 <WrappableButton title={playButtonText} icon={Play} onPress={playEntity} />
                 <WrappableButton title={shuffleButtonText} icon={Shuffle} onPress={shuffleEntity} />
@@ -145,28 +153,29 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                         >
                             <Text
                                 style={[
-                                    defaultStyles.text,
                                     styles.index,
-                                    currentTrack?.backendId === trackId && { 
-                                        color: THEME_COLOR,
-                                        opacity: 1
-                                    } 
+                                    { opacity: 0.25 },
+                                    currentTrack?.backendId === trackId && styles.activeText
                                 ]}
                             >
                                 {listNumberingStyle === 'index' 
                                     ? i + 1
                                     : tracks[trackId]?.IndexNumber}
                             </Text>
-                            <Text
-                                style={currentTrack?.backendId === trackId
-                                    ? { color: THEME_COLOR, fontWeight: '700' }
-                                    : defaultStyles.text
-                                }
-                            >
+                            <Text style={currentTrack?.backendId === trackId && styles.activeText}>
                                 {tracks[trackId]?.Name}
                             </Text>
-                            <View style={{ marginLeft: 'auto' }}>
-                                <DownloadIcon trackId={trackId} />
+                            <View style={{ marginLeft: 'auto', flexDirection: 'row' }}>
+                                <Text
+                                    style={[
+                                        { marginRight: 12, opacity: 0.25 },
+                                        currentTrack?.backendId === trackId && styles.activeText
+                                    ]}
+                                >
+                                    {Math.round(tracks[trackId]?.RunTimeTicks / 10000000 / 60)}
+                                    :{Math.round(tracks[trackId]?.RunTimeTicks / 10000000 % 60).toString().padStart(2, '0')}
+                                </Text>
+                                <DownloadIcon trackId={trackId} fill={currentTrack?.backendId === trackId ? `${THEME_COLOR}44` : undefined} />
                             </View>
                         </TrackContainer>
                     </TouchableHandler>

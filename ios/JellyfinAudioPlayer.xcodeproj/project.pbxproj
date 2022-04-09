@@ -15,6 +15,7 @@
 		463612208457EBB4B723000A /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 842AB597D56E84A4ACDC4735 /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a */; };
 		4FA1B23D2550A94C007A035E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1B23C2550A94C007A035E /* File.swift */; };
 		A807E2BB233D6F9347D8A95C /* libPods-JellyfinAudioPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71370E61E2CC6BD9372ADCF3 /* libPods-JellyfinAudioPlayer.a */; };
+		4C04FC6E055249ABB204D3BC /* Inter-VariableFont_slnt,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4A0465FF364579B28CF5D7 /* Inter-VariableFont_slnt,wght.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,7 @@
 		E35451F7979C52C1692C4C9F /* libPods-JellyfinAudioPlayer-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JellyfinAudioPlayer-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		4B4A0465FF364579B28CF5D7 /* Inter-VariableFont_slnt,wght.ttf */ = {isa = PBXFileReference; name = "Inter-VariableFont_slnt,wght.ttf"; path = "../src/assets/fonts/Inter-VariableFont_slnt,wght.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				46001D7383D71A837AAF6E07 /* Pods */,
+				CFCEB457E84E4C5195253CD7 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -166,6 +169,15 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		CFCEB457E84E4C5195253CD7 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				4B4A0465FF364579B28CF5D7 /* Inter-VariableFont_slnt,wght.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -268,6 +280,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				4C04FC6E055249ABB204D3BC /* Inter-VariableFont_slnt,wght.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,13 +2,14 @@ import styled from 'styled-components/native';
 import Text from './Text';
 
 export const Header = styled(Text)`
-    margin: 24px 0 12px 0;
-    font-size: 36px;
-    font-weight: bold;
+    margin: 0 0 6px 0;
+    font-size: 24px;
+    font-weight: 400;
 `;
 
 export const SubHeader = styled(Text)`
-    font-size: 24px;
-    margin: 12px 0;
-    font-weight: 500;
+    font-size: 14px;
+    margin: 0 0 6px 0;
+    font-weight: 400;
+    opacity: 0.5;
 `;

@@ -30,7 +30,7 @@ const IconOverlay = styled.View`
 function DownloadIcon({ trackId, size = 16, fill }: DownloadIconProps) {
     // determine styles
     const defaultStyles = useDefaultStyles();
-    const iconFill = fill || defaultStyles.textHalfOpacity.color;
+    const iconFill = fill || defaultStyles.textQuarterOpacity.color;
 
     // Get download icon from state
     const entity = useTypedSelector((state) => state.downloads.entities[trackId]);
