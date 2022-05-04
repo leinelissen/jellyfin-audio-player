@@ -6,12 +6,11 @@ import NowPlaying from './components/NowPlaying';
 import Queue from './components/Queue';
 import useDefaultStyles from 'components/Colors';
 import ConnectionNotice from './components/ConnectionNotice';
-import { DismissableScrollView } from 'components/DismissableScrollView';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
     inner: {
-        padding: 25,
+        padding: 40,
     }
 });
 

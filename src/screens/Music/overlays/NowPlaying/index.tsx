@@ -11,7 +11,7 @@ import { THEME_COLOR } from 'CONSTANTS';
 import { Shadow } from 'react-native-shadow-2';
 import usePrevious from 'utility/usePrevious';
 import Text from 'components/Text';
-import { ColoredBlurView } from 'components/Colors';
+import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
 import { useNavigation } from '@react-navigation/native';
 
 const NOW_PLAYING_POPOVER_MARGIN = 6;
@@ -78,19 +78,20 @@ const ProgressTrack = styled(Animated.View)<ProgressTrackProps>`
 
 function SelectActionButton() {
     const state = usePlaybackState();
+    const defaultStyles = useDefaultStyles();
 
     switch(state) {
         case State.Playing:
             return (
                 <Pressable onPress={TrackPlayer.pause}>
-                    <PauseIcon fill="black" height={18} width={18} />
+                    <PauseIcon fill={defaultStyles.text.color} height={18} width={18} />
                 </Pressable>
             );
         case State.Stopped:
         case State.Paused:
             return (
                 <Pressable onPress={TrackPlayer.play}>
-                    <PlayIcon fill="black" height={18} width={18} />
+                    <PlayIcon fill={defaultStyles.text.color} height={18} width={18} />
                 </Pressable>
             );
         // @ts-expect-error For some reason buffering isn't stated right in the types

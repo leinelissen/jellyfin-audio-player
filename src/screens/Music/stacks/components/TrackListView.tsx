@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
-import { ScrollView, Dimensions, RefreshControl, StyleSheet, View, Image } from 'react-native';
+import { ScrollView, RefreshControl, StyleSheet, View } from 'react-native';
 import { useGetImage } from 'utility/JellyfinApi';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import FastImage from 'react-native-fast-image';
 import { useTypedSelector } from 'store';
 import { THEME_COLOR } from 'CONSTANTS';
 import TouchableHandler from 'components/TouchableHandler';
@@ -24,9 +23,7 @@ import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/ac
 import { selectDownloadedTracks } from 'store/downloads/selectors';
 import { Header, SubHeader } from 'components/Typography';
 import Text from 'components/Text';
-import { Shadow } from 'react-native-shadow-2';
-
-const Screen = Dimensions.get('screen');
+import CoverImage from 'components/CoverImage';
 
 const styles = StyleSheet.create({
     index: {
@@ -38,12 +35,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
 });
-
-const AlbumImage = styled(FastImage)`
-    border-radius: 12px;
-    height: ${Screen.width - 112}px;
-    width: ${Screen.width - 112}px;
-`;
 
 const AlbumImageContainer = styled.View`
     margin: 0 12px 24px 12px;
@@ -122,17 +113,14 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     return (
         <ScrollView
             style={defaultStyles.view}
-            contentContainerStyle={{ padding: 32, paddingTop: 32, paddingBottom: 64 }}
+            contentContainerStyle={{ padding: 24, paddingTop: 32, paddingBottom: 64 }}
             refreshControl={
                 <RefreshControl refreshing={isLoading} onRefresh={refresh} />
             }
         >
             <AlbumImageContainer>
-                <Shadow radius={12} distance={48} startColor="#00000017">
-                    <AlbumImage source={{ uri: getImage(entityId) }} style={defaultStyles.imageBackground} />
-                </Shadow>
+                <CoverImage src={getImage(entityId)} />
             </AlbumImageContainer>
-            <Image source={{ uri: getImage(entityId) }} blurRadius={100} style={{ height: 120, width: 120 }} />
             <Header>{title}</Header>
             <SubHeader>{artist}</SubHeader>
             <WrappableButtonRow>
@@ -157,12 +145,20 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                                     { opacity: 0.25 },
                                     currentTrack?.backendId === trackId && styles.activeText
                                 ]}
+                                numberOfLines={1}
                             >
                                 {listNumberingStyle === 'index' 
                                     ? i + 1
                                     : tracks[trackId]?.IndexNumber}
                             </Text>
-                            <Text style={currentTrack?.backendId === trackId && styles.activeText}>
+                            <Text
+                                style={{ 
+                                    ...currentTrack?.backendId === trackId && styles.activeText,
+                                    flexShrink: 1,
+                                    marginRight: 4,
+                                }}
+                                numberOfLines={1}
+                            >
                                 {tracks[trackId]?.Name}
                             </Text>
                             <View style={{ marginLeft: 'auto', flexDirection: 'row' }}>
@@ -171,6 +167,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                                         { marginRight: 12, opacity: 0.25 },
                                         currentTrack?.backendId === trackId && styles.activeText
                                     ]}
+                                    numberOfLines={1}
                                 >
                                     {Math.round(tracks[trackId]?.RunTimeTicks / 10000000 / 60)}
                                     :{Math.round(tracks[trackId]?.RunTimeTicks / 10000000 % 60).toString().padStart(2, '0')}

@@ -305,6 +305,35 @@ PODS:
     - RCTTypeSafety
     - React
     - ReactCommon/turbomodule/core
+  - react-native-skia (0.1.123):
+    - React
+    - React-callinvoker
+    - React-Core
+    - react-native-skia/Api (= 0.1.123)
+    - react-native-skia/Jsi (= 0.1.123)
+    - react-native-skia/RNSkia (= 0.1.123)
+    - react-native-skia/SkiaHeaders (= 0.1.123)
+    - react-native-skia/Utils (= 0.1.123)
+  - react-native-skia/Api (0.1.123):
+    - React
+    - React-callinvoker
+    - React-Core
+  - react-native-skia/Jsi (0.1.123):
+    - React
+    - React-callinvoker
+    - React-Core
+  - react-native-skia/RNSkia (0.1.123):
+    - React
+    - React-callinvoker
+    - React-Core
+  - react-native-skia/SkiaHeaders (0.1.123):
+    - React
+    - React-callinvoker
+    - React-Core
+  - react-native-skia/Utils (0.1.123):
+    - React
+    - React-callinvoker
+    - React-Core
   - react-native-slider (4.2.2):
     - React-Core
   - react-native-track-player (2.1.3):
@@ -464,6 +493,7 @@ DEPENDENCIES:
   - react-native-flipper (from `../node_modules/react-native-flipper`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-skia (from `../node_modules/@shopify/react-native-skia`)"
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-track-player (from `../node_modules/react-native-track-player`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -561,6 +591,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-skia:
+    :path: "../node_modules/@shopify/react-native-skia"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
   react-native-track-player:
@@ -652,6 +684,7 @@ SPEC CHECKSUMS:
   react-native-flipper: b9e2e817604af8da0d5a9ba20a8516e780e30f3c
   react-native-netinfo: 3671b091c4843fda5e153612866ef4024b8f5d62
   react-native-safe-area-context: ebf8c413eb8b5f7c392a036a315eb7b46b96845f
+  react-native-skia: 8a3e1b513020e2c9b0b4e49404f396d2a88f9ac7
   react-native-slider: 2f25c919f1dc309b90e2cc8346b8042ecec2102f
   react-native-track-player: c4147afddd29de936caa06561f78a32d6502eb12
   react-native-webview: 8ec7ddf9eb4ddcd92b32cee7907efec19a9ec7cb

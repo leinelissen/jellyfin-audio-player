@@ -20,7 +20,8 @@ function MusicStack() {
         <>
             <Stack.Navigator initialRouteName="RecentAlbums" screenOptions={{
                 headerTintColor: THEME_COLOR,
-                headerTitleStyle: defaultStyles.stackHeader
+                headerTitleStyle: defaultStyles.stackHeader,
+                cardStyle: defaultStyles.view,
             }}>
                 <Stack.Screen name="RecentAlbums" component={RecentAlbums} options={{ headerTitle: t('recent-albums') }} />
                 <Stack.Screen name="Albums" component={Albums} options={{ headerTitle: t('albums') }} />
