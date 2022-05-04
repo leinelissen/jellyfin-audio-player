@@ -136,7 +136,7 @@ android {
         applicationId "com.jellyfinaudioplayer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 6
+        versionCode 8
         versionName "1.2.4"
         multiDexEnabled true
     }
