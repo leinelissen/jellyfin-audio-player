@@ -16,6 +16,7 @@ import { useDispatch } from 'react-redux';
 import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
 import usePlayTracks from 'utility/usePlayTracks';
 import { selectIsDownloaded } from 'store/downloads/selectors';
+import { View } from 'react-native';
 
 type Route = RouteProp<ModalStackParams, 'TrackPopupMenu'>;
 
@@ -68,7 +69,7 @@ function TrackPopupMenu() {
     }, [trackId, dispatch, closeModal]);
 
     return (
-        <Modal fullSize={false}>
+        <View>
             <Container>
                 <SubHeader style={{ textAlign: 'center' }}>{track?.Name}</SubHeader>
                 <Text style={{ marginBottom: 18, textAlign: 'center' }}>{track?.Album} - {track?.AlbumArtist}</Text>
@@ -82,7 +83,7 @@ function TrackPopupMenu() {
                     )}
                 </WrappableButtonRow>
             </Container>
-        </Modal>
+        </View>
     );
 }
 

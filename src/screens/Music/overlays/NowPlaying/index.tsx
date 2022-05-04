@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { ActivityIndicator, Animated, Dimensions, Easing, Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styled, { css } from 'styled-components/native';
@@ -12,6 +12,7 @@ import { Shadow } from 'react-native-shadow-2';
 import usePrevious from 'utility/usePrevious';
 import Text from 'components/Text';
 import { ColoredBlurView } from 'components/Colors';
+import { useNavigation } from '@react-navigation/native';
 
 const NOW_PLAYING_POPOVER_MARGIN = 6;
 const NOW_PLAYING_POPOVER_WIDTH = Dimensions.get('screen').width - 2 * NOW_PLAYING_POPOVER_MARGIN;
@@ -115,9 +116,14 @@ function NowPlaying() {
     const { index, track } = useCurrentTrack();
     const { buffered, duration, position } = useProgress();
     const previousIndex = usePrevious(index);
+    const navigation = useNavigation();
 
     const bufferAnimation = useRef(new Animated.Value(0));
     const progressAnimation = useRef(new Animated.Value(0));
+
+    const openNowPlayingModal = useCallback(() => {
+        navigation.navigate('Player');
+    }, [navigation]);
 
     useEffect(() => {
         const hasChangedTrack = previousIndex !== index || duration === 0;
@@ -147,11 +153,13 @@ function NowPlaying() {
                 </Shadow>
             </ShadowOverlay>
             <ColoredBlurView style={{ borderRadius: 8 }}>
-                <InnerContainer>
+                <InnerContainer onPress={openNowPlayingModal}>
                     <Cover source={{ uri: (track.artwork || '') as string }} />
                     <TrackNameContainer>
-                        <Text>{track.title}</Text>
-                        <Text style={{ opacity: 0.5 }}>{track.artist}{track.album ? ` — ${track.album}` : ''}</Text>
+                        <Text numberOfLines={1}>{track.title}</Text>
+                        <Text style={{ opacity: 0.5 }} numberOfLines={1}>
+                            {track.artist}{track.album ? ` — ${track.album}` : ''}
+                        </Text>
                     </TrackNameContainer>
                     <ActionButton>
                         <SelectActionButton />
