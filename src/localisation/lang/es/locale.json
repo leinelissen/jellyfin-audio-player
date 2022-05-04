@@ -24,5 +24,9 @@
     "setting-cache": "Caché",
     "setting-cache-description": "Si has actualizado la biblioteca de Jellyfin pero tu aplicación muestra resultados anteriores, puedes forzar la actualización de la biblioteca pulsando este botón y se volverá a cargar toda información",
     "reset-cache": "Resetear Caché",
-    "recent-albums": "Álbumes recientes"
+    "recent-albums": "Álbumes recientes",
+    "all-tracks": "Todas las Canciones",
+    "play-all-tracks": "Reproducir toda",
+    "shuffle-all-tracks": "Reproducir aleatoriamente",
+    "download-all-tracks": "Descargar todo"
 }

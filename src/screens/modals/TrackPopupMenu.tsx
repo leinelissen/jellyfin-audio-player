@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import Modal from 'components/Modal';
 import { useNavigation, StackActions, useRoute, RouteProp } from '@react-navigation/native';
+import { Dimensions } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { ModalStackParams } from 'screens/types';
 import { useTypedSelector } from 'store';
 import { SubHeader } from 'components/Typography';
@@ -16,6 +18,7 @@ import { useDispatch } from 'react-redux';
 import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
 import usePlayTracks from 'utility/usePlayTracks';
 import { selectIsDownloaded } from 'store/downloads/selectors';
+import { useGetImage } from 'utility/JellyfinApi';
 
 type Route = RouteProp<ModalStackParams, 'TrackPopupMenu'>;
 
@@ -23,6 +26,14 @@ const Container = styled.View`
     padding: 20px;
     flex: 0 0 auto;
     flex-direction: column;
+`;
+
+const Screen = Dimensions.get('screen');
+const AlbumImage = styled(FastImage)`
+    border-radius: 10px;
+    width: ${Screen.width * 0.6}px;
+    height: ${Screen.width * 0.6}px;
+    margin: 10px auto;
 `;
 
 function TrackPopupMenu() {
@@ -33,7 +44,8 @@ function TrackPopupMenu() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const playTracks = usePlayTracks();
-
+    const getImage = useGetImage();
+    
     // Retrieve data from store
     const track = useTypedSelector((state) => state.music.tracks.entities[trackId]);
     const isDownloaded = useTypedSelector(selectIsDownloaded(trackId));
@@ -70,6 +82,7 @@ function TrackPopupMenu() {
     return (
         <Modal fullSize={false}>
             <Container>
+                <AlbumImage source={{ uri: getImage(String(track?.Id)) }} />
                 <SubHeader style={{ textAlign: 'center' }}>{track?.Name}</SubHeader>
                 <Text style={{ marginBottom: 18, textAlign: 'center' }}>{track?.Album} - {track?.AlbumArtist}</Text>
                 <WrappableButtonRow>

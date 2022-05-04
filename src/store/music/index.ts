@@ -7,7 +7,8 @@ import {
     searchAndFetchAlbums,
     playlistAdapter,
     fetchAllPlaylists,
-    fetchTracksByPlaylist
+    fetchTracksByPlaylist,
+    fetchAllTracks
 } from './actions';
 import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
 import { Album, AlbumTrack, Playlist } from './types';
@@ -44,7 +45,7 @@ export const initialState: State = {
         ...trackAdapter.getInitialState(),
         isLoading: false,
         byAlbum: {},
-        byPlaylist: {},
+        byPlaylist: {}
     },
     playlists: {
         ...playlistAdapter.getInitialState(),
@@ -140,6 +141,16 @@ const music = createSlice({
         });
         builder.addCase(fetchTracksByPlaylist.pending, (state) => { state.tracks.isLoading = true; });
         builder.addCase(fetchTracksByPlaylist.rejected, (state) => { state.tracks.isLoading = false; });
+
+        /**
+         * Fetch all tracks
+         */
+         builder.addCase(fetchAllTracks.fulfilled, (state, { payload }) => {
+            trackAdapter.setAll(state.tracks, payload);
+            state.tracks.isLoading = false;
+        });
+        builder.addCase(fetchAllTracks.pending, (state) => { state.tracks.isLoading = true; });
+        builder.addCase(fetchAllTracks.rejected, (state) => { state.tracks.isLoading = false; });
         
         // Reset any caches we have when a new server is set
         builder.addCase(setJellyfinCredentials, () => initialState);

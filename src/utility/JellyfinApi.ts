@@ -160,6 +160,7 @@ const trackParams = {
     SortBy: 'AlbumArtist,SortName',
     SortOrder: 'Ascending',
     IncludeItemTypes: 'Audio',
+    mediaTypes: 'Audio, music',
     Recursive: 'true',
     Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated',
 };
@@ -169,7 +170,10 @@ const trackParams = {
  */
 export async function retrieveAllTracks(credentials: Credentials) {
     const config = generateConfig(credentials);
-    const tracks = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${trackParams}`, config)
+
+    const params = new URLSearchParams(trackParams).toString();
+
+    const tracks = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${params}`, config)
         .then(response => response.json());
 
     return tracks.Items;

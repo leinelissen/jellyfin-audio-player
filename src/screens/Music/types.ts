@@ -8,6 +8,7 @@ export type MusicStackParams = {
     Playlists: undefined;
     Playlist: { id: string };
     RecentAlbums: undefined;
+    Singles: undefined;
     Search: undefined;
 };
 
