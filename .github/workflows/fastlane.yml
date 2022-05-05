@@ -25,7 +25,7 @@ jobs:
         SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
         SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         SENTRY_URL: ${{ secrets.SENTRY_URL }}
-      run: fastlane android beta
+      run: bundle exec fastlane android beta
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
