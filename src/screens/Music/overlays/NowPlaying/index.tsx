@@ -7,12 +7,13 @@ import PlayIcon from 'assets/icons/play.svg';
 import PauseIcon from 'assets/icons/pause.svg';
 import useCurrentTrack from 'utility/useCurrentTrack';
 import TrackPlayer, { State, usePlaybackState, useProgress } from 'react-native-track-player';
-import { THEME_COLOR } from 'CONSTANTS';
 import { Shadow } from 'react-native-shadow-2';
 import usePrevious from 'utility/usePrevious';
 import Text from 'components/Text';
 import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
 import { useNavigation } from '@react-navigation/native';
+import { calculateProgressTranslation } from 'components/Progresstrack';
+import { THEME_COLOR } from 'CONSTANTS';
 
 const NOW_PLAYING_POPOVER_MARGIN = 6;
 const NOW_PLAYING_POPOVER_WIDTH = Dimensions.get('screen').width - 2 * NOW_PLAYING_POPOVER_MARGIN;
@@ -38,6 +39,17 @@ const InnerContainer = styled.Pressable`
     align-items: center;
 `;
 
+const ProgressTrack = styled(Animated.View)<{ stroke?: number; opacity?: number}>`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: ${(props) => props.stroke ? props.stroke + 'px' : '100%'};
+    background-color: ${THEME_COLOR};
+    opacity: ${(props) => props.opacity || 1};
+    border-radius: 99px;
+`;
+
 const ShadowOverlay = styled.View`
     position: absolute;
     top: 0;
@@ -59,21 +71,6 @@ const TrackNameContainer = styled.View`
 
 const ActionButton = styled.Pressable`
     margin-right: 8px;
-`;
-
-interface ProgressTrackProps {
-    opacity?: number;
-}
-
-const ProgressTrack = styled(Animated.View)<ProgressTrackProps>`
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background-color: ${THEME_COLOR};
-    opacity: ${(props) => props.opacity || 1};
-    border-radius: 99px;
 `;
 
 function SelectActionButton() {
@@ -108,11 +105,6 @@ function SelectActionButton() {
     }
 }
 
-function calculateProgressTranslation(position: number, reference: number) {
-    const completion = position / reference;
-    return (1 - (completion || 0)) * -1 * NOW_PLAYING_POPOVER_WIDTH;
-}
-
 function NowPlaying() {
     const { index, track } = useCurrentTrack();
     const { buffered, duration, position } = useProgress();
@@ -130,13 +122,13 @@ function NowPlaying() {
         const hasChangedTrack = previousIndex !== index || duration === 0;
 
         Animated.timing(bufferAnimation.current, {
-            toValue: calculateProgressTranslation(buffered, duration),
+            toValue: calculateProgressTranslation(buffered, duration, NOW_PLAYING_POPOVER_WIDTH),
             duration: hasChangedTrack ? 0 : 500,
             useNativeDriver: true,
             easing: Easing.ease,
         }).start();
         Animated.timing(progressAnimation.current, {
-            toValue: calculateProgressTranslation(position, duration),
+            toValue: calculateProgressTranslation(position, duration, NOW_PLAYING_POPOVER_WIDTH),
             duration: hasChangedTrack ? 0 : 500,
             useNativeDriver: true,
         }).start();
@@ -168,9 +160,11 @@ function NowPlaying() {
                     <ProgressTrack
                         style={{ transform: [{ translateX: bufferAnimation.current }]}}
                         opacity={0.15}
+                        stroke={4}
                     />
                     <ProgressTrack
                         style={{ transform: [{ translateX: progressAnimation.current }]}}
+                        stroke={4}
                     />
                 </InnerContainer>
             </ColoredBlurView>

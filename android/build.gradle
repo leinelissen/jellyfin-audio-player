@@ -57,6 +57,7 @@ allprojects {
         jcenter() {
             content {
                 includeGroup("com.google.android.exoplayer")
+                includeGroupByRegex("com.eightbitlab.*")
             }
         }
     }

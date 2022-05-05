@@ -1,95 +1,187 @@
-import React, { Component } from 'react';
-import TrackPlayer from 'react-native-track-player';
+import React, { useEffect } from 'react';
+import TrackPlayer, { useProgress } from 'react-native-track-player';
 import styled from 'styled-components/native';
-import { Text, Platform } from 'react-native';
-import Slider from '@react-native-community/slider';
+import ProgressTrack, {
+    calculateProgressTranslation,
+    getMinutes,
+    getSeconds,
+    ProgressTrackContainer
+} from 'components/Progresstrack';
+import { Gesture, GestureDetector, gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import { THEME_COLOR } from 'CONSTANTS';
-import { DefaultStylesProvider } from 'components/Colors';
+import Reanimated, {
+    useSharedValue,
+    useAnimatedStyle,
+    withTiming,
+    Easing,
+    useDerivedValue,
+    runOnJS,
+} from 'react-native-reanimated';
+import ReText from 'components/ReText';
+
+const DRAG_HANDLE_SIZE = 20;
+
+const Container = styled.View`
+    margin-top: 28px;
+`;
 
 const NumberBar = styled.View`
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    padding: 20px 0;
+    padding: 8px 0;
 `;
 
-function getSeconds(seconds: number): string {
-    return Math.floor(seconds % 60).toString().padStart(2, '0');
-}
+const Number = styled(ReText)`
+    font-size: 13px;
+`;
 
-function getMinutes(seconds: number): number {
-    return Math.floor(seconds / 60);
-}
+const DragHandle = styled(Reanimated.View)`
+    width: ${DRAG_HANDLE_SIZE}px;
+    height: ${DRAG_HANDLE_SIZE}px;
+    border-radius: ${DRAG_HANDLE_SIZE}px;
+    background-color: ${THEME_COLOR};
+    position: absolute;
+    left: -${DRAG_HANDLE_SIZE / 2}px;
+    top: -${DRAG_HANDLE_SIZE / 2 - 2.5}px;
+    z-index: 14;
+`;
 
-interface State {
-    position: number;
-    duration: number;
-    gesture?: number;
-}
+function ProgressBar() {
+    const { position, buffered, duration } = useProgress();
 
-export default class ProgressBar extends Component<{}, State> {
-    state: State = {
-        position: 0,
-        duration: 0,
-    };
+    const width = useSharedValue(0);
+    const pos = useSharedValue(0);
+    const buf = useSharedValue(0);
+    const dur = useSharedValue(0);
 
-    timer: number | null = null;
+    const isDragging = useSharedValue(false);
+    const offset = useSharedValue(0);
 
-    componentDidMount() {
-        this.timer = setInterval(this.updateProgress, 500);
-    }
+    const bufferAnimation = useDerivedValue(() => {
+        return calculateProgressTranslation(buf.value, dur.value, width.value);
+    }, [[dur, buf, width.value]]);
 
-    componentWillUnmount() {
-        if (this.timer) {
-            clearInterval(this.timer);
+    const progressAnimation = useDerivedValue(() => {
+        if (isDragging.value) {
+            return calculateProgressTranslation(offset.value, width.value, width.value);
+        } else {
+            return calculateProgressTranslation(pos.value, dur.value, width.value);
         }
-    }
+    });
 
-    updateProgress = async () => {
-        const [position, duration] = await Promise.all([
-            TrackPlayer.getPosition(),
-            TrackPlayer.getDuration(),
-        ]);
+    const timePassed = useDerivedValue(() => {
+        if (isDragging.value) {
+            const currentPosition = (offset.value - DRAG_HANDLE_SIZE / 2) / (width.value - DRAG_HANDLE_SIZE) * dur.value;
+            return getMinutes(currentPosition) + ':' + getSeconds(currentPosition);
+        } else {
+            return getMinutes(pos.value) + ':' + getSeconds(pos.value);
+        }
+    }, [pos]);
 
-        this.setState({ position, duration });
-    };
+    const timeRemaining = useDerivedValue(() => {
+        if (isDragging.value) {
+            const currentPosition = (offset.value - DRAG_HANDLE_SIZE / 2) / (width.value - DRAG_HANDLE_SIZE) * dur.value;
+            const remaining = (currentPosition - dur.value) * -1;
+            return `-${getMinutes(remaining)}:${getSeconds((remaining))}`;
+        } else {
+            const remaining = (pos.value - dur.value) * -1;
+            return `-${getMinutes(remaining)}:${getSeconds((remaining))}`;
+        }
+    }, [pos, dur]);
+    
+    const gesture = Gesture.Pan()
+        .onBegin(() => {
+            isDragging.value = true;
+        }).onUpdate((e) => {
+            offset.value = Math.min(Math.max(DRAG_HANDLE_SIZE / 2, e.x), width.value - DRAG_HANDLE_SIZE / 2);
+        }).onFinalize(() => {
+            pos.value = (offset.value - DRAG_HANDLE_SIZE / 2) / (width.value - DRAG_HANDLE_SIZE) * dur.value;
+            isDragging.value = false;
+            runOnJS(TrackPlayer.seekTo)(pos.value);
+        });
 
-    handleGesture = async (gesture: number) => {
-        // Set relative translation in state
-        this.setState({ gesture });
-    };
+    useEffect(() => {
+        pos.value = position;
+        buf.value = buffered;
+        dur.value = duration;
+    }, [position, buffered, duration]);
 
-    handleEndOfGesture = (position: number) => {
-        // Calculate and set the new position
-        TrackPlayer.seekTo(position);
-        this.setState({ gesture: undefined, position });
-    };
-
-    render() {
-        const { position, duration, gesture } = this.state;
-        
-        return (
-            <DefaultStylesProvider>
-                {defaultStyle => (
-                    <>
-                        <Slider
-                            value={gesture || position}
-                            minimumValue={0}
-                            maximumValue={duration || 0}
-                            onValueChange={this.handleGesture}
-                            onSlidingComplete={this.handleEndOfGesture}
-                            minimumTrackTintColor={THEME_COLOR}
-                            thumbTintColor={Platform.OS === 'android' ? THEME_COLOR : undefined}
-                            disabled={!duration}
-                        />
-                        <NumberBar>
-                            <Text style={defaultStyle.text}>{getMinutes(gesture || position)}:{getSeconds(gesture || position)}</Text>
-                            <Text style={defaultStyle.text}>{getMinutes(duration)}:{getSeconds(duration)}</Text>
-                        </NumberBar>
-                    </>
-                )
+    const dragHandleStyles = useAnimatedStyle(() => {
+        return {
+            transform: [
+                { translateX: offset.value },
+                { 
+                    scale: withTiming(isDragging.value ? 1 : 0.05, {
+                        duration: 100,
+                        easing: Easing.out(Easing.ease),
+                    })
                 }
-            </DefaultStylesProvider>
-        );
-    }
+            ],
+        };
+    });
+
+    const bufferStyles = useAnimatedStyle(() => ({
+        transform: [
+            { translateX: bufferAnimation.value }
+        ]
+    }));
+
+    const progressStyles = useAnimatedStyle(() => {
+        return {
+            transform: [
+                { translateX: progressAnimation.value }
+            ]
+        };
+    });
+
+    const timePassedStyles = useAnimatedStyle(() => {
+        return {
+            transform: [
+                { translateY: withTiming(isDragging.value && offset.value < 48 ? 12 : 0, {
+                    duration: 145,
+                    easing: Easing.ease
+                }) },
+            ],
+        };
+    });
+
+    const timeRemainingStyles = useAnimatedStyle(() => {
+        return {
+            transform: [
+                { translateY: withTiming(isDragging.value && offset.value > width.value - 48 ? 12 : 0, {
+                    duration: 150,
+                    easing: Easing.ease
+                }) },
+            ],
+        };
+    });
+
+    return (
+        <Container onLayout={(e) => { width.value = e.nativeEvent.layout.width; }}>
+            <GestureDetector gesture={gesture}>
+                <>
+                    <ProgressTrackContainer>
+                        <ProgressTrack
+                            opacity={0.15}
+                        />
+                        <ProgressTrack
+                            style={bufferStyles}
+                            opacity={0.15}
+                        />
+                        <ProgressTrack
+                            style={progressStyles}
+                        />
+                    </ProgressTrackContainer>
+                    <DragHandle style={dragHandleStyles} />
+                    <NumberBar style={{ flex: 1 }}>
+                        <Number text={timePassed} style={timePassedStyles} />
+                        <Number text={timeRemaining} style={timeRemainingStyles} />
+                    </NumberBar>
+                </>
+            </GestureDetector>
+        </Container>
+    );
 }
+
+export default gestureHandlerRootHOC(ProgressBar);

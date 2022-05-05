@@ -21,8 +21,8 @@ export default function Player() {
         <ScrollView contentContainerStyle={styles.inner} style={defaultStyles.view}>
             <NowPlaying />
             <ConnectionNotice />
-            <MediaControls />
             <ProgressBar />
+            <MediaControls />
             <Queue />
         </ScrollView>
     );

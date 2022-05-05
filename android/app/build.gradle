@@ -135,7 +135,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.rndiffapp"
+        applicationId "com.jellyfinaudioplayer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 8
@@ -300,6 +300,10 @@ if (isNewArchitectureEnabled()) {
             substitute(module("com.facebook.react:react-native"))
                     .using(project(":ReactAndroid")).because("On New Architecture we're building React Native from source")
         }
+        resolutionStrategy {
+            force 'com.google.android.exoplayer:exoplayer-core:2.11.4'
+        }
+
     }
 }
 
