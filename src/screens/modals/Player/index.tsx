@@ -7,6 +7,7 @@ import Queue from './components/Queue';
 import useDefaultStyles from 'components/Colors';
 import ConnectionNotice from './components/ConnectionNotice';
 import { ScrollView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
     inner: {
@@ -18,12 +19,14 @@ export default function Player() {
     const defaultStyles = useDefaultStyles();
     
     return (
-        <ScrollView contentContainerStyle={styles.inner} style={defaultStyles.view}>
-            <NowPlaying />
-            <ConnectionNotice />
-            <ProgressBar />
-            <MediaControls />
-            <Queue />
-        </ScrollView>
+        <GestureHandlerRootView>
+            <ScrollView contentContainerStyle={styles.inner} style={defaultStyles.view}>
+                <NowPlaying />
+                <ConnectionNotice />
+                <ProgressBar />
+                <MediaControls />
+                <Queue />
+            </ScrollView>
+        </GestureHandlerRootView>
     );
 }

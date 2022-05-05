@@ -12,7 +12,6 @@ import {
 import { useColorScheme } from 'react-native';
 import { ColorSchemeContext, themes } from './Colors';
 import DownloadManager from './DownloadManager';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 // import ErrorReportingAlert from 'utility/ErrorReportingAlert';
 
 export default function App(): JSX.Element {
@@ -43,10 +42,8 @@ export default function App(): JSX.Element {
             <PersistGate loading={null} persistor={persistedStore}>
                 <ColorSchemeContext.Provider value={theme}>
                     <NavigationContainer theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                        <GestureHandlerRootView style={{ flex: 1 }}>
-                            <Routes />
-                            <DownloadManager />
-                        </GestureHandlerRootView>
+                        <Routes />
+                        <DownloadManager />
                     </NavigationContainer>
                 </ColorSchemeContext.Provider>
             </PersistGate>

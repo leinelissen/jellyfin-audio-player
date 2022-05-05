@@ -41,7 +41,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = JellyfinAudioPlayer/main.m; sourceTree = "<group>"; };
 		2710519FCC41B05FDE6738DF /* Pods-JellyfinAudioPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer/Pods-JellyfinAudioPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		39572B38534BBDBB596C8C95 /* Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig"; sourceTree = "<group>"; };
-		4B4A0465FF364579B28CF5D7 /* Inter-VariableFont_slnt,wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-VariableFont_slnt,wght.ttf"; path = "../src/assets/fonts/Inter-VariableFont_slnt,wght.ttf"; sourceTree = "<group>"; };
+		4B4A0465FF364579B28CF5D7 /* Inter-VariableFont_slnt,wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-VariableFont_slnt,wght.ttf"; path = "../src/assets/fonts/Inter-VariableFont_slnt,wght.ttf"; sourceTree = "<group>"; };
 		4FA1B23B2550A94B007A035E /* JellyfinAudioPlayer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JellyfinAudioPlayer-Bridging-Header.h"; sourceTree = "<group>"; };
 		4FA1B23C2550A94C007A035E /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		590BEA7DE65819C5B5FDAD06 /* Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer-tvOSTests/Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -176,7 +176,6 @@
 				4B4A0465FF364579B28CF5D7 /* Inter-VariableFont_slnt,wght.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -214,7 +213,6 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				B9FB8FC65CEFF9AFAC71127E /* [CP] Copy Pods Resources */,
-				1DC46C84C90B4D84A18AC142 /* Upload Debug Symbols to Sentry */,
 				2917566AA57EE087FC9FCCE9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -302,21 +300,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nexport NODE_BINARY=$(which node)\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n";
-		};
-		1DC46C84C90B4D84A18AC142 /* Upload Debug Symbols to Sentry */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Upload Debug Symbols to Sentry";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
+			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2917566AA57EE087FC9FCCE9 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

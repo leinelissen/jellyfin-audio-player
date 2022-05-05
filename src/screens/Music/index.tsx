@@ -1,5 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { MusicStackParams } from './types';
 import Albums from './stacks/Albums';
 import Album from './stacks/Album';
@@ -17,7 +18,7 @@ function MusicStack() {
     const defaultStyles = useDefaultStyles();
 
     return (
-        <>
+        <GestureHandlerRootView>
             <Stack.Navigator initialRouteName="RecentAlbums" screenOptions={{
                 headerTintColor: THEME_COLOR,
                 headerTitleStyle: defaultStyles.stackHeader,
@@ -30,7 +31,7 @@ function MusicStack() {
                 <Stack.Screen name="Playlist" component={Playlist} options={{ headerTitle: t('playlist') }} />
             </Stack.Navigator>
             <NowPlaying />
-        </>
+        </GestureHandlerRootView>
     );
 }
 

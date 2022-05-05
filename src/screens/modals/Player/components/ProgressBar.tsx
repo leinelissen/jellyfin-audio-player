@@ -20,9 +20,11 @@ import Reanimated, {
 import ReText from 'components/ReText';
 
 const DRAG_HANDLE_SIZE = 20;
+const PADDING_TOP = 14;
 
 const Container = styled.View`
-    margin-top: 28px;
+    padding-top: ${PADDING_TOP}px;
+    margin-top: ${PADDING_TOP}px;
 `;
 
 const NumberBar = styled.View`
@@ -43,7 +45,7 @@ const DragHandle = styled(Reanimated.View)`
     background-color: ${THEME_COLOR};
     position: absolute;
     left: -${DRAG_HANDLE_SIZE / 2}px;
-    top: -${DRAG_HANDLE_SIZE / 2 - 2.5}px;
+    top: ${PADDING_TOP - DRAG_HANDLE_SIZE / 2 + 2.5}px;
     z-index: 14;
 `;
 
@@ -90,9 +92,13 @@ function ProgressBar() {
         }
     }, [pos, dur]);
     
-    const gesture = Gesture.Pan()
-        .onBegin(() => {
+    const pan = Gesture.Pan()
+        .minDistance(1)
+        .activeOffsetX(1)
+        .activeOffsetY(1)
+        .onBegin((e) => {
             isDragging.value = true;
+            offset.value = Math.min(Math.max(DRAG_HANDLE_SIZE / 2, e.x), width.value - DRAG_HANDLE_SIZE / 2);
         }).onUpdate((e) => {
             offset.value = Math.min(Math.max(DRAG_HANDLE_SIZE / 2, e.x), width.value - DRAG_HANDLE_SIZE / 2);
         }).onFinalize(() => {
@@ -100,11 +106,22 @@ function ProgressBar() {
             isDragging.value = false;
             runOnJS(TrackPlayer.seekTo)(pos.value);
         });
+    const tap = Gesture.Tap()
+        .onBegin((e) => {
+            isDragging.value = true;
+            offset.value = Math.min(Math.max(DRAG_HANDLE_SIZE / 2, e.x), width.value - DRAG_HANDLE_SIZE / 2);
+        }).onFinalize(() => {
+            pos.value = (offset.value - DRAG_HANDLE_SIZE / 2) / (width.value - DRAG_HANDLE_SIZE) * dur.value;
+            isDragging.value = false;
+            runOnJS(TrackPlayer.seekTo)(pos.value);
+        });
+    const gesture = Gesture.Exclusive(tap, pan);
 
     useEffect(() => {
         pos.value = position;
         buf.value = buffered;
         dur.value = duration;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [position, buffered, duration]);
 
     const dragHandleStyles = useAnimatedStyle(() => {
@@ -112,7 +129,7 @@ function ProgressBar() {
             transform: [
                 { translateX: offset.value },
                 { 
-                    scale: withTiming(isDragging.value ? 1 : 0.05, {
+                    scale: withTiming(isDragging.value ? 1 : 0, {
                         duration: 100,
                         easing: Easing.out(Easing.ease),
                     })
@@ -158,29 +175,27 @@ function ProgressBar() {
     });
 
     return (
-        <Container onLayout={(e) => { width.value = e.nativeEvent.layout.width; }}>
-            <GestureDetector gesture={gesture}>
-                <>
-                    <ProgressTrackContainer>
-                        <ProgressTrack
-                            opacity={0.15}
-                        />
-                        <ProgressTrack
-                            style={bufferStyles}
-                            opacity={0.15}
-                        />
-                        <ProgressTrack
-                            style={progressStyles}
-                        />
-                    </ProgressTrackContainer>
-                    <DragHandle style={dragHandleStyles} />
-                    <NumberBar style={{ flex: 1 }}>
-                        <Number text={timePassed} style={timePassedStyles} />
-                        <Number text={timeRemaining} style={timeRemainingStyles} />
-                    </NumberBar>
-                </>
-            </GestureDetector>
-        </Container>
+        <GestureDetector gesture={gesture}>
+            <Container onLayout={(e) => { width.value = e.nativeEvent.layout.width; }}>
+                <ProgressTrackContainer>
+                    <ProgressTrack
+                        opacity={0.15}
+                    />
+                    <ProgressTrack
+                        style={bufferStyles}
+                        opacity={0.15}
+                    />
+                    <ProgressTrack
+                        style={progressStyles}
+                    />
+                </ProgressTrackContainer>
+                <DragHandle style={dragHandleStyles} />
+                <NumberBar style={{ flex: 1 }}>
+                    <Number text={timePassed} style={timePassedStyles} />
+                    <Number text={timeRemaining} style={timeRemainingStyles} />
+                </NumberBar>
+            </Container>
+        </GestureDetector>
     );
 }
 
