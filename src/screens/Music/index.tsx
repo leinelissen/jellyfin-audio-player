@@ -18,7 +18,7 @@ function MusicStack() {
     const defaultStyles = useDefaultStyles();
 
     return (
-        <GestureHandlerRootView>
+        <GestureHandlerRootView style={{ flex: 1 }}>
             <Stack.Navigator initialRouteName="RecentAlbums" screenOptions={{
                 headerTintColor: THEME_COLOR,
                 headerTitleStyle: defaultStyles.stackHeader,

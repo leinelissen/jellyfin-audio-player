@@ -1,4 +1,5 @@
-import Text from 'components/Text';
+import { Text } from 'components/Typography';
+
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-native-gesture-handler';
 import styled, { css } from 'styled-components/native';

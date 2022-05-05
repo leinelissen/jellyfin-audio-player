@@ -6,7 +6,8 @@ import { NavigationProp } from '../..';
 import { useTypedSelector } from 'store';
 import { t } from '@localisation';
 import Button from 'components/Button';
-import Text from 'components/Text';
+import { Text } from 'components/Typography';
+
 
 const InputContainer = styled.View`
     margin: 10px 0;

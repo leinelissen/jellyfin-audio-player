@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import Modal from 'components/Modal';
 import { useNavigation, StackActions, useRoute, RouteProp } from '@react-navigation/native';
 import { ModalStackParams } from 'screens/types';
 import { useTypedSelector } from 'store';
@@ -10,7 +9,8 @@ import PlayIcon from 'assets/icons/play.svg';
 import DownloadIcon from 'assets/icons/cloud-down-arrow.svg';
 import QueueAppendIcon from 'assets/icons/queue-append.svg';
 import TrashIcon from 'assets/icons/trash.svg';
-import Text from 'components/Text';
+import { Text } from 'components/Typography';
+
 import { WrappableButton, WrappableButtonRow } from 'components/WrappableButtonRow';
 import { useDispatch } from 'react-redux';
 import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';

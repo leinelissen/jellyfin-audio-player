@@ -22,7 +22,8 @@ import { useDispatch } from 'react-redux';
 import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
 import { selectDownloadedTracks } from 'store/downloads/selectors';
 import { Header, SubHeader } from 'components/Typography';
-import Text from 'components/Text';
+import { Text } from 'components/Typography';
+
 import CoverImage from 'components/CoverImage';
 
 const styles = StyleSheet.create({

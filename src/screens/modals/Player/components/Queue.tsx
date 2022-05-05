@@ -7,7 +7,8 @@ import TouchableHandler from 'components/TouchableHandler';
 import TrackPlayer from 'react-native-track-player';
 import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
-import Text from 'components/Text';
+import { Text } from 'components/Typography';
+
 import Button from 'components/Button';
 import { THEME_COLOR } from 'CONSTANTS';
 import DownloadIcon from 'components/DownloadIcon';

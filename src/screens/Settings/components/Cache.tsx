@@ -5,7 +5,8 @@ import music from 'store/music';
 import { t } from '@localisation';
 import Button from 'components/Button';
 import styled from 'styled-components/native';
-import Text from 'components/Text';
+import { Text } from 'components/Typography';
+
 
 const ClearCache = styled(Button)`
     margin-top: 16px;

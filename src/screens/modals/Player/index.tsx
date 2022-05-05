@@ -19,7 +19,7 @@ export default function Player() {
     const defaultStyles = useDefaultStyles();
     
     return (
-        <GestureHandlerRootView>
+        <GestureHandlerRootView style={{ flex: 1 }}>
             <ScrollView contentContainerStyle={styles.inner} style={defaultStyles.view}>
                 <NowPlaying />
                 <ConnectionNotice />

@@ -9,7 +9,8 @@ import useCurrentTrack from 'utility/useCurrentTrack';
 import TrackPlayer, { State, usePlaybackState, useProgress } from 'react-native-track-player';
 import { Shadow } from 'react-native-shadow-2';
 import usePrevious from 'utility/usePrevious';
-import Text from 'components/Text';
+import { Text } from 'components/Typography';
+
 import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { calculateProgressTranslation } from 'components/Progresstrack';

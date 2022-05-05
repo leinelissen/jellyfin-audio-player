@@ -9,7 +9,8 @@ import CredentialGenerator from './components/CredentialGenerator';
 import { THEME_COLOR } from 'CONSTANTS';
 import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
-import Text from 'components/Text';
+import { Text } from 'components/Typography';
+
 
 export default function SetJellyfinServer() {
     const defaultStyles = useDefaultStyles();
