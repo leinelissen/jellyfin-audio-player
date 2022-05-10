@@ -62,7 +62,7 @@ function generateStyles(scheme: ColorSchemeName) {
             color: scheme === 'dark' ? '#ffffff4d' : '#0000004d',
         },
         divider: {
-            backgroundColor: scheme === 'dark' ? '#333' : '#f6f6f6',
+            backgroundColor: scheme === 'dark' ? '#333' : '#eee',
         },
     });
 }
