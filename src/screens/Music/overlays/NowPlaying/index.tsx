@@ -68,6 +68,7 @@ const Cover = styled(FastImage)`
 
 const TrackNameContainer = styled.View`
     flex: 1;
+    margin-right: 12px;
 `;
 
 const ActionButton = styled.Pressable`
