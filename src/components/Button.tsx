@@ -30,10 +30,6 @@ const ButtonText = styled.Text<{ active?: boolean }>`
     color: ${THEME_COLOR};
     font-weight: 500;
     font-size: 14px;
-
-    ${props => props.active && css`
-        color: white;
-    `}
 `;
 
 const Button = React.forwardRef<View, ButtonProps>(function Button(props, ref) {
@@ -47,20 +43,19 @@ const Button = React.forwardRef<View, ButtonProps>(function Button(props, ref) {
         <BaseButton
             {...rest}
             disabled={disabled}
-            // @ts-expect-error styled-components has outdated react-native typings
             ref={ref}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
             style={[ 
                 props.style, 
-                { backgroundColor: isPressed ? THEME_COLOR : defaultStyles.button.backgroundColor } 
+                { backgroundColor: isPressed ? defaultStyles.activeBackground.backgroundColor : defaultStyles.button.backgroundColor } 
             ]}    
         >
             {Icon && 
                 <Icon
                     width={14}
                     height={14}
-                    fill={isPressed ? '#fff' : THEME_COLOR}
+                    fill={THEME_COLOR}
                     style={{ 
                         marginRight: 8,
                     }} 

@@ -1,24 +1,57 @@
+import { Text } from 'components/Typography';
 import { THEME_COLOR } from 'CONSTANTS';
-import React from 'react';
-import AirPlayButton from 'react-native-airplay-button';
-import styled from 'styled-components/native';
-import { CastingProps } from './Casting';
+import React, { useCallback } from 'react';
+import { showRoutePicker, useAirplayRoutes } from 'react-airplay';
+import { TouchableOpacity } from 'react-native';
+import styled, { css } from 'styled-components/native';
+import AirplayAudioIcon from 'assets/icons/airplay-audio.svg';
+import useDefaultStyles from 'components/Colors';
 
-const Button = styled.View`
-    margin: 20px 40px;
+const Container = styled.View<{ active?: boolean }>`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1 1 auto;
+
+    ${(props) => props.active && css`
+        padding: 8px;
+        margin: -8px 0;
+        border-radius: 8px;
+    `}
 `;
 
-function Casting({ fill }: CastingProps) {
+const Label = styled(Text)<{ active?: boolean }>`
+    margin-left: 8px;
+    opacity: 0.5;
+    font-size: 13px;
+
+    ${(props) => props.active && css`
+        color: ${THEME_COLOR};
+        opacity: 1;
+    `}
+`;
+
+function Casting() {
+    const defaultStyles = useDefaultStyles();
+    const routes = useAirplayRoutes();
+    const handleClick = useCallback(() => showRoutePicker({}), []);
+
     return (
-        <>
-            <Button>
-                <AirPlayButton 
-                    activeTintColor={THEME_COLOR}
-                    tintColor={fill}
-                    style={{ width: 40, height: 40 }}
+        <TouchableOpacity onPress={handleClick} activeOpacity={0.6}>
+            <Container style={routes.length ? defaultStyles.activeBackground : undefined} active={routes.length > 0}>
+                <AirplayAudioIcon
+                    width={20}
+                    height={20}
+                    fill={routes.length > 0 ? THEME_COLOR : defaultStyles.textHalfOpacity.color}
                 />
-            </Button>
-        </>
+                <Label active={routes.length > 0} numberOfLines={1}>
+                    {routes.length > 0
+                        ? `Playing on ${routes.map((route) => route.portName).join(', ')}`
+                        : 'Local Playback'
+                    }
+                </Label>
+            </Container>
+        </TouchableOpacity>
     );
 }
 

@@ -8,6 +8,7 @@ import useDefaultStyles from 'components/Colors';
 import ConnectionNotice from './components/ConnectionNotice';
 import { ScrollView } from 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import StreamStatus from './components/StreamStatus';
 
 const styles = StyleSheet.create({
     inner: {
@@ -23,6 +24,7 @@ export default function Player() {
             <ScrollView contentContainerStyle={styles.inner} style={defaultStyles.view}>
                 <NowPlaying />
                 <ConnectionNotice />
+                <StreamStatus />
                 <ProgressBar />
                 <MediaControls />
                 <Queue />

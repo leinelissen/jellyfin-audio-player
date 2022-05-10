@@ -25,6 +25,7 @@ import { Header, SubHeader } from 'components/Typography';
 import { Text } from 'components/Typography';
 
 import CoverImage from 'components/CoverImage';
+import ticksToDuration from 'utility/ticksToDuration';
 
 const styles = StyleSheet.create({
     index: {
@@ -170,8 +171,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                                     ]}
                                     numberOfLines={1}
                                 >
-                                    {Math.round(tracks[trackId]?.RunTimeTicks / 10000000 / 60)}
-                                    :{Math.round(tracks[trackId]?.RunTimeTicks / 10000000 % 60).toString().padStart(2, '0')}
+                                    {ticksToDuration(tracks[trackId]?.RunTimeTicks || 0)}
                                 </Text>
                                 <DownloadIcon trackId={trackId} fill={currentTrack?.backendId === trackId ? `${THEME_COLOR}44` : undefined} />
                             </View>

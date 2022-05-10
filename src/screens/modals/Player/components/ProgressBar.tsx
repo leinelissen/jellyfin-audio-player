@@ -20,7 +20,7 @@ import Reanimated, {
 import ReText from 'components/ReText';
 
 const DRAG_HANDLE_SIZE = 20;
-const PADDING_TOP = 14;
+const PADDING_TOP = 12;
 
 const Container = styled.View`
     padding-top: ${PADDING_TOP}px;

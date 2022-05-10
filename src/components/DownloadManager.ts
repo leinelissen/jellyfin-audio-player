@@ -67,8 +67,6 @@ function DownloadManager () {
             return;
         }
 
-        console.log(ids);
-
         /**
          * Whenever the store is cleared, existing downloads get "lost" because
          * the only reference we have is the store. This function checks for
@@ -94,7 +92,7 @@ function DownloadManager () {
                     dispatch(completeDownload({ 
                         id,
                         location: file.path,
-                        size: Number.parseInt(file.size),
+                        size: file.size,
                     }));
                 });
         }

@@ -114,6 +114,8 @@ PODS:
     - React-RCTSettings (= 0.68.1)
     - React-RCTText (= 0.68.1)
     - React-RCTVibration (= 0.68.1)
+  - react-airplay (1.1.2):
+    - React-Core
   - React-callinvoker (0.68.1)
   - React-Codegen (0.68.1):
     - FBReactNativeSpec (= 0.68.1)
@@ -291,8 +293,6 @@ PODS:
   - React-jsinspector (0.68.1)
   - React-logger (0.68.1):
     - glog
-  - react-native-airplay-button (1.1.0):
-    - React-Core
   - react-native-blur (0.8.0):
     - React
   - react-native-flipper (0.127.0):
@@ -504,6 +504,7 @@ DEPENDENCIES:
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
+  - react-airplay (from `../node_modules/react-airplay`)
   - React-callinvoker (from `../node_modules/react-native/ReactCommon/callinvoker`)
   - React-Codegen (from `build/generated/ios`)
   - React-Core (from `../node_modules/react-native/`)
@@ -515,7 +516,6 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
-  - react-native-airplay-button (from `../node_modules/react-native-airplay-button`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-flipper (from `../node_modules/react-native-flipper`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
@@ -591,6 +591,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/TypeSafety"
   React:
     :path: "../node_modules/react-native/"
+  react-airplay:
+    :path: "../node_modules/react-airplay"
   React-callinvoker:
     :path: "../node_modules/react-native/ReactCommon/callinvoker"
   React-Codegen:
@@ -609,8 +611,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
-  react-native-airplay-button:
-    :path: "../node_modules/react-native-airplay-button"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
   react-native-flipper:
@@ -700,6 +700,7 @@ SPEC CHECKSUMS:
   RCTRequired: 00581111c53531e39e3c6346ef0d2c0cf52a5a37
   RCTTypeSafety: 07e03ee7800e7dd65cba8e52ad0c2edb06c96604
   React: e61f4bf3c573d0c61c56b53dc3eb1d9daf0768a0
+  react-airplay: 19bc646b4cc698c00772f4cb0e45ca8e280d4c6e
   React-callinvoker: 047d47230bb6fd66827f8cb0bea4e944ffd1309b
   React-Codegen: bb0403cde7374af091530e84e492589485aab480
   React-Core: a4a3a8e10d004b08e013c3d0438259dd89a3894c
@@ -709,7 +710,6 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 4a4bae5671b064a2248a690cf75957669489d08c
   React-jsinspector: 218a2503198ff28a085f8e16622a8d8f507c8019
   React-logger: f79dd3cc0f9b44f5611c6c7862badd891a862cf8
-  react-native-airplay-button: 90c7ba52402c8e92342003b8a1ff78dfb4357a9e
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-flipper: b9e2e817604af8da0d5a9ba20a8516e780e30f3c
   react-native-netinfo: 3671b091c4843fda5e153612866ef4024b8f5d62
