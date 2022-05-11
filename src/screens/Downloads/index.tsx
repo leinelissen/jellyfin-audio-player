@@ -22,7 +22,6 @@ const DownloadedTrack = styled.View`
     padding: 8px 0;
     align-items: center;
     margin: 0 20px;
-    border-bottom-width: 1px;
 `;
 
 function Downloads() {
@@ -87,7 +86,7 @@ function Downloads() {
     ), [totalDownloadSize, defaultStyles, failedIds.length, handleRetryFailed, handleDeleteAllTracks, ids.length]);
     
     const renderItem = useCallback<NonNullable<FlatListProps<EntityId>['renderItem']>>(({ item }) => (
-        <DownloadedTrack style={defaultStyles.border}>
+        <DownloadedTrack>
             <View style={{ marginRight: 12 }}>
                 <DownloadIcon trackId={item} />
             </View>

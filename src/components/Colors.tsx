@@ -48,12 +48,8 @@ function generateStyles(scheme: ColorSchemeName) {
             backgroundColor: scheme === 'dark' ? '#161616' : '#eee',
         },
         input: {
-            backgroundColor: scheme === 'dark' ? '#161616' : '#e6e6e6',
+            backgroundColor: scheme === 'dark' ? '#161616' : '#f3f3f3',
             color: scheme === 'dark' ? '#fff' : '#000',
-        },
-        sectionHeading: {
-            backgroundColor: scheme === 'dark' ? '#111' : '#eee',
-            borderColor: scheme === 'dark' ? '#333' : '#ddd',
         },
         stackHeader: {
             color: scheme === 'dark' ? 'white' : 'black'

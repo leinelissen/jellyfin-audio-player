@@ -1,30 +1,24 @@
 import React, { useCallback, useState } from 'react';
 import { TouchableOpacityProps } from 'react-native';
 import ChevronRight from 'assets/icons/chevron-right.svg';
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { THEME_COLOR } from 'CONSTANTS';
 import useDefaultStyles from './Colors';
 
 const BUTTON_SIZE = 14;
 
 const Container = styled.Pressable<{ active?: boolean }>`
-    padding: 18px 20px;
-    border-bottom-width: 1px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    margin: 4px 8px;
     flex-direction: row;
     justify-content: space-between;
-
-    ${props => props.active && css`
-        background-color: ${THEME_COLOR};
-    `}
+    align-items: center;
 `;
 
 const Label = styled.Text<{ active?: boolean }>`
     color: ${THEME_COLOR};
     font-size: 16px;
-
-    ${props => props.active && css`
-        color: white;
-    `}
 `;
 
 const ListButton: React.FC<TouchableOpacityProps> = ({ children, ...props }) => {
@@ -34,16 +28,17 @@ const ListButton: React.FC<TouchableOpacityProps> = ({ children, ...props }) => 
     const handlePressOut = useCallback(() => setPressed(false), []);
 
     return (
-        // @ts-expect-error styled-components has outdated react-native typings
         <Container
             {...props}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
-            style={defaultStyles.border}
-            active={isPressed}
+            style={[
+                defaultStyles.border,
+                isPressed ? defaultStyles.activeBackground : undefined
+            ]}
         >
-            <Label active={isPressed}>{children}</Label>
-            <ChevronRight width={BUTTON_SIZE} height={BUTTON_SIZE} fill={isPressed ? '#fff' : THEME_COLOR} />
+            <Label>{children}</Label>
+            <ChevronRight width={BUTTON_SIZE} height={BUTTON_SIZE} fill={THEME_COLOR} />
         </Container>
     );
 };

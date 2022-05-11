@@ -15,17 +15,23 @@ import ListButton from 'components/ListButton';
 import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
 import { Album } from 'store/music/types';
+import Divider from 'components/Divider';
+import styled from 'styled-components/native';
 
 const styles = StyleSheet.create({
     columnWrapper: {
-        paddingLeft: 10,
-        paddingRight: 10
+        paddingHorizontal: 16,
     }
 });
 
+const HeaderContainer = styled.View`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`;
+
 const NavigationHeader: React.FC = () => {
     const navigation = useNavigation<MusicNavigationProp>();
-    const defaultStyles = useDefaultStyles();
     const handleAllAlbumsClick = useCallback(() => { navigation.navigate('Albums'); }, [navigation]);
     const handlePlaylistsClick = useCallback(() => { navigation.navigate('Playlists'); }, [navigation]);
     
@@ -34,7 +40,10 @@ const NavigationHeader: React.FC = () => {
             <ListButton onPress={handleAllAlbumsClick}>{t('all-albums')}</ListButton>
             <ListButton onPress={handlePlaylistsClick}>{t('playlists')}</ListButton>
             <ListContainer>
-                <Header style={defaultStyles.text}>{t('recent-albums')}</Header>
+                <HeaderContainer>
+                    <Header>{t('recent-albums')}</Header>
+                    <Divider style={{ marginLeft: 24 }} />
+                </HeaderContainer>
             </ListContainer>
         </>
     );

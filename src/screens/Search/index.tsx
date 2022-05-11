@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Input from 'components/Input';
-import { ActivityIndicator, SafeAreaView, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, SafeAreaView, TextInput, View } from 'react-native';
 import styled from 'styled-components/native';
 import { useTypedSelector } from 'store';
 import Fuse from 'fuse.js';
@@ -16,9 +16,14 @@ import useDefaultStyles from 'components/Colors';
 import { searchAndFetchAlbums } from 'store/music/actions';
 import { debounce } from 'lodash';
 import { useDispatch } from 'react-redux';
+import { Text } from 'components/Typography';
+import DownloadIcon from 'components/DownloadIcon';
+import ChevronRight from 'assets/icons/chevron-right.svg';
+import SearchIcon from 'assets/icons/magnifying-glass.svg';
+
 
 const Container = styled.View`
-    padding: 0 20px;
+    padding: 0 32px;
     position: relative;
 `;
 
@@ -37,8 +42,8 @@ const Loading = styled.View`
 
 const AlbumImage = styled(FastImage)`
     border-radius: 4px;
-    width: 25px;
-    height: 25px;
+    width: 32px;
+    height: 32px;
     margin-right: 10px;
 `;
 
@@ -46,15 +51,14 @@ const HalfOpacity = styled.Text`
     opacity: 0.5;
     margin-top: 2px;
     font-size: 12px;
+    flex: 1 1 auto;
 `;
 
 const SearchResult = styled.View`
     flex-direction: row;
     align-items: center;
-    border-bottom-width: 1px;
-    margin-left: 15px;
-    padding-right: 15px;
-    height: 50px;
+    padding: 8px 32px;
+    height: 54px;
 `;
 
 const fuseOptions = {
@@ -208,13 +212,13 @@ export default function Search() {
     const HeaderComponent = React.useMemo(() => (
         <Container>
             <Input
-                // @ts-expect-error styled-components has outdated react-native typings
                 ref={searchElement}
                 value={searchTerm}
                 onChangeText={setSearchTerm}
                 style={defaultStyles.input}
                 placeholder={t('search') + '...'}
             />
+            <SearchIcon width={14} height={14} fill={defaultStyles.textHalfOpacity.color} style={{ position: 'absolute', left: 48, top: 26}} />
             {isLoading && <Loading><ActivityIndicator /></Loading>}
         </Container>
     ), [searchTerm, setSearchTerm, defaultStyles, isLoading]);
@@ -249,15 +253,24 @@ export default function Search() {
 
                     return (
                         <TouchableHandler<string> id={album.Id} onPress={selectAlbum}>
-                            <SearchResult style={defaultStyles.border}>
+                            <SearchResult>
                                 <AlbumImage source={{ uri: getImage(album.Id) }} />
-                                <View>
-                                    <Text numberOfLines={1} ellipsizeMode="tail" style={defaultStyles.text}>
-                                        {trackName || album.Name} - {album.AlbumArtist}
+                                <View style={{ flex: 1 }}>
+                                    <Text numberOfLines={1}>
+                                        {trackName || album.Name}
                                     </Text>
-                                    <HalfOpacity style={defaultStyles.text}>
-                                        {type === 'AlbumArtist' ? t('album'): t('track')}
+                                    <HalfOpacity style={defaultStyles.text} numberOfLines={1}>
+                                        {type === 'AlbumArtist' 
+                                            ? `${t('album')} • ${album.AlbumArtist}`
+                                            : `${t('track')} • ${album.AlbumArtist} — ${album.Name}`
+                                        }
                                     </HalfOpacity>
+                                </View>
+                                <View style={{ marginLeft: 16 }}>
+                                    <DownloadIcon trackId={id} />
+                                </View>
+                                <View style={{ marginLeft: 16 }}>
+                                    <ChevronRight width={14} height={14} fill={defaultStyles.textQuarterOpacity.color}  />
                                 </View>
                             </SearchResult>
                         </TouchableHandler>

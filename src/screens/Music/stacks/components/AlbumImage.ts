@@ -3,17 +3,20 @@ import FastImage from 'react-native-fast-image';
 import { Dimensions } from 'react-native';
 
 const Screen = Dimensions.get('screen');
+export const AlbumWidth = Screen.width / 2 - 24;
+export const AlbumHeight = AlbumWidth + 40;
+export const CoverSize = AlbumWidth - 16;
 
 export const AlbumItem = styled.View`
-    width: ${Screen.width / 2 - 10}px;
-    padding: 10px;
-    height: 220px;
+    width: ${AlbumWidth}px;
+    height: ${AlbumHeight}px;
+    padding: 8px;
 `;
 
 const AlbumImage = styled(FastImage)`
     border-radius: 10px;
-    width: ${Screen.width / 2 - 40}px;
-    height: ${Screen.width / 2 - 40}px;
+    width: ${CoverSize}px;
+    height: ${CoverSize}px;
     margin-bottom: 5px;
 `;
 
