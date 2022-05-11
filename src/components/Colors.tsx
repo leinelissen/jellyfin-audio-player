@@ -39,7 +39,7 @@ function generateStyles(scheme: ColorSchemeName) {
             backgroundColor: scheme === 'dark' ? '#161616' : '#eee',
         },
         modal: {
-            backgroundColor: scheme === 'dark' ? '#22222200' : '#eeeeee00',
+            backgroundColor: scheme === 'dark' ? '#000' : '#fff',
         },
         modalInner: {
             backgroundColor: scheme === 'dark' ? '#000' : '#fff',
