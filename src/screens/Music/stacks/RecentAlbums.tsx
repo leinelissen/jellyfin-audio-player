@@ -17,6 +17,7 @@ import useDefaultStyles from 'components/Colors';
 import { Album } from 'store/music/types';
 import Divider from 'components/Divider';
 import styled from 'styled-components/native';
+import { ShadowWrapper } from 'components/Shadow';
 
 const styles = StyleSheet.create({
     columnWrapper: {
@@ -82,7 +83,9 @@ const RecentAlbums: React.FC = () => {
                 renderItem={({ item }) => (
                     <TouchableHandler id={item} onPress={selectAlbum}>
                         <AlbumItem>
-                            <AlbumImage source={{ uri: getImage(item) }} style={defaultStyles.imageBackground} />
+                            <ShadowWrapper size="medium">
+                                <AlbumImage source={{ uri: getImage(item) }} style={defaultStyles.imageBackground} />
+                            </ShadowWrapper>
                             <Text style={defaultStyles.text} numberOfLines={1}>{albums[item]?.Name}</Text>
                             <Text style={defaultStyles.textHalfOpacity} numberOfLines={1}>{albums[item]?.AlbumArtist}</Text>
                         </AlbumItem>

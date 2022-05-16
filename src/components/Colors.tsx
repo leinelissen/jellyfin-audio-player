@@ -37,6 +37,8 @@ function generateStyles(scheme: ColorSchemeName) {
         },
         imageBackground: {
             backgroundColor: scheme === 'dark' ? '#161616' : '#eee',
+            borderWidth: 0.5,
+            borderColor: scheme === 'dark' ? '#444' : '#ddd',
         },
         modal: {
             backgroundColor: scheme === 'dark' ? '#000' : '#fff',
@@ -59,6 +61,9 @@ function generateStyles(scheme: ColorSchemeName) {
         },
         divider: {
             backgroundColor: scheme === 'dark' ? '#333' : '#eee',
+        },
+        filter: {
+            backgroundColor: scheme === 'dark' ? '#161616' : '#f3f3f3',
         },
     });
 }

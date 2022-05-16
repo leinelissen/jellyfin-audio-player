@@ -17,6 +17,7 @@ import styled from 'styled-components/native';
 import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
 import { Album } from 'store/music/types';
 import { Text } from 'components/Typography';
+import { ShadowWrapper } from 'components/Shadow';
 
 const HeadingHeight = 50;
 
@@ -84,7 +85,9 @@ const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: Generat
     return (
         <TouchableHandler id={id as string} onPress={onPress}>
             <AlbumItem>
-                <AlbumImage source={{ uri: imageUrl }} style={defaultStyles.imageBackground} />
+                <ShadowWrapper size="medium">
+                    <AlbumImage source={{ uri: imageUrl }} style={[defaultStyles.imageBackground]} />
+                </ShadowWrapper>
                 <Text numberOfLines={1} style={defaultStyles.text}>{name}</Text>
                 <HalfOpacity style={defaultStyles.text} numberOfLines={1}>{artist}</HalfOpacity>
             </AlbumItem>
