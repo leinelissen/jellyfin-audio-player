@@ -26,7 +26,7 @@ const DarkTheme = {
     ...BaseDarkTheme,
     colors: {
         ...BaseDarkTheme.colors,
-        background: themes.light.view.backgroundColor,
+        background: themes.dark.view.backgroundColor,
     }
 };
 

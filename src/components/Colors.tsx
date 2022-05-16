@@ -38,7 +38,7 @@ function generateStyles(scheme: ColorSchemeName) {
         imageBackground: {
             backgroundColor: scheme === 'dark' ? '#161616' : '#eee',
             borderWidth: 0.5,
-            borderColor: scheme === 'dark' ? '#444' : '#ddd',
+            borderColor: scheme === 'dark' ? '#262626' : '#ddd',
         },
         modal: {
             backgroundColor: scheme === 'dark' ? '#000' : '#fff',
@@ -47,7 +47,7 @@ function generateStyles(scheme: ColorSchemeName) {
             backgroundColor: scheme === 'dark' ? '#000' : '#fff',
         },
         button: {
-            backgroundColor: scheme === 'dark' ? '#161616' : '#eee',
+            backgroundColor: scheme === 'dark' ? '#ffffff09' : '#00000009',
         },
         input: {
             backgroundColor: scheme === 'dark' ? '#161616' : '#f3f3f3',
