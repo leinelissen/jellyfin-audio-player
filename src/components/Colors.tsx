@@ -36,7 +36,7 @@ function generateStyles(scheme: ColorSchemeName) {
             backgroundColor: `${THEME_COLOR}${scheme === 'dark' ? '26' : '16'}`,
         },
         imageBackground: {
-            backgroundColor: scheme === 'dark' ? '#161616' : '#eee',
+            backgroundColor: scheme === 'dark' ? '#191919' : '#eee',
             borderWidth: 0.5,
             borderColor: scheme === 'dark' ? '#262626' : '#ddd',
         },
@@ -50,7 +50,7 @@ function generateStyles(scheme: ColorSchemeName) {
             backgroundColor: scheme === 'dark' ? '#ffffff09' : '#00000009',
         },
         input: {
-            backgroundColor: scheme === 'dark' ? '#161616' : '#f3f3f3',
+            backgroundColor: scheme === 'dark' ? '#191919' : '#f3f3f3',
             color: scheme === 'dark' ? '#fff' : '#000',
         },
         stackHeader: {
@@ -63,7 +63,7 @@ function generateStyles(scheme: ColorSchemeName) {
             backgroundColor: scheme === 'dark' ? '#333' : '#eee',
         },
         filter: {
-            backgroundColor: scheme === 'dark' ? '#161616' : '#f3f3f3',
+            backgroundColor: scheme === 'dark' ? '#191919' : '#f3f3f3',
         },
     });
 }
