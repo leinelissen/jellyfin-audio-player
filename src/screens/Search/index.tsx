@@ -272,7 +272,7 @@ export default function Search() {
                 </View>
             </ScrollView> */}
         </View>
-    ), [searchTerm, setSearchTerm, defaultStyles, isLoading]);
+    ), [searchTerm, setSearchTerm, defaultStyles, isLoading, keyboardHeight]);
 
     // GUARD: We cannot search for stuff unless Fuse is loaded with results.
     // Therefore we delay rendering to when we are certain it's there.

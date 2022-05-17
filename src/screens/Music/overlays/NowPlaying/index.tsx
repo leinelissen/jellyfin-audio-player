@@ -15,6 +15,7 @@ import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { calculateProgressTranslation } from 'components/Progresstrack';
 import { THEME_COLOR } from 'CONSTANTS';
+import { MusicNavigationProp } from 'screens/Music/types';
 
 const NOW_PLAYING_POPOVER_MARGIN = 6;
 const NOW_PLAYING_POPOVER_WIDTH = Dimensions.get('screen').width - 2 * NOW_PLAYING_POPOVER_MARGIN;
@@ -111,7 +112,7 @@ function NowPlaying() {
     const { index, track } = useCurrentTrack();
     const { buffered, duration, position } = useProgress();
     const previousIndex = usePrevious(index);
-    const navigation = useNavigation();
+    const navigation = useNavigation<MusicNavigationProp>();
 
     const bufferAnimation = useRef(new Animated.Value(0));
     const progressAnimation = useRef(new Animated.Value(0));
