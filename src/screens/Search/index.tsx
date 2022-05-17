@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Input from 'components/Input';
-import { ActivityIndicator, SafeAreaView, View } from 'react-native';
+import { ActivityIndicator, Animated, SafeAreaView, View } from 'react-native';
 import styled from 'styled-components/native';
 import { useTypedSelector } from 'store';
 import Fuse from 'fuse.js';
@@ -21,6 +21,7 @@ import DownloadIcon from 'components/DownloadIcon';
 import ChevronRight from 'assets/icons/chevron-right.svg';
 import SearchIcon from 'assets/icons/magnifying-glass.svg';
 import { ShadowWrapper } from 'components/Shadow';
+import { useKeyboardHeight } from 'utility/useKeyboardHeight';
 // import MicrophoneIcon from 'assets/icons/microphone.svg';
 // import AlbumIcon from 'assets/icons/collection.svg';
 // import TrackIcon from 'assets/icons/note.svg';
@@ -29,11 +30,11 @@ import { ShadowWrapper } from 'components/Shadow';
 // import LocalIcon from 'assets/icons/internal-drive.svg';
 // import SelectableFilter from './components/SelectableFilter';
 
-const Container = styled.View`
+const Container = styled(Animated.View)`
     padding: 4px 32px 0 32px;
     margin-bottom: 0px;
     padding-bottom: 0px;
-    border-top-width: 1px;
+    border-top-width: 0.5px;
 `;
 
 const FullSizeContainer = styled.View`
@@ -114,6 +115,7 @@ export default function Search() {
 
     // Prepare helpers
     const navigation = useNavigation<MusicNavigationProp>();
+    const keyboardHeight = useKeyboardHeight();
     const getImage = useGetImage();
     const dispatch = useDispatch();
 
@@ -218,13 +220,18 @@ export default function Search() {
 
     const HeaderComponent = React.useMemo(() => (
         <View>
-            <Container style={defaultStyles.border}>
+            <Container style={[
+                defaultStyles.border, 
+                defaultStyles.view,
+                { transform: [{ translateY: keyboardHeight }]},
+            ]}>
                 <View>
                     <Input
                         value={searchTerm}
                         onChangeText={setSearchTerm}
                         style={[defaultStyles.input, { marginBottom: 12 }]}
                         placeholder={t('search') + '...'}
+                        icon
                     />
                     <SearchIndicator width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />
                     {isLoading && <Loading><ActivityIndicator /></Loading>}
