@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { calculateProgressTranslation } from 'components/Progresstrack';
 import { THEME_COLOR } from 'CONSTANTS';
 import { MusicNavigationProp } from 'screens/Music/types';
+import { ShadowWrapper } from 'components/Shadow';
 
 const NOW_PLAYING_POPOVER_MARGIN = 6;
 const NOW_PLAYING_POPOVER_WIDTH = Dimensions.get('screen').width - 2 * NOW_PLAYING_POPOVER_MARGIN;
@@ -111,6 +112,7 @@ function SelectActionButton() {
 function NowPlaying() {
     const { index, track } = useCurrentTrack();
     const { buffered, duration, position } = useProgress();
+    const defaultStyles = useDefaultStyles();
     const previousIndex = usePrevious(index);
     const navigation = useNavigation<MusicNavigationProp>();
 
@@ -150,7 +152,9 @@ function NowPlaying() {
             </ShadowOverlay>
             <ColoredBlurView style={{ borderRadius: 8 }}>
                 <InnerContainer onPress={openNowPlayingModal} activeOpacity={0.5}>
-                    <Cover source={{ uri: (track.artwork || '') as string }} />
+                    <ShadowWrapper size="small">
+                        <Cover source={{ uri: (track.artwork || '') as string }} style={defaultStyles.imageBackground} />
+                    </ShadowWrapper>
                     <TrackNameContainer>
                         <Text numberOfLines={1}>{track.title}</Text>
                         <Text style={{ opacity: 0.5 }} numberOfLines={1}>
