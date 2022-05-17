@@ -28,11 +28,11 @@ const PopoverPosition = css`
     overflow: visible;
 `;
 
-const Container = styled.View`
+const Container = styled.ScrollView`
     ${PopoverPosition};
 `;
 
-const InnerContainer = styled.Pressable`
+const InnerContainer = styled.TouchableOpacity`
     padding: 12px;
     overflow: hidden;
     flex: 1;
@@ -148,7 +148,7 @@ function NowPlaying() {
                 </Shadow>
             </ShadowOverlay>
             <ColoredBlurView style={{ borderRadius: 8 }}>
-                <InnerContainer onPress={openNowPlayingModal}>
+                <InnerContainer onPress={openNowPlayingModal} activeOpacity={0.5}>
                     <Cover source={{ uri: (track.artwork || '') as string }} />
                     <TrackNameContainer>
                         <Text numberOfLines={1}>{track.title}</Text>
