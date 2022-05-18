@@ -7,8 +7,10 @@ This is a [React Native](https://reactnative.dev/)-based audio streaming app for
 ## ❗️Now open for beta testing on iOS
 Please follow this link to enroll for the TestFlight beta release of Jellyfin Audio Player: https://testflight.apple.com/join/cf2AMDpx.
 
-|![](./docs/images/now-playing.png)|![](./docs/images/recent-albums.png)|![](./docs/images/album-list.png)|![](./docs/images/search.png)|
-|-|-|-|-|
+|![](./docs/images/now-playing.png)|![](./docs/images/recent-albums.png)|![](./docs/images/album-list.png)
+|-|-|-|
+|![](./docs/images/album.png)|![](./docs/images/downloads.png)|![](./docs/images/search.png)
+
 
 ## Features
 * Sorting by recent albums
@@ -18,14 +20,12 @@ Please follow this link to enroll for the TestFlight beta release of Jellyfin Au
 * AirPlay and Chromecast support
 * Background audio
 * Native Dark Mode
-
-### Features being considered
 * Downloading music for offline playback
 * Searching based on track names
 * Looping and shuffling queue
 
 ## Getting Started
-This piece of software is in alpha. I am working on getting this app in ~~TestFlight and~~ Google Play Developer Console, but this is contingent on keys being available. In the meantime, IPAs and APK are intermittenly released on the [Releases page](https://github.com/leinelissen/jellyfin-audio-player/releases). Alternatively, you can build this app from source using the build instructions.
+This piece of software is in beta. I am working on getting this app in ~~TestFlight and~~ Google Play Developer Console, but this is contingent on keys being available. In the meantime, IPAs and APK are intermittenly released on the [Releases page](https://github.com/leinelissen/jellyfin-audio-player/releases). Alternatively, you can build this app from source using the build instructions.
 
 ### Using the app
 You will need to setup your Jellyfin account for the application to be able to pull in all your audio. To do this, go over to the "Settings" tab and click the "Set Jellyfin server"-button. A modal will pop up in which you will enter your Jellyfin server url, after which you enter your credentials in the provided browser view. When the app detects your credentials, they will automatically be remembered for the future.
