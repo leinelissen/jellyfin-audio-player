@@ -6,6 +6,7 @@ import useDefaultStyles from 'components/Colors';
 import { Text } from 'components/Typography';
 import styled from 'styled-components/native';
 import Casting from './Casting';
+import { t } from '@localisation';
 
 const ICON_SIZE = 16;
 
@@ -44,12 +45,12 @@ function StreamStatus() {
                 {isLocalPlay ? (
                     <>
                         <InternalDriveIcon width={ICON_SIZE} height={ICON_SIZE} fill={defaultStyles.icon.color} />
-                        <Label numberOfLines={1}>Local Playback</Label>
+                        <Label numberOfLines={1}>{t('local-playback')}</Label>
                     </>
                 ) : (
                     <>
                         <CloudIcon width={ICON_SIZE} height={ICON_SIZE} fill={defaultStyles.icon.color} />
-                        <Label numberOfLines={1}>Streaming</Label>
+                        <Label numberOfLines={1}>{t('streaming')}</Label>
                     </>
                 )}
             </Group>

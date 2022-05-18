@@ -6,6 +6,7 @@ import { TouchableOpacity } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import AirplayAudioIcon from 'assets/icons/airplay-audio.svg';
 import useDefaultStyles from 'components/Colors';
+import { t } from '@localisation';
 
 const Container = styled.View<{ active?: boolean }>`
     display: flex;
@@ -46,8 +47,8 @@ function Casting() {
                 />
                 <Label active={routes.length > 0} numberOfLines={1}>
                     {routes.length > 0
-                        ? `Playing on ${routes.map((route) => route.portName).join(', ')}`
-                        : 'Local Playback'
+                        ? `${t('playing-on')} ${routes.map((route) => route.portName).join(', ')}`
+                        : t('local-playback')
                     }
                 </Label>
             </Container>
