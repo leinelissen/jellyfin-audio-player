@@ -80,7 +80,6 @@ function DownloadManager () {
             files.filter((file) => file.isFile() && file.name.endsWith('.mp3'))
                 .forEach((file) => {
                     const id = file.name.replace('.mp3', '');
-                    console.log(id, ids.includes(id));
 
                     // GUARD: If the id is already in the store, there's nothing
                     // left for us to do.
