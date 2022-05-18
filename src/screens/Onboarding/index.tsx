@@ -1,16 +1,15 @@
 import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { THEME_COLOR } from 'CONSTANTS';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from 'screens';
-import { useTypedSelector } from 'store';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useTypedSelector } from 'store';
 import { setOnboardingStatus } from 'store/settings/actions';
 import { t } from '@localisation';
 import Button from 'components/Button';
+import { Header, Text as BaseText } from 'components/Typography';
+import { ShadowWrapper } from 'components/Shadow';
 
 const Container = styled.SafeAreaView`
-    background-color: ${THEME_COLOR};
     flex: 1;
     justify-content: center;
 `;
@@ -19,10 +18,9 @@ const TextContainer = styled.ScrollView`
     padding: 25px;
 `;
 
-const Text = styled.Text`
+const Text = styled(BaseText)`
     text-align: center;
-    color: white;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
 `;
 
 const ButtonContainer = styled.View`
@@ -33,12 +31,14 @@ const Logo = styled.Image`
     width: 150px;
     height: 150px;
     margin: 0 auto 50px auto;
+    border-radius: 12px;
+    border: 1px solid #e6e6e6;
 `;
 
 function Onboarding() {
     // Get account from Redux and dispatcher
     const account = useTypedSelector(state => state.settings.jellyfin);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     // Also retrieve the navigation handler so that we can open the modal in
     // which the Jellyfin server is set
@@ -56,10 +56,12 @@ function Onboarding() {
     return (
         <Container>
             <TextContainer contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
-                <Logo source={require('../../assets/app-icon-white.png')} />
-                <Text >
+                <ShadowWrapper size="medium">
+                    <Logo source={require('../../assets/icons/app-icon.png')} />
+                </ShadowWrapper>
+                <Header style={{ textAlign: 'center', marginBottom: 24 }}>
                     {t('onboarding-welcome')}
-                </Text>
+                </Header>
                 <Text>
                     {t('onboarding-intro')}
                 </Text>

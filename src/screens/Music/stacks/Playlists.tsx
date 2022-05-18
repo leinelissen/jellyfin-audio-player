@@ -2,10 +2,9 @@ import React, { useCallback, useEffect, useRef, ReactText } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
 import { MusicNavigationProp } from '../types';
 import { Text, View, FlatList, ListRenderItem } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import { fetchAllPlaylists } from 'store/music/actions';
 import { PLAYLIST_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
 import TouchableHandler from 'components/TouchableHandler';
@@ -41,7 +40,7 @@ const Playlists: React.FC = () => {
     const lastRefreshed = useTypedSelector((state) => state.music.playlists.lastRefreshed);
     
     // Initialise helpers
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigation = useNavigation<MusicNavigationProp>();
     const getImage = useGetImage();
     const listRef = useRef<FlatList<EntityId>>(null);

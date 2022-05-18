@@ -1,7 +1,10 @@
+import { BlurView, BlurViewProperties } from '@react-native-community/blur';
 import { THEME_COLOR } from 'CONSTANTS';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useContext } from 'react';
-import { ColorSchemeName, StyleSheet } from 'react-native';
+import { ColorSchemeName, Platform, StyleSheet, useColorScheme } from 'react-native';
+
+const majorPlatformVersion = typeof Platform.Version === 'string' ? parseInt(Platform.Version, 10) : Platform.Version;
 
 /**
  * Function for generating both the dark and light stylesheets, so that they
@@ -11,12 +14,20 @@ function generateStyles(scheme: ColorSchemeName) {
     return StyleSheet.create({
         text: {
             color: scheme === 'dark' ? '#fff' : '#000',
+            fontSize: 14,
+            fontFamily: 'Inter',
         },
         textHalfOpacity: {
             color: scheme === 'dark' ? '#ffffff88' : '#00000088',
+            fontSize: 14,
+            // fontFamily: 'Inter',
+        },
+        textQuarterOpacity: {
+            color: scheme === 'dark' ? '#ffffff44' : '#00000044',
+            fontSize: 14,
         },
         view: {
-            backgroundColor: scheme === 'dark' ? '#111' : '#f6f6f6',
+            backgroundColor: scheme === 'dark' ? '#111' : '#fff',
         },
         border: {
             borderColor: scheme === 'dark' ? '#262626' : '#ddd',
@@ -25,28 +36,35 @@ function generateStyles(scheme: ColorSchemeName) {
             backgroundColor: `${THEME_COLOR}${scheme === 'dark' ? '26' : '16'}`,
         },
         imageBackground: {
-            backgroundColor: scheme === 'dark' ? '#333' : '#ddd',
+            backgroundColor: scheme === 'dark' ? '#191919' : '#eee',
+            borderWidth: 0.5,
+            borderColor: scheme === 'dark' ? '#262626' : '#ddd',
         },
         modal: {
-            backgroundColor: scheme === 'dark' ? '#22222200' : '#eeeeee00',
+            backgroundColor: scheme === 'dark' ? '#000' : '#fff',
         },
         modalInner: {
             backgroundColor: scheme === 'dark' ? '#000' : '#fff',
         },
         button: {
-            backgroundColor: scheme === 'dark' ? '#161616' : '#e6e6e6',
+            backgroundColor: scheme === 'dark' ? '#ffffff09' : '#00000009',
         },
         input: {
-            backgroundColor: scheme === 'dark' ? '#161616' : '#e6e6e6',
+            backgroundColor: scheme === 'dark' ? '#191919' : '#f3f3f3',
             color: scheme === 'dark' ? '#fff' : '#000',
-        },
-        sectionHeading: {
-            backgroundColor: scheme === 'dark' ? '#111' : '#eee',
-            borderColor: scheme === 'dark' ? '#333' : '#ddd',
         },
         stackHeader: {
             color: scheme === 'dark' ? 'white' : 'black'
-        }
+        },
+        icon: {
+            color: scheme === 'dark' ? '#ffffff4d' : '#0000004d',
+        },
+        divider: {
+            backgroundColor: scheme === 'dark' ? '#333' : '#eee',
+        },
+        filter: {
+            backgroundColor: scheme === 'dark' ? '#191919' : '#f3f3f3',
+        },
     });
 }
 
@@ -77,4 +95,17 @@ export function DefaultStylesProvider(props: DefaultStylesProviderProps) {
     const defaultStyles = useDefaultStyles();
 
     return props.children(defaultStyles);
+}
+
+export function ColoredBlurView(props: PropsWithChildren<BlurViewProperties>) {
+    const scheme = useColorScheme();
+
+    return (
+        <BlurView
+            {...props}
+            blurType={Platform.OS === 'ios' && majorPlatformVersion >= 13 
+                ? 'material'
+                : scheme === 'dark' ? 'extraDark' : 'xlight'
+            } />
+    );
 }

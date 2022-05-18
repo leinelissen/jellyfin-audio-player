@@ -1,19 +1,14 @@
-import React, { useState, useCallback } from 'react';
-import TrackPlayer, { Event, State, usePlaybackState, useTrackPlayerEvents } from 'react-native-track-player';
+import React from 'react';
+import TrackPlayer, { State, usePlaybackState } from 'react-native-track-player';
 import { TouchableOpacity, useColorScheme } from 'react-native';
 import styled from 'styled-components/native';
 import { useHasNextQueue, useHasPreviousQueue } from 'utility/useQueue';
-import ForwardIcon from 'assets/forwards.svg';
-import BackwardIcon from 'assets/backwards.svg';
-import PlayIcon from 'assets/play.svg';
-import PauseIcon from 'assets/pause.svg';
-import RepeatIcon from 'assets/repeat.svg';
-// import ShuffleIcon from 'assets/shuffle.svg';
-import { THEME_COLOR } from 'CONSTANTS';
-import Casting from './Casting';
+import ForwardIcon from 'assets/icons/forward-end.svg';
+import BackwardIcon from 'assets/icons/backward-end.svg';
+import PlayIcon from 'assets/icons/play.svg';
+import PauseIcon from 'assets/icons/pause.svg';
 
 const BUTTON_SIZE = 40;
-const BUTTON_SIZE_SMALL = 25;
 
 const pause = TrackPlayer.pause;
 const play = TrackPlayer.play;
@@ -22,7 +17,7 @@ const previous = TrackPlayer.skipToPrevious;
 
 const Container = styled.View`
     align-items: center;
-    margin: 20px 0;
+    margin-top: 40px;
 `;
 
 const Buttons = styled.View`
@@ -33,7 +28,8 @@ const Buttons = styled.View`
 `;
 
 const Button = styled.View`
-    margin: 20px 40px;
+    margin: 0 40px;
+    opacity: 0.75;
 `;
 
 export default function MediaControls() {
@@ -50,12 +46,6 @@ export default function MediaControls() {
                 <Button>
                     <NextButton fill={fill} />
                 </Button>
-            </Buttons>
-            <Buttons>
-                <Button>
-                    <RepeatButton fill={fill} />
-                </Button>
-                <Casting fill={fill} />
             </Buttons>
         </Container>
     );
@@ -80,51 +70,6 @@ export function NextButton({ fill }: { fill: string }) {
         </TouchableOpacity>
     );
 }
-
-export function RepeatButton({ fill }: { fill: string}) {
-    const [isRepeating, setRepeating] = useState(false);
-    const handlePress = useCallback(() => setRepeating(!isRepeating), [isRepeating, setRepeating]);
-    
-    // The callback that should determine whether we need to repeeat or not
-    useTrackPlayerEvents([Event.PlaybackQueueEnded], async () => {
-        if (isRepeating) {
-            // Skip to the first track
-            await TrackPlayer.skip(0);
-
-            // Cautiously reset the seek time, as there might only be a single
-            // item in queue.
-            await TrackPlayer.seekTo(0);
-
-            // Then play the item
-            await TrackPlayer.play();
-        }
-    });
-
-    return (
-        <TouchableOpacity onPress={handlePress} style={{ opacity: isRepeating ? 1 : 0.5 }}>
-            <RepeatIcon
-                width={BUTTON_SIZE_SMALL}
-                height={BUTTON_SIZE_SMALL}
-                fill={isRepeating ? THEME_COLOR : fill}
-            />
-        </TouchableOpacity>
-    );
-}
-
-// export function ShuffleButton({ fill }: { fill: string}) {
-//     const [isShuffling, setShuffling] = useState(false);
-//     const handlePress = useCallback(() => setShuffling(!isShuffling), [isShuffling, setShuffling]);
-
-//     return (
-//         <TouchableOpacity onPress={handlePress} style={{ opacity: isShuffling ? 1 : 0.5 }}>
-//             <ShuffleIcon
-//                 width={BUTTON_SIZE_SMALL}
-//                 height={BUTTON_SIZE_SMALL}
-//                 fill={isShuffling ? THEME_COLOR : fill}
-//             />
-//         </TouchableOpacity>
-//     );
-// }
 
 export function MainButton({ fill }: { fill: string }) {
     const state = usePlaybackState();

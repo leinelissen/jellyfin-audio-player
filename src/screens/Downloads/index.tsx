@@ -1,20 +1,22 @@
 import useDefaultStyles from 'components/Colors';
 import React, { useCallback, useMemo } from 'react';
-import { FlatListProps, Text, TouchableOpacity, View } from 'react-native';
+import { FlatListProps, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import formatBytes from 'utility/formatBytes';
-import TrashIcon from 'assets/trash.svg';
-import ArrowClockwise from 'assets/arrow-clockwise.svg';
-import { THEME_COLOR } from 'CONSTANTS';
-import { useDispatch } from 'react-redux';
+import TrashIcon from 'assets/icons/trash.svg';
+import ArrowClockwise from 'assets/icons/arrow-clockwise.svg';
 import { EntityId } from '@reduxjs/toolkit';
 import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
 import Button from 'components/Button';
 import { t } from 'i18n-js';
 import DownloadIcon from 'components/DownloadIcon';
 import styled from 'styled-components/native';
+import { Text } from 'components/Typography';
+import FastImage from 'react-native-fast-image';
+import { useGetImage } from 'utility/JellyfinApi';
+import { ShadowWrapper } from 'components/Shadow';
 
 const DownloadedTrack = styled.View`
     flex: 1 0 auto;
@@ -22,12 +24,18 @@ const DownloadedTrack = styled.View`
     padding: 8px 0;
     align-items: center;
     margin: 0 20px;
-    border-bottom-width: 1px;
+`;
+
+const AlbumImage = styled(FastImage)`
+    height: 32px;
+    width: 32px;
+    border-radius: 4px;
 `;
 
 function Downloads() {
     const defaultStyles = useDefaultStyles();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
+    const getImage = useGetImage();
 
     const { entities, ids } = useTypedSelector((state) => state.downloads);
     const tracks = useTypedSelector((state) => state.music.tracks.entities);
@@ -65,57 +73,68 @@ function Downloads() {
      */
 
     const ListHeaderComponent = useMemo(() => (
-        <View style={{ marginHorizontal: 20, marginBottom: 12 }}>
-            <Text style={[{ textAlign: 'center', marginVertical: 6 }, defaultStyles.textHalfOpacity]}>
-                {t('total-download-size')}: {formatBytes(totalDownloadSize)}
-            </Text>
-            <Button
-                icon={TrashIcon}
-                title={t('delete-all-tracks')}
-                onPress={handleDeleteAllTracks}
-                disabled={!ids.length}
-                style={{ marginTop: 8 }}
-            />
-            <Button
-                icon={ArrowClockwise}
-                title={t('retry-failed-downloads')}
-                onPress={handleRetryFailed}
-                disabled={failedIds.length === 0}
-                style={{ marginTop: 4 }}
-            />
+        <View style={[{ paddingHorizontal: 20, paddingBottom: 12, borderBottomWidth: 0.5 }, defaultStyles.border]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text 
+                    style={[
+                        defaultStyles.textHalfOpacity,
+                        { marginRight: 8, flex: 1, fontSize: 12 },
+                    ]}
+                    numberOfLines={1}
+                >
+                    {t('total-download-size')}: {formatBytes(totalDownloadSize)}
+                </Text>
+                <Button
+                    icon={TrashIcon}
+                    title={t('delete-all-tracks')}
+                    onPress={handleDeleteAllTracks}
+                    disabled={!ids.length}
+                    size="small"
+                />
+            </View>
+            {failedIds.length > 0 && (
+                <Button
+                    icon={ArrowClockwise}
+                    title={t('retry-failed-downloads')}
+                    onPress={handleRetryFailed}
+                    disabled={failedIds.length === 0}
+                    style={{ marginTop: 4 }}
+                />
+            )}
         </View>
     ), [totalDownloadSize, defaultStyles, failedIds.length, handleRetryFailed, handleDeleteAllTracks, ids.length]);
     
     const renderItem = useCallback<NonNullable<FlatListProps<EntityId>['renderItem']>>(({ item }) => (
-        <DownloadedTrack style={defaultStyles.border}>
+        <DownloadedTrack>
             <View style={{ marginRight: 12 }}>
-                <DownloadIcon trackId={item} />
+                <ShadowWrapper size="small">
+                    <AlbumImage source={{ uri: getImage(item as string) }} style={defaultStyles.imageBackground} />
+                </ShadowWrapper>
             </View>
             <View style={{ flexShrink: 1, marginRight: 8 }}>
                 <Text style={[{ fontSize: 16, marginBottom: 4 }, defaultStyles.text]} numberOfLines={1}>
                     {tracks[item]?.Name}
                 </Text>
                 <Text style={[{ flexShrink: 1, fontSize: 11 }, defaultStyles.textHalfOpacity]} numberOfLines={1}>
-                    {tracks[item]?.AlbumArtist} ({tracks[item]?.Album})
+                    {tracks[item]?.AlbumArtist} {tracks[item]?.Album ? `— ${tracks[item]?.Album}` : ''}
                 </Text>
             </View>
             <View style={{ marginLeft: 'auto', flexDirection: 'row', alignItems: 'center' }}>
                 {entities[item]?.isComplete && entities[item]?.size ? (
-                    <Text style={[defaultStyles.textHalfOpacity, { marginRight: 6, fontSize: 12 }]}>
+                    <Text style={[defaultStyles.textQuarterOpacity, { marginRight: 12, fontSize: 12 }]}>
                         {formatBytes(entities[item]?.size || 0)}
                     </Text>
                 ) : null}
-                <TouchableOpacity onPress={() => handleDelete(item)}>
-                    <TrashIcon height={24} width={24} fill={THEME_COLOR} />
-                </TouchableOpacity>
+                <View style={{ marginRight: 12 }}>
+                    <DownloadIcon trackId={item} />
+                </View>
+                <Button onPress={() => handleDelete(item)} size="small" icon={TrashIcon} />
                 {!entities[item]?.isComplete && (
-                    <TouchableOpacity onPress={() => retryTrack(item)}>
-                        <ArrowClockwise height={18} width={18} fill={THEME_COLOR} />
-                    </TouchableOpacity>
+                    <Button onPress={() => retryTrack(item)} size="small" icon={ArrowClockwise} style={{ marginLeft: 4 }} />
                 )}
             </View>
         </DownloadedTrack>
-    ), [entities, retryTrack, handleDelete, defaultStyles, tracks]);
+    ), [entities, retryTrack, handleDelete, defaultStyles, tracks, getImage]);
 
     // If no tracks have been downloaded, show a short message describing this
     if (!ids.length) {
@@ -130,11 +149,11 @@ function Downloads() {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            {ListHeaderComponent}
             <FlatList
                 data={ids}
-                style={{ flex: 1 }}
+                style={{ flex: 1, paddingTop: 12 }}
                 contentContainerStyle={{ flexGrow: 1 }}
-                ListHeaderComponent={ListHeaderComponent}
                 renderItem={renderItem}
             />
         </SafeAreaView>

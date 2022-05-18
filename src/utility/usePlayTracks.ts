@@ -57,7 +57,7 @@ export default function usePlayTracks() {
             // Check if a downloaded version exists, and if so rewrite the URL
             const download = downloads[trackId];
             if (download?.location) {
-                generatedTrack.url = download.location;
+                generatedTrack.url = 'file://' + download.location;
             }
 
             return generatedTrack;

@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { Alert } from 'react-native';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import { t } from '@localisation';
 import { setReceivedErrorReportingAlert } from 'store/settings/actions';
 import { setSentryStatus } from './Sentry';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
 import { ModalNavigationProp } from 'screens/types';
 
 /**
@@ -15,7 +14,7 @@ import { ModalNavigationProp } from 'screens/types';
 export default function ErrorReportingAlert() {
     const { hasReceivedErrorReportingAlert } = useTypedSelector(state => state.settings);
     const navigation = useNavigation<ModalNavigationProp>();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         // Only send out alert if we haven't done so ever

@@ -1,34 +1,48 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Input from 'components/Input';
-import { ActivityIndicator, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Animated, SafeAreaView, View } from 'react-native';
 import styled from 'styled-components/native';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import Fuse from 'fuse.js';
 import { Album, AlbumTrack } from 'store/music/types';
 import { FlatList } from 'react-native-gesture-handler';
 import TouchableHandler from 'components/TouchableHandler';
 import { useNavigation } from '@react-navigation/native';
 import { useGetImage } from 'utility/JellyfinApi';
-import { MusicNavigationProp } from '../types';
 import FastImage from 'react-native-fast-image';
 import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
 import { searchAndFetchAlbums } from 'store/music/actions';
 import { debounce } from 'lodash';
-import { useDispatch } from 'react-redux';
+import { Text } from 'components/Typography';
+import { MusicNavigationProp } from 'screens/Music/types';
+import DownloadIcon from 'components/DownloadIcon';
+import ChevronRight from 'assets/icons/chevron-right.svg';
+import SearchIcon from 'assets/icons/magnifying-glass.svg';
+import { ShadowWrapper } from 'components/Shadow';
+import { useKeyboardHeight } from 'utility/useKeyboardHeight';
+// import MicrophoneIcon from 'assets/icons/microphone.svg';
+// import AlbumIcon from 'assets/icons/collection.svg';
+// import TrackIcon from 'assets/icons/note.svg';
+// import PlaylistIcon from 'assets/icons/note-list.svg';
+// import StreamIcon from 'assets/icons/cloud.svg';
+// import LocalIcon from 'assets/icons/internal-drive.svg';
+// import SelectableFilter from './components/SelectableFilter';
 
-const Container = styled.View`
-    padding: 0 20px;
-    position: relative;
+const Container = styled(Animated.View)`
+    padding: 4px 32px 0 32px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    border-top-width: 0.5px;
 `;
 
-const FullSizeContainer = styled(Container)`
+const FullSizeContainer = styled.View`
     flex: 1;
 `;
 
 const Loading = styled.View`
     position: absolute;
-    right: 32px;
+    right: 12px;
     top: 0;
     height: 100%;
     flex: 1;
@@ -37,8 +51,8 @@ const Loading = styled.View`
 
 const AlbumImage = styled(FastImage)`
     border-radius: 4px;
-    width: 25px;
-    height: 25px;
+    width: 32px;
+    height: 32px;
     margin-right: 10px;
 `;
 
@@ -46,21 +60,28 @@ const HalfOpacity = styled.Text`
     opacity: 0.5;
     margin-top: 2px;
     font-size: 12px;
+    flex: 1 1 auto;
 `;
 
 const SearchResult = styled.View`
     flex-direction: row;
     align-items: center;
-    border-bottom-width: 1px;
-    margin-left: 15px;
-    padding-right: 15px;
-    height: 50px;
+    padding: 8px 32px;
+    height: 54px;
 `;
 
-const fuseOptions = {
+const SearchIndicator = styled(SearchIcon)`
+    position: absolute;
+    left: 16px;
+    top: 26px;
+`;
+
+
+const fuseOptions: Fuse.IFuseOptions<Album> = {
     keys: ['Name', 'AlbumArtist', 'AlbumArtists', 'Artists'],
     threshold: 0.1,
     includeScore: true,
+    fieldNormWeight: 1,
 };
 
 type AudioResult = {
@@ -82,22 +103,20 @@ type CombinedResults = (AudioResult | AlbumResult)[];
 export default function Search() {
     const defaultStyles = useDefaultStyles();
 
-    // Prepare state
+    // Prepare state for fuse and albums
     const [fuseIsReady, setFuseReady] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setLoading] = useState(false);
     const [fuseResults, setFuseResults] = useState<CombinedResults>([]);
     const [jellyfinResults, setJellyfinResults] = useState<CombinedResults>([]);
-
     const albums = useTypedSelector(state => state.music.albums.entities);
-
     const fuse = useRef<Fuse<Album>>();
-    const searchElement = useRef<TextInput>(null);
 
     // Prepare helpers
     const navigation = useNavigation<MusicNavigationProp>();
+    const keyboardHeight = useKeyboardHeight();
     const getImage = useGetImage();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     /**
      * Since it is impractical to have a global fuse variable, we need to
@@ -119,7 +138,6 @@ export default function Search() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchJellyfinResults = useCallback(debounce(async (searchTerm: string, currentResults: CombinedResults) => {
         // First, query the Jellyfin API
-        // @ts-expect-error need to fix this with AppDispatch
         const { payload } = await dispatch(searchAndFetchAlbums({ term: searchTerm }));
 
         // Convert the current results to album ids
@@ -193,39 +211,66 @@ export default function Search() {
         retrieveResults();
     }, [searchTerm, setFuseResults, setLoading, fuse, fetchJellyfinResults]);
 
-    // Automatically focus on the text input on mount
-    useEffect(() => {
-        // Give the timeout a slight delay so the component has a chance to actually
-        // render the text input field.
-        setTimeout(() => searchElement.current?.focus(), 10);
-    }, []);
-
     // Handlers
     const selectAlbum = useCallback((id: string) => 
         navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]
     );
 
     const HeaderComponent = React.useMemo(() => (
-        <Container>
-            <Input
-                // @ts-expect-error styled-components has outdated react-native typings
-                ref={searchElement}
-                value={searchTerm}
-                onChangeText={setSearchTerm}
-                style={defaultStyles.input}
-                placeholder={t('search') + '...'}
-            />
-            {isLoading && <Loading><ActivityIndicator /></Loading>}
-        </Container>
-    ), [searchTerm, setSearchTerm, defaultStyles, isLoading]);
-
-    // const FooterComponent = React.useMemo(() => (
-    //     <FullSizeContainer>
-    //         {(searchTerm.length && !jellyfinResults.length && !fuseResults.length && !isLoading)
-    //             ? <Text style={{ textAlign: 'center', opacity: 0.5 }}>{t('no-results')}</Text> 
-    //             : null}
-    //     </FullSizeContainer>
-    // ), [searchTerm, jellyfinResults, fuseResults, isLoading]);
+        <View>
+            <Container style={[
+                defaultStyles.border, 
+                defaultStyles.view,
+                { transform: [{ translateY: keyboardHeight }]},
+            ]}>
+                <View>
+                    <Input
+                        value={searchTerm}
+                        onChangeText={setSearchTerm}
+                        style={[defaultStyles.input, { marginBottom: 12 }]}
+                        placeholder={t('search') + '...'}
+                        icon
+                    />
+                    <SearchIndicator width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />
+                    {isLoading && <Loading><ActivityIndicator /></Loading>}
+                </View>
+            </Container>
+            {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={{ paddingHorizontal: 32, paddingBottom: 12, flex: 1, flexDirection: 'row' }}>
+                    <SelectableFilter
+                        text="Artists"
+                        icon={MicrophoneIcon}
+                        active
+                    />
+                    <SelectableFilter
+                        text="Albums"
+                        icon={AlbumIcon}
+                        active={false}
+                    />
+                    <SelectableFilter
+                        text="Tracks"
+                        icon={TrackIcon}
+                        active={false}
+                    />
+                    <SelectableFilter
+                        text="Playlist"
+                        icon={PlaylistIcon}
+                        active={false}
+                    />
+                    <SelectableFilter
+                        text="Streaming"
+                        icon={StreamIcon}
+                        active={false}
+                    />
+                    <SelectableFilter
+                        text="Local Playback"
+                        icon={LocalIcon}
+                        active={false}
+                    />
+                </View>
+            </ScrollView> */}
+        </View>
+    ), [searchTerm, setSearchTerm, defaultStyles, isLoading, keyboardHeight]);
 
     // GUARD: We cannot search for stuff unless Fuse is loaded with results.
     // Therefore we delay rendering to when we are certain it's there.
@@ -234,9 +279,9 @@ export default function Search() {
     }
 
     return (
-        <>
+        <SafeAreaView style={{ flex: 1 }}>
             <FlatList
-                style={{ flex: 1 }}
+                style={{ flex: 2 }}
                 data={[...jellyfinResults, ...fuseResults]}
                 renderItem={({ item: { id, type, album: trackAlbum, name: trackName } }: { item: AlbumResult | AudioResult }) => {
                     const album = albums[trackAlbum || id];
@@ -249,23 +294,32 @@ export default function Search() {
 
                     return (
                         <TouchableHandler<string> id={album.Id} onPress={selectAlbum}>
-                            <SearchResult style={defaultStyles.border}>
-                                <AlbumImage source={{ uri: getImage(album.Id) }} />
-                                <View>
-                                    <Text numberOfLines={1} ellipsizeMode="tail" style={defaultStyles.text}>
-                                        {trackName || album.Name} - {album.AlbumArtist}
+                            <SearchResult>
+                                <ShadowWrapper>
+                                    <AlbumImage source={{ uri: getImage(album.Id) }} style={defaultStyles.imageBackground} />
+                                </ShadowWrapper>
+                                <View style={{ flex: 1 }}>
+                                    <Text numberOfLines={1}>
+                                        {trackName || album.Name}
                                     </Text>
-                                    <HalfOpacity style={defaultStyles.text}>
-                                        {type === 'AlbumArtist' ? t('album'): t('track')}
+                                    <HalfOpacity style={defaultStyles.text} numberOfLines={1}>
+                                        {type === 'AlbumArtist' 
+                                            ? `${t('album')} • ${album.AlbumArtist}`
+                                            : `${t('track')} • ${album.AlbumArtist} — ${album.Name}`
+                                        }
                                     </HalfOpacity>
+                                </View>
+                                <View style={{ marginLeft: 16 }}>
+                                    <DownloadIcon trackId={id} />
+                                </View>
+                                <View style={{ marginLeft: 16 }}>
+                                    <ChevronRight width={14} height={14} fill={defaultStyles.textQuarterOpacity.color}  />
                                 </View>
                             </SearchResult>
                         </TouchableHandler>
                     );
                 }}
                 keyExtractor={(item) => item.id}
-                ListHeaderComponent={HeaderComponent}
-                // ListFooterComponent={FooterComponent}
                 extraData={[searchTerm, albums]}
             />
             {(searchTerm.length && !jellyfinResults.length && !fuseResults.length && !isLoading) ? (
@@ -273,6 +327,7 @@ export default function Search() {
                     <Text style={{ textAlign: 'center', opacity: 0.5, fontSize: 18 }}>{t('no-results')}</Text> 
                 </FullSizeContainer>
             ) : null}
-        </>
+            {HeaderComponent}
+        </SafeAreaView>
     );
 }

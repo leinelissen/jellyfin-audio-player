@@ -1,21 +1,24 @@
 import React, { useCallback, useEffect, useRef, ReactText } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
 import { MusicNavigationProp } from '../types';
-import { Text, SafeAreaView, SectionList, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { SafeAreaView, SectionList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import { fetchAllAlbums } from 'store/music/actions';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
 import TouchableHandler from 'components/TouchableHandler';
-import AlbumImage, { AlbumItem } from './components/AlbumImage';
+import AlbumImage, { AlbumHeight, AlbumItem } from './components/AlbumImage';
 import { selectAlbumsByAlphabet, SectionedId } from 'store/music/selectors';
 import AlphabetScroller from 'components/AlphabetScroller';
 import { EntityId } from '@reduxjs/toolkit';
 import styled from 'styled-components/native';
-import useDefaultStyles from 'components/Colors';
+import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
 import { Album } from 'store/music/types';
+import { Text } from 'components/Typography';
+import { ShadowWrapper } from 'components/Shadow';
+
+const HeadingHeight = 50;
 
 interface VirtualizedItemInfo {
     section: SectionedId,
@@ -40,25 +43,25 @@ function generateSection({ section }: { section: SectionedId }) {
 }
 
 const SectionContainer = styled.View`
-    border-bottom-width: 1px;
-    height: 50px;
+    height: ${HeadingHeight}px;
     justify-content: center;
-    padding: 0 10px;
+    padding: 0 24px;
 `;
 
-const SectionText = styled.Text`
+const SectionText = styled(Text)`
     font-size: 24px;
-    font-weight: bold;
+    font-weight: 400;
 `;
 
 const SectionHeading = React.memo(function SectionHeading(props: { label: string }) {
-    const defaultStyles = useDefaultStyles();
     const { label } = props;
 
     return (
-        <SectionContainer style={defaultStyles.sectionHeading}>
-            <SectionText style={defaultStyles.text}>{label}</SectionText>
-        </SectionContainer>
+        <ColoredBlurView>
+            <SectionContainer>
+                <SectionText>{label}</SectionText>
+            </SectionContainer>
+        </ColoredBlurView>
     );
 });
 
@@ -81,7 +84,9 @@ const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: Generat
     return (
         <TouchableHandler id={id as string} onPress={onPress}>
             <AlbumItem>
-                <AlbumImage source={{ uri: imageUrl }} style={defaultStyles.imageBackground} />
+                <ShadowWrapper size="medium">
+                    <AlbumImage source={{ uri: imageUrl }} style={[defaultStyles.imageBackground]} />
+                </ShadowWrapper>
                 <Text numberOfLines={1} style={defaultStyles.text}>{name}</Text>
                 <HalfOpacity style={defaultStyles.text} numberOfLines={1}>{artist}</HalfOpacity>
             </AlbumItem>
@@ -97,7 +102,7 @@ const Albums: React.FC = () => {
     const sections = useTypedSelector(selectAlbumsByAlphabet);
     
     // Initialise helpers
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigation = useNavigation<MusicNavigationProp>();
     const getImage = useGetImage();
     const listRef = useRef<SectionList<EntityId>>(null);
@@ -118,21 +123,20 @@ const Albums: React.FC = () => {
 
         // We can then determine the "length" (=height) of this item. Header items
         // end up with an itemIndex of -1, thus are easy to identify.
-        const length = header ? 50 : (itemIndex % 2 === 0 ? 220 : 0);
+        const length = header ? 50 : (itemIndex % 2 === 0 ? AlbumHeight : 0);
     
         // We'll also need to account for any unevenly-ended lists up until the
         // current item.
         const previousRows = data?.filter((row, i) => i < sectionIndex)
             .reduce((sum, row) => sum + Math.ceil(row.data.length / 2), 0) || 0;
 
-    
         // We must also calcuate the offset, total distance from the top of the
         // screen. First off, we'll account for each sectionIndex that is shown up
         // until now. This only includes the heading for the current section if the
         // item is not the section header
-        const headingOffset = 50 * (header ? sectionIndex : sectionIndex + 1);
+        const headingOffset = HeadingHeight * (header ? sectionIndex : sectionIndex + 1);
         const currentRows = itemIndex > 1 ? Math.ceil((itemIndex + 1) / 2) : 0;
-        const itemOffset = 220 * (previousRows + currentRows);
+        const itemOffset = AlbumHeight * (previousRows + currentRows);
         const offset = headingOffset + itemOffset;
     
         return { index, length, offset };
@@ -189,7 +193,7 @@ const Albums: React.FC = () => {
                 onRefresh={retrieveData}
                 getItemLayout={getItemLayout}
                 ref={listRef}
-                keyExtractor={(item, index) => `${item}_${index}`}
+                keyExtractor={(item) => item as string}
                 renderSectionHeader={generateSection}
                 renderItem={generateItem}
             />

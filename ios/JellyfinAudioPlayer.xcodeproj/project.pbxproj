@@ -13,6 +13,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		463612208457EBB4B723000A /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 842AB597D56E84A4ACDC4735 /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a */; };
+		4C04FC6E055249ABB204D3BC /* Inter-VariableFont_slnt,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4A0465FF364579B28CF5D7 /* Inter-VariableFont_slnt,wght.ttf */; };
 		4FA1B23D2550A94C007A035E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1B23C2550A94C007A035E /* File.swift */; };
 		A807E2BB233D6F9347D8A95C /* libPods-JellyfinAudioPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71370E61E2CC6BD9372ADCF3 /* libPods-JellyfinAudioPlayer.a */; };
 /* End PBXBuildFile section */
@@ -40,6 +41,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = JellyfinAudioPlayer/main.m; sourceTree = "<group>"; };
 		2710519FCC41B05FDE6738DF /* Pods-JellyfinAudioPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer/Pods-JellyfinAudioPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		39572B38534BBDBB596C8C95 /* Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig"; sourceTree = "<group>"; };
+		4B4A0465FF364579B28CF5D7 /* Inter-VariableFont_slnt,wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-VariableFont_slnt,wght.ttf"; path = "../src/assets/fonts/Inter-VariableFont_slnt,wght.ttf"; sourceTree = "<group>"; };
 		4FA1B23B2550A94B007A035E /* JellyfinAudioPlayer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JellyfinAudioPlayer-Bridging-Header.h"; sourceTree = "<group>"; };
 		4FA1B23C2550A94C007A035E /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		590BEA7DE65819C5B5FDAD06 /* Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer-tvOSTests/Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				46001D7383D71A837AAF6E07 /* Pods */,
+				CFCEB457E84E4C5195253CD7 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -165,6 +168,14 @@
 				00E356EE1AD99517003FC87E /* JellyfinAudioPlayerTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CFCEB457E84E4C5195253CD7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4B4A0465FF364579B28CF5D7 /* Inter-VariableFont_slnt,wght.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,7 +213,6 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				B9FB8FC65CEFF9AFAC71127E /* [CP] Copy Pods Resources */,
-				1DC46C84C90B4D84A18AC142 /* Upload Debug Symbols to Sentry */,
 				2917566AA57EE087FC9FCCE9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -268,6 +278,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				4C04FC6E055249ABB204D3BC /* Inter-VariableFont_slnt,wght.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,21 +300,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nexport NODE_BINARY=$(which node)\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n";
-		};
-		1DC46C84C90B4D84A18AC142 /* Upload Debug Symbols to Sentry */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Upload Debug Symbols to Sentry";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
+			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2917566AA57EE087FC9FCCE9 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -313,11 +310,13 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-JellyfinAudioPlayer/Pods-JellyfinAudioPlayer-frameworks.sh",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -333,11 +332,13 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests-frameworks.sh",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -667,7 +668,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -724,7 +724,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;

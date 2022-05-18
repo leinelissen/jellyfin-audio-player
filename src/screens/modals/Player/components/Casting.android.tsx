@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from 'react-native';
 import styled from 'styled-components/native';
 
 const Button = styled.View`
@@ -7,7 +8,9 @@ const Button = styled.View`
 
 function Casting() {
     return (
-        <Button />
+        <Button>
+            <Text>Local Playback</Text>
+        </Button>
     );
 }
 

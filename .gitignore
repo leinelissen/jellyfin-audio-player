@@ -61,6 +61,7 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+/vendor/bundle/
 
 build/
 fastlane/report.xml

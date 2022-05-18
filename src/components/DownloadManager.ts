@@ -2,8 +2,7 @@ import { EntityId } from '@reduxjs/toolkit';
 import { xor } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { DocumentDirectoryPath, readDir } from 'react-native-fs';
-import { useDispatch } from 'react-redux';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import { completeDownload, downloadTrack } from 'store/downloads/actions';
 
 /**
@@ -20,7 +19,7 @@ function DownloadManager () {
     // Retrieve store helpers
     const { queued, ids } = useTypedSelector((state) => state.downloads);
     const rehydrated = useTypedSelector((state) => state._persist.rehydrated);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     
     // Keep state for the currently active downloads (i.e. the downloads that
     // have actually been pushed out to react-native-fs).
@@ -67,8 +66,6 @@ function DownloadManager () {
             return;
         }
 
-        console.log(ids);
-
         /**
          * Whenever the store is cleared, existing downloads get "lost" because
          * the only reference we have is the store. This function checks for
@@ -82,7 +79,6 @@ function DownloadManager () {
             files.filter((file) => file.isFile() && file.name.endsWith('.mp3'))
                 .forEach((file) => {
                     const id = file.name.replace('.mp3', '');
-                    console.log(id, ids.includes(id));
 
                     // GUARD: If the id is already in the store, there's nothing
                     // left for us to do.
@@ -94,7 +90,7 @@ function DownloadManager () {
                     dispatch(completeDownload({ 
                         id,
                         location: file.path,
-                        size: Number.parseInt(file.size),
+                        size: file.size,
                     }));
                 });
         }

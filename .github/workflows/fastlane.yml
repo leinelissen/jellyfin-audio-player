@@ -3,26 +3,6 @@ name: Fastlane
 on: [push]
  
 jobs:
-  # build-ios:
-  #   runs-on: macos-latest
-  #   steps:
-  #   - uses: actions/checkout@v1
-  #   - name: Install Node dependencies
-  #     run: npm install
-  #   - name: Install CocoaPods dependencies
-  #     run: pod install --project-directory=./ios
-  #   - name: Run fastlane setup
-  #     env:
-  #       APPLE_ACCOUNT: ${{ secrets.APPLE_ACCOUNT }}
-  #       TEAM_ID: ${{ secrets.TEAM_ID }}
-  #     run: |
-  #       cd ios
-  #       fastlane beta --verbose
-  #   - name: Upload artifact
-  #     uses: actions/upload-artifact@v2
-  #     with:
-  #       name: my-artifact
-  #       path: output/*.ipa
   build-android:
     runs-on: ubuntu-latest
     steps:
@@ -30,14 +10,12 @@ jobs:
     - name: Set outputs
       id: vars
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-    - name: Set up Ruby 2.6
-      uses: actions/setup-ruby@v1
+    - name: Set up Ruby 2.7
+      uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6.x
+        ruby-version: 2.7
     - name: Install fastlane
-      run: |
-        gem install bundler
-        bundle install -j 6
+      run: bundle install -j 6
     - name: Install Node dependencies
       run: npm install
     - name: Generate APK
@@ -47,7 +25,7 @@ jobs:
         SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
         SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         SENTRY_URL: ${{ secrets.SENTRY_URL }}
-      run: fastlane android beta
+      run: bundle exec fastlane android beta
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:

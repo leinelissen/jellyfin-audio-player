@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useTypedSelector } from 'store';
-import CloudIcon from 'assets/cloud.svg';
-import CloudDownArrow from 'assets/cloud-down-arrow.svg';
-import CloudExclamationMarkIcon from 'assets/cloud-exclamation-mark.svg';
-import InternalDriveIcon from 'assets/internal-drive.svg';
+import CloudIcon from 'assets/icons/cloud.svg';
+import CloudDownArrow from 'assets/icons/cloud-down-arrow.svg';
+import CloudExclamationMarkIcon from 'assets/icons/cloud-exclamation-mark.svg';
+import InternalDriveIcon from 'assets/icons/internal-drive.svg';
 import useDefaultStyles from './Colors';
 import { EntityId } from '@reduxjs/toolkit';
 import Svg, { Circle, CircleProps } from 'react-native-svg';
@@ -30,7 +30,7 @@ const IconOverlay = styled.View`
 function DownloadIcon({ trackId, size = 16, fill }: DownloadIconProps) {
     // determine styles
     const defaultStyles = useDefaultStyles();
-    const iconFill = fill || defaultStyles.textHalfOpacity.color;
+    const iconFill = fill || defaultStyles.textQuarterOpacity.color;
 
     // Get download icon from state
     const entity = useTypedSelector((state) => state.downloads.entities[trackId]);

@@ -1,62 +1,56 @@
 import React, { useCallback } from 'react';
-import { Text, ScrollView, Dimensions, RefreshControl, StyleSheet, View } from 'react-native';
+import { ScrollView, RefreshControl, StyleSheet, View } from 'react-native';
 import { useGetImage } from 'utility/JellyfinApi';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import FastImage from 'react-native-fast-image';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import { THEME_COLOR } from 'CONSTANTS';
 import TouchableHandler from 'components/TouchableHandler';
 import useCurrentTrack from 'utility/useCurrentTrack';
 import TrackPlayer from 'react-native-track-player';
-import Play from 'assets/play.svg';
-import Shuffle from 'assets/shuffle.svg';
+import Play from 'assets/icons/play.svg';
+import Shuffle from 'assets/icons/shuffle.svg';
 import useDefaultStyles from 'components/Colors';
 import usePlayTracks from 'utility/usePlayTracks';
 import { EntityId } from '@reduxjs/toolkit';
 import { WrappableButtonRow, WrappableButton } from 'components/WrappableButtonRow';
 import { MusicNavigationProp } from 'screens/Music/types';
 import DownloadIcon from 'components/DownloadIcon';
-import CloudDownArrow from 'assets/cloud-down-arrow.svg';
-import Trash from 'assets/trash.svg';
-import { useDispatch } from 'react-redux';
+import CloudDownArrow from 'assets/icons/cloud-down-arrow.svg';
+import Trash from 'assets/icons/trash.svg';
 import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
 import { selectDownloadedTracks } from 'store/downloads/selectors';
+import { Header, SubHeader } from 'components/Typography';
+import { Text } from 'components/Typography';
 
-const Screen = Dimensions.get('screen');
+import CoverImage from 'components/CoverImage';
+import ticksToDuration from 'utility/ticksToDuration';
 
 const styles = StyleSheet.create({
-    name: {
-        fontSize: 36, 
-        fontWeight: 'bold'
-    },
-    artist: {
-        fontSize: 24,
-        opacity: 0.5,
-        marginBottom: 12
-    },
     index: {
-        width: 20,
-        opacity: 0.5,
-        marginRight: 5
-    }
+        width: 16,
+        marginRight: 8
+    },
+    activeText: {
+        color: THEME_COLOR,
+        fontWeight: '500',
+    },
 });
 
-const AlbumImage = styled(FastImage)`
-    border-radius: 10px;
-    width: ${Screen.width * 0.6}px;
-    height: ${Screen.width * 0.6}px;
-    margin: 10px auto;
+const AlbumImageContainer = styled.View`
+    margin: 0 12px 24px 12px;
+    flex: 1;
+    align-items: center;
 `;
 
-const TrackContainer = styled.View<{isPlaying: boolean}>`
-    padding: 15px 4px;
-    border-bottom-width: 1px;
+const TrackContainer = styled.View<{ isPlaying: boolean }>`
+    padding: 12px 4px;
     flex-direction: row;
+    border-radius: 6px;
 
     ${props => props.isPlaying && css`
-        margin: 0 -20px;
-        padding: 15px 24px;
+        margin: 0 -12px;
+        padding: 12px 16px;
     `}
 `;
 
@@ -97,7 +91,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const playTracks = usePlayTracks();
     const { track: currentTrack } = useCurrentTrack();
     const navigation = useNavigation<MusicNavigationProp>();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     // Setup callbacks
     const playEntity = useCallback(() => { playTracks(trackIds); }, [playTracks, trackIds]);
@@ -119,14 +113,17 @@ const TrackListView: React.FC<TrackListViewProps> = ({
 
     return (
         <ScrollView
-            contentContainerStyle={{ padding: 20, paddingBottom: 50 }}
+            style={defaultStyles.view}
+            contentContainerStyle={{ padding: 24, paddingTop: 32, paddingBottom: 64 }}
             refreshControl={
                 <RefreshControl refreshing={isLoading} onRefresh={refresh} />
             }
         >
-            <AlbumImage source={{ uri: getImage(entityId) }} style={defaultStyles.imageBackground} />
-            <Text style={[ defaultStyles.text, styles.name ]} >{title}</Text>
-            <Text style={[ defaultStyles.text, styles.artist ]}>{artist}</Text>
+            <AlbumImageContainer>
+                <CoverImage src={getImage(entityId)} />
+            </AlbumImageContainer>
+            <Header>{title}</Header>
+            <SubHeader>{artist}</SubHeader>
             <WrappableButtonRow>
                 <WrappableButton title={playButtonText} icon={Play} onPress={playEntity} />
                 <WrappableButton title={shuffleButtonText} icon={Shuffle} onPress={shuffleEntity} />
@@ -145,28 +142,37 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                         >
                             <Text
                                 style={[
-                                    defaultStyles.text,
                                     styles.index,
-                                    currentTrack?.backendId === trackId && { 
-                                        color: THEME_COLOR,
-                                        opacity: 1
-                                    } 
+                                    { opacity: 0.25 },
+                                    currentTrack?.backendId === trackId && styles.activeText
                                 ]}
+                                numberOfLines={1}
                             >
                                 {listNumberingStyle === 'index' 
                                     ? i + 1
                                     : tracks[trackId]?.IndexNumber}
                             </Text>
                             <Text
-                                style={currentTrack?.backendId === trackId
-                                    ? { color: THEME_COLOR, fontWeight: '700' }
-                                    : defaultStyles.text
-                                }
+                                style={{ 
+                                    ...currentTrack?.backendId === trackId && styles.activeText,
+                                    flexShrink: 1,
+                                    marginRight: 4,
+                                }}
+                                numberOfLines={1}
                             >
                                 {tracks[trackId]?.Name}
                             </Text>
-                            <View style={{ marginLeft: 'auto' }}>
-                                <DownloadIcon trackId={trackId} />
+                            <View style={{ marginLeft: 'auto', flexDirection: 'row' }}>
+                                <Text
+                                    style={[
+                                        { marginRight: 12, opacity: 0.25 },
+                                        currentTrack?.backendId === trackId && styles.activeText
+                                    ]}
+                                    numberOfLines={1}
+                                >
+                                    {ticksToDuration(tracks[trackId]?.RunTimeTicks || 0)}
+                                </Text>
+                                <DownloadIcon trackId={trackId} fill={currentTrack?.backendId === trackId ? `${THEME_COLOR}44` : undefined} />
                             </View>
                         </TrackContainer>
                     </TouchableHandler>
