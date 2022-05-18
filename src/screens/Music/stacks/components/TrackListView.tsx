@@ -3,7 +3,7 @@ import { ScrollView, RefreshControl, StyleSheet, View } from 'react-native';
 import { useGetImage } from 'utility/JellyfinApi';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import { THEME_COLOR } from 'CONSTANTS';
 import TouchableHandler from 'components/TouchableHandler';
 import useCurrentTrack from 'utility/useCurrentTrack';
@@ -18,7 +18,6 @@ import { MusicNavigationProp } from 'screens/Music/types';
 import DownloadIcon from 'components/DownloadIcon';
 import CloudDownArrow from 'assets/icons/cloud-down-arrow.svg';
 import Trash from 'assets/icons/trash.svg';
-import { useDispatch } from 'react-redux';
 import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
 import { selectDownloadedTracks } from 'store/downloads/selectors';
 import { Header, SubHeader } from 'components/Typography';
@@ -92,7 +91,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const playTracks = usePlayTracks();
     const { track: currentTrack } = useCurrentTrack();
     const navigation = useNavigation<MusicNavigationProp>();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     // Setup callbacks
     const playEntity = useCallback(() => { playTracks(trackIds); }, [playTracks, trackIds]);

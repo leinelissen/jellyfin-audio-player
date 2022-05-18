@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useNavigation, StackActions, useRoute, RouteProp } from '@react-navigation/native';
 import { ModalStackParams } from 'screens/types';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import { Header, SubHeader } from 'components/Typography';
 import styled from 'styled-components/native';
 import { t } from '@localisation';
@@ -12,7 +12,6 @@ import TrashIcon from 'assets/icons/trash.svg';
 
 import { WrappableButton, WrappableButtonRow } from 'components/WrappableButtonRow';
 import CoverImage from 'components/CoverImage';
-import { useDispatch } from 'react-redux';
 import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
 import usePlayTracks from 'utility/usePlayTracks';
 import { selectIsDownloaded } from 'store/downloads/selectors';
@@ -37,7 +36,7 @@ function TrackPopupMenu() {
 
     // Retrieve helpers
     const navigation = useNavigation();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const playTracks = usePlayTracks();
     const getImage = useGetImage();
 

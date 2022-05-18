@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Input from 'components/Input';
 import { ActivityIndicator, Animated, SafeAreaView, View } from 'react-native';
 import styled from 'styled-components/native';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import Fuse from 'fuse.js';
 import { Album, AlbumTrack } from 'store/music/types';
 import { FlatList } from 'react-native-gesture-handler';
@@ -14,7 +14,6 @@ import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
 import { searchAndFetchAlbums } from 'store/music/actions';
 import { debounce } from 'lodash';
-import { useDispatch } from 'react-redux';
 import { Text } from 'components/Typography';
 import { MusicNavigationProp } from 'screens/Music/types';
 import DownloadIcon from 'components/DownloadIcon';
@@ -117,7 +116,7 @@ export default function Search() {
     const navigation = useNavigation<MusicNavigationProp>();
     const keyboardHeight = useKeyboardHeight();
     const getImage = useGetImage();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     /**
      * Since it is impractical to have a global fuse variable, we need to
@@ -139,7 +138,6 @@ export default function Search() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchJellyfinResults = useCallback(debounce(async (searchTerm: string, currentResults: CombinedResults) => {
         // First, query the Jellyfin API
-        // @ts-expect-error need to fix this with AppDispatch
         const { payload } = await dispatch(searchAndFetchAlbums({ term: searchTerm }));
 
         // Convert the current results to album ids

@@ -3,13 +3,13 @@ import { Button, View } from 'react-native';
 import Modal from 'components/Modal';
 import Input from 'components/Input';
 import { setJellyfinCredentials } from 'store/settings/actions';
-import { useDispatch } from 'react-redux';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import CredentialGenerator from './components/CredentialGenerator';
 import { THEME_COLOR } from 'CONSTANTS';
 import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
 import { Text } from 'components/Typography';
+import { useAppDispatch } from 'store';
 
 
 export default function SetJellyfinServer() {
@@ -19,7 +19,7 @@ export default function SetJellyfinServer() {
     const [isLogginIn, setIsLogginIn] = useState<boolean>(false);
 
     // Handlers needed for dispatching stuff
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigation = useNavigation();
 
     // Save creedentials to store and close the modal

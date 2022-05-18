@@ -2,8 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from 'screens';
-import { useTypedSelector } from 'store';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useTypedSelector } from 'store';
 import { setOnboardingStatus } from 'store/settings/actions';
 import { t } from '@localisation';
 import Button from 'components/Button';
@@ -39,7 +38,7 @@ const Logo = styled.Image`
 function Onboarding() {
     // Get account from Redux and dispatcher
     const account = useTypedSelector(state => state.settings.jellyfin);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     // Also retrieve the navigation handler so that we can open the modal in
     // which the Jellyfin server is set

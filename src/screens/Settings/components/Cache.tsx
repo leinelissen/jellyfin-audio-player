@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import TrackPlayer from 'react-native-track-player';
-import { useDispatch } from 'react-redux';
 import music from 'store/music';
 import { t } from '@localisation';
 import Button from 'components/Button';
 import styled from 'styled-components/native';
 import { Text } from 'components/Typography';
+import { useAppDispatch } from 'store';
 
 
 const ClearCache = styled(Button)`
@@ -17,7 +17,7 @@ const Container = styled.ScrollView`
 `;
 
 export default function CacheSettings() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const handleClearCache = useCallback(() => {
         // Dispatch an action to reset the music subreducer state
         dispatch(music.actions.reset());

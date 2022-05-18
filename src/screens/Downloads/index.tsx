@@ -3,11 +3,10 @@ import React, { useCallback, useMemo } from 'react';
 import { FlatListProps, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import formatBytes from 'utility/formatBytes';
 import TrashIcon from 'assets/icons/trash.svg';
 import ArrowClockwise from 'assets/icons/arrow-clockwise.svg';
-import { useDispatch } from 'react-redux';
 import { EntityId } from '@reduxjs/toolkit';
 import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
 import Button from 'components/Button';
@@ -35,7 +34,7 @@ const AlbumImage = styled(FastImage)`
 
 function Downloads() {
     const defaultStyles = useDefaultStyles();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const getImage = useGetImage();
 
     const { entities, ids } = useTypedSelector((state) => state.downloads);

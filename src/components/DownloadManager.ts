@@ -2,8 +2,7 @@ import { EntityId } from '@reduxjs/toolkit';
 import { xor } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { DocumentDirectoryPath, readDir } from 'react-native-fs';
-import { useDispatch } from 'react-redux';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import { completeDownload, downloadTrack } from 'store/downloads/actions';
 
 /**
@@ -20,7 +19,7 @@ function DownloadManager () {
     // Retrieve store helpers
     const { queued, ids } = useTypedSelector((state) => state.downloads);
     const rehydrated = useTypedSelector((state) => state._persist.rehydrated);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     
     // Keep state for the currently active downloads (i.e. the downloads that
     // have actually been pushed out to react-native-fs).

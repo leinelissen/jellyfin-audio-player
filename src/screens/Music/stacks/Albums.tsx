@@ -2,10 +2,9 @@ import React, { useCallback, useEffect, useRef, ReactText } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
 import { MusicNavigationProp } from '../types';
 import { SafeAreaView, SectionList, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import { fetchAllAlbums } from 'store/music/actions';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
 import TouchableHandler from 'components/TouchableHandler';
@@ -103,7 +102,7 @@ const Albums: React.FC = () => {
     const sections = useTypedSelector(selectAlbumsByAlphabet);
     
     // Initialise helpers
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigation = useNavigation<MusicNavigationProp>();
     const getImage = useGetImage();
     const listRef = useRef<SectionList<EntityId>>(null);

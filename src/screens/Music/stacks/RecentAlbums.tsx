@@ -2,9 +2,8 @@ import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
 import { MusicNavigationProp } from '../types';
 import { Text, SafeAreaView, FlatList, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { useTypedSelector } from 'store';
+import { useAppDispatch, useTypedSelector } from 'store';
 import { fetchRecentAlbums } from 'store/music/actions';
 import TouchableHandler from 'components/TouchableHandler';
 import ListContainer from './components/ListContainer';
@@ -59,7 +58,7 @@ const RecentAlbums: React.FC = () => {
     const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
     
     // Initialise helpers
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigation = useNavigation<MusicNavigationProp>();
     const getImage = useGetImage();
 
