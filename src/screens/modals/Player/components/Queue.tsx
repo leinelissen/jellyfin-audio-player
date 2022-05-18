@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import useQueue from 'utility/useQueue';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ListRenderItemInfo } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import useCurrentTrack from 'utility/useCurrentTrack';
 import TouchableHandler from 'components/TouchableHandler';
-import TrackPlayer, { RepeatMode } from 'react-native-track-player';
+import TrackPlayer, { RepeatMode, Track } from 'react-native-track-player';
 import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
 import { Text } from 'components/Typography';
@@ -17,15 +17,16 @@ import ticksToDuration from 'utility/ticksToDuration';
 
 const ICON_SIZE = 16;
 
-const Container = styled.View`
-    margin-top: 56px;
+const Container = styled.FlatList<Track>`
+    padding: 40px;
 `;
 
 const Header = styled.View`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 8px;
+    padding-bottom: 8px;
+    padding-top: 52px;
 `;
 
 const IconButton = styled.TouchableOpacity`
@@ -56,7 +57,8 @@ const QueueItem = styled.View<{ active?: boolean, alreadyPlayed?: boolean, isDar
 `;
 
 const ClearQueue = styled.View`
-    margin: 20px 0;
+    padding: 20px 0;
+    padding-bottom: 80px;
 `;
 
 const styles = StyleSheet.create({
@@ -65,7 +67,11 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function Queue() {
+interface Props {
+    header?: JSX.Element;
+}
+
+export default function Queue({ header }: Props) {
     const defaultStyles = useDefaultStyles();
     const queue = useQueue();
     const [isRepeating, setIsRepeating] = useState(false);
@@ -96,41 +102,47 @@ export default function Queue() {
     }, []);
 
     return (
-        <Container>
-            <Header>
-                <Text>{t('queue')}</Text>
-                <Divider style={{ marginHorizontal: 18 }} />
-                <IconButton
-                    style={isRepeating ? defaultStyles.activeBackground : undefined}
-                    onPress={toggleLoop}
-                >
-                    <RepeatIcon
-                        fill={isRepeating ? THEME_COLOR : defaultStyles.textHalfOpacity.color}
-                        width={ICON_SIZE}
-                        height={ICON_SIZE}
-                    />
-                </IconButton>
-            </Header>
-            {queue.map((track, i) => (
-                <TouchableHandler id={i} onPress={playTrack} key={i}>
+        <Container
+            data={queue}
+            ListHeaderComponent={
+                <>
+                    {header}
+                    <Header>
+                        <Text>{t('queue')}</Text>
+                        <Divider style={{ marginHorizontal: 18 }} />
+                        <IconButton
+                            style={isRepeating ? defaultStyles.activeBackground : undefined}
+                            onPress={toggleLoop}
+                        >
+                            <RepeatIcon
+                                fill={isRepeating ? THEME_COLOR : defaultStyles.textHalfOpacity.color}
+                                width={ICON_SIZE}
+                                height={ICON_SIZE}
+                            />
+                        </IconButton>
+                    </Header>
+                </>
+            }
+            renderItem={({ item: track, index}: ListRenderItemInfo<Track>) => (
+                <TouchableHandler id={index} onPress={playTrack} key={index}>
                     <QueueItem 
-                        active={currentIndex === i}
-                        key={i}
-                        alreadyPlayed={currentIndex ? i < currentIndex : false}
+                        active={currentIndex === index}
+                        key={index}
+                        alreadyPlayed={currentIndex ? index < currentIndex : false}
                         style={[
                             defaultStyles.border,
-                            currentIndex === i ? defaultStyles.activeBackground : {},
+                            currentIndex === index ? defaultStyles.activeBackground : {},
                         ]}
                     >
                         <View style={{ flex: 1, marginRight: 16 }}>
                             <Text
-                                style={[currentIndex === i ? { color: THEME_COLOR, fontWeight: '500' } : styles.trackTitle, { marginBottom: 2 }]}
+                                style={[currentIndex === index ? { color: THEME_COLOR, fontWeight: '500' } : styles.trackTitle, { marginBottom: 2 }]}
                                 numberOfLines={1}
                             >
                                 {track.title}
                             </Text>
                             <TextHalfOpacity
-                                style={currentIndex === i ? { color: THEME_COLOR, fontWeight: '400' } : undefined}
+                                style={currentIndex === index ? { color: THEME_COLOR, fontWeight: '400' } : undefined}
                                 numberOfLines={1}
                             >
                                 {track.artist}{track.album && ' — ' + track.album}
@@ -138,20 +150,23 @@ export default function Queue() {
                         </View>
                         <View style={{ marginLeft: 'auto', marginRight: 8 }}>
                             <TextHalfOpacity
-                                style={currentIndex === i ? { color: THEME_COLOR, fontWeight: '400' } : undefined}
+                                style={currentIndex === index ? { color: THEME_COLOR, fontWeight: '400' } : undefined}
                             >
                                 {ticksToDuration(track.duration || 0)}
                             </TextHalfOpacity>
                         </View>
                         <View>
-                            <DownloadIcon trackId={track.backendId} fill={currentIndex === i ? THEME_COLOR + '80' : undefined} />
+                            <DownloadIcon trackId={track.backendId} fill={currentIndex === index ? THEME_COLOR + '80' : undefined} />
                         </View>
                     </QueueItem>
                 </TouchableHandler>
-            ))}
-            <ClearQueue>
-                <Button title={t('clear-queue')} onPress={clearQueue} />
-            </ClearQueue>
-        </Container>
+
+            )}
+            ListFooterComponent={(
+                <ClearQueue>
+                    <Button title={t('clear-queue')} onPress={clearQueue} />
+                </ClearQueue>
+            )}
+        />
     );
 }

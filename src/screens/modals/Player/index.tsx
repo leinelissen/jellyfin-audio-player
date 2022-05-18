@@ -1,34 +1,24 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import MediaControls from './components/MediaControls';
 import ProgressBar from './components/ProgressBar';
 import NowPlaying from './components/NowPlaying';
 import Queue from './components/Queue';
-import useDefaultStyles from 'components/Colors';
 import ConnectionNotice from './components/ConnectionNotice';
-import { ScrollView } from 'react-native-gesture-handler';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import StreamStatus from './components/StreamStatus';
 
-const styles = StyleSheet.create({
-    inner: {
-        padding: 40,
-    }
-});
-
-export default function Player() {
-    const defaultStyles = useDefaultStyles();
-    
+export default function Player() {    
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <ScrollView contentContainerStyle={styles.inner} style={defaultStyles.view}>
-                <NowPlaying />
-                <ConnectionNotice />
-                <StreamStatus />
-                <ProgressBar />
-                <MediaControls />
-                <Queue />
-            </ScrollView>
+            <Queue header={(
+                <>
+                    <NowPlaying />
+                    <ConnectionNotice />
+                    <StreamStatus />
+                    <ProgressBar />
+                    <MediaControls />
+                </>                    
+            )} />
         </GestureHandlerRootView>
     );
 }
