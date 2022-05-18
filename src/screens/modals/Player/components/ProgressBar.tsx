@@ -115,7 +115,7 @@ function ProgressBar() {
             isDragging.value = false;
             runOnJS(TrackPlayer.seekTo)(pos.value);
         });
-    const gesture = Gesture.Exclusive(tap, pan);
+    const gesture = Gesture.Exclusive(pan, tap);
 
     useEffect(() => {
         pos.value = position;
