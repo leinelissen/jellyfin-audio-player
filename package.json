@@ -34,7 +34,7 @@
     "i18n-js": "^3.9.2",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
-    "react-airplay": "^1.1.2",
+    "react-airplay": "^1.2.0",
     "react-native": "^0.68.1",
     "react-native-collapsible": "^1.6.0",
     "react-native-dotenv": "^3.3.1",
