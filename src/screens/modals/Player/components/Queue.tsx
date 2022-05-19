@@ -18,7 +18,7 @@ import ticksToDuration from 'utility/ticksToDuration';
 const ICON_SIZE = 16;
 
 const Container = styled.FlatList<Track>`
-    padding: 40px;
+
 `;
 
 const Header = styled.View`
@@ -103,6 +103,7 @@ export default function Queue({ header }: Props) {
 
     return (
         <Container
+            contentContainerStyle={{ padding: 40 }}
             data={queue}
             ListHeaderComponent={
                 <>
