@@ -32,7 +32,8 @@ const Logo = styled.Image`
     height: 150px;
     margin: 0 auto 50px auto;
     border-radius: 12px;
-    border: 1px solid #e6e6e6;
+    border-width: 1px;
+    border-color: #e6e6e6;
 `;
 
 function Onboarding() {
