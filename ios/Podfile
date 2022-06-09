@@ -3,7 +3,7 @@ require_relative '../node_modules/react-native/node_modules/@react-native-commun
 
 platform :ios, '12.0'
 
-target 'JellyfinAudioPlayer' do
+target 'Fintunes' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -18,7 +18,7 @@ target 'JellyfinAudioPlayer' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'JellyfinAudioPlayerTests' do
+  target 'FintunesTests' do
     inherit! :complete
     # Pods for testing
   end

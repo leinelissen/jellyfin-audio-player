@@ -8,6 +8,8 @@ import { setupSentry } from 'utility/Sentry';
 import { enableScreens } from 'react-native-screens';
 import { patchTrackPlayer } from 'utility/AddedTrackEvents';
 
+console.log(appName);
+
 setupSentry();
 enableScreens();
 patchTrackPlayer();

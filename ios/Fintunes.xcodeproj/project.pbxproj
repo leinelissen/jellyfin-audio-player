@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* JellyfinAudioPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* JellyfinAudioPlayerTests.m */; };
+		00E356F31AD99517003FC87E /* FintunesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* FintunesTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		463612208457EBB4B723000A /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 842AB597D56E84A4ACDC4735 /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a */; };
+		38B3606A2D29107567360ACF /* libPods-Fintunes-FintunesTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EBC468D2DE6EB8FF02B72B7 /* libPods-Fintunes-FintunesTests.a */; };
 		4C04FC6E055249ABB204D3BC /* Inter-VariableFont_slnt,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4A0465FF364579B28CF5D7 /* Inter-VariableFont_slnt,wght.ttf */; };
 		4FA1B23D2550A94C007A035E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1B23C2550A94C007A035E /* File.swift */; };
-		A807E2BB233D6F9347D8A95C /* libPods-JellyfinAudioPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71370E61E2CC6BD9372ADCF3 /* libPods-JellyfinAudioPlayer.a */; };
+		D7439709FB704B4FE23C538F /* libPods-Fintunes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12335560B9820FD5AD98AB8F /* libPods-Fintunes.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,36 +24,32 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = JellyfinAudioPlayer;
+			remoteInfo = Fintunes;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* JellyfinAudioPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JellyfinAudioPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* FintunesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FintunesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* JellyfinAudioPlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JellyfinAudioPlayerTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* Jellyfin Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Jellyfin Player.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = JellyfinAudioPlayer/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = JellyfinAudioPlayer/AppDelegate.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* FintunesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FintunesTests.m; sourceTree = "<group>"; };
+		0973197F4BDB99413C326AD0 /* Pods-Fintunes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fintunes.release.xcconfig"; path = "Target Support Files/Pods-Fintunes/Pods-Fintunes.release.xcconfig"; sourceTree = "<group>"; };
+		12335560B9820FD5AD98AB8F /* libPods-Fintunes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Fintunes.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Fintunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fintunes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Fintunes/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Fintunes/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = JellyfinAudioPlayer/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = JellyfinAudioPlayer/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = JellyfinAudioPlayer/main.m; sourceTree = "<group>"; };
-		2710519FCC41B05FDE6738DF /* Pods-JellyfinAudioPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer/Pods-JellyfinAudioPlayer.release.xcconfig"; sourceTree = "<group>"; };
-		39572B38534BBDBB596C8C95 /* Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig"; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Fintunes/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Fintunes/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Fintunes/main.m; sourceTree = "<group>"; };
 		4B4A0465FF364579B28CF5D7 /* Inter-VariableFont_slnt,wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-VariableFont_slnt,wght.ttf"; path = "../src/assets/fonts/Inter-VariableFont_slnt,wght.ttf"; sourceTree = "<group>"; };
-		4FA1B23B2550A94B007A035E /* JellyfinAudioPlayer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JellyfinAudioPlayer-Bridging-Header.h"; sourceTree = "<group>"; };
+		4FA1B23B2550A94B007A035E /* Fintunes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fintunes-Bridging-Header.h"; sourceTree = "<group>"; };
 		4FA1B23C2550A94C007A035E /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		590BEA7DE65819C5B5FDAD06 /* Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer-tvOSTests/Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		71370E61E2CC6BD9372ADCF3 /* libPods-JellyfinAudioPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JellyfinAudioPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7D43C7610851B9666193E3F6 /* libPods-JellyfinAudioPlayer-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JellyfinAudioPlayer-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		842AB597D56E84A4ACDC4735 /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		86AD8F7165272727927424B9 /* Pods-JellyfinAudioPlayer-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer-tvOSTests/Pods-JellyfinAudioPlayer-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		8DAD3DCD6450C4255A20940E /* Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.debug.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.debug.xcconfig"; sourceTree = "<group>"; };
-		B179EFCC51AF0F281E73F0B8 /* Pods-JellyfinAudioPlayer-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer-tvOS.release.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer-tvOS/Pods-JellyfinAudioPlayer-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		D21A80A7EA4E141F298B3249 /* Pods-JellyfinAudioPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer.debug.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer/Pods-JellyfinAudioPlayer.debug.xcconfig"; sourceTree = "<group>"; };
-		DEB1E90737138C4BD6E5323D /* Pods-JellyfinAudioPlayer-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JellyfinAudioPlayer-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-JellyfinAudioPlayer-tvOS/Pods-JellyfinAudioPlayer-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		E35451F7979C52C1692C4C9F /* libPods-JellyfinAudioPlayer-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JellyfinAudioPlayer-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5370B45C5DDCD952C6569B8D /* Pods-Fintunes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fintunes.debug.xcconfig"; path = "Target Support Files/Pods-Fintunes/Pods-Fintunes.debug.xcconfig"; sourceTree = "<group>"; };
+		7D43C7610851B9666193E3F6 /* libPods-Fintunes-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Fintunes-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EBC468D2DE6EB8FF02B72B7 /* libPods-Fintunes-FintunesTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Fintunes-FintunesTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFAE700A256C6B0ED0D20FE3 /* Pods-Fintunes-FintunesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fintunes-FintunesTests.release.xcconfig"; path = "Target Support Files/Pods-Fintunes-FintunesTests/Pods-Fintunes-FintunesTests.release.xcconfig"; sourceTree = "<group>"; };
+		B20CBCFF11E124551F286B84 /* Pods-Fintunes-FintunesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fintunes-FintunesTests.debug.xcconfig"; path = "Target Support Files/Pods-Fintunes-FintunesTests/Pods-Fintunes-FintunesTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E35451F7979C52C1692C4C9F /* libPods-Fintunes-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Fintunes-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -63,7 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				463612208457EBB4B723000A /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a in Frameworks */,
+				38B3606A2D29107567360ACF /* libPods-Fintunes-FintunesTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,20 +67,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A807E2BB233D6F9347D8A95C /* libPods-JellyfinAudioPlayer.a in Frameworks */,
+				D7439709FB704B4FE23C538F /* libPods-Fintunes.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* JellyfinAudioPlayerTests */ = {
+		00E356EF1AD99517003FC87E /* FintunesTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* JellyfinAudioPlayerTests.m */,
+				00E356F21AD99517003FC87E /* FintunesTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = JellyfinAudioPlayerTests;
+			path = FintunesTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -95,7 +91,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* JellyfinAudioPlayer */ = {
+		13B07FAE1A68108700A75B9A /* Fintunes */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -105,9 +101,9 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				4FA1B23C2550A94C007A035E /* File.swift */,
-				4FA1B23B2550A94B007A035E /* JellyfinAudioPlayer-Bridging-Header.h */,
+				4FA1B23B2550A94B007A035E /* Fintunes-Bridging-Header.h */,
 			);
-			name = JellyfinAudioPlayer;
+			name = Fintunes;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -115,10 +111,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				71370E61E2CC6BD9372ADCF3 /* libPods-JellyfinAudioPlayer.a */,
-				842AB597D56E84A4ACDC4735 /* libPods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.a */,
-				E35451F7979C52C1692C4C9F /* libPods-JellyfinAudioPlayer-tvOS.a */,
-				7D43C7610851B9666193E3F6 /* libPods-JellyfinAudioPlayer-tvOSTests.a */,
+				E35451F7979C52C1692C4C9F /* libPods-Fintunes-tvOS.a */,
+				7D43C7610851B9666193E3F6 /* libPods-Fintunes-tvOSTests.a */,
+				12335560B9820FD5AD98AB8F /* libPods-Fintunes.a */,
+				8EBC468D2DE6EB8FF02B72B7 /* libPods-Fintunes-FintunesTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -126,14 +122,10 @@
 		46001D7383D71A837AAF6E07 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D21A80A7EA4E141F298B3249 /* Pods-JellyfinAudioPlayer.debug.xcconfig */,
-				2710519FCC41B05FDE6738DF /* Pods-JellyfinAudioPlayer.release.xcconfig */,
-				8DAD3DCD6450C4255A20940E /* Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.debug.xcconfig */,
-				39572B38534BBDBB596C8C95 /* Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig */,
-				DEB1E90737138C4BD6E5323D /* Pods-JellyfinAudioPlayer-tvOS.debug.xcconfig */,
-				B179EFCC51AF0F281E73F0B8 /* Pods-JellyfinAudioPlayer-tvOS.release.xcconfig */,
-				86AD8F7165272727927424B9 /* Pods-JellyfinAudioPlayer-tvOSTests.debug.xcconfig */,
-				590BEA7DE65819C5B5FDAD06 /* Pods-JellyfinAudioPlayer-tvOSTests.release.xcconfig */,
+				5370B45C5DDCD952C6569B8D /* Pods-Fintunes.debug.xcconfig */,
+				0973197F4BDB99413C326AD0 /* Pods-Fintunes.release.xcconfig */,
+				B20CBCFF11E124551F286B84 /* Pods-Fintunes-FintunesTests.debug.xcconfig */,
+				AFAE700A256C6B0ED0D20FE3 /* Pods-Fintunes-FintunesTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -148,9 +140,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* JellyfinAudioPlayer */,
+				13B07FAE1A68108700A75B9A /* Fintunes */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* JellyfinAudioPlayerTests */,
+				00E356EF1AD99517003FC87E /* FintunesTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				46001D7383D71A837AAF6E07 /* Pods */,
@@ -164,8 +156,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Jellyfin Player.app */,
-				00E356EE1AD99517003FC87E /* JellyfinAudioPlayerTests.xctest */,
+				13B07F961A680F5B00A75B9A /* Fintunes.app */,
+				00E356EE1AD99517003FC87E /* FintunesTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -181,9 +173,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* JellyfinAudioPlayerTests */ = {
+		00E356ED1AD99517003FC87E /* FintunesTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "JellyfinAudioPlayerTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "FintunesTests" */;
 			buildPhases = (
 				BBD71961640F29097BE9932A /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -197,14 +189,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = JellyfinAudioPlayerTests;
-			productName = JellyfinAudioPlayerTests;
-			productReference = 00E356EE1AD99517003FC87E /* JellyfinAudioPlayerTests.xctest */;
+			name = FintunesTests;
+			productName = FintunesTests;
+			productReference = 00E356EE1AD99517003FC87E /* FintunesTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* JellyfinAudioPlayer */ = {
+		13B07F861A680F5B00A75B9A /* Fintunes */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "JellyfinAudioPlayer" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Fintunes" */;
 			buildPhases = (
 				E68FAF43791AC236CF4BF8CB /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -219,9 +211,9 @@
 			);
 			dependencies = (
 			);
-			name = JellyfinAudioPlayer;
-			productName = JellyfinAudioPlayer;
-			productReference = 13B07F961A680F5B00A75B9A /* Jellyfin Player.app */;
+			name = Fintunes;
+			productName = Fintunes;
+			productReference = 13B07F961A680F5B00A75B9A /* Fintunes.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -245,7 +237,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "JellyfinAudioPlayer" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Fintunes" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -258,8 +250,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* JellyfinAudioPlayer */,
-				00E356ED1AD99517003FC87E /* JellyfinAudioPlayerTests */,
+				13B07F861A680F5B00A75B9A /* Fintunes */,
+				00E356ED1AD99517003FC87E /* FintunesTests */,
 			);
 		};
 /* End PBXProject section */
@@ -308,7 +300,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JellyfinAudioPlayer/Pods-JellyfinAudioPlayer-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Fintunes/Pods-Fintunes-frameworks.sh",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
@@ -321,7 +313,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JellyfinAudioPlayer/Pods-JellyfinAudioPlayer-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Fintunes/Pods-Fintunes-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A02366876E56A727F566EC3A /* [CP] Embed Pods Frameworks */ = {
@@ -330,7 +322,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Fintunes-FintunesTests/Pods-Fintunes-FintunesTests-frameworks.sh",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
@@ -343,7 +335,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Fintunes-FintunesTests/Pods-Fintunes-FintunesTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B9FB8FC65CEFF9AFAC71127E /* [CP] Copy Pods Resources */ = {
@@ -352,7 +344,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JellyfinAudioPlayer/Pods-JellyfinAudioPlayer-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Fintunes/Pods-Fintunes-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -361,7 +353,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JellyfinAudioPlayer/Pods-JellyfinAudioPlayer-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Fintunes/Pods-Fintunes-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BBD71961640F29097BE9932A /* [CP] Check Pods Manifest.lock */ = {
@@ -379,7 +371,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Fintunes-FintunesTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -392,7 +384,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Fintunes-FintunesTests/Pods-Fintunes-FintunesTests-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -401,7 +393,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests/Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Fintunes-FintunesTests/Pods-Fintunes-FintunesTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E68FAF43791AC236CF4BF8CB /* [CP] Check Pods Manifest.lock */ = {
@@ -419,7 +411,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-JellyfinAudioPlayer-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Fintunes-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -452,7 +444,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* JellyfinAudioPlayerTests.m in Sources */,
+				00E356F31AD99517003FC87E /* FintunesTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,7 +463,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* JellyfinAudioPlayer */;
+			target = 13B07F861A680F5B00A75B9A /* Fintunes */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -483,7 +475,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = JellyfinAudioPlayer;
+			path = Fintunes;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -491,7 +483,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8DAD3DCD6450C4255A20940E /* Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.debug.xcconfig */;
+			baseConfigurationReference = B20CBCFF11E124551F286B84 /* Pods-Fintunes-FintunesTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -501,7 +493,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = JellyfinAudioPlayerTests/Info.plist;
+				INFOPLIST_FILE = FintunesTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -515,20 +507,20 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JellyfinAudioPlayer.app/JellyfinAudioPlayer";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fintunes.app/Fintunes";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 39572B38534BBDBB596C8C95 /* Pods-JellyfinAudioPlayer-JellyfinAudioPlayerTests.release.xcconfig */;
+			baseConfigurationReference = AFAE700A256C6B0ED0D20FE3 /* Pods-Fintunes-FintunesTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 238P3C58WC;
-				INFOPLIST_FILE = JellyfinAudioPlayerTests/Info.plist;
+				INFOPLIST_FILE = FintunesTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -544,13 +536,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "915c5213-22f6-4f9d-8065-2a06300f9bfb";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JellyfinAudioPlayer.app/JellyfinAudioPlayer";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Fintunes.app/Fintunes";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D21A80A7EA4E141F298B3249 /* Pods-JellyfinAudioPlayer.debug.xcconfig */;
+			baseConfigurationReference = 5370B45C5DDCD952C6569B8D /* Pods-Fintunes.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -562,7 +554,7 @@
 					"$(inherited)",
 					"FB_SONARKIT_ENABLED=1",
 				);
-				INFOPLIST_FILE = JellyfinAudioPlayer/Info.plist;
+				INFOPLIST_FILE = Fintunes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
@@ -574,9 +566,9 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = nl.moeilijkedingen.jellyfinaudioplayer;
-				PRODUCT_NAME = "Jellyfin Player";
+				PRODUCT_NAME = Fintunes;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "JellyfinAudioPlayer-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Fintunes-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -585,7 +577,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2710519FCC41B05FDE6738DF /* Pods-JellyfinAudioPlayer.release.xcconfig */;
+			baseConfigurationReference = 0973197F4BDB99413C326AD0 /* Pods-Fintunes.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -593,7 +585,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = 238P3C58WC;
-				INFOPLIST_FILE = JellyfinAudioPlayer/Info.plist;
+				INFOPLIST_FILE = Fintunes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
@@ -605,10 +597,10 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = nl.moeilijkedingen.jellyfinaudioplayer;
-				PRODUCT_NAME = "Jellyfin Player";
+				PRODUCT_NAME = Fintunes;
 				PROVISIONING_PROFILE = "915c5213-22f6-4f9d-8065-2a06300f9bfb";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "JellyfinAudioPlayer-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Fintunes-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -672,7 +664,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "Jellyfin Player";
+				PRODUCT_NAME = Fintunes;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -727,7 +719,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "Jellyfin Player";
+				PRODUCT_NAME = Fintunes;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -736,7 +728,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "JellyfinAudioPlayerTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "FintunesTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -745,7 +737,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "JellyfinAudioPlayer" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Fintunes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -754,7 +746,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "JellyfinAudioPlayer" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Fintunes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

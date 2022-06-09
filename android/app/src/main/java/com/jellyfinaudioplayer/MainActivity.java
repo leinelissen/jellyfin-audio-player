@@ -1,4 +1,4 @@
-package com.jellyfinaudioplayer;
+package nl.moeilijkedingen.jellyfinaudioplayer;
 
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "JellyfinAudioPlayer";
+    return "Fintunes";
   }
 
   @Override
