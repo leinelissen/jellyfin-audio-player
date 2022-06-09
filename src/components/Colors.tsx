@@ -2,7 +2,7 @@ import { BlurView, BlurViewProperties } from '@react-native-community/blur';
 import { THEME_COLOR } from 'CONSTANTS';
 import React, { PropsWithChildren } from 'react';
 import { useContext } from 'react';
-import { ColorSchemeName, Platform, StyleSheet, useColorScheme } from 'react-native';
+import { ColorSchemeName, Platform, StyleSheet, useColorScheme, View } from 'react-native';
 
 const majorPlatformVersion = typeof Platform.Version === 'string' ? parseInt(Platform.Version, 10) : Platform.Version;
 
@@ -100,12 +100,16 @@ export function DefaultStylesProvider(props: DefaultStylesProviderProps) {
 export function ColoredBlurView(props: PropsWithChildren<BlurViewProperties>) {
     const scheme = useColorScheme();
 
-    return (
+    return Platform.OS === 'ios' ? (
         <BlurView
             {...props}
             blurType={Platform.OS === 'ios' && majorPlatformVersion >= 13 
                 ? 'material'
                 : scheme === 'dark' ? 'extraDark' : 'xlight'
             } />
+    ) : (
+        <View {...props} style={[ props.style, {
+            backgroundColor: scheme === 'light' ? '#f6f6f6f6' : '#333333f6',
+        } ]} />
     );
 }
