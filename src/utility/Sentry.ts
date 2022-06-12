@@ -1,5 +1,5 @@
 import { SENTRY_DSN } from '@env';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Sentry from '@sentry/react-native';
 
 const SENTRY_ASYNC__ITEM_STRING = 'sentry_enabled';

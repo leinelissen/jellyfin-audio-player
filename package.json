@@ -12,7 +12,7 @@
     "build:ios": "react-native bundle --entry-file='index.ts' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-async-storage/async-storage": "^1.17.6",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/netinfo": "^8.3.0",
