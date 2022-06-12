@@ -14,11 +14,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.6",
     "@react-native-community/blur": "^3.6.0",
-    "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/netinfo": "^8.3.0",
-    "@react-native-community/picker": "^1.8.1",
-    "@react-native-community/slider": "^4.2.2",
-    "@react-native/normalize-color": "^2.0.0",
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
