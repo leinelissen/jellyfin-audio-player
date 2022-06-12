@@ -20,7 +20,6 @@ export default function Player() {
                     <StreamStatus />
                     <ProgressBar />
                     <MediaControls />
-                    <ClosePlayer />
                 </>                    
             )} />
         </GestureHandlerRootView>
