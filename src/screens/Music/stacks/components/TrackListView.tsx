@@ -125,8 +125,8 @@ const TrackListView: React.FC<TrackListViewProps> = ({
             <Header>{title}</Header>
             <SubHeader>{artist}</SubHeader>
             <WrappableButtonRow>
-                <WrappableButton title={playButtonText} icon={Play} onPress={playEntity} />
-                <WrappableButton title={shuffleButtonText} icon={Shuffle} onPress={shuffleEntity} />
+                <WrappableButton title={playButtonText} icon={Play} onPress={playEntity} testID="play-album" />
+                <WrappableButton title={shuffleButtonText} icon={Shuffle} onPress={shuffleEntity} testID="shuffle-album" />
             </WrappableButtonRow>
             <View style={{ marginTop: 8 }}>
                 {trackIds.map((trackId, i) =>
@@ -135,6 +135,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                         id={i}
                         onPress={selectTrack}
                         onLongPress={longPressTrack}
+                        testID={`play-track-${trackId}`}
                     >
                         <TrackContainer
                             isPlaying={currentTrack?.backendId === trackId || false}
@@ -183,12 +184,14 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                         title={downloadButtonText}
                         onPress={downloadAllTracks}
                         disabled={downloadedTracks.length === trackIds.length}
+                        testID="download-album"
                     />
                     <WrappableButton
                         icon={Trash}
                         title={deleteButtonText}
                         onPress={deleteAllTracks}
                         disabled={downloadedTracks.length === 0}
+                        testID="delete-album"
                     />
                 </WrappableButtonRow>
             </View>

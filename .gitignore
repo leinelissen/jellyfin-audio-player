@@ -70,3 +70,6 @@ certificates/
 
 .env
 sentry.properties
+
+screenshots
+fastlane/Preview.html

@@ -151,7 +151,7 @@ function NowPlaying() {
                 </Shadow>
             </ShadowOverlay>
             <ColoredBlurView style={{ borderRadius: 8 }}>
-                <InnerContainer onPress={openNowPlayingModal} activeOpacity={0.5}>
+                <InnerContainer onPress={openNowPlayingModal} activeOpacity={0.5} testID="open-player-modal">
                     <ShadowWrapper size="small">
                         <Cover source={{ uri: (track.artwork || '') as string }} style={defaultStyles.imageBackground} />
                     </ShadowWrapper>

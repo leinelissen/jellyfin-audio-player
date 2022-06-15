@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, LogBox } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import App from './src/components/App';
 import { name as appName } from './app.json';
@@ -8,7 +8,9 @@ import { setupSentry } from 'utility/Sentry';
 import { enableScreens } from 'react-native-screens';
 import { patchTrackPlayer } from 'utility/AddedTrackEvents';
 
-console.log(appName);
+LogBox.ignoreLogs([
+    'ViewPropTypes will be removed from React Native',
+]);
 
 setupSentry();
 enableScreens();

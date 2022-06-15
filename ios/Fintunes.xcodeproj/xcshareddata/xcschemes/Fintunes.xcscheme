@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Fintunes.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AB4A8DFA2857C8DA005A1ED0"
+               BuildableName = "FintunesUITests.xctest"
+               BlueprintName = "FintunesUITests"
+               ReferencedContainer = "container:Fintunes.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -32,9 +46,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "FintunesTests.xctest"
-               BlueprintName = "FintunesTests"
+               BlueprintIdentifier = "AB4A8DFA2857C8DA005A1ED0"
+               BuildableName = "FintunesUITests.xctest"
+               BlueprintName = "FintunesUITests"
                ReferencedContainer = "container:Fintunes.xcodeproj">
             </BuildableReference>
          </TestableReference>

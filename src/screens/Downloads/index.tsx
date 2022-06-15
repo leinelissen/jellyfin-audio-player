@@ -90,6 +90,7 @@ function Downloads() {
                     onPress={handleDeleteAllTracks}
                     disabled={!ids.length}
                     size="small"
+                    testID="delete-all-tracks"
                 />
             </View>
             {failedIds.length > 0 && (
@@ -128,7 +129,7 @@ function Downloads() {
                 <View style={{ marginRight: 12 }}>
                     <DownloadIcon trackId={item} />
                 </View>
-                <Button onPress={() => handleDelete(item)} size="small" icon={TrashIcon} />
+                <Button onPress={() => handleDelete(item)} size="small" icon={TrashIcon} testID={`delete-track-${item}`} />
                 {!entities[item]?.isComplete && (
                     <Button onPress={() => retryTrack(item)} size="small" icon={ArrowClockwise} style={{ marginLeft: 4 }} />
                 )}

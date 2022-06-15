@@ -230,6 +230,7 @@ export default function Search() {
                         style={[defaultStyles.input, { marginBottom: 12 }]}
                         placeholder={t('search') + '...'}
                         icon
+                        testID="search-input"
                     />
                     <SearchIndicator width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />
                     {isLoading && <Loading><ActivityIndicator /></Loading>}
@@ -293,7 +294,7 @@ export default function Search() {
                     }
 
                     return (
-                        <TouchableHandler<string> id={album.Id} onPress={selectAlbum}>
+                        <TouchableHandler<string> id={album.Id} onPress={selectAlbum} testID={`search-result-${album.Id}`}>
                             <SearchResult>
                                 <ShadowWrapper>
                                     <AlbumImage source={{ uri: getImage(album.Id) }} style={defaultStyles.imageBackground} />

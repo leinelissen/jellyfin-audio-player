@@ -3,7 +3,7 @@ default_platform(:ios)
 package = load_json(json_path: "package.json")
 
 platform :ios do
-    lane :beta do 
+    before_all do
         get_certificates(
             output_path: 'certificates/'
         )
@@ -23,6 +23,19 @@ platform :ios do
         increment_build_number(
             xcodeproj: "ios/Fintunes.xcodeproj",
         )
+    end
+
+    lane :release do
+        build_app(
+            scheme: "Fintunes",
+            output_directory: "build",
+            workspace: "ios/Fintunes.xcworkspace",
+            export_method: "app-store",
+        )
+        upload_to_app_store
+    end
+        
+    lane :beta do 
         build_app(
             scheme: "Fintunes",
             output_directory: "build",
@@ -30,6 +43,9 @@ platform :ios do
             export_method: "app-store",
         )
         upload_to_testflight
+    end
+    
+    after_all do
         build_number = get_build_number(
             xcodeproj: "ios/Fintunes.xcodeproj",
         )
