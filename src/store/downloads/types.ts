@@ -6,6 +6,6 @@ export interface DownloadEntity {
     isFailed: boolean;
     isComplete: boolean;
     size?: number;
-    location?: string;
+    location: string;
     jobId?: number;
 }

@@ -22,8 +22,7 @@ const baseTrackOptions: Record<string, string> = {
     // This must be set to support client seeking
     TranscodingProtocol: 'http',
     TranscodingContainer: 'aac',
-    Container: 'mp3,aac,m4a,m4b|aac,alac,m4a,m4b|alac,flac|ogg',
-    AudioCodec: 'aac',
+    Container: 'mp3,aac,m4a,m4b|aac,flac,alac,m4a,m4b|alac,flac|ogg',
     static: 'true',
 };
 
