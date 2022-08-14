@@ -13,16 +13,10 @@ function generateConfig(credentials: Credentials): RequestInit {
 }
 
 const baseTrackOptions: Record<string, string> = {
-    // Not sure where this number refers to, but setting it to 140000000 appears
-    // to do wonders for making stuff work
-    // NOTE: Apparently setting a bitrate is as of yet unsupported in the
-    // Jellyfin core, and hence this value is not used
-    MaxStreamingBitrate: '140000000',
-    MaxSampleRate: '48000',
     // This must be set to support client seeking
     TranscodingProtocol: 'http',
     TranscodingContainer: 'aac',
-    Container: 'mp3,aac,m4a,m4b|aac,flac,alac,m4a,m4b|alac,flac|ogg',
+    Container: 'mp3,aac,m4a,m4b|aac,flac,alac,m4a,m4b|alac',
     static: 'true',
 };
 
