@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { ActivityIndicator, Animated, Dimensions, Easing, Pressable, View } from 'react-native';
+import { ActivityIndicator, Animated, Dimensions, Easing, Platform, Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styled, { css } from 'styled-components/native';
 
@@ -144,11 +144,14 @@ function NowPlaying() {
 
     return (
         <Container>
-            <ShadowOverlay pointerEvents='none'>
-                <Shadow distance={30} style={{ alignSelf: 'stretch', flexBasis: '100%' }} startColor="#00000017">
-                    <View style={{ flex: 1, borderRadius: 8 }} />
-                </Shadow>
-            </ShadowOverlay>
+            {/** TODO: Fix shadow overflow on Android */}
+            {Platform.OS === 'ios' ? (
+                <ShadowOverlay pointerEvents='none'>
+                    <Shadow distance={30} style={{ alignSelf: 'stretch', flexBasis: '100%' }} startColor="#00000017">
+                        <View style={{ flex: 1, borderRadius: 8 }} />
+                    </Shadow>
+                </ShadowOverlay>
+            ) : null}
             <ColoredBlurView style={{ borderRadius: 8 }}>
                 <InnerContainer onPress={openNowPlayingModal} activeOpacity={0.5} testID="open-player-modal">
                     <ShadowWrapper size="small">

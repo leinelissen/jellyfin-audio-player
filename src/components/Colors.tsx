@@ -108,8 +108,14 @@ export function ColoredBlurView(props: PropsWithChildren<BlurViewProps>) {
                 : scheme === 'dark' ? 'extraDark' : 'xlight'
             } />
     ) : (
-        <View {...props} style={[ props.style, {
-            backgroundColor: scheme === 'light' ? '#f6f6f6f6' : '#333333f6',
-        } ]} />
+        <BlurView
+            {...props}
+            blurType={scheme === 'dark' ? 'dark' : 'light'}
+            blurAmount={10}
+            style={[ props.style, {
+                backgroundColor: scheme === 'light' ? '#f6f6f6bb' : '#333333bb',
+                borderRadius: 8
+            } ]} 
+        />
     );
 }
