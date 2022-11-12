@@ -20,7 +20,6 @@ const baseTrackOptions: Record<string, string> = {
     static: 'true',
 };
 
-
 /**
  * Generate a track object from a Jellyfin ItemId so that
  * react-native-track-player can easily consume it.
@@ -54,7 +53,7 @@ export function generateTrackUrl(trackId: string, credentials: Credentials) {
     };
 
     const trackParams = new URLSearchParams(trackOptions).toString();
-    const url = encodeURI(`${credentials?.uri}/Audio/${trackId}/universal?${trackParams}`);
+    const url = encodeURI(`${credentials?.uri}/Audio/${trackId}/universal?`) + trackParams;
 
     return url;
 }

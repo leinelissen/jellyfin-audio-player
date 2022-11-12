@@ -58,7 +58,6 @@ function DownloadIcon({ trackId, size = 16, fill }: DownloadIconProps) {
     // apply them to the circle using native props
     useEffect(() => {
         const subscription = offsetAnimation.addListener((offset) => {
-            // @ts-expect-error undocumented functionality
             const setNativeProps = circleRef.current?.setNativeProps as (props: CircleProps) => void | undefined;
             setNativeProps?.({ strokeDashoffset: offset.value });
         });
@@ -93,7 +92,6 @@ function DownloadIcon({ trackId, size = 16, fill }: DownloadIconProps) {
                         cy={radius}
                         r={radius - 1}
                         stroke={iconFill}
-                        // @ts-expect-error react-native-svg has outdated react-native typings
                         ref={circleRef}
                         strokeWidth={1.5}
                         strokeDasharray={[ circumference, circumference ]}

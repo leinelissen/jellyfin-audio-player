@@ -17,8 +17,10 @@ export default function useCurrentTrack(): CurrentTrackResponse {
     const retrieveCurrentTrack = useCallback(async () => {
         const queue = await TrackPlayer.getQueue();
         const currentTrackIndex = await TrackPlayer.getCurrentTrack();
-        setTrack(queue[currentTrackIndex]);
-        setIndex(currentTrackIndex);
+        if (currentTrackIndex !== null) {
+            setTrack(queue[currentTrackIndex]);
+            setIndex(currentTrackIndex);
+        }
     }, [setTrack, setIndex]);
 
     // Then execute the function on component mount and track changes

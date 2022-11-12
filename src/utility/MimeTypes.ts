@@ -9,6 +9,7 @@ const MimeTypes = {
     'audio/dsp': '.dsp',
     'audio/flac': '.flac',
     'audio/m4b': '.m4b',
+    'audio/mpeg': '.mp3',
     'audio/vorbis': '.vorbis',
     'audio/x-ape': '.ape',
     'audio/xsp': '.xsp',

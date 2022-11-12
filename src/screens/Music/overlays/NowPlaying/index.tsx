@@ -95,12 +95,10 @@ function SelectActionButton() {
                     <PlayIcon fill={defaultStyles.text.color} height={18} width={18} />
                 </Pressable>
             );
-        // @ts-expect-error For some reason buffering isn't stated right in the types
-        case 'buffering':
         case State.Buffering:
         case State.Connecting:
             return (
-                <Pressable onPress={TrackPlayer.stop}>
+                <Pressable onPress={TrackPlayer.pause}>
                     <ActivityIndicator />
                 </Pressable>
             );
@@ -111,7 +109,7 @@ function SelectActionButton() {
 
 function NowPlaying() {
     const { index, track } = useCurrentTrack();
-    const { buffered, duration, position } = useProgress();
+    const { buffered, position } = useProgress();
     const defaultStyles = useDefaultStyles();
     const previousIndex = usePrevious(index);
     const navigation = useNavigation<MusicNavigationProp>();
@@ -124,7 +122,8 @@ function NowPlaying() {
     }, [navigation]);
 
     useEffect(() => {
-        const hasChangedTrack = previousIndex !== index || duration === 0;
+        const hasChangedTrack = previousIndex !== index || track?.duration === 0;
+        const duration = (track?.duration || 0) / 10_000_000;
 
         Animated.timing(bufferAnimation.current, {
             toValue: calculateProgressTranslation(buffered, duration, NOW_PLAYING_POPOVER_WIDTH),
@@ -137,7 +136,7 @@ function NowPlaying() {
             duration: hasChangedTrack ? 0 : 500,
             useNativeDriver: true,
         }).start();
-    }, [buffered, duration, position, index, previousIndex]);
+    }, [buffered, track?.duration, position, index, previousIndex]);
 
     if (!track) {
         return null;
@@ -146,7 +145,7 @@ function NowPlaying() {
     return (
         <Container>
             <ShadowOverlay pointerEvents='none'>
-                <Shadow distance={30} viewStyle={{ alignSelf: 'stretch', flexBasis: '100%' }} startColor="#00000017">
+                <Shadow distance={30} style={{ alignSelf: 'stretch', flexBasis: '100%' }} startColor="#00000017">
                     <View style={{ flex: 1, borderRadius: 8 }} />
                 </Shadow>
             </ShadowOverlay>

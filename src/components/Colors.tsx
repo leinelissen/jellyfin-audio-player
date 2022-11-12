@@ -1,4 +1,4 @@
-import { BlurView, BlurViewProperties } from '@react-native-community/blur';
+import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { THEME_COLOR } from 'CONSTANTS';
 import React, { PropsWithChildren } from 'react';
 import { useContext } from 'react';
@@ -97,7 +97,7 @@ export function DefaultStylesProvider(props: DefaultStylesProviderProps) {
     return props.children(defaultStyles);
 }
 
-export function ColoredBlurView(props: PropsWithChildren<BlurViewProperties>) {
+export function ColoredBlurView(props: PropsWithChildren<BlurViewProps>) {
     const scheme = useColorScheme();
 
     return Platform.OS === 'ios' ? (
