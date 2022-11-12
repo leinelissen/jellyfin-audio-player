@@ -2,7 +2,7 @@ import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { THEME_COLOR } from 'CONSTANTS';
 import React, { PropsWithChildren } from 'react';
 import { useContext } from 'react';
-import { ColorSchemeName, Platform, StyleSheet, useColorScheme, View } from 'react-native';
+import { ColorSchemeName, Platform, StyleSheet, useColorScheme } from 'react-native';
 
 const majorPlatformVersion = typeof Platform.Version === 'string' ? parseInt(Platform.Version, 10) : Platform.Version;
 
