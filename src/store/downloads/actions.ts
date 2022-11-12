@@ -49,7 +49,6 @@ export const downloadTrack = createAsyncThunk(
                 dispatch(initializeDownload({ id, jobId, size: contentLength, location }));
             },
             progress: (result) => {
-                console.log('PROGRESS', result, url);
                 // Dispatch a progress update
                 dispatch(progressDownload({ id, progress: result.bytesWritten / result.contentLength }));
             },
