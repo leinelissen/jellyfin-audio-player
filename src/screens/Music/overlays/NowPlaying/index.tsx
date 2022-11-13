@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { ActivityIndicator, Animated, Dimensions, Easing, Platform, Pressable, View } from 'react-native';
+import { ActivityIndicator, Animated, Dimensions, Platform, Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styled, { css } from 'styled-components/native';
 
