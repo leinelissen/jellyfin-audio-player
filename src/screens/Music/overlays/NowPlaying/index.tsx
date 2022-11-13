@@ -111,7 +111,9 @@ function NowPlaying() {
     const { index, track } = useCurrentTrack();
     const { buffered, position } = useProgress();
     const defaultStyles = useDefaultStyles();
-    const previousIndex = usePrevious(index);
+    const previousBuffered = usePrevious(buffered);
+    const previousPosition = usePrevious(position);
+
     const navigation = useNavigation<MusicNavigationProp>();
 
     const bufferAnimation = useRef(new Animated.Value(0));
@@ -122,21 +124,40 @@ function NowPlaying() {
     }, [navigation]);
 
     useEffect(() => {
-        const hasChangedTrack = previousIndex !== index || track?.duration === 0;
         const duration = (track?.duration || 0) / 10_000_000;
 
-        Animated.timing(bufferAnimation.current, {
-            toValue: calculateProgressTranslation(buffered, duration, NOW_PLAYING_POPOVER_WIDTH),
-            duration: hasChangedTrack ? 0 : 500,
-            useNativeDriver: true,
-            easing: Easing.ease,
-        }).start();
-        Animated.timing(progressAnimation.current, {
-            toValue: calculateProgressTranslation(position, duration, NOW_PLAYING_POPOVER_WIDTH),
-            duration: hasChangedTrack ? 0 : 500,
-            useNativeDriver: true,
-        }).start();
-    }, [buffered, track?.duration, position, index, previousIndex]);
+        // GUARD: Don't update when the duration is 0, cause it will put the
+        // bars in a weird space.
+        if (duration === 0) {
+            return;
+        }
+
+        // First calculate the new value for the buffer animation. Then, check
+        // whether the buffered state is smaller than the previous one, in which
+        // case we'll just set the value without animation
+        const bufferValue = calculateProgressTranslation(buffered, duration, NOW_PLAYING_POPOVER_WIDTH);
+        if (buffered < (previousBuffered || 0)) {
+            bufferAnimation.current.setValue(bufferValue);
+        } else {
+            Animated.timing(bufferAnimation.current, {
+                toValue: bufferValue,
+                duration: 500,
+                useNativeDriver: true,
+            }).start();
+        }
+        
+        // Then, do the same for the progress animation
+        const progressValule = calculateProgressTranslation(position, duration, NOW_PLAYING_POPOVER_WIDTH);
+        if (position < (previousPosition || 0)) {
+            progressAnimation.current.setValue(progressValule);
+        } else {
+            Animated.timing(progressAnimation.current, {
+                toValue: progressValule,
+                duration: 500,
+                useNativeDriver: true,
+            }).start();
+        }
+    }, [buffered, track?.duration, position, index, previousBuffered, previousPosition]);
 
     if (!track) {
         return null;
