@@ -70,13 +70,6 @@ const SearchResult = styled.View`
     height: 54px;
 `;
 
-const SearchIndicator = styled(SearchIcon)`
-    position: absolute;
-    left: 16px;
-    top: 26px;
-`;
-
-
 const fuseOptions: Fuse.IFuseOptions<Album> = {
     keys: ['Name', 'AlbumArtist', 'AlbumArtists', 'Artists'],
     threshold: 0.1,
@@ -229,10 +222,9 @@ export default function Search() {
                         onChangeText={setSearchTerm}
                         style={[defaultStyles.input, { marginBottom: 12 }]}
                         placeholder={t('search') + '...'}
-                        icon
+                        icon={<SearchIcon width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />}
                         testID="search-input"
                     />
-                    <SearchIndicator width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />
                     {isLoading && <Loading><ActivityIndicator /></Loading>}
                 </View>
             </Container>
