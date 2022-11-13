@@ -295,12 +295,14 @@ export default function Search() {
                                     <Text numberOfLines={1}>
                                         {trackName || album.Name}
                                     </Text>
-                                    <HalfOpacity style={defaultStyles.text} numberOfLines={1}>
-                                        {type === 'AlbumArtist' 
-                                            ? `${t('album')} • ${album.AlbumArtist}`
-                                            : `${t('track')} • ${album.AlbumArtist} — ${album.Name}`
-                                        }
-                                    </HalfOpacity>
+                                    {(album.AlbumArtist || album.Name) && (
+                                        <HalfOpacity style={defaultStyles.text} numberOfLines={1}>
+                                            {type === 'AlbumArtist' 
+                                                ? `${t('album')} • ${album.AlbumArtist}`
+                                                : `${t('track')} • ${album.AlbumArtist} — ${album.Name}`
+                                            }
+                                        </HalfOpacity>
+                                    )}
                                 </View>
                                 <View style={{ marginLeft: 16 }}>
                                     <DownloadIcon trackId={id} />

@@ -159,9 +159,11 @@ function NowPlaying() {
                     </ShadowWrapper>
                     <TrackNameContainer>
                         <Text numberOfLines={1}>{track.title}</Text>
-                        <Text style={{ opacity: 0.5 }} numberOfLines={1}>
-                            {track.artist}{track.album ? ` — ${track.album}` : ''}
-                        </Text>
+                        {(track.artist || track.album) && (
+                            <Text style={{ opacity: 0.5 }} numberOfLines={1}>
+                                {track.artist}{track.album ? ` — ${track.album}` : ''}
+                            </Text>
+                        )}
                     </TrackNameContainer>
                     <ActionButton>
                         <SelectActionButton />

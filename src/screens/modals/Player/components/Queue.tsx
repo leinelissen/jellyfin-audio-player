@@ -142,12 +142,14 @@ export default function Queue({ header }: Props) {
                             >
                                 {track.title}
                             </Text>
-                            <TextHalfOpacity
-                                style={currentIndex === index ? { color: THEME_COLOR, fontWeight: '400' } : undefined}
-                                numberOfLines={1}
-                            >
-                                {track.artist}{track.album && ' — ' + track.album}
-                            </TextHalfOpacity>
+                            {(track.artist || track.album) && (
+                                <TextHalfOpacity
+                                    style={currentIndex === index ? { color: THEME_COLOR, fontWeight: '400' } : undefined}
+                                    numberOfLines={1}
+                                >
+                                    {track.artist}{track.album && ' — ' + track.album}
+                                </TextHalfOpacity>
+                            )}
                         </View>
                         <View style={{ marginLeft: 'auto', marginRight: 8 }}>
                             <TextHalfOpacity
