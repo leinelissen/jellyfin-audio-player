@@ -83,6 +83,11 @@ platform :ios do
             rewrite: true
         )
     end
+
+    lane :screenshots do
+        capture_screenshots
+        # upload_to_app_store
+    end
 end
 
 platform :android do

@@ -31,6 +31,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 
 
+### ios screenshots
+
+```sh
+[bundle exec] fastlane ios screenshots
+```
+
+
+
 ----
 
 
