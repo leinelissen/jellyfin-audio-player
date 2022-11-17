@@ -27,7 +27,7 @@ export default async function() {
     });
     
     TrackPlayer.addEventListener(Event.RemoteStop, () => {
-        TrackPlayer.destroy();
+        TrackPlayer.reset();
     });
 
     TrackPlayer.addEventListener(Event.RemoteSeek, (event) => {

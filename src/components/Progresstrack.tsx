@@ -19,7 +19,14 @@ export function calculateProgressTranslation(
 ) {
     'worklet';
     const completion = position / reference;
-    const output = (1 - (completion || 0)) * -1 * width;
+
+    // GUARD: Check whether the calculated number is valid and not infinite
+    if (Number.isNaN(completion) || !Number.isFinite(completion)) {
+        return 0;
+    }
+
+    const output = (1 - completion) * -1 * width;
+
     return output;
 }
 

@@ -13,7 +13,7 @@ const Well = styled.View`
     flex-direction: row;
     align-items: center;
     padding: 12px;
-    margin: 12px 0;
+    margin: 12px -12px;
 `;
 
 function ConnectionNotice() {

@@ -37,8 +37,8 @@ const NavigationHeader: React.FC = () => {
     
     return (
         <>
-            <ListButton onPress={handleAllAlbumsClick}>{t('all-albums')}</ListButton>
-            <ListButton onPress={handlePlaylistsClick}>{t('playlists')}</ListButton>
+            <ListButton onPress={handleAllAlbumsClick} testID="all-albums">{t('all-albums')}</ListButton>
+            <ListButton onPress={handlePlaylistsClick} testID="playlists">{t('playlists')}</ListButton>
             <ListContainer>
                 <HeaderContainer>
                     <Header>{t('recent-albums')}</Header>
@@ -80,7 +80,7 @@ const RecentAlbums: React.FC = () => {
                 columnWrapperStyle={styles.columnWrapper}
                 ListHeaderComponent={NavigationHeader}
                 renderItem={({ item }) => (
-                    <TouchableHandler id={item} onPress={selectAlbum}>
+                    <TouchableHandler id={item} onPress={selectAlbum} testID={`select-album-${item}`}>
                         <AlbumItem>
                             <ShadowWrapper size="medium">
                                 <AlbumImage source={{ uri: getImage(item) }} style={defaultStyles.imageBackground} />

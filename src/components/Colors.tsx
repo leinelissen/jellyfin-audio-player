@@ -1,8 +1,8 @@
-import { BlurView, BlurViewProperties } from '@react-native-community/blur';
+import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { THEME_COLOR } from 'CONSTANTS';
 import React, { PropsWithChildren } from 'react';
 import { useContext } from 'react';
-import { ColorSchemeName, Platform, StyleSheet, useColorScheme, View } from 'react-native';
+import { ColorSchemeName, Platform, StyleSheet, useColorScheme } from 'react-native';
 
 const majorPlatformVersion = typeof Platform.Version === 'string' ? parseInt(Platform.Version, 10) : Platform.Version;
 
@@ -97,7 +97,7 @@ export function DefaultStylesProvider(props: DefaultStylesProviderProps) {
     return props.children(defaultStyles);
 }
 
-export function ColoredBlurView(props: PropsWithChildren<BlurViewProperties>) {
+export function ColoredBlurView(props: PropsWithChildren<BlurViewProps>) {
     const scheme = useColorScheme();
 
     return Platform.OS === 'ios' ? (
@@ -108,8 +108,14 @@ export function ColoredBlurView(props: PropsWithChildren<BlurViewProperties>) {
                 : scheme === 'dark' ? 'extraDark' : 'xlight'
             } />
     ) : (
-        <View {...props} style={[ props.style, {
-            backgroundColor: scheme === 'light' ? '#f6f6f6f6' : '#333333f6',
-        } ]} />
+        <BlurView
+            {...props}
+            blurType={scheme === 'dark' ? 'dark' : 'light'}
+            blurAmount={10}
+            style={[ props.style, {
+                backgroundColor: scheme === 'light' ? '#f6f6f6bb' : '#333333bb',
+                borderRadius: 8
+            } ]} 
+        />
     );
 }

@@ -47,7 +47,6 @@ export default function App(): JSX.Element {
                     Capability.Stop,
                     Capability.SeekTo,
                 ],
-                stopWithApp: true
             });
         }
         setupTrackPlayer();

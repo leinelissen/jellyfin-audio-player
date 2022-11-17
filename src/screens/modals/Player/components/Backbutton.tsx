@@ -12,7 +12,6 @@ function BackButton() {
     const navigation = useNavigation();
 
     const handlePress = useCallback(() => {
-        console.log(navigation.canGoBack());
         navigation.goBack();
     }, [navigation]);
 

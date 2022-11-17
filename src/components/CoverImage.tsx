@@ -10,6 +10,7 @@ const Container = styled.View<{ size: number }>`
     width: ${(props) => props.size}px;
     height: ${(props) => props.size}px;
     position: relative;
+    z-index: 0;
 `;
 
 const BlurContainer = styled(Canvas)<{ size: number, offset: number }>`

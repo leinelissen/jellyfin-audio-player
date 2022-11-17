@@ -65,10 +65,10 @@ function Screens() {
                     headerShown: false,
                 })}
             >
-                <Tab.Screen name="Music" component={Music} options={{ tabBarLabel: t('music') }} />
-                <Tab.Screen name="Search" component={Search} options={{ tabBarLabel: t('search') }} />
-                <Tab.Screen name="Downloads" component={Downloads} options={{ tabBarLabel: t('downloads')}} />
-                <Tab.Screen name="Settings" component={Settings} options={{ tabBarLabel: t('settings') }} />
+                <Tab.Screen name="Music" component={Music} options={{ tabBarLabel: t('music'), tabBarTestID: 'music-tab' }} />
+                <Tab.Screen name="Search" component={Search} options={{ tabBarLabel: t('search'), tabBarTestID: 'search-tab' }} />
+                <Tab.Screen name="Downloads" component={Downloads} options={{ tabBarLabel: t('downloads'), tabBarTestID: 'downloads-tab'}} />
+                <Tab.Screen name="Settings" component={Settings} options={{ tabBarLabel: t('settings'), tabBarTestID: 'settings-tab' }} />
             </Tab.Navigator>
         </>
     );

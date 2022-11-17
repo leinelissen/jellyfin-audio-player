@@ -18,6 +18,7 @@ import Reanimated, {
     runOnJS,
 } from 'react-native-reanimated';
 import ReText from 'components/ReText';
+import useCurrentTrack from 'utility/useCurrentTrack';
 
 const DRAG_HANDLE_SIZE = 20;
 const PADDING_TOP = 12;
@@ -50,7 +51,8 @@ const DragHandle = styled(Reanimated.View)`
 `;
 
 function ProgressBar() {
-    const { position, buffered, duration } = useProgress();
+    const { position, buffered } = useProgress();
+    const { track } = useCurrentTrack();
 
     const width = useSharedValue(0);
     const pos = useSharedValue(0);
@@ -120,9 +122,9 @@ function ProgressBar() {
     useEffect(() => {
         pos.value = position;
         buf.value = buffered;
-        dur.value = duration;
+        dur.value = (track?.duration || 0) / 10_000_000;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [position, buffered, duration]);
+    }, [position, buffered, track?.duration]);
 
     const dragHandleStyles = useAnimatedStyle(() => {
         return {

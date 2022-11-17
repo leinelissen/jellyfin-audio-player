@@ -82,6 +82,10 @@ export default function usePlayTracks() {
             case 'add-after-currently-playing': {
                 // Try and locate the current track
                 const currentTrackIndex = await TrackPlayer.getCurrentTrack();
+
+                if (currentTrackIndex === null) {
+                    break;
+                }
                 
                 // Since the argument is the id to insert the track BEFORE, we need
                 // to get the current track + 1

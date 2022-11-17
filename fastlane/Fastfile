@@ -3,7 +3,7 @@ default_platform(:ios)
 package = load_json(json_path: "package.json")
 
 platform :ios do
-    lane :beta do 
+    before_all do
         get_certificates(
             output_path: 'certificates/'
         )
@@ -14,24 +14,40 @@ platform :ios do
         )
         update_code_signing_settings(
             use_automatic_signing: true,
-            path: "ios/JellyfinAudioPlayer.xcodeproj"
+            path: "ios/Fintunes.xcodeproj"
         )
         increment_version_number(
             version_number: package["version"],
-            xcodeproj: "ios/JellyfinAudioPlayer.xcodeproj",
+            xcodeproj: "ios/Fintunes.xcodeproj",
         );
         increment_build_number(
-            xcodeproj: "ios/JellyfinAudioPlayer.xcodeproj",
+            xcodeproj: "ios/Fintunes.xcodeproj",
         )
+    end
+
+    lane :release do
         build_app(
-            scheme: "Jellyfin Player",
+            scheme: "Fintunes",
             output_directory: "build",
-            workspace: "ios/JellyfinAudioPlayer.xcworkspace",
+            workspace: "ios/Fintunes.xcworkspace",
+            export_method: "app-store",
+        )
+        upload_to_app_store
+    end
+        
+    lane :beta do 
+        build_app(
+            scheme: "Fintunes",
+            output_directory: "build",
+            workspace: "ios/Fintunes.xcworkspace",
             export_method: "app-store",
         )
         upload_to_testflight
+    end
+    
+    after_all do
         build_number = get_build_number(
-            xcodeproj: "ios/JellyfinAudioPlayer.xcodeproj",
+            xcodeproj: "ios/Fintunes.xcodeproj",
         )
         Dir.chdir("..") do
             sh(
@@ -50,8 +66,8 @@ platform :ios do
             finalize: true
         )
         sentry_upload_dsym(
-            dsym_path: 'build/Jellyfin Player.app.dSYM.zip',
-            info_plist: 'ios/JellyfinAudioPlayer/Info.plist',
+            dsym_path: 'build/Fintunes.app.dSYM.zip',
+            info_plist: 'ios/Fintunes/Info.plist',
         )
         sentry_upload_file(
             version: "1.0+#{build_number}",
@@ -66,6 +82,11 @@ platform :ios do
             sourcemap: 'build/index.ios.bundle.map',
             rewrite: true
         )
+    end
+
+    lane :screenshots do
+        capture_screenshots
+        # upload_to_app_store
     end
 end
 

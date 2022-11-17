@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { ActivityIndicator, Animated, Dimensions, Easing, Pressable, View } from 'react-native';
+import { ActivityIndicator, Animated, Dimensions, Platform, Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styled, { css } from 'styled-components/native';
 
@@ -95,12 +95,10 @@ function SelectActionButton() {
                     <PlayIcon fill={defaultStyles.text.color} height={18} width={18} />
                 </Pressable>
             );
-        // @ts-expect-error For some reason buffering isn't stated right in the types
-        case 'buffering':
         case State.Buffering:
         case State.Connecting:
             return (
-                <Pressable onPress={TrackPlayer.stop}>
+                <Pressable onPress={TrackPlayer.pause}>
                     <ActivityIndicator />
                 </Pressable>
             );
@@ -111,9 +109,11 @@ function SelectActionButton() {
 
 function NowPlaying() {
     const { index, track } = useCurrentTrack();
-    const { buffered, duration, position } = useProgress();
+    const { buffered, position } = useProgress();
     const defaultStyles = useDefaultStyles();
-    const previousIndex = usePrevious(index);
+    const previousBuffered = usePrevious(buffered);
+    const previousPosition = usePrevious(position);
+
     const navigation = useNavigation<MusicNavigationProp>();
 
     const bufferAnimation = useRef(new Animated.Value(0));
@@ -124,20 +124,40 @@ function NowPlaying() {
     }, [navigation]);
 
     useEffect(() => {
-        const hasChangedTrack = previousIndex !== index || duration === 0;
+        const duration = (track?.duration || 0) / 10_000_000;
 
-        Animated.timing(bufferAnimation.current, {
-            toValue: calculateProgressTranslation(buffered, duration, NOW_PLAYING_POPOVER_WIDTH),
-            duration: hasChangedTrack ? 0 : 500,
-            useNativeDriver: true,
-            easing: Easing.ease,
-        }).start();
-        Animated.timing(progressAnimation.current, {
-            toValue: calculateProgressTranslation(position, duration, NOW_PLAYING_POPOVER_WIDTH),
-            duration: hasChangedTrack ? 0 : 500,
-            useNativeDriver: true,
-        }).start();
-    }, [buffered, duration, position, index, previousIndex]);
+        // GUARD: Don't update when the duration is 0, cause it will put the
+        // bars in a weird space.
+        if (duration === 0) {
+            return;
+        }
+
+        // First calculate the new value for the buffer animation. Then, check
+        // whether the buffered state is smaller than the previous one, in which
+        // case we'll just set the value without animation
+        const bufferValue = calculateProgressTranslation(buffered, duration, NOW_PLAYING_POPOVER_WIDTH);
+        if (buffered < (previousBuffered || 0)) {
+            bufferAnimation.current.setValue(bufferValue);
+        } else {
+            Animated.timing(bufferAnimation.current, {
+                toValue: bufferValue,
+                duration: 500,
+                useNativeDriver: true,
+            }).start();
+        }
+        
+        // Then, do the same for the progress animation
+        const progressValule = calculateProgressTranslation(position, duration, NOW_PLAYING_POPOVER_WIDTH);
+        if (position < (previousPosition || 0)) {
+            progressAnimation.current.setValue(progressValule);
+        } else {
+            Animated.timing(progressAnimation.current, {
+                toValue: progressValule,
+                duration: 500,
+                useNativeDriver: true,
+            }).start();
+        }
+    }, [buffered, track?.duration, position, index, previousBuffered, previousPosition]);
 
     if (!track) {
         return null;
@@ -145,21 +165,26 @@ function NowPlaying() {
 
     return (
         <Container>
-            <ShadowOverlay pointerEvents='none'>
-                <Shadow distance={30} viewStyle={{ alignSelf: 'stretch', flexBasis: '100%' }} startColor="#00000017">
-                    <View style={{ flex: 1, borderRadius: 8 }} />
-                </Shadow>
-            </ShadowOverlay>
+            {/** TODO: Fix shadow overflow on Android */}
+            {Platform.OS === 'ios' ? (
+                <ShadowOverlay pointerEvents='none'>
+                    <Shadow distance={30} style={{ alignSelf: 'stretch', flexBasis: '100%' }} startColor="#00000017">
+                        <View style={{ flex: 1, borderRadius: 8 }} />
+                    </Shadow>
+                </ShadowOverlay>
+            ) : null}
             <ColoredBlurView style={{ borderRadius: 8 }}>
-                <InnerContainer onPress={openNowPlayingModal} activeOpacity={0.5}>
+                <InnerContainer onPress={openNowPlayingModal} activeOpacity={0.5} testID="open-player-modal">
                     <ShadowWrapper size="small">
                         <Cover source={{ uri: (track.artwork || '') as string }} style={defaultStyles.imageBackground} />
                     </ShadowWrapper>
                     <TrackNameContainer>
                         <Text numberOfLines={1}>{track.title}</Text>
-                        <Text style={{ opacity: 0.5 }} numberOfLines={1}>
-                            {track.artist}{track.album ? ` — ${track.album}` : ''}
-                        </Text>
+                        {(track.artist || track.album) && (
+                            <Text style={{ opacity: 0.5 }} numberOfLines={1}>
+                                {track.artist}{track.album ? ` — ${track.album}` : ''}
+                            </Text>
+                        )}
                     </TrackNameContainer>
                     <ActionButton>
                         <SelectActionButton />

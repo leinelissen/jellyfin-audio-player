@@ -73,7 +73,7 @@ function Downloads() {
      */
 
     const ListHeaderComponent = useMemo(() => (
-        <View style={[{ paddingHorizontal: 20, paddingBottom: 12, borderBottomWidth: 0.5 }, defaultStyles.border]}>
+        <View style={[{ paddingHorizontal: 20, paddingBottom: 12, paddingTop: 12, borderBottomWidth: 0.5 }, defaultStyles.border]}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text 
                     style={[
@@ -90,6 +90,7 @@ function Downloads() {
                     onPress={handleDeleteAllTracks}
                     disabled={!ids.length}
                     size="small"
+                    testID="delete-all-tracks"
                 />
             </View>
             {failedIds.length > 0 && (
@@ -128,7 +129,7 @@ function Downloads() {
                 <View style={{ marginRight: 12 }}>
                     <DownloadIcon trackId={item} />
                 </View>
-                <Button onPress={() => handleDelete(item)} size="small" icon={TrashIcon} />
+                <Button onPress={() => handleDelete(item)} size="small" icon={TrashIcon} testID={`delete-track-${item}`} />
                 {!entities[item]?.isComplete && (
                     <Button onPress={() => retryTrack(item)} size="small" icon={ArrowClockwise} style={{ marginLeft: 4 }} />
                 )}
@@ -153,7 +154,7 @@ function Downloads() {
             <FlatList
                 data={ids}
                 style={{ flex: 1, paddingTop: 12 }}
-                contentContainerStyle={{ flexGrow: 1 }}
+                contentContainerStyle={{ flexGrow: 1, paddingBottom: 24 }}
                 renderItem={renderItem}
             />
         </SafeAreaView>

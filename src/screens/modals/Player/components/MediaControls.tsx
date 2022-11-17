@@ -10,10 +10,10 @@ import PauseIcon from 'assets/icons/pause.svg';
 
 const BUTTON_SIZE = 40;
 
-const pause = TrackPlayer.pause;
-const play = TrackPlayer.play;
-const next = TrackPlayer.skipToNext;
-const previous = TrackPlayer.skipToPrevious;
+const pause = () => TrackPlayer.pause();
+const play = () => TrackPlayer.play();
+const next = () => TrackPlayer.skipToNext();
+const previous = () => TrackPlayer.skipToPrevious();
 
 const Container = styled.View`
     align-items: center;

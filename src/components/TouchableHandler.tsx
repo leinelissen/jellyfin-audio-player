@@ -5,6 +5,7 @@ interface TouchableHandlerProps<T = number> {
     id: T;
     onPress: (id: T) => void;
     onLongPress?: (id: T) => void;
+    testID?: string;
 }
 
 function TouchableStyles({ pressed }: { pressed: boolean }): ViewStyle {
@@ -23,7 +24,8 @@ function TouchableHandler<T>({
     id,
     onPress,
     onLongPress,
-    children
+    children,
+    testID,
 }: PropsWithChildren<TouchableHandlerProps<T>>): JSX.Element {
     const handlePress = useCallback(() => {
         return onPress(id);
@@ -38,6 +40,7 @@ function TouchableHandler<T>({
             onPress={handlePress}
             onLongPress={handleLongPress}
             style={TouchableStyles}
+            testID={testID}
         >
             {children}
         </Pressable>

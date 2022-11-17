@@ -12,7 +12,7 @@
     "music": "Música",
     "now-playing": "Reproduciendo ahora",
     "onboarding-welcome": "Bienvenido!",
-    "onboarding-intro": "Jellyfin Audio Player te permitirá reproducir tu biblioteca musical desde cualquier sitio, con suporte completo para audio en segundo plano y casteo en otros dispositivos.",
+    "onboarding-intro": "Fintunes te permitirá reproducir tu biblioteca musical desde cualquier sitio, con suporte completo para audio en segundo plano y casteo en otros dispositivos.",
     "onboarding-cta": "Para empezar necesitas un servidor de Jellyfin. Pulsa el botón de abajo para introducir la dirección del servidor y autentifícate con tus credenciales.",
     "set-jellyfin-server": "Introduce servidor de Jellyfin",
     "set-jellyfin-server-instruction": "Por favor introduce la URL de tu servidor de Jellyfin. Acuérdate de incluir protocolo y puerto",

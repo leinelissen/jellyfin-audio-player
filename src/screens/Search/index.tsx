@@ -70,13 +70,6 @@ const SearchResult = styled.View`
     height: 54px;
 `;
 
-const SearchIndicator = styled(SearchIcon)`
-    position: absolute;
-    left: 16px;
-    top: 26px;
-`;
-
-
 const fuseOptions: Fuse.IFuseOptions<Album> = {
     keys: ['Name', 'AlbumArtist', 'AlbumArtists', 'Artists'],
     threshold: 0.1,
@@ -229,9 +222,9 @@ export default function Search() {
                         onChangeText={setSearchTerm}
                         style={[defaultStyles.input, { marginBottom: 12 }]}
                         placeholder={t('search') + '...'}
-                        icon
+                        icon={<SearchIcon width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />}
+                        testID="search-input"
                     />
-                    <SearchIndicator width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />
                     {isLoading && <Loading><ActivityIndicator /></Loading>}
                 </View>
             </Container>
@@ -293,7 +286,7 @@ export default function Search() {
                     }
 
                     return (
-                        <TouchableHandler<string> id={album.Id} onPress={selectAlbum}>
+                        <TouchableHandler<string> id={album.Id} onPress={selectAlbum} testID={`search-result-${album.Id}`}>
                             <SearchResult>
                                 <ShadowWrapper>
                                     <AlbumImage source={{ uri: getImage(album.Id) }} style={defaultStyles.imageBackground} />
@@ -302,12 +295,14 @@ export default function Search() {
                                     <Text numberOfLines={1}>
                                         {trackName || album.Name}
                                     </Text>
-                                    <HalfOpacity style={defaultStyles.text} numberOfLines={1}>
-                                        {type === 'AlbumArtist' 
-                                            ? `${t('album')} • ${album.AlbumArtist}`
-                                            : `${t('track')} • ${album.AlbumArtist} — ${album.Name}`
-                                        }
-                                    </HalfOpacity>
+                                    {(album.AlbumArtist || album.Name) && (
+                                        <HalfOpacity style={defaultStyles.text} numberOfLines={1}>
+                                            {type === 'AlbumArtist' 
+                                                ? `${t('album')} • ${album.AlbumArtist}`
+                                                : `${t('track')} • ${album.AlbumArtist} — ${album.Name}`
+                                            }
+                                        </HalfOpacity>
+                                    )}
                                 </View>
                                 <View style={{ marginLeft: 16 }}>
                                     <DownloadIcon trackId={id} />

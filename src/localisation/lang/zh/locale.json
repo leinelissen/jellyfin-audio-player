@@ -12,7 +12,7 @@
     "music": "歌曲",
     "now-playing": "正在播放",
     "onboarding-welcome": "欢迎",
-    "onboarding-intro": "Jellyfin Audio Player可以在任何地方播放Jellyfin库中的音乐。",
+    "onboarding-intro": "Fintunes可以在任何地方播放Jellyfin库中的音乐。",
     "onboarding-cta": "在开始前，你需要一个Jellyfin服务器。点击下方的按钮连接到服务器并登录。",
     "set-jellyfin-server": "设置Jellyfin服务器",
     "set-jellyfin-server-instruction": "设置Jellyfin服务器的完整网址，包括HTTP/HTTS和端口。",
