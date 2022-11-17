@@ -12,7 +12,7 @@
     "music": "Music",
     "now-playing": "Now Playing",
     "onboarding-welcome": "Welcome!",
-    "onboarding-intro": "Jellyfin Audio Player will allow you to stream your music library from anywhere, with full support for background audio and casting.",
+    "onboarding-intro": "Fintunes will allow you to stream your music library from anywhere, with full support for background audio and casting.",
     "onboarding-cta": "In order to get started, you need a Jellyfin server. Click the button below to enter your Jellyfin server address and login to it.",
     "set-jellyfin-server": "Set Jellyfin Server",
     "set-jellyfin-server-instruction": "Please enter your Jellyfin server URL. Make sure to include the protocol and port",
