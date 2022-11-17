@@ -19,23 +19,23 @@ const initialState: State = {
     hasReceivedErrorReportingAlert: false,
 };
 
-const settings = createReducer(initialState, {
-    [setJellyfinCredentials.type]: (state, action) => ({
+const settings = createReducer(initialState, builder => {
+    builder.addCase(setJellyfinCredentials, (state, action) => ({
         ...state,
         jellyfin: action.payload,
-    }),
-    [setBitrate.type]: (state, action) => ({
+    }));
+    builder.addCase(setBitrate, (state, action) => ({
         ...state,
         bitrate: action.payload,
-    }),
-    [setOnboardingStatus.type]: (state, action) => ({
+    }));
+    builder.addCase(setOnboardingStatus, (state, action) => ({
         ...state,
         isOnboardingComplete: action.payload,
-    }),
-    [setReceivedErrorReportingAlert.type]: (state) => ({
+    }));
+    builder.addCase(setReceivedErrorReportingAlert, (state) => ({
         ...state,
         hasReceivedErrorReportingAlert: true,
-    })
+    }));
 });
 
 export default settings;
