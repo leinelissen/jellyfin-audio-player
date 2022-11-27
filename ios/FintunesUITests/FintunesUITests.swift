@@ -36,9 +36,9 @@ class FintunesUITests: XCTestCase {
     app.textFields["search-input"].tap();
     app.textFields["search-input"].typeText("bicep");
     snapshot("03SearchScreen");
-    if app.otherElements["search-result-157a37e93a7aec945f8ea3107abb458a"].waitForExistence(timeout: 5) {
-      app.otherElements["search-result-157a37e93a7aec945f8ea3107abb458a"].tap();
-      app.otherElements["search-result-157a37e93a7aec945f8ea3107abb458a"].tap();
+    if app.otherElements["search-result-a644f8d23821601d2feb86ddae5e64f4"].waitForExistence(timeout: 5) {
+      app.otherElements["search-result-a644f8d23821601d2feb86ddae5e64f4"].tap();
+      app.otherElements["search-result-a644f8d23821601d2feb86ddae5e64f4"].tap();
       snapshot("02AlbumScreen");
     }
     if app.otherElements["play-album"].waitForExistence(timeout: 5) {
