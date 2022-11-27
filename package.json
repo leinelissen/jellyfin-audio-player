@@ -9,7 +9,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx && tsc --noEmit",
-    "build:ios": "react-native bundle --entry-file='index.ts' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
@@ -35,7 +35,7 @@
     "react-native-collapsible": "^1.6.0",
     "react-native-dotenv": "^3.4.2",
     "react-native-fast-image": "^8.6.3",
-    "react-native-flipper": "^0.174.0",
+    "react-native-flipper": "^0.164.0",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.8.0",
     "react-native-localize": "^2.2.4",
@@ -56,6 +56,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
+    "@babel/plugin-proposal-numeric-separator": "^7.18.6",
     "@babel/runtime": "^7.20.1",
     "@react-native-community/eslint-config": "^3.2.0",
     "@sentry/cli": "^2.8.1",
