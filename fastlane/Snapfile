@@ -4,7 +4,6 @@
 devices([
   "iPhone 14 Plus",
   "iPhone 14 Pro Max",
-  "iPhone 14 Pro",
   "iPhone 8 Plus",
 ])
 
