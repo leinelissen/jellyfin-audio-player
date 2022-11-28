@@ -33,8 +33,8 @@ class FintunesUITests: XCTestCase {
     app.otherElements["all-albums"].tap();
     snapshot("05AlbumsScreen");
     app.buttons["search-tab"].tap();
-    app.textFields["search-input"].tap();
-    app.textFields["search-input"].typeText("bicep");
+    app.otherElements["search-input-container"].tap();
+    app.textFields["search-input-textinput"].typeText("bicep")
     snapshot("03SearchScreen");
     if app.otherElements["search-result-a644f8d23821601d2feb86ddae5e64f4"].waitForExistence(timeout: 5) {
       app.otherElements["search-result-a644f8d23821601d2feb86ddae5e64f4"].tap();

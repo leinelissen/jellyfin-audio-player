@@ -5,7 +5,7 @@ import useDefaultStyles from './Colors';
 import { Gap } from './Utility';
 
 export interface InputProps extends TextInputProps {
-    icon?: React.ReactNode
+    icon?: React.ReactNode;
 }
 
 const Container = styled.Pressable`
@@ -21,26 +21,21 @@ const Container = styled.Pressable`
     })}
 `;
 
-const InputWrapper = styled.TextInput`
-    margin: 0;
-    padding: 0;
-`;
-
-function Input({ icon = null, style, ...rest }: InputProps) {
+function Input({ icon = null, style, testID, ...rest }: InputProps) {
     const defaultStyles = useDefaultStyles();
     const inputRef = useRef<TextInput | null>(null);
 
     const handlePress = useCallback(() => inputRef.current?.focus(), []);
 
     return (
-        <Container style={[defaultStyles.input, style]} onPress={handlePress}>
+        <Container style={[defaultStyles.input, style]} onPress={handlePress} testID={`${testID}-container`} accessible={false}>
             {icon && (
                 <>
                     {icon}
                     <Gap size={8} />
                 </>
             )}
-            <InputWrapper {...rest} ref={inputRef} />
+            <TextInput {...rest} style={{ margin: 0, padding: 0 }} ref={inputRef} testID={`${testID}-textinput`} />
         </Container>
     );
 }
