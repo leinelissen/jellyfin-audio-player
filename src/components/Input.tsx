@@ -35,7 +35,12 @@ function Input({ icon = null, style, testID, ...rest }: InputProps) {
                     <Gap size={8} />
                 </>
             )}
-            <TextInput {...rest} style={{ margin: 0, padding: 0 }} ref={inputRef} testID={`${testID}-textinput`} />
+            <TextInput
+                {...rest}
+                style={[defaultStyles.text, { margin: 0, padding: 0 }]}
+                ref={inputRef}
+                testID={`${testID}-textinput`}
+            />
         </Container>
     );
 }
