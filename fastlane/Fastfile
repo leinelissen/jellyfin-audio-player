@@ -10,7 +10,7 @@ platform :ios do
         get_provisioning_profile(
             output_path: 'certificates/',
             filename: "provisioning.mobileprovision",
-            fail_on_name_taken: true,
+            fail_on_name_taken: false,
         )
         update_code_signing_settings(
             use_automatic_signing: true,
@@ -42,7 +42,10 @@ platform :ios do
             workspace: "ios/Fintunes.xcworkspace",
             export_method: "app-store",
         )
-        upload_to_testflight
+        upload_to_testflight(
+            submit_for_review: true,
+            automatic_release: true,
+        )
     end
     
     after_all do
