@@ -28,8 +28,7 @@ import ticksToDuration from 'utility/ticksToDuration';
 
 const styles = StyleSheet.create({
     index: {
-        width: 16,
-        marginRight: 8
+        marginRight: 12
     },
     activeText: {
         color: THEME_COLOR,
