@@ -42,10 +42,7 @@ platform :ios do
             workspace: "ios/Fintunes.xcworkspace",
             export_method: "app-store",
         )
-        upload_to_testflight(
-            submit_for_review: true,
-            automatic_release: true,
-        )
+        upload_to_testflight()
     end
     
     after_all do

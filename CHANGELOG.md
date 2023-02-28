@@ -1,3 +1,13 @@
+## [2.0.3](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.0.2...v2.0.3) (2023-02-28)
+
+
+### Bug Fixes
+
+* improve album list scrolling performance ([099bbeb](https://github.com/leinelissen/jellyfin-audio-player/commit/099bbebe38942f2c72782e6c34ad3cea0876b291))
+* prevent track indexes from overflowing ([a34b6c5](https://github.com/leinelissen/jellyfin-audio-player/commit/a34b6c51141cb3cd6058733ccb3323d75f40bbd5))
+
+
+
 ## [2.0.2](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.0.1...v2.0.2) (2023-01-10)
 
 
