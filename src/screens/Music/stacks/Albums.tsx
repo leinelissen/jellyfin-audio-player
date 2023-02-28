@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, ReactText } from 'react';
+import React, { useCallback, useEffect, useRef, ReactText, useMemo } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
 import { MusicNavigationProp } from '../types';
 import { SafeAreaView, SectionList, View } from 'react-native';
@@ -19,22 +19,6 @@ import { Text } from 'components/Typography';
 import { ShadowWrapper } from 'components/Shadow';
 
 const HeadingHeight = 50;
-
-interface VirtualizedItemInfo {
-    section: SectionedId,
-    // Key of the section or combined key for section + item
-    key: string,
-    // Relative index within the section
-    index: number,
-    // True if this is the section header
-    header?: boolean,
-    leadingItem?: EntityId,
-    leadingSection?: SectionedId,
-    trailingItem?: EntityId,
-    trailingSection?: SectionedId,
-}
-
-type VirtualizedSectionList = { _subExtractor: (index: number) => VirtualizedItemInfo };
 
 function generateSection({ section }: { section: SectionedId }) {
     return (
@@ -105,42 +89,52 @@ const Albums: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigation = useNavigation<MusicNavigationProp>();
     const getImage = useGetImage();
-    const listRef = useRef<SectionList<EntityId>>(null);
+    const listRef = useRef<SectionList<EntityId[]>>(null);
 
-    const getItemLayout = useCallback((data: SectionedId[] | null, index: number): { offset: number, length: number, index: number } => {
-        // We must wait for the ref to become available before we can use the
-        // native item retriever in VirtualizedSectionList
-        if (!listRef.current) {
-            return { offset: 0, length: 0, index };
-        }
+    // Create an array that computes all the height data for the entire list in
+    // advance. We can then use this pre-computed data to respond to
+    // `getItemLayout` calls, without having to compute things in place (and
+    // fail horribly).
+    // This approach was inspired by https://gist.github.com/RaphBlanchet/472ed013e05398c083caae6216b598b5
+    const itemLayouts = useMemo(() => {
+        // Create an array in which we will store all possible outputs for
+        // `getItemLayout`. We will loop through each potential album and add
+        // items that will be in the list
+        const layouts: Array<{ length: number; offset: number; index: number }> = [];
+        
+        // Keep track of both the index of items and the offset (in pixels) from
+        // the top
+        let index = 0;
+        let offset = 0;
 
-        // Retrieve the right item info
-        // @ts-ignore
-        const wrapperListRef = (listRef.current?._wrapperListRef) as VirtualizedSectionList;
-        const info: VirtualizedItemInfo = wrapperListRef._subExtractor(index);
-        const { index: itemIndex, header, key } = info;
-        const sectionIndex = parseInt(key.split(':')[0]);
+        // Loop through each individual section (i.e. alphabet letter) and add
+        // all items in that particular section.
+        sections.forEach((section) => {
+            // Each section starts with a header, so we'll need to add the item,
+            // as well as the offset.
+            layouts[index] = ({ length: HeadingHeight, offset, index });
+            index++;
+            offset += HeadingHeight;
 
-        // We can then determine the "length" (=height) of this item. Header items
-        // end up with an itemIndex of -1, thus are easy to identify.
-        const length = header ? 50 : (itemIndex % 2 === 0 ? AlbumHeight : 0);
-    
-        // We'll also need to account for any unevenly-ended lists up until the
-        // current item.
-        const previousRows = data?.filter((row, i) => i < sectionIndex)
-            .reduce((sum, row) => sum + Math.ceil(row.data.length / 2), 0) || 0;
+            // Then, loop through all the rows (sets of two albums) and add
+            // items for those as well.
+            section.data.forEach(() => {
+                layouts[index] = ({ length: AlbumHeight, offset, index });
+                index++;
+                offset += AlbumHeight;
+            });
 
-        // We must also calcuate the offset, total distance from the top of the
-        // screen. First off, we'll account for each sectionIndex that is shown up
-        // until now. This only includes the heading for the current section if the
-        // item is not the section header
-        const headingOffset = HeadingHeight * (header ? sectionIndex : sectionIndex + 1);
-        const currentRows = itemIndex > 1 ? Math.ceil((itemIndex + 1) / 2) : 0;
-        const itemOffset = AlbumHeight * (previousRows + currentRows);
-        const offset = headingOffset + itemOffset;
-    
-        return { index, length, offset };
-    }, [listRef]);
+            // The way SectionList works is that you get an item for a
+            // SectionHeader and a SectionFooter, no matter if you've specified
+            // whether you want them or not. Thus, we will need to add an empty
+            // footer as an item, so that we don't mismatch our indexes
+            layouts[index] = { length: 0, offset, index };
+            index++;
+        });
+
+        // Then, store and memoize the output
+        return layouts;
+    }, [sections]);
 
     // Set callbacks
     const retrieveData = useCallback(() => dispatch(fetchAllAlbums()), [dispatch]);
@@ -148,30 +142,19 @@ const Albums: React.FC = () => {
     const selectLetter = useCallback((sectionIndex: number) => { 
         listRef.current?.scrollToLocation({ sectionIndex, itemIndex: 0, animated: false, }); 
     }, [listRef]);
-    const generateItem = useCallback(({ item, index, section }: { item: EntityId, index: number, section: SectionedId }) => {
-        if (index % 2 === 1) {
-            return <View key={item} />;
-        }
-        const nextItem = section.data[index + 1];
-
+    const generateItem = useCallback(({ item }: { item: EntityId[] }) => {
         return (
-            <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }} key={item}>
-                <GeneratedAlbumItem
-                    id={item}
-                    imageUrl={getImage(item as string)}
-                    name={albums[item]?.Name || ''}
-                    artist={albums[item]?.AlbumArtist || ''}
-                    onPress={selectAlbum}
-                />
-                {albums[nextItem] && 
+            <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }} key={item.join('-')}>
+                {item.map((id) => (
                     <GeneratedAlbumItem
-                        id={nextItem}
-                        imageUrl={getImage(nextItem as string)}
-                        name={albums[nextItem]?.Name || ''}
-                        artist={albums[nextItem]?.AlbumArtist || ''}
+                        key={id}
+                        id={id}
+                        imageUrl={getImage(id as string)}
+                        name={albums[id]?.Name || ''}
+                        artist={albums[id]?.AlbumArtist || ''}
                         onPress={selectAlbum}
                     />
-                }
+                ))}
             </View>
         );
     }, [albums, getImage, selectAlbum]);
@@ -191,9 +174,9 @@ const Albums: React.FC = () => {
                 sections={sections} 
                 refreshing={isLoading}
                 onRefresh={retrieveData}
-                getItemLayout={getItemLayout}
+                getItemLayout={(_, i) =>  itemLayouts[i] ?? { length: 0, offset: 0, index: i }}
                 ref={listRef}
-                keyExtractor={(item) => item as string}
+                keyExtractor={(item) => item.join('-')}
                 renderSectionHeader={generateSection}
                 renderItem={generateItem}
             />

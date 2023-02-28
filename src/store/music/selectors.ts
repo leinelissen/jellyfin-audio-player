@@ -50,7 +50,7 @@ export const selectAlbumsByArtist = createSelector(
     albumsByArtist,
 );
 
-export type SectionedId = SectionListData<EntityId>;
+export type SectionedId = SectionListData<EntityId[]>;
 
 /**
  * Splits a set of albums into a list that is split by alphabet letters
@@ -58,13 +58,26 @@ export type SectionedId = SectionListData<EntityId>;
 function splitAlbumsByAlphabet(state: AppState['music']['albums']): SectionedId[] {
     const { entities: albums } = state;
     const albumIds = albumsByArtist(state);
-    const sections: SectionedId[] = ALPHABET_LETTERS.split('').map((l) => ({ label: l, data: [] }));
+    const sections: SectionedId[] = ALPHABET_LETTERS.split('').map((l) => ({ label: l, data: [[]] }));
 
     albumIds.forEach((id) => {
+        // Retrieve the album letter and corresponding letter index
         const album = albums[id];
         const letter = album?.AlbumArtist?.toUpperCase().charAt(0);
         const index = letter ? ALPHABET_LETTERS.indexOf(letter) : 26;
-        (sections[index >= 0 ? index : 26].data as Array<EntityId>).push(id);
+
+        // Then find the current row in this section (note that albums are
+        // grouped in pairs so we can render them more easily).
+        const section = sections[index >= 0 ? index : 26];
+        const row = section.data.length - 1;
+
+        // Add the album to the row
+        section.data[row].push(id);
+
+        // GUARD: Check if the row is overflowing. If so, add a new row.
+        if (section.data[row].length >= 2) {
+            (section.data as EntityId[][]).push([]);
+        }
     });
 
     return sections;
