@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Dimensions, ViewProps } from 'react-native';
+import { Dimensions, useColorScheme, ViewProps } from 'react-native';
 import { Canvas, Blur, Image as SkiaImage, useImage, Offset, Mask, RoundedRect, Shadow } from '@shopify/react-native-skia';
 import useDefaultStyles from './Colors';
 import styled from 'styled-components/native';
@@ -45,8 +45,10 @@ function CoverImage({
     src, 
 }: Props) {
     const defaultStyles = useDefaultStyles();
+    const colorScheme = useColorScheme();
 
-    const image = useImage(src || '');
+    const image = useImage(src || null);
+    const fallback = useImage(colorScheme === 'light' ? require('assets/images/empty-album-light.png') : require('assets/images/empty-album-dark.png'));
     const { canvasSize, imageSize } = useMemo(() => {
         const imageSize = Screen.width - margin;
         const canvasSize = imageSize + blurRadius * 2;
@@ -63,15 +65,15 @@ function CoverImage({
                     <Shadow dx={0} dy={8} blur={16} color="#0000000d" />
                     <Shadow dx={0} dy={16} blur={32} color="#0000000d" />
                 </RoundedRect>
-                {image ? (
+                {(image || fallback) ? (
                     <>
-                        <SkiaImage image={image} width={imageSize} height={imageSize} opacity={opacity}>
+                        <SkiaImage image={image || fallback} width={imageSize} height={imageSize} opacity={opacity}>
                             <Offset x={blurRadius} y={blurRadius} />
                             <Blur blur={blurRadius / 2} />
                         </SkiaImage>
                         <Mask mask={<RoundedRect width={imageSize} height={imageSize} x={blurRadius} y={blurRadius} r={radius}  />}>
-                            {image ? (
-                                <SkiaImage image={image} width={imageSize} height={imageSize}>
+                            {(image || fallback) ? (
+                                <SkiaImage image={image || fallback} width={imageSize} height={imageSize}>
                                     <Offset x={blurRadius} y={blurRadius} />
                                 </SkiaImage>
                             ) : null}
