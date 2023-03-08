@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import FastImage, { FastImageProps } from 'react-native-fast-image';
-import { Dimensions, Image, useColorScheme } from 'react-native';
+import { Dimensions, useColorScheme } from 'react-native';
 
 const Screen = Dimensions.get('screen');
 export const AlbumWidth = Screen.width / 2 - 24;
