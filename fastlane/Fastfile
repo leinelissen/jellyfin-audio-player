@@ -44,6 +44,15 @@ platform :ios do
         )
         upload_to_testflight()
     end
+
+    lane :build do
+        build_app(
+            scheme: "Fintunes",
+            output_directory: "build",
+            workspace: "ios/Fintunes.xcworkspace",
+            export_method: "app-store",
+        )
+    end
     
     after_all do
         build_number = get_build_number(
@@ -101,8 +110,18 @@ platform :android do
             gradle_file: "android/app/build.gradle"
         )
         gradle(
-            task: "assembleRelease",
+            task: "assemble",
+            build_type: "Release",
             project_dir: "android"
         )
+    end
+
+    lane :release do
+        gradle(
+            task: "bundle",
+            build_type: 'Release',
+            project_dir: "android"
+        )
+        upload_to_play_store
     end
 end

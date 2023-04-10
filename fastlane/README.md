@@ -31,6 +31,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 
 
+### ios build
+
+```sh
+[bundle exec] fastlane ios build
+```
+
+
+
 ### ios screenshots
 
 ```sh
@@ -51,6 +59,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 ```
 
 Generate beta build
+
+### android release
+
+```sh
+[bundle exec] fastlane android release
+```
+
+
 
 ----
 
