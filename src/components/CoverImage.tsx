@@ -55,6 +55,8 @@ function CoverImage({
         return { imageSize, canvasSize };
     }, [blurRadius, margin]);
 
+    const skiaImage = useMemo(() => (image || fallback), [image, fallback]);
+
     return (
         <Container size={imageSize} style={style}>
             <BlurContainer size={canvasSize} offset={blurRadius}>
@@ -65,18 +67,16 @@ function CoverImage({
                     <Shadow dx={0} dy={8} blur={16} color="#0000000d" />
                     <Shadow dx={0} dy={16} blur={32} color="#0000000d" />
                 </RoundedRect>
-                {(image || fallback) ? (
+                {skiaImage ? (
                     <>
-                        <SkiaImage image={image || fallback} width={imageSize} height={imageSize} opacity={opacity}>
+                        <SkiaImage image={skiaImage} width={imageSize} height={imageSize} opacity={opacity}>
                             <Offset x={blurRadius} y={blurRadius} />
                             <Blur blur={blurRadius / 2} />
                         </SkiaImage>
                         <Mask mask={<RoundedRect width={imageSize} height={imageSize} x={blurRadius} y={blurRadius} r={radius}  />}>
-                            {(image || fallback) ? (
-                                <SkiaImage image={image || fallback} width={imageSize} height={imageSize}>
-                                    <Offset x={blurRadius} y={blurRadius} />
-                                </SkiaImage>
-                            ) : null}
+                            <SkiaImage image={skiaImage} width={imageSize} height={imageSize}>
+                                <Offset x={blurRadius} y={blurRadius} />
+                            </SkiaImage>
                         </Mask>
                     </>
                 ) : null}
