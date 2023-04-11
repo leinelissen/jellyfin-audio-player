@@ -11,9 +11,8 @@
 ![Discord](https://img.shields.io/discord/1080781083882307594)
   
 <br />
-<br />
 
-### With Fintunes, you can stream your Jellyfin audio library in full quality. List or search through your favourite tracks, albums and playlists. Stream to speakers and TVs wirelessly via either **AirPlay** or **Chromecast**. **Download** your favourite tracks and play them back, even when you are offline. Available in both a **dark and a light mode**, based on your operating system settings.
+With Fintunes, you can stream your Jellyfin audio library in full quality. List or search through your favourite tracks, albums and playlists. Stream to speakers and TVs wirelessly via either **AirPlay** or **Chromecast**. **Download** your favourite tracks and play them back, even when you are offline. Available in both a **dark and a light mode**, based on your operating system settings.
 
 <br />
 <br />
