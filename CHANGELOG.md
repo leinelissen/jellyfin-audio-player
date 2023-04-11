@@ -18,6 +18,26 @@
 
 
 
+## [2.0.4](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.0.3...v2.0.4) (2023-04-11)
+
+
+### Bug Fixes
+
+* disable BlurView on Android as it crashes the app ([1648389](https://github.com/leinelissen/jellyfin-audio-player/commit/1648389ccce088e6836bcad31bd5c3b7cb996a78))
+* linter issue ([a8c0003](https://github.com/leinelissen/jellyfin-audio-player/commit/a8c0003fc13cb7d4778f65e8702b1c3c5fd1cc59))
+* linting issue ([2f45f86](https://github.com/leinelissen/jellyfin-audio-player/commit/2f45f868c8cc8a7f4308282b672d1d487f480c0a))
+* only set signingConfig to release when a keystore is available ([74d82eb](https://github.com/leinelissen/jellyfin-audio-player/commit/74d82eb77a412ba84d0820abbad84ac304c62611))
+* use debug signing config when not having a keystore ([a532154](https://github.com/leinelissen/jellyfin-audio-player/commit/a532154ce023ba2eecbbc3c8d7bbe08bcca0cd57))
+
+
+### Features
+
+* Add base Android content for F-Droid and Play Store ([ba805e0](https://github.com/leinelissen/jellyfin-audio-player/commit/ba805e061e56d719b18cfd8a6bafccf9174110b8))
+* add fallback images when album cover isn't available ([0a0c78f](https://github.com/leinelissen/jellyfin-audio-player/commit/0a0c78f3d592e0d92a6bb3fd605810e0af1441bb))
+* setup Fastlane for Google Play Store ([cc14373](https://github.com/leinelissen/jellyfin-audio-player/commit/cc14373575a844458737ac6f0a6e8d8ea783ce75))
+
+
+
 ## [2.0.3](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.0.2...v2.0.3) (2023-02-28)
 
 
