@@ -9,7 +9,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx && tsc --noEmit",
-    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
@@ -29,6 +30,7 @@
     "hermes-engine": "^0.11.0",
     "i18n-js": "^3.9.2",
     "lodash": "^4.17.21",
+    "patch-package": "^6.5.1",
     "react": "18.2.0",
     "react-airplay": "^1.2.0",
     "react-native": "^0.70.8",
