@@ -1,3 +1,12 @@
+## [2.0.5](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.0.4...v2.0.5) (2023-04-12)
+
+
+### Bug Fixes
+
+* crash when fast-image fails to load an image ([67499b1](https://github.com/leinelissen/jellyfin-audio-player/commit/67499b11037779bf33bb557fff69114cd519c78e))
+
+
+
 ## [2.0.4](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.0.3...v2.0.4) (2023-04-11)
 
 
