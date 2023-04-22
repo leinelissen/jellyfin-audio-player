@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from 'store';
 import TrackListView from './components/TrackListView';
@@ -11,9 +11,7 @@ import { SubHeader, Text } from 'components/Typography';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useGetImage } from 'utility/JellyfinApi';
 import styled from 'styled-components';
-import FastImage from 'react-native-fast-image';
-import { Dimensions, Pressable, useColorScheme } from 'react-native';
-import { Container } from '@shopify/react-native-skia/lib/typescript/src/renderer/Container';
+import { Dimensions, Pressable } from 'react-native';
 import AlbumImage from './components/AlbumImage';
 
 type Route = RouteProp<StackParams, 'Album'>;
@@ -84,10 +82,10 @@ const Album: React.FC = () => {
             downloadButtonText={t('download-album')}
             deleteButtonText={t('delete-album')}
         >
-            {album?.Overview && (
+            {album?.Overview ? (
                 <Text style={{ opacity: 0.5, lineHeight: 20, fontSize: 12, paddingBottom: 24 }}>{album?.Overview}</Text>
-            )}
-            {album?.Similar && (
+            ) : null}
+            {album?.Similar?.length ? (
                 <>
                     <SubHeader>Similar albums</SubHeader>
                     <ScrollView horizontal style={{ marginLeft: -24, marginTop: 8, marginBottom: 36 }} contentContainerStyle={{ paddingLeft: 24 }} showsHorizontalScrollIndicator={false}>
@@ -96,7 +94,7 @@ const Album: React.FC = () => {
                         ))}
                     </ScrollView>
                 </>
-            )}
+            ) : null}
         </TrackListView>
     );
 };
