@@ -47,6 +47,7 @@ const TrackContainer = styled.View<{ isPlaying: boolean }>`
     padding: 12px 4px;
     flex-direction: row;
     border-radius: 6px;
+    align-items: flex-start;
 
     ${props => props.isPlaying && css`
         margin: 0 -12px;
@@ -65,6 +66,7 @@ interface TrackListViewProps {
     downloadButtonText: string;
     deleteButtonText: string;
     listNumberingStyle?: 'album' | 'index';
+    itemDisplayStyle?: 'album' | 'playlist';
 }
 
 const TrackListView: React.FC<TrackListViewProps> = ({
@@ -78,6 +80,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     downloadButtonText,
     deleteButtonText,
     listNumberingStyle = 'album',
+    itemDisplayStyle = 'album',
 }) => {
     const defaultStyles = useDefaultStyles();
     const navigatorPadding = useNavigatorPadding();
@@ -154,16 +157,31 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                                     ? i + 1
                                     : tracks[trackId]?.IndexNumber}
                             </Text>
-                            <Text
-                                style={{ 
-                                    ...currentTrack?.backendId === trackId && styles.activeText,
-                                    flexShrink: 1,
-                                    marginRight: 4,
-                                }}
-                                numberOfLines={1}
-                            >
-                                {tracks[trackId]?.Name}
-                            </Text>
+                            <View>
+                                <Text
+                                    style={{ 
+                                        ...currentTrack?.backendId === trackId && styles.activeText,
+                                        flexShrink: 1,
+                                        marginRight: 4,
+                                    }}
+                                    numberOfLines={1}
+                                >
+                                    {tracks[trackId]?.Name}
+                                </Text>
+                                {itemDisplayStyle === 'playlist' && (
+                                    <Text
+                                        style={{ 
+                                            ...currentTrack?.backendId === trackId && styles.activeText,
+                                            flexShrink: 1,
+                                            marginRight: 4,
+                                            opacity:currentTrack?.backendId === trackId ? 0.5 : 0.25,
+                                        }}
+                                        numberOfLines={1}
+                                    >
+                                        {tracks[trackId]?.Artists.join(', ')}
+                                    </Text>
+                                )}
+                            </View>
                             <View style={{ marginLeft: 'auto', flexDirection: 'row' }}>
                                 <Text
                                     style={[
