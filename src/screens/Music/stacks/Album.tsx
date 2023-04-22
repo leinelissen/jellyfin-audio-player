@@ -22,6 +22,7 @@ const Cover = styled(AlbumImage)`
     height: ${Screen.width / 2.8};
     width: ${Screen.width / 2.8};
     border-radius: 12px;
+    margin-bottom: 8px;
 `;
 
 function SimilarAlbum({ id }: { id: string }) {
@@ -43,7 +44,7 @@ function SimilarAlbum({ id }: { id: string }) {
             onPress={handlePress}
         >
             <Cover key={id} source={{ uri: getImage(id) }} />
-            <Text numberOfLines={1} style={{ fontSize: 13 }}>{album?.Name}</Text>
+            <Text numberOfLines={1} style={{ fontSize: 13, marginBottom: 2 }}>{album?.Name}</Text>
             <Text numberOfLines={1} style={{ opacity: 0.5, fontSize: 13 }}>{album?.Artists.join(', ')}</Text>
         </Pressable>
     );
@@ -88,7 +89,7 @@ const Album: React.FC = () => {
             {album?.Similar?.length ? (
                 <>
                     <SubHeader>Similar albums</SubHeader>
-                    <ScrollView horizontal style={{ marginLeft: -24, marginTop: 8, marginBottom: 36 }} contentContainerStyle={{ paddingLeft: 24 }} showsHorizontalScrollIndicator={false}>
+                    <ScrollView horizontal style={{ marginLeft: -24, marginRight: -24, marginTop: 8, marginBottom: 36 }} contentContainerStyle={{ paddingHorizontal: 24 }} showsHorizontalScrollIndicator={false}>
                         {album.Similar.map((id) => (
                             <SimilarAlbum id={id} key={id} />
                         ))}
