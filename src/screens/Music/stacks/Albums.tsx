@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, ReactText, useMemo } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
-import { MusicNavigationProp } from '../types';
 import { SafeAreaView, SectionList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
@@ -17,6 +16,7 @@ import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
 import { Album } from 'store/music/types';
 import { Text } from 'components/Typography';
 import { ShadowWrapper } from 'components/Shadow';
+import { NavigationProp } from 'screens/types';
 
 const HeadingHeight = 50;
 
@@ -87,7 +87,7 @@ const Albums: React.FC = () => {
     
     // Initialise helpers
     const dispatch = useAppDispatch();
-    const navigation = useNavigation<MusicNavigationProp>();
+    const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
     const listRef = useRef<SectionList<EntityId[]>>(null);
 

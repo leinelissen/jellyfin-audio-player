@@ -15,7 +15,7 @@ import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { calculateProgressTranslation } from 'components/Progresstrack';
 import { THEME_COLOR } from 'CONSTANTS';
-import { MusicNavigationProp } from 'screens/Music/types';
+import { NavigationProp } from 'screens/types';
 import { ShadowWrapper } from 'components/Shadow';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
@@ -115,7 +115,7 @@ function NowPlaying() {
     const previousBuffered = usePrevious(buffered);
     const previousPosition = usePrevious(position);
 
-    const navigation = useNavigation<MusicNavigationProp>();
+    const navigation = useNavigation<NavigationProp>();
 
     const bufferAnimation = useRef(new Animated.Value(0));
     const progressAnimation = useRef(new Animated.Value(0));

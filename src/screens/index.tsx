@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { THEME_COLOR } from 'CONSTANTS';
 
-import Search from './Search';
+import SearchStack from './Search';
 import Music from './Music';
 import Settings from './Settings';
 import Downloads from './Downloads';
@@ -18,15 +18,15 @@ import NotesIcon from 'assets/icons/notes.svg';
 import GearIcon from 'assets/icons/gear.svg';
 import DownloadsIcon from 'assets/icons/arrow-down-to-line.svg';
 import { useTypedSelector } from 'store';
-import { ModalStackParams } from './types';
 import { t } from '@localisation';
 import ErrorReportingAlert from 'utility/ErrorReportingAlert';
 import ErrorReportingPopup from './modals/ErrorReportingPopup';
 import Player from './modals/Player';
 import { StyleSheet } from 'react-native';
 import { ColoredBlurView } from 'components/Colors';
+import { StackParams } from './types';
 
-const Stack = createNativeStackNavigator<ModalStackParams>();
+const Stack = createNativeStackNavigator<StackParams>();
 const Tab = createBottomTabNavigator();
 
 type Screens = {
@@ -50,9 +50,9 @@ function Screens() {
                 screenOptions={({ route }) => ({
                     tabBarIcon: function TabBarIcon({ color, size }) {
                         switch (route.name) {
-                            case 'Search':
+                            case 'SearchTab':
                                 return <SearchIcon fill={color} height={size - 4} width={size - 4} />;
-                            case 'Music':
+                            case 'MusicTab':
                                 return <NotesIcon fill={color} height={size} width={size} />;
                             case 'Settings':
                                 return <GearIcon fill={color} height={size - 1} width={size - 1} />;
@@ -72,8 +72,8 @@ function Screens() {
                     )
                 })}
             >
-                <Tab.Screen name="Music" component={Music} options={{ tabBarLabel: t('music'), tabBarTestID: 'music-tab' }} />
-                <Tab.Screen name="Search" component={Search} options={{ tabBarLabel: t('search'), tabBarTestID: 'search-tab' }} />
+                <Tab.Screen name="MusicTab" component={Music} options={{ tabBarLabel: t('music'), tabBarTestID: 'music-tab' }} />
+                <Tab.Screen name="SearchTab" component={SearchStack} options={{ tabBarLabel: t('search'), tabBarTestID: 'search-tab' }} />
                 <Tab.Screen name="Downloads" component={Downloads} options={{ tabBarLabel: t('downloads'), tabBarTestID: 'downloads-tab'}} />
                 <Tab.Screen name="Settings" component={Settings} options={{ tabBarLabel: t('settings'), tabBarTestID: 'settings-tab' }} />
             </Tab.Navigator>

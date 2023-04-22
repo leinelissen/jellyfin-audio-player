@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
-import { MusicNavigationProp } from '../types';
 import { Text, SafeAreaView, FlatList, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from 'store';
@@ -17,6 +16,7 @@ import { Album } from 'store/music/types';
 import Divider from 'components/Divider';
 import styled from 'styled-components/native';
 import { ShadowWrapper } from 'components/Shadow';
+import { NavigationProp } from 'screens/types';
 
 const styles = StyleSheet.create({
     columnWrapper: {
@@ -31,7 +31,7 @@ const HeaderContainer = styled.View`
 `;
 
 const NavigationHeader: React.FC = () => {
-    const navigation = useNavigation<MusicNavigationProp>();
+    const navigation = useNavigation<NavigationProp>();
     const handleAllAlbumsClick = useCallback(() => { navigation.navigate('Albums'); }, [navigation]);
     const handlePlaylistsClick = useCallback(() => { navigation.navigate('Playlists'); }, [navigation]);
     
@@ -59,7 +59,7 @@ const RecentAlbums: React.FC = () => {
     
     // Initialise helpers
     const dispatch = useAppDispatch();
-    const navigation = useNavigation<MusicNavigationProp>();
+    const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
 
     // Set callbacks

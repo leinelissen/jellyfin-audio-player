@@ -14,7 +14,7 @@ import useDefaultStyles from 'components/Colors';
 import usePlayTracks from 'utility/usePlayTracks';
 import { EntityId } from '@reduxjs/toolkit';
 import { WrappableButtonRow, WrappableButton } from 'components/WrappableButtonRow';
-import { MusicNavigationProp } from 'screens/Music/types';
+import { NavigationProp } from 'screens/types';
 import DownloadIcon from 'components/DownloadIcon';
 import CloudDownArrow from 'assets/icons/cloud-down-arrow.svg';
 import Trash from 'assets/icons/trash.svg';
@@ -89,7 +89,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const getImage = useGetImage();
     const playTracks = usePlayTracks();
     const { track: currentTrack } = useCurrentTrack();
-    const navigation = useNavigation<MusicNavigationProp>();
+    const navigation = useNavigation<NavigationProp>();
     const dispatch = useAppDispatch();
 
     // Setup callbacks
@@ -101,7 +101,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
         await TrackPlayer.play();
     }, [playTracks, trackIds]);
     const longPressTrack = useCallback((index: number) => { 
-        navigation.navigate('TrackPopupMenu', { trackId: trackIds[index] }); 
+        navigation.navigate('TrackPopupMenu', { trackId: trackIds[index].toString() }); 
     }, [navigation, trackIds]);
     const downloadAllTracks = useCallback(() => {
         trackIds.forEach((trackId) => dispatch(queueTrackForDownload(trackId)));

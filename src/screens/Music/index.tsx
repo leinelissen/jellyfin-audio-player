@@ -1,18 +1,19 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { MusicStackParams } from './types';
-import Albums from './stacks/Albums';
-import Album from './stacks/Album';
-import RecentAlbums from './stacks/RecentAlbums';
 import { THEME_COLOR } from 'CONSTANTS';
 import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
-import Playlists from './stacks/Playlists';
-import Playlist from './stacks/Playlist';
+import { StackParams } from 'screens/types';
 import NowPlaying from './overlays/NowPlaying';
 
-const Stack = createStackNavigator<MusicStackParams>();
+import RecentAlbums from './stacks/RecentAlbums';
+import Albums from './stacks/Albums';
+import Album from './stacks/Album';
+import Playlists from './stacks/Playlists';
+import Playlist from './stacks/Playlist';
+
+const Stack = createStackNavigator<StackParams>();
 
 function MusicStack() {
     const defaultStyles = useDefaultStyles();

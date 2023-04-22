@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, ReactText } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
-import { MusicNavigationProp } from '../types';
 import { Text, View, FlatList, ListRenderItem } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
@@ -11,6 +10,7 @@ import TouchableHandler from 'components/TouchableHandler';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
 import { EntityId } from '@reduxjs/toolkit';
 import useDefaultStyles from 'components/Colors';
+import { NavigationProp } from 'screens/types';
 
 interface GeneratedAlbumItemProps {
     id: ReactText;
@@ -41,7 +41,7 @@ const Playlists: React.FC = () => {
     
     // Initialise helpers
     const dispatch = useAppDispatch();
-    const navigation = useNavigation<MusicNavigationProp>();
+    const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
     const listRef = useRef<FlatList<EntityId>>(null);
 
