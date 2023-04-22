@@ -14,7 +14,6 @@ const Background = styled.View`
 
 const Container = styled.View<Pick<Props, 'fullSize'>>`
     margin: auto 20px;
-    padding: 4px;
     border-radius: 12px;
     flex: 0 0 auto;
     background: salmon;

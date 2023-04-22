@@ -60,7 +60,6 @@ class CredentialGenerator extends Component<Props> {
         return (
             <WebView
                 source={{ uri: serverUrl as string }}
-                style={{ borderRadius: 20 }}
                 onNavigationStateChange={this.handleStateChange}
                 onMessage={this.handleMessage}
                 ref={this.ref}
