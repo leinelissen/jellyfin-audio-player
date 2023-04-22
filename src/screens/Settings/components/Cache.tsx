@@ -6,6 +6,7 @@ import Button from 'components/Button';
 import styled from 'styled-components/native';
 import { Text } from 'components/Typography';
 import { useAppDispatch } from 'store';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 
 const ClearCache = styled(Button)`
@@ -17,6 +18,7 @@ const Container = styled.ScrollView`
 `;
 
 export default function CacheSettings() {
+    const headerHeight = useHeaderHeight();
     const dispatch = useAppDispatch();
     const handleClearCache = useCallback(() => {
         // Dispatch an action to reset the music subreducer state
@@ -27,7 +29,7 @@ export default function CacheSettings() {
     }, [dispatch]);
 
     return (
-        <Container>
+        <Container contentInset={{ top: headerHeight }}>
             <Text>{t('setting-cache-description')}</Text>
             <ClearCache title={t('reset-cache')} onPress={handleClearCache} />
         </Container>

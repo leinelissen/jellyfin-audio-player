@@ -9,8 +9,10 @@ import ChevronIcon from 'assets/icons/chevron-right.svg';
 import { THEME_COLOR } from 'CONSTANTS';
 import useDefaultStyles, { DefaultStylesProvider } from 'components/Colors';
 import { t } from '@localisation';
+import { ScrollView } from 'react-native';
+import { useHeaderHeight } from '@react-navigation/elements';
 
-const Container = styled.ScrollView`
+const Container = styled.View`
     padding: 24px;
 `;
 
@@ -25,7 +27,9 @@ const HeaderContainer = styled.View<{ isActive?: boolean }>`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 16px 0 4px 0;
+    padding: 16px 24px;
+    border-radius: 8px;
+    overflow: hidden;
 
     ${props => props.isActive && css`
         background-color: ${THEME_COLOR};
@@ -37,7 +41,8 @@ const HeaderText = styled(Text)`
 `;
 
 const ContentContainer = styled.View`
-    margin-top: 8px;
+    margin-bottom: 8px;
+    padding: 8px 24px;
 `;
 
 const Label = styled(Text)`
@@ -94,6 +99,7 @@ function renderContent(question: Question) {
 
 export default function Sentry() {
     const defaultStyles = useDefaultStyles();
+    const headerHeight = useHeaderHeight();
     const [isReportingEnabled, setReporting] = useState(isSentryEnabled);
     const [activeSections, setActiveSections] = useState<number[]>([]);
 
@@ -104,14 +110,17 @@ export default function Sentry() {
     });
 
     return (
-        <Container>
-            <Text>{t('error-reporting-description')}</Text>
-            <Text />
-            <Text>{t('error-reporting-rationale')}</Text>
-            <SwitchContainer>
-                <Label>{t('error-reporting')}</Label>
-                <Switch value={isReportingEnabled} onValueChange={toggleSwitch} />
-            </SwitchContainer>
+        <ScrollView contentInset={{ top: headerHeight }}>
+            <Container>
+                <Text>{t('error-reporting-description')}</Text>
+                <Text />
+                <Text>{t('error-reporting-rationale')}</Text>
+
+                <SwitchContainer>
+                    <Label>{t('error-reporting')}</Label>
+                    <Switch value={isReportingEnabled} onValueChange={toggleSwitch} />
+                </SwitchContainer>
+            </Container>
             <Accordion
                 sections={questions}
                 renderHeader={renderHeader}
@@ -120,6 +129,6 @@ export default function Sentry() {
                 onChange={setActiveSections}
                 underlayColor={defaultStyles.activeBackground.backgroundColor}
             />
-        </Container>
+        </ScrollView>
     );
 }

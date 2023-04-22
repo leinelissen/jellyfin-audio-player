@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { THEME_COLOR } from 'CONSTANTS';
 import { t } from '@localisation';
-import useDefaultStyles from 'components/Colors';
+import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
 import { StackParams } from 'screens/types';
 import NowPlaying from './overlays/NowPlaying';
 
@@ -12,6 +12,7 @@ import Albums from './stacks/Albums';
 import Album from './stacks/Album';
 import Playlists from './stacks/Playlists';
 import Playlist from './stacks/Playlist';
+import { StyleSheet } from 'react-native';
 
 const Stack = createStackNavigator<StackParams>();
 
@@ -24,8 +25,10 @@ function MusicStack() {
                 headerTintColor: THEME_COLOR,
                 headerTitleStyle: defaultStyles.stackHeader,
                 cardStyle: defaultStyles.view,
+                headerTransparent: true,
+                headerBackground: () => <ColoredBlurView style={StyleSheet.absoluteFill} />,
             }}>
-                <Stack.Screen name="RecentAlbums" component={RecentAlbums} options={{ headerTitle: t('recent-albums') }} />
+                <Stack.Screen name="RecentAlbums" component={RecentAlbums} options={{ headerTitle: t('recent-albums'), headerShown: false }} />
                 <Stack.Screen name="Albums" component={Albums} options={{ headerTitle: t('albums') }} />
                 <Stack.Screen name="Album" component={Album} options={{ headerTitle: t('album') }} />
                 <Stack.Screen name="Playlists" component={Playlists} options={{ headerTitle: t('playlists') }} />

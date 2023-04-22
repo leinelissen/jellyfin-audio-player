@@ -7,6 +7,7 @@ import { useTypedSelector } from 'store';
 import { t } from '@localisation';
 import Button from 'components/Button';
 import { Text } from 'components/Typography';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 
 const InputContainer = styled.View`
@@ -25,12 +26,13 @@ const Container = styled.ScrollView`
 
 export default function LibrarySettings() {
     const defaultStyles = useDefaultStyles();
+    const headerHeight = useHeaderHeight();
     const { jellyfin } = useTypedSelector(state => state.settings);
     const navigation = useNavigation<NavigationProp>();
     const handleSetLibrary = useCallback(() => navigation.navigate('SetJellyfinServer'), [navigation]);
 
     return (
-        <Container>
+        <Container contentInset={{ top: headerHeight }}>
             <InputContainer>
                 <Text style={defaultStyles.text}>{t('jellyfin-server-url')}</Text>
                 <Input placeholder="https://jellyfin.yourserver.com/" value={jellyfin?.uri} editable={false} style={defaultStyles.input} />

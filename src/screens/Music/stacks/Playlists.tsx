@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, ReactText } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
-import { Text, View, FlatList, ListRenderItem } from 'react-native';
+import { Text, View, FlatList, ListRenderItem, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
 import { useAppDispatch, useTypedSelector } from 'store';
@@ -11,6 +11,7 @@ import AlbumImage, { AlbumItem } from './components/AlbumImage';
 import { EntityId } from '@reduxjs/toolkit';
 import useDefaultStyles from 'components/Colors';
 import { NavigationProp } from 'screens/types';
+import { useNavigatorPadding } from 'utility/SafeNavigatorView';
 
 interface GeneratedAlbumItemProps {
     id: ReactText;
@@ -34,6 +35,8 @@ const GeneratedPlaylistItem = React.memo(function GeneratedPlaylistItem(props: G
 });
 
 const Playlists: React.FC = () => {
+    const navigatorPadding = useNavigatorPadding();
+
     // Retrieve data from store
     const { entities, ids } = useTypedSelector((state) => state.music.playlists);
     const isLoading = useTypedSelector((state) => state.music.playlists.isLoading);
@@ -94,9 +97,11 @@ const Playlists: React.FC = () => {
     
     return (
         <FlatList
+            refreshControl={
+                <RefreshControl refreshing={isLoading} onRefresh={retrieveData} progressViewOffset={navigatorPadding.paddingTop} />
+            }
+            contentContainerStyle={navigatorPadding}
             data={ids} 
-            refreshing={isLoading}
-            onRefresh={retrieveData}
             getItemLayout={getItemLayout}
             ref={listRef}
             keyExtractor={(item, index) => `${item}_${index}`}

@@ -25,6 +25,7 @@ import { Text } from 'components/Typography';
 
 import CoverImage from 'components/CoverImage';
 import ticksToDuration from 'utility/ticksToDuration';
+import { useNavigatorPadding } from 'utility/SafeNavigatorView';
 
 const styles = StyleSheet.create({
     index: {
@@ -79,6 +80,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     listNumberingStyle = 'album',
 }) => {
     const defaultStyles = useDefaultStyles();
+    const navigatorPadding = useNavigatorPadding();
 
     // Retrieve state
     const tracks = useTypedSelector((state) => state.music.tracks.entities);
@@ -113,9 +115,9 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     return (
         <ScrollView
             style={defaultStyles.view}
-            contentContainerStyle={{ padding: 24, paddingTop: 32, paddingBottom: 64 }}
+            contentContainerStyle={[{ padding: 24, paddingTop: 32 + navigatorPadding.paddingTop, paddingBottom: 64 + navigatorPadding.paddingBottom } ]}
             refreshControl={
-                <RefreshControl refreshing={isLoading} onRefresh={refresh} />
+                <RefreshControl refreshing={isLoading} onRefresh={refresh} progressViewOffset={navigatorPadding.paddingTop} />
             }
         >
             <AlbumImageContainer>

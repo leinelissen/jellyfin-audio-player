@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, ReactText, useMemo } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
-import { SafeAreaView, SectionList, View } from 'react-native';
+import { SectionList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
 import { useAppDispatch, useTypedSelector } from 'store';
@@ -17,6 +17,7 @@ import { Album } from 'store/music/types';
 import { Text } from 'components/Typography';
 import { ShadowWrapper } from 'components/Shadow';
 import { NavigationProp } from 'screens/types';
+import { useNavigatorPadding } from 'utility/SafeNavigatorView';
 
 const HeadingHeight = 50;
 
@@ -79,6 +80,8 @@ const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: Generat
 });
 
 const Albums: React.FC = () => {
+    const navigatorPadding = useNavigatorPadding();
+
     // Retrieve data from store
     const { entities: albums } = useTypedSelector((state) => state.music.albums);
     const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
@@ -168,9 +171,11 @@ const Albums: React.FC = () => {
     });
     
     return (
-        <SafeAreaView>
+        <>
             <AlphabetScroller onSelect={selectLetter} />
             <SectionList
+                contentInset={{ top: navigatorPadding.paddingTop }}
+                contentContainerStyle={navigatorPadding}
                 sections={sections} 
                 refreshing={isLoading}
                 onRefresh={retrieveData}
@@ -180,7 +185,7 @@ const Albums: React.FC = () => {
                 renderSectionHeader={generateSection}
                 renderItem={generateItem}
             />
-        </SafeAreaView>
+        </>
     );
 };
 

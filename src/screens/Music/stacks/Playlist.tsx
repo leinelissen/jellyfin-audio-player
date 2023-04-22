@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from 'react';
-import { MusicStackParams } from '../types';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from 'store';
 import TrackListView from './components/TrackListView';
@@ -7,8 +6,9 @@ import { fetchTracksByPlaylist } from 'store/music/actions';
 import { differenceInDays } from 'date-fns';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
 import { t } from '@localisation';
+import { StackParams } from 'screens/types';
 
-type Route = RouteProp<MusicStackParams, 'Album'>;
+type Route = RouteProp<StackParams, 'Album'>;
 
 const Playlist: React.FC = () => {
     const { params: { id } } = useRoute<Route>();
