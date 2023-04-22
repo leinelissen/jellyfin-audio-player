@@ -9,7 +9,7 @@ export function useNavigatorPadding() {
 
     return {
         paddingTop: headerHeight,
-        paddingBottom: index ? 68 : 0
+        paddingBottom: index !== undefined ? 68 : 0
     };
 }
 
