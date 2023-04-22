@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useNavigation, StackActions, useRoute, RouteProp } from '@react-navigation/native';
-import { ModalStackParams } from 'screens/types';
+import { StackParams } from 'screens/types';
 import { useAppDispatch, useTypedSelector } from 'store';
 import { Header, SubHeader } from 'components/Typography';
 import styled from 'styled-components/native';
@@ -17,7 +17,7 @@ import usePlayTracks from 'utility/usePlayTracks';
 import { selectIsDownloaded } from 'store/downloads/selectors';
 import { useGetImage } from 'utility/JellyfinApi';
 
-type Route = RouteProp<ModalStackParams, 'TrackPopupMenu'>;
+type Route = RouteProp<StackParams, 'TrackPopupMenu'>;
 
 const Container = styled.View`
     padding: 40px;
