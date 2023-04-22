@@ -15,7 +15,8 @@ export function Text(props: PropsWithChildren<TextProps>) {
 export const Header = styled(Text)`
     margin: 0 0 6px 0;
     font-size: 28px;
-    font-weight: 400;
+    font-weight: 500;
+    letter-spacing: -0.3px;
 `;
 
 export const SubHeader = styled(Text)`

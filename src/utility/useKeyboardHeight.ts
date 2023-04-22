@@ -1,6 +1,6 @@
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useRef, useEffect } from 'react';
-import { Animated, Keyboard, KeyboardEvent } from 'react-native';
+import { Animated, Easing, Keyboard, KeyboardEvent } from 'react-native';
 
 /**
  * This returns an animated height that the keyboard is poking up from the
@@ -15,9 +15,10 @@ export const useKeyboardHeight = () => {
     useEffect(() => {
         const keyboardWillShow = (e: KeyboardEvent) => {
             Animated.timing(keyboardHeight, {
-                duration: e.duration,
+                duration: e.duration - 20,
                 toValue: tabBarHeight - e.endCoordinates.height,
                 useNativeDriver: true,
+                easing: Easing.ease,
             }).start();
         };
         

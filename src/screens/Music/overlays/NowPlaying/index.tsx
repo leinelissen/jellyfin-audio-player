@@ -17,13 +17,13 @@ import { calculateProgressTranslation } from 'components/Progresstrack';
 import { THEME_COLOR } from 'CONSTANTS';
 import { MusicNavigationProp } from 'screens/Music/types';
 import { ShadowWrapper } from 'components/Shadow';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 const NOW_PLAYING_POPOVER_MARGIN = 6;
 const NOW_PLAYING_POPOVER_WIDTH = Dimensions.get('screen').width - 2 * NOW_PLAYING_POPOVER_MARGIN;
 
 const PopoverPosition = css`
     position: absolute;
-    bottom: ${NOW_PLAYING_POPOVER_MARGIN}px;
     left: ${NOW_PLAYING_POPOVER_MARGIN}px;
     right: ${NOW_PLAYING_POPOVER_MARGIN}px;
     border-radius: 8px;
@@ -111,6 +111,7 @@ function NowPlaying() {
     const { index, track } = useCurrentTrack();
     const { buffered, position } = useProgress();
     const defaultStyles = useDefaultStyles();
+    const tabBarHeight = useBottomTabBarHeight();
     const previousBuffered = usePrevious(buffered);
     const previousPosition = usePrevious(position);
 
@@ -164,7 +165,7 @@ function NowPlaying() {
     }
 
     return (
-        <Container>
+        <Container style={{ bottom: tabBarHeight + NOW_PLAYING_POPOVER_MARGIN }}>
             {/** TODO: Fix shadow overflow on Android */}
             {Platform.OS === 'ios' ? (
                 <ShadowOverlay pointerEvents='none'>

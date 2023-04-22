@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useGetImage } from 'utility/JellyfinApi';
 import FastImage from 'react-native-fast-image';
 import { t } from '@localisation';
-import useDefaultStyles from 'components/Colors';
+import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
 import { searchAndFetchAlbums } from 'store/music/actions';
 import { debounce } from 'lodash';
 import { Text } from 'components/Typography';
@@ -21,6 +21,7 @@ import ChevronRight from 'assets/icons/chevron-right.svg';
 import SearchIcon from 'assets/icons/magnifying-glass.svg';
 import { ShadowWrapper } from 'components/Shadow';
 import { useKeyboardHeight } from 'utility/useKeyboardHeight';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 // import MicrophoneIcon from 'assets/icons/microphone.svg';
 // import AlbumIcon from 'assets/icons/collection.svg';
 // import TrackIcon from 'assets/icons/note.svg';
@@ -29,8 +30,8 @@ import { useKeyboardHeight } from 'utility/useKeyboardHeight';
 // import LocalIcon from 'assets/icons/internal-drive.svg';
 // import SelectableFilter from './components/SelectableFilter';
 
-const Container = styled(Animated.View)`
-    padding: 4px 32px 0 32px;
+const Container = styled(View)`
+    padding: 4px 24px 0 24px;
     margin-bottom: 0px;
     padding-bottom: 0px;
     border-top-width: 0.5px;
@@ -95,6 +96,7 @@ type CombinedResults = (AudioResult | AlbumResult)[];
 
 export default function Search() {
     const defaultStyles = useDefaultStyles();
+    const tabBarHeight = useBottomTabBarHeight();
 
     // Prepare state for fuse and albums
     const [fuseIsReady, setFuseReady] = useState(false);
@@ -210,60 +212,61 @@ export default function Search() {
     );
 
     const HeaderComponent = React.useMemo(() => (
-        <View>
-            <Container style={[
-                defaultStyles.border, 
-                defaultStyles.view,
-                { transform: [{ translateY: keyboardHeight }]},
-            ]}>
-                <View>
-                    <Input
-                        value={searchTerm}
-                        onChangeText={setSearchTerm}
-                        style={[defaultStyles.input, { marginBottom: 12 }]}
-                        placeholder={t('search') + '...'}
-                        icon={<SearchIcon width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />}
-                        testID="search-input"
-                    />
-                    {isLoading && <Loading><ActivityIndicator /></Loading>}
-                </View>
-            </Container>
-            {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <View style={{ paddingHorizontal: 32, paddingBottom: 12, flex: 1, flexDirection: 'row' }}>
-                    <SelectableFilter
-                        text="Artists"
-                        icon={MicrophoneIcon}
-                        active
-                    />
-                    <SelectableFilter
-                        text="Albums"
-                        icon={AlbumIcon}
-                        active={false}
-                    />
-                    <SelectableFilter
-                        text="Tracks"
-                        icon={TrackIcon}
-                        active={false}
-                    />
-                    <SelectableFilter
-                        text="Playlist"
-                        icon={PlaylistIcon}
-                        active={false}
-                    />
-                    <SelectableFilter
-                        text="Streaming"
-                        icon={StreamIcon}
-                        active={false}
-                    />
-                    <SelectableFilter
-                        text="Local Playback"
-                        icon={LocalIcon}
-                        active={false}
-                    />
-                </View>
-            </ScrollView> */}
-        </View>
-    ), [searchTerm, setSearchTerm, defaultStyles, isLoading, keyboardHeight]);
+        <Animated.View style={[
+            { position: 'absolute', bottom: tabBarHeight, right: 0, left: 0 },
+            { transform: [{ translateY: keyboardHeight }] },
+        ]}>
+            <ColoredBlurView>
+                <Container style={[ defaultStyles.border ]}>
+                    <View>
+                        <Input
+                            value={searchTerm}
+                            onChangeText={setSearchTerm}
+                            style={[defaultStyles.view, { marginBottom: 12 }]}
+                            placeholder={t('search') + '...'}
+                            icon={<SearchIcon width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />}
+                            testID="search-input"
+                        />
+                        {isLoading && <Loading style={{ marginTop: -4 }}><ActivityIndicator /></Loading>}
+                    </View>
+                </Container>
+                {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    <View style={{ paddingHorizontal: 32, paddingBottom: 12, flex: 1, flexDirection: 'row' }}>
+                        <SelectableFilter
+                            text="Artists"
+                            icon={MicrophoneIcon}
+                            active
+                        />
+                        <SelectableFilter
+                            text="Albums"
+                            icon={AlbumIcon}
+                            active={false}
+                        />
+                        <SelectableFilter
+                            text="Tracks"
+                            icon={TrackIcon}
+                            active={false}
+                        />
+                        <SelectableFilter
+                            text="Playlist"
+                            icon={PlaylistIcon}
+                            active={false}
+                        />
+                        <SelectableFilter
+                            text="Streaming"
+                            icon={StreamIcon}
+                            active={false}
+                        />
+                        <SelectableFilter
+                            text="Local Playback"
+                            icon={LocalIcon}
+                            active={false}
+                        />
+                    </View>
+                </ScrollView> */}
+            </ColoredBlurView>
+        </Animated.View>
+    ), [searchTerm, setSearchTerm, defaultStyles, isLoading, keyboardHeight, tabBarHeight]);
 
     // GUARD: We cannot search for stuff unless Fuse is loaded with results.
     // Therefore we delay rendering to when we are certain it's there.

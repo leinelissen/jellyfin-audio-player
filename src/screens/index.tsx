@@ -23,6 +23,8 @@ import { t } from '@localisation';
 import ErrorReportingAlert from 'utility/ErrorReportingAlert';
 import ErrorReportingPopup from './modals/ErrorReportingPopup';
 import Player from './modals/Player';
+import { StyleSheet } from 'react-native';
+import { ColoredBlurView } from 'components/Colors';
 
 const Stack = createNativeStackNavigator<ModalStackParams>();
 const Tab = createBottomTabNavigator();
@@ -63,6 +65,11 @@ function Screens() {
                     tabBarActiveTintColor: THEME_COLOR,
                     tabBarInactiveTintColor: 'gray',
                     headerShown: false,
+                    tabBarShowLabel: false,
+                    tabBarStyle: { position: 'absolute' },
+                    tabBarBackground: () => (
+                        <ColoredBlurView style={StyleSheet.absoluteFill} />
+                    )
                 })}
             >
                 <Tab.Screen name="Music" component={Music} options={{ tabBarLabel: t('music'), tabBarTestID: 'music-tab' }} />
