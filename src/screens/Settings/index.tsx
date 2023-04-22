@@ -20,7 +20,7 @@ export function SettingsList() {
     const handleSentryClick = useCallback(() => { navigation.navigate('Sentry'); }, [navigation]);
 
     return (
-        <ScrollView contentInset={{ top: headerHeight }}>
+        <ScrollView contentContainerStyle={{ paddingTop: headerHeight }}>
             <ListButton onPress={handleLibraryClick}>{t('jellyfin-library')}</ListButton>
             <ListButton onPress={handleCacheClick}>{t('setting-cache')}</ListButton>
             <ListButton onPress={handleSentryClick}>{t('error-reporting')}</ListButton>

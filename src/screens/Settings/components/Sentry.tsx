@@ -110,7 +110,7 @@ export default function Sentry() {
     });
 
     return (
-        <ScrollView contentInset={{ top: headerHeight }}>
+        <ScrollView contentContainerStyle={{ paddingTop: headerHeight }}>
             <Container>
                 <Paragraph>{t('error-reporting-description')}</Paragraph>
                 <Paragraph />

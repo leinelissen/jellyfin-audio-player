@@ -29,7 +29,7 @@ export default function CacheSettings() {
     }, [dispatch]);
 
     return (
-        <Container contentInset={{ top: headerHeight }}>
+        <Container contentContainerStyle={{ paddingTop: headerHeight }}>
             <Paragraph>{t('setting-cache-description')}</Paragraph>
             <ClearCache title={t('reset-cache')} onPress={handleClearCache} />
         </Container>

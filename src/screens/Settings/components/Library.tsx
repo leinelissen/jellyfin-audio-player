@@ -32,7 +32,7 @@ export default function LibrarySettings() {
     const handleSetLibrary = useCallback(() => navigation.navigate('SetJellyfinServer'), [navigation]);
 
     return (
-        <Container contentInset={{ top: headerHeight }}>
+        <Container contentContainerStyle={{ paddingTop: headerHeight }}>
             <InputContainer>
                 <Paragraph style={defaultStyles.text}>{t('jellyfin-server-url')}</Paragraph>
                 <Input placeholder="https://jellyfin.yourserver.com/" value={jellyfin?.uri} editable={false} style={defaultStyles.input} />

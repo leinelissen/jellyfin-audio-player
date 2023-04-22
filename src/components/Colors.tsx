@@ -109,7 +109,7 @@ export function ColoredBlurView(props: PropsWithChildren<BlurViewProps>) {
             } />
     ) : (
         <View {...props} style={[ props.style, {
-            backgroundColor: scheme === 'light' ? '#f6f6f6f6' : '#333333f6',
+            backgroundColor: scheme === 'light' ? '#f6f6f6fb' : '#333333fb',
         } ]} />
     );
 }
