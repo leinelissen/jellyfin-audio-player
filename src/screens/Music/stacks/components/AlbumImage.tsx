@@ -27,7 +27,7 @@ function AlbumImage(props: FastImageProps) {
 
     if (!props.source || hasError) {
         return (
-            <Container source={colorScheme === 'light' ? require('assets/images/empty-album-light.png') : require('assets/images/empty-album-dark.png')} />
+            <Container {...props} source={colorScheme === 'light' ? require('assets/images/empty-album-light.png') : require('assets/images/empty-album-dark.png')}  />
         );
     }
 

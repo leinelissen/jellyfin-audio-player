@@ -1,4 +1,4 @@
-import { Text } from 'components/Typography';
+import { Paragraph, Text } from 'components/Typography';
 
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-native-gesture-handler';
@@ -92,7 +92,7 @@ function renderHeader(question: Question, index: number, isActive: boolean) {
 function renderContent(question: Question) {
     return (
         <ContentContainer>
-            <Text>{question.content}</Text>
+            <Paragraph>{question.content}</Paragraph>
         </ContentContainer>
     );
 }
@@ -112,9 +112,9 @@ export default function Sentry() {
     return (
         <ScrollView contentInset={{ top: headerHeight }}>
             <Container>
-                <Text>{t('error-reporting-description')}</Text>
-                <Text />
-                <Text>{t('error-reporting-rationale')}</Text>
+                <Paragraph>{t('error-reporting-description')}</Paragraph>
+                <Paragraph />
+                <Paragraph>{t('error-reporting-rationale')}</Paragraph>
 
                 <SwitchContainer>
                     <Label>{t('error-reporting')}</Label>

@@ -43,6 +43,8 @@ export interface Album {
     Tracks?: string[];
     lastRefreshed?: number;
     DateCreated: string;
+    Overview?: string;
+    Similar?: string[];
 }
 
 export interface AlbumTrack {
@@ -94,4 +96,8 @@ export interface Playlist {
     MediaType: string;
     Tracks?: string[];
     lastRefreshed?: number;
+}
+
+export interface SimilarAlbum {
+    Id: string;
 }

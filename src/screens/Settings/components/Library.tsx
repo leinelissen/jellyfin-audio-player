@@ -6,7 +6,7 @@ import { NavigationProp } from '../..';
 import { useTypedSelector } from 'store';
 import { t } from '@localisation';
 import Button from 'components/Button';
-import { Text } from 'components/Typography';
+import { Paragraph } from 'components/Typography';
 import { useHeaderHeight } from '@react-navigation/elements';
 
 
@@ -34,15 +34,15 @@ export default function LibrarySettings() {
     return (
         <Container contentInset={{ top: headerHeight }}>
             <InputContainer>
-                <Text style={defaultStyles.text}>{t('jellyfin-server-url')}</Text>
+                <Paragraph style={defaultStyles.text}>{t('jellyfin-server-url')}</Paragraph>
                 <Input placeholder="https://jellyfin.yourserver.com/" value={jellyfin?.uri} editable={false} style={defaultStyles.input} />
             </InputContainer>
             <InputContainer>
-                <Text style={defaultStyles.text}>{t('jellyfin-access-token')}</Text>
+                <Paragraph style={defaultStyles.text}>{t('jellyfin-access-token')}</Paragraph>
                 <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.access_token} editable={false} style={defaultStyles.input} />
             </InputContainer>
             <InputContainer>
-                <Text style={defaultStyles.text}>{t('jellyfin-user-id')}</Text>
+                <Paragraph style={defaultStyles.text}>{t('jellyfin-user-id')}</Paragraph>
                 <Input placeholder="deadbeefdeadbeefdeadbeef" value={jellyfin?.user_id} editable={false} style={defaultStyles.input} />
             </InputContainer>
             <Button title={t('set-jellyfin-server')} onPress={handleSetLibrary} />

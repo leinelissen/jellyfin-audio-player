@@ -46,6 +46,14 @@ export const fetchTracksByAlbum = createAsyncThunk<AlbumTrack[], string, AsyncTh
     }
 );
 
+export const fetchAlbum = createAsyncThunk<Album, string, AsyncThunkAPI>(
+    '/albums/single',
+    async (ItemId, thunkAPI) => {
+        const credentials = thunkAPI.getState().settings.jellyfin;
+        return retrieveAlbum(credentials, ItemId) as Promise<Album>;
+    }
+);
+
 type SearchAndFetchResults = {
     albums: Album[];
     results: (Album | AlbumTrack)[]; 

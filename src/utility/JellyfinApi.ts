@@ -1,6 +1,6 @@
 import { Track } from 'react-native-track-player';
 import { AppState, useTypedSelector } from 'store';
-import { Album, AlbumTrack } from 'store/music/types';
+import { Album, AlbumTrack, SimilarAlbum } from 'store/music/types';
 
 type Credentials = AppState['settings']['jellyfin'];
 
@@ -86,8 +86,14 @@ export async function retrieveAllAlbums(credentials: Credentials) {
  */
 export async function retrieveAlbum(credentials: Credentials, id: string): Promise<Album> {
     const config = generateConfig(credentials);
+
+    const Similar = await fetch(`${credentials?.uri}/Items/${id}/Similar?userId=${credentials?.user_id}&limit=12`, config)
+        .then(response => response.json() as Promise<{ Items: SimilarAlbum[] }>)
+        .then((albums) => albums.Items.map((a) => a.Id));
+
     return fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items/${id}`, config)
-        .then(response => response.json());
+        .then(response => response.json() as Promise<Album>)
+        .then(album => ({ ...album, Similar }));
 }
 
 const latestAlbumsOptions = {
@@ -95,7 +101,6 @@ const latestAlbumsOptions = {
     Fields: 'DateCreated',
     SortOrder: 'Ascending',
 };
-
 
 /**
  * Retrieve the most recently added albums on the Jellyfin server 

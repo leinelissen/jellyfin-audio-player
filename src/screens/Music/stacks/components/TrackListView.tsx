@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { PropsWithChildren, useCallback, useMemo } from 'react';
 import { ScrollView, RefreshControl, StyleSheet, View } from 'react-native';
 import { useGetImage } from 'utility/JellyfinApi';
 import styled, { css } from 'styled-components/native';
@@ -26,6 +26,7 @@ import { Text } from 'components/Typography';
 import CoverImage from 'components/CoverImage';
 import ticksToDuration from 'utility/ticksToDuration';
 import { useNavigatorPadding } from 'utility/SafeNavigatorView';
+import { t } from '@localisation';
 
 const styles = StyleSheet.create({
     index: {
@@ -55,7 +56,7 @@ const TrackContainer = styled.View<{ isPlaying: boolean }>`
     `}
 `;
 
-interface TrackListViewProps {
+export interface TrackListViewProps extends PropsWithChildren<{}> {
     title?: string;
     artist?: string;
     trackIds: EntityId[];
@@ -81,6 +82,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     deleteButtonText,
     listNumberingStyle = 'album',
     itemDisplayStyle = 'album',
+    children
 }) => {
     const defaultStyles = useDefaultStyles();
     const navigatorPadding = useNavigatorPadding();
@@ -89,6 +91,11 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const tracks = useTypedSelector((state) => state.music.tracks.entities);
     const isLoading = useTypedSelector((state) => state.music.tracks.isLoading);
     const downloadedTracks = useTypedSelector(selectDownloadedTracks(trackIds));
+    const totalDuration = useMemo(() => (
+        trackIds.reduce<number>((sum, trackId) => (
+            sum + (tracks[trackId]?.RunTimeTicks || 0)
+        ), 0)
+    ), [trackIds, tracks]);
 
     // Retrieve helpers
     const getImage = useGetImage();
@@ -157,7 +164,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                                     ? i + 1
                                     : tracks[trackId]?.IndexNumber}
                             </Text>
-                            <View>
+                            <View style={{ flexShrink: 1 }}>
                                 <Text
                                     style={{ 
                                         ...currentTrack?.backendId === trackId && styles.activeText,
@@ -197,6 +204,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                         </TrackContainer>
                     </TouchableHandler>
                 )}
+                <Text style={{ paddingTop: 24, paddingBottom: 12, textAlign: 'center', opacity: 0.5 }}>{t('total-duration')}: {ticksToDuration(totalDuration)}</Text>
                 <WrappableButtonRow style={{ marginTop: 24 }}>
                     <WrappableButton
                         icon={CloudDownArrow}
@@ -214,6 +222,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                     />
                 </WrappableButtonRow>
             </View>
+            {children}
         </ScrollView>
     );
 };

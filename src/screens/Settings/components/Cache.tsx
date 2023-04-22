@@ -4,7 +4,7 @@ import music from 'store/music';
 import { t } from '@localisation';
 import Button from 'components/Button';
 import styled from 'styled-components/native';
-import { Text } from 'components/Typography';
+import { Paragraph } from 'components/Typography';
 import { useAppDispatch } from 'store';
 import { useHeaderHeight } from '@react-navigation/elements';
 
@@ -30,7 +30,7 @@ export default function CacheSettings() {
 
     return (
         <Container contentInset={{ top: headerHeight }}>
-            <Text>{t('setting-cache-description')}</Text>
+            <Paragraph>{t('setting-cache-description')}</Paragraph>
             <ClearCache title={t('reset-cache')} onPress={handleClearCache} />
         </Container>
     );

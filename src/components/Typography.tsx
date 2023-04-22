@@ -25,3 +25,9 @@ export const SubHeader = styled(Text)`
     font-weight: 400;
     opacity: 0.5;
 `;
+
+export const Paragraph = styled(Text)`
+    opacity: 0.5;
+    font-size: 12px;
+    line-height: 20px;
+`;

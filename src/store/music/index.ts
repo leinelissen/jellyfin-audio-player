@@ -7,7 +7,8 @@ import {
     searchAndFetchAlbums,
     playlistAdapter,
     fetchAllPlaylists,
-    fetchTracksByPlaylist
+    fetchTracksByPlaylist,
+    fetchAlbum
 } from './actions';
 import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
 import { Album, AlbumTrack, Playlist } from './types';
@@ -69,6 +70,15 @@ const music = createSlice({
         });
         builder.addCase(fetchAllAlbums.pending, (state) => { state.albums.isLoading = true; });
         builder.addCase(fetchAllAlbums.rejected, (state) => { state.albums.isLoading = false; });
+
+        /**
+         * Fetch single album
+         */
+        builder.addCase(fetchAlbum.fulfilled, (state, { payload }) => {
+            albumAdapter.upsertOne(state.albums, payload);
+        });
+        builder.addCase(fetchAlbum.pending, (state) => { state.albums.isLoading = true; });
+        builder.addCase(fetchAlbum.rejected, (state) => { state.albums.isLoading = false; });
         
         /**
          * Fetch most recent albums

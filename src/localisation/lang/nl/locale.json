@@ -59,5 +59,6 @@
     "you-are-offline-message": "Je bent op dit moment offline. Je kunt alleen eerder gedownloade nummers afspelen.",
     "playing-on": "Speelt af op",
     "local-playback": "Lokaal afspelen",
-    "streaming": "Streamen"
+    "streaming": "Streamen",
+    "total-duration": "Totale duur"
 }
