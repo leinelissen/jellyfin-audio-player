@@ -89,7 +89,7 @@ const Album: React.FC = () => {
             {album?.Similar?.length ? (
                 <>
                     <SubHeader>{t('similar-albums')}</SubHeader>
-                    <ScrollView horizontal style={{ marginLeft: -24, marginRight: -24, marginTop: 8, marginBottom: 36 }} contentContainerStyle={{ paddingHorizontal: 24 }} showsHorizontalScrollIndicator={false}>
+                    <ScrollView horizontal style={{ marginLeft: -24, marginRight: -24, marginTop: 8 }} contentContainerStyle={{ paddingHorizontal: 24 }} showsHorizontalScrollIndicator={false}>
                         {album.Similar.map((id) => (
                             <SimilarAlbum id={id} key={id} />
                         ))}

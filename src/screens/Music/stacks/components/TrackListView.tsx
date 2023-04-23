@@ -133,7 +133,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                 <RefreshControl refreshing={isLoading} onRefresh={refresh} progressViewOffset={offsets.top} />
             }
         >
-            <View style={{ padding: 24, paddingTop: 32, paddingBottom: 64 }}>
+            <View style={{ padding: 24, paddingTop: 32, paddingBottom: 32 }}>
                 <AlbumImageContainer>
                     <CoverImage src={getImage(entityId)} />
                 </AlbumImageContainer>
