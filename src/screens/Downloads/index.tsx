@@ -1,7 +1,6 @@
 import useDefaultStyles from 'components/Colors';
 import React, { useCallback, useMemo } from 'react';
 import { FlatListProps, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppDispatch, useTypedSelector } from 'store';
 import formatBytes from 'utility/formatBytes';
@@ -17,6 +16,7 @@ import { Text } from 'components/Typography';
 import FastImage from 'react-native-fast-image';
 import { useGetImage } from 'utility/JellyfinApi';
 import { ShadowWrapper } from 'components/Shadow';
+import { SafeFlatList } from 'components/SafeNavigatorView';
 
 const DownloadedTrack = styled.View`
     flex: 1 0 auto;
@@ -151,10 +151,10 @@ function Downloads() {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {ListHeaderComponent}
-            <FlatList
+            <SafeFlatList
                 data={ids}
                 style={{ flex: 1, paddingTop: 12 }}
-                contentContainerStyle={{ flexGrow: 1, paddingBottom: 24 }}
+                contentContainerStyle={{ flexGrow: 1 }}
                 renderItem={renderItem}
             />
         </SafeAreaView>

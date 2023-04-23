@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from 'utility/JellyfinApi';
-import { Text, SafeAreaView, FlatList, StyleSheet } from 'react-native';
+import { Text, SafeAreaView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from 'store';
 import { fetchRecentAlbums } from 'store/music/actions';
@@ -17,6 +17,7 @@ import Divider from 'components/Divider';
 import styled from 'styled-components/native';
 import { ShadowWrapper } from 'components/Shadow';
 import { NavigationProp } from 'screens/types';
+import { SafeFlatList } from 'components/SafeNavigatorView';
 
 const styles = StyleSheet.create({
     columnWrapper: {
@@ -71,7 +72,7 @@ const RecentAlbums: React.FC = () => {
     
     return (
         <SafeAreaView>
-            <FlatList
+            <SafeFlatList
                 data={recentAlbums as string[]} 
                 refreshing={isLoading}
                 onRefresh={retrieveData}

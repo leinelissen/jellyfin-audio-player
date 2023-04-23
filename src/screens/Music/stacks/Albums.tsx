@@ -17,7 +17,7 @@ import { Album } from 'store/music/types';
 import { Text } from 'components/Typography';
 import { ShadowWrapper } from 'components/Shadow';
 import { NavigationProp } from 'screens/types';
-import { useNavigatorPadding } from 'utility/SafeNavigatorView';
+import { SafeSectionList } from 'components/SafeNavigatorView';
 
 const HeadingHeight = 50;
 
@@ -80,8 +80,6 @@ const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: Generat
 });
 
 const Albums: React.FC = () => {
-    const navigatorPadding = useNavigatorPadding();
-
     // Retrieve data from store
     const { entities: albums } = useTypedSelector((state) => state.music.albums);
     const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
@@ -173,9 +171,7 @@ const Albums: React.FC = () => {
     return (
         <>
             <AlphabetScroller onSelect={selectLetter} />
-            <SectionList
-                contentInset={{ top: navigatorPadding.paddingTop }}
-                contentContainerStyle={navigatorPadding}
+            <SafeSectionList
                 sections={sections} 
                 refreshing={isLoading}
                 onRefresh={retrieveData}

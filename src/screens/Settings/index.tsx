@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Library from './components/Library';
 import Cache from './components/Cache';
 import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
@@ -10,21 +10,20 @@ import ListButton from 'components/ListButton';
 import { THEME_COLOR } from 'CONSTANTS';
 import Sentry from './components/Sentry';
 import { SettingsNavigationProp } from './types';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { SafeScrollView } from 'components/SafeNavigatorView';
 
 export function SettingsList() {
-    const headerHeight = useHeaderHeight();
     const navigation = useNavigation<SettingsNavigationProp>();
     const handleLibraryClick = useCallback(() => { navigation.navigate('Library'); }, [navigation]);
     const handleCacheClick = useCallback(() => { navigation.navigate('Cache'); }, [navigation]);
     const handleSentryClick = useCallback(() => { navigation.navigate('Sentry'); }, [navigation]);
 
     return (
-        <ScrollView contentContainerStyle={{ paddingTop: headerHeight }}>
+        <SafeScrollView>
             <ListButton onPress={handleLibraryClick}>{t('jellyfin-library')}</ListButton>
             <ListButton onPress={handleCacheClick}>{t('setting-cache')}</ListButton>
             <ListButton onPress={handleSentryClick}>{t('error-reporting')}</ListButton>
-        </ScrollView>
+        </SafeScrollView>
     );
 }
 

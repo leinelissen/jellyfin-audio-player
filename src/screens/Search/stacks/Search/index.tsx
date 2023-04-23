@@ -20,8 +20,8 @@ import ChevronRight from 'assets/icons/chevron-right.svg';
 import SearchIcon from 'assets/icons/magnifying-glass.svg';
 import { ShadowWrapper } from 'components/Shadow';
 import { useKeyboardHeight } from 'utility/useKeyboardHeight';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { NavigationProp } from 'screens/types';
+import { useNavigationOffsets } from 'components/SafeNavigatorView';
 // import MicrophoneIcon from 'assets/icons/microphone.svg';
 // import AlbumIcon from 'assets/icons/collection.svg';
 // import TrackIcon from 'assets/icons/note.svg';
@@ -29,6 +29,8 @@ import { NavigationProp } from 'screens/types';
 // import StreamIcon from 'assets/icons/cloud.svg';
 // import LocalIcon from 'assets/icons/internal-drive.svg';
 // import SelectableFilter from './components/SelectableFilter';
+
+const SEARCH_INPUT_HEIGHT = 62;
 
 const Container = styled(View)`
     padding: 4px 24px 0 24px;
@@ -96,7 +98,7 @@ type CombinedResults = (AudioResult | AlbumResult)[];
 
 export default function Search() {
     const defaultStyles = useDefaultStyles();
-    const tabBarHeight = useBottomTabBarHeight();
+    const offsets = useNavigationOffsets({ includeOverlay: false });
 
     // Prepare state for fuse and albums
     const [fuseIsReady, setFuseReady] = useState(false);
@@ -211,9 +213,9 @@ export default function Search() {
         navigation.navigate('Album', { id, album: albums[id] as Album });
     }, [navigation, albums]);
 
-    const HeaderComponent = React.useMemo(() => (
+    const SearchInput = React.useMemo(() => (
         <Animated.View style={[
-            { position: 'absolute', bottom: tabBarHeight, right: 0, left: 0 },
+            { position: 'absolute', bottom: offsets.bottom, right: 0, left: 0 },
             { transform: [{ translateY: keyboardHeight }] },
         ]}>
             <ColoredBlurView>
@@ -266,7 +268,7 @@ export default function Search() {
                 </ScrollView> */}
             </ColoredBlurView>
         </Animated.View>
-    ), [searchTerm, setSearchTerm, defaultStyles, isLoading, keyboardHeight, tabBarHeight]);
+    ), [searchTerm, setSearchTerm, defaultStyles, isLoading, keyboardHeight, offsets]);
 
     // GUARD: We cannot search for stuff unless Fuse is loaded with results.
     // Therefore we delay rendering to when we are certain it's there.
@@ -277,7 +279,9 @@ export default function Search() {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <FlatList
-                style={{ flex: 2 }}
+                style={{ flex: 2, }}
+                contentContainerStyle={{ paddingTop: offsets.top, paddingBottom: offsets.bottom + SEARCH_INPUT_HEIGHT }}
+                scrollIndicatorInsets={{ top: offsets.top  / 2, bottom: offsets.bottom / 2 + 10 + SEARCH_INPUT_HEIGHT }}
                 data={[...jellyfinResults, ...fuseResults]}
                 renderItem={({ item: { id, type, album: trackAlbum, name: trackName } }: { item: AlbumResult | AudioResult }) => {
                     const album = albums[trackAlbum || id];
@@ -325,7 +329,7 @@ export default function Search() {
                     <Text style={{ textAlign: 'center', opacity: 0.5, fontSize: 18 }}>{t('no-results')}</Text> 
                 </FullSizeContainer>
             ) : null}
-            {HeaderComponent}
+            {SearchInput}
         </SafeAreaView>
     );
 }

@@ -7,8 +7,7 @@ import { useTypedSelector } from 'store';
 import { t } from '@localisation';
 import Button from 'components/Button';
 import { Paragraph } from 'components/Typography';
-import { useHeaderHeight } from '@react-navigation/elements';
-
+import { SafeScrollView } from 'components/SafeNavigatorView';
 
 const InputContainer = styled.View`
     margin: 10px 0;
@@ -20,19 +19,18 @@ const Input = styled.TextInput`
     border-radius: 5px;
 `;
 
-const Container = styled.ScrollView`
+const Container = styled(SafeScrollView)`
     padding: 24px;
 `;
 
 export default function LibrarySettings() {
     const defaultStyles = useDefaultStyles();
-    const headerHeight = useHeaderHeight();
     const { jellyfin } = useTypedSelector(state => state.settings);
     const navigation = useNavigation<NavigationProp>();
     const handleSetLibrary = useCallback(() => navigation.navigate('SetJellyfinServer'), [navigation]);
 
     return (
-        <Container contentContainerStyle={{ paddingTop: headerHeight }}>
+        <Container>
             <InputContainer>
                 <Paragraph style={defaultStyles.text}>{t('jellyfin-server-url')}</Paragraph>
                 <Input placeholder="https://jellyfin.yourserver.com/" value={jellyfin?.uri} editable={false} style={defaultStyles.input} />

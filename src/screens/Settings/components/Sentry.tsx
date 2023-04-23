@@ -9,8 +9,7 @@ import ChevronIcon from 'assets/icons/chevron-right.svg';
 import { THEME_COLOR } from 'CONSTANTS';
 import useDefaultStyles, { DefaultStylesProvider } from 'components/Colors';
 import { t } from '@localisation';
-import { ScrollView } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { SafeScrollView } from 'components/SafeNavigatorView';
 
 const Container = styled.View`
     padding: 24px;
@@ -99,7 +98,6 @@ function renderContent(question: Question) {
 
 export default function Sentry() {
     const defaultStyles = useDefaultStyles();
-    const headerHeight = useHeaderHeight();
     const [isReportingEnabled, setReporting] = useState(isSentryEnabled);
     const [activeSections, setActiveSections] = useState<number[]>([]);
 
@@ -110,7 +108,7 @@ export default function Sentry() {
     });
 
     return (
-        <ScrollView contentContainerStyle={{ paddingTop: headerHeight }}>
+        <SafeScrollView>
             <Container>
                 <Paragraph>{t('error-reporting-description')}</Paragraph>
                 <Paragraph />
@@ -129,6 +127,6 @@ export default function Sentry() {
                 onChange={setActiveSections}
                 underlayColor={defaultStyles.activeBackground.backgroundColor}
             />
-        </ScrollView>
+        </SafeScrollView>
     );
 }

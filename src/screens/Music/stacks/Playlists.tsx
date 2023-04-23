@@ -11,7 +11,7 @@ import AlbumImage, { AlbumItem } from './components/AlbumImage';
 import { EntityId } from '@reduxjs/toolkit';
 import useDefaultStyles from 'components/Colors';
 import { NavigationProp } from 'screens/types';
-import { useNavigatorPadding } from 'utility/SafeNavigatorView';
+import { SafeFlatList, useNavigationOffsets } from 'components/SafeNavigatorView';
 
 interface GeneratedAlbumItemProps {
     id: ReactText;
@@ -35,7 +35,7 @@ const GeneratedPlaylistItem = React.memo(function GeneratedPlaylistItem(props: G
 });
 
 const Playlists: React.FC = () => {
-    const navigatorPadding = useNavigatorPadding();
+    const offsets = useNavigationOffsets();
 
     // Retrieve data from store
     const { entities, ids } = useTypedSelector((state) => state.music.playlists);
@@ -96,11 +96,10 @@ const Playlists: React.FC = () => {
     });
     
     return (
-        <FlatList
+        <SafeFlatList
             refreshControl={
-                <RefreshControl refreshing={isLoading} onRefresh={retrieveData} progressViewOffset={navigatorPadding.paddingTop} />
+                <RefreshControl refreshing={isLoading} onRefresh={retrieveData} progressViewOffset={offsets.top} />
             }
-            contentContainerStyle={navigatorPadding}
             data={ids} 
             getItemLayout={getItemLayout}
             ref={listRef}

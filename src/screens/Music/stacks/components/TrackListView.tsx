@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useCallback, useMemo } from 'react';
-import { ScrollView, RefreshControl, StyleSheet, View } from 'react-native';
+import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
 import { useGetImage } from 'utility/JellyfinApi';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
@@ -25,8 +25,8 @@ import { Text } from 'components/Typography';
 
 import CoverImage from 'components/CoverImage';
 import ticksToDuration from 'utility/ticksToDuration';
-import { useNavigatorPadding } from 'utility/SafeNavigatorView';
 import { t } from '@localisation';
+import { SafeScrollView, useNavigationOffsets } from 'components/SafeNavigatorView';
 
 const styles = StyleSheet.create({
     index: {
@@ -44,7 +44,7 @@ const AlbumImageContainer = styled.View`
     align-items: center;
 `;
 
-const TrackContainer = styled.View<{ isPlaying: boolean }>`
+const TrackContainer = styled.View<{ isPlaying: boolean, small?: boolean }>`
     padding: 12px 4px;
     flex-direction: row;
     border-radius: 6px;
@@ -53,6 +53,10 @@ const TrackContainer = styled.View<{ isPlaying: boolean }>`
     ${props => props.isPlaying && css`
         margin: 0 -12px;
         padding: 12px 16px;
+    `}
+
+    ${props => props.small && css`
+        padding: ${Platform.select({ ios: '8px 4px', android: '4px'})};
     `}
 `;
 
@@ -85,7 +89,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     children
 }) => {
     const defaultStyles = useDefaultStyles();
-    const navigatorPadding = useNavigatorPadding();
+    const offsets = useNavigationOffsets();
 
     // Retrieve state
     const tracks = useTypedSelector((state) => state.music.tracks.entities);
@@ -123,107 +127,109 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     }, [dispatch, downloadedTracks]);
 
     return (
-        <ScrollView
+        <SafeScrollView
             style={defaultStyles.view}
-            contentContainerStyle={[{ padding: 24, paddingTop: 32 + navigatorPadding.paddingTop, paddingBottom: 64 + navigatorPadding.paddingBottom } ]}
             refreshControl={
-                <RefreshControl refreshing={isLoading} onRefresh={refresh} progressViewOffset={navigatorPadding.paddingTop} />
+                <RefreshControl refreshing={isLoading} onRefresh={refresh} progressViewOffset={offsets.top} />
             }
         >
-            <AlbumImageContainer>
-                <CoverImage src={getImage(entityId)} />
-            </AlbumImageContainer>
-            <Header>{title}</Header>
-            <SubHeader>{artist}</SubHeader>
-            <WrappableButtonRow>
-                <WrappableButton title={playButtonText} icon={Play} onPress={playEntity} testID="play-album" />
-                <WrappableButton title={shuffleButtonText} icon={Shuffle} onPress={shuffleEntity} testID="shuffle-album" />
-            </WrappableButtonRow>
-            <View style={{ marginTop: 8 }}>
-                {trackIds.map((trackId, i) =>
-                    <TouchableHandler
-                        key={trackId}
-                        id={i}
-                        onPress={selectTrack}
-                        onLongPress={longPressTrack}
-                        testID={`play-track-${trackId}`}
-                    >
-                        <TrackContainer
-                            isPlaying={currentTrack?.backendId === trackId || false}
-                            style={[defaultStyles.border, currentTrack?.backendId === trackId || false ? defaultStyles.activeBackground : null ]}
+            <View style={{ padding: 24, paddingTop: 32, paddingBottom: 64 }}>
+                <AlbumImageContainer>
+                    <CoverImage src={getImage(entityId)} />
+                </AlbumImageContainer>
+                <Header>{title}</Header>
+                <SubHeader>{artist}</SubHeader>
+                <WrappableButtonRow>
+                    <WrappableButton title={playButtonText} icon={Play} onPress={playEntity} testID="play-album" />
+                    <WrappableButton title={shuffleButtonText} icon={Shuffle} onPress={shuffleEntity} testID="shuffle-album" />
+                </WrappableButtonRow>
+                <View style={{ marginTop: 8 }}>
+                    {trackIds.map((trackId, i) =>
+                        <TouchableHandler
+                            key={trackId}
+                            id={i}
+                            onPress={selectTrack}
+                            onLongPress={longPressTrack}
+                            testID={`play-track-${trackId}`}
                         >
-                            <Text
-                                style={[
-                                    styles.index,
-                                    { opacity: 0.25 },
-                                    currentTrack?.backendId === trackId && styles.activeText
-                                ]}
-                                numberOfLines={1}
+                            <TrackContainer
+                                isPlaying={currentTrack?.backendId === trackId || false}
+                                style={[defaultStyles.border, currentTrack?.backendId === trackId || false ? defaultStyles.activeBackground : null ]}
+                                small={itemDisplayStyle === 'playlist'}
                             >
-                                {listNumberingStyle === 'index' 
-                                    ? i + 1
-                                    : tracks[trackId]?.IndexNumber}
-                            </Text>
-                            <View style={{ flexShrink: 1 }}>
                                 <Text
-                                    style={{ 
-                                        ...currentTrack?.backendId === trackId && styles.activeText,
-                                        flexShrink: 1,
-                                        marginRight: 4,
-                                    }}
+                                    style={[
+                                        styles.index,
+                                        { opacity: 0.25 },
+                                        currentTrack?.backendId === trackId && styles.activeText
+                                    ]}
                                     numberOfLines={1}
                                 >
-                                    {tracks[trackId]?.Name}
+                                    {listNumberingStyle === 'index' 
+                                        ? i + 1
+                                        : tracks[trackId]?.IndexNumber}
                                 </Text>
-                                {itemDisplayStyle === 'playlist' && (
+                                <View style={{ flexShrink: 1 }}>
                                     <Text
                                         style={{ 
                                             ...currentTrack?.backendId === trackId && styles.activeText,
                                             flexShrink: 1,
                                             marginRight: 4,
-                                            opacity:currentTrack?.backendId === trackId ? 0.5 : 0.25,
                                         }}
                                         numberOfLines={1}
                                     >
-                                        {tracks[trackId]?.Artists.join(', ')}
+                                        {tracks[trackId]?.Name}
                                     </Text>
-                                )}
-                            </View>
-                            <View style={{ marginLeft: 'auto', flexDirection: 'row' }}>
-                                <Text
-                                    style={[
-                                        { marginRight: 12, opacity: 0.25 },
-                                        currentTrack?.backendId === trackId && styles.activeText
-                                    ]}
-                                    numberOfLines={1}
-                                >
-                                    {ticksToDuration(tracks[trackId]?.RunTimeTicks || 0)}
-                                </Text>
-                                <DownloadIcon trackId={trackId} fill={currentTrack?.backendId === trackId ? `${THEME_COLOR}44` : undefined} />
-                            </View>
-                        </TrackContainer>
-                    </TouchableHandler>
-                )}
-                <Text style={{ paddingTop: 24, paddingBottom: 12, textAlign: 'center', opacity: 0.5 }}>{t('total-duration')}{': '}{ticksToDuration(totalDuration)}</Text>
-                <WrappableButtonRow style={{ marginTop: 24 }}>
-                    <WrappableButton
-                        icon={CloudDownArrow}
-                        title={downloadButtonText}
-                        onPress={downloadAllTracks}
-                        disabled={downloadedTracks.length === trackIds.length}
-                        testID="download-album"
-                    />
-                    <WrappableButton
-                        icon={Trash}
-                        title={deleteButtonText}
-                        onPress={deleteAllTracks}
-                        disabled={downloadedTracks.length === 0}
-                        testID="delete-album"
-                    />
-                </WrappableButtonRow>
+                                    {itemDisplayStyle === 'playlist' && (
+                                        <Text
+                                            style={{ 
+                                                ...currentTrack?.backendId === trackId && styles.activeText,
+                                                flexShrink: 1,
+                                                marginRight: 4,
+                                                opacity:currentTrack?.backendId === trackId ? 0.5 : 0.25,
+                                            }}
+                                            numberOfLines={1}
+                                        >
+                                            {tracks[trackId]?.Artists.join(', ')}
+                                        </Text>
+                                    )}
+                                </View>
+                                <View style={{ marginLeft: 'auto', flexDirection: 'row' }}>
+                                    <Text
+                                        style={[
+                                            { marginRight: 12, opacity: 0.25 },
+                                            currentTrack?.backendId === trackId && styles.activeText
+                                        ]}
+                                        numberOfLines={1}
+                                    >
+                                        {ticksToDuration(tracks[trackId]?.RunTimeTicks || 0)}
+                                    </Text>
+                                    <DownloadIcon trackId={trackId} fill={currentTrack?.backendId === trackId ? `${THEME_COLOR}44` : undefined} />
+                                </View>
+                            </TrackContainer>
+                        </TouchableHandler>
+                    )}
+                    <Text style={{ paddingTop: 24, paddingBottom: 12, textAlign: 'center', opacity: 0.5 }}>{t('total-duration')}{': '}{ticksToDuration(totalDuration)}</Text>
+                    <WrappableButtonRow style={{ marginTop: 24 }}>
+                        <WrappableButton
+                            icon={CloudDownArrow}
+                            title={downloadButtonText}
+                            onPress={downloadAllTracks}
+                            disabled={downloadedTracks.length === trackIds.length}
+                            testID="download-album"
+                        />
+                        <WrappableButton
+                            icon={Trash}
+                            title={deleteButtonText}
+                            onPress={deleteAllTracks}
+                            disabled={downloadedTracks.length === 0}
+                            testID="delete-album"
+                        />
+                    </WrappableButtonRow>
+                </View>
+                {children}
             </View>
-            {children}
-        </ScrollView>
+        </SafeScrollView>
     );
 };
 
