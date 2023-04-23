@@ -204,7 +204,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                         </TrackContainer>
                     </TouchableHandler>
                 )}
-                <Text style={{ paddingTop: 24, paddingBottom: 12, textAlign: 'center', opacity: 0.5 }}>{t('total-duration')}: {ticksToDuration(totalDuration)}</Text>
+                <Text style={{ paddingTop: 24, paddingBottom: 12, textAlign: 'center', opacity: 0.5 }}>{t('total-duration')}{': '}{ticksToDuration(totalDuration)}</Text>
                 <WrappableButtonRow style={{ marginTop: 24 }}>
                     <WrappableButton
                         icon={CloudDownArrow}

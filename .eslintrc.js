@@ -52,6 +52,12 @@ module.exports = {
         'react/prop-types': 'off',
         '@typescript-eslint/no-unused-vars': [
             'error'
+        ],
+        'react/jsx-no-literals': [
+            'error',
+            {
+                ignoreProps: true
+            }
         ]
     },
     settings: {

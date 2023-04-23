@@ -82,7 +82,7 @@ function Downloads() {
                     ]}
                     numberOfLines={1}
                 >
-                    {t('total-download-size')}: {formatBytes(totalDownloadSize)}
+                    {t('total-download-size')}{': '}{formatBytes(totalDownloadSize)}
                 </Text>
                 <Button
                     icon={TrashIcon}
