@@ -1,3 +1,30 @@
+# [2.1.0](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.0.5...v2.1.0) (2023-04-23)
+
+
+### Bug Fixes
+
+* also add navigator padding when playing the first track in a queue ([1d7db11](https://github.com/leinelissen/jellyfin-audio-player/commit/1d7db11328dff87302be837f248845636c9834dc))
+* contentInset doesn't behave on Android ([1d97830](https://github.com/leinelissen/jellyfin-audio-player/commit/1d97830f831814c852b6efe61eb82367d13a3aca))
+* correctly calculate amount of minutes when an hour is present ([2e816f4](https://github.com/leinelissen/jellyfin-audio-player/commit/2e816f4a71f563de25032daa78c1310bdc320c58))
+* keep album views in search tab when navigating from search results ([e2c1c03](https://github.com/leinelissen/jellyfin-audio-player/commit/e2c1c0300f1a3cbf10b3552e6bad2c2a5535903b))
+* linter issues ([6ccfd19](https://github.com/leinelissen/jellyfin-audio-player/commit/6ccfd19dea656169ada8a2db3bd0af81d4391d67))
+* make similar albums translateable ([81b9ba6](https://github.com/leinelissen/jellyfin-audio-player/commit/81b9ba683a332052a1a4dd0d15c47a676ccdf522))
+* only show similar albums if there are any ([4ff071d](https://github.com/leinelissen/jellyfin-audio-player/commit/4ff071d0c89f961e4b148b8353c77d8e5eee7019))
+* padding in similar scrollwheel ([913d185](https://github.com/leinelissen/jellyfin-audio-player/commit/913d185b46b5a4f9f93110c8aca20538d7b7bbc0))
+* reign in padding on album view a bit ([e116e95](https://github.com/leinelissen/jellyfin-audio-player/commit/e116e95236b24724ce4329dc39ed8fc41165cf8b))
+* remove padding from Modal ([4509ef1](https://github.com/leinelissen/jellyfin-audio-player/commit/4509ef1ec683626f4b76a5e47c944508faadad87))
+
+
+### Features
+
+* add blurview to headers as well ([1a5e4ae](https://github.com/leinelissen/jellyfin-audio-player/commit/1a5e4aee12670c8835fb9cd34eadcca41b9bb16d))
+* add extra metadata to the album view ([dba8724](https://github.com/leinelissen/jellyfin-audio-player/commit/dba87247d86826d3c113f0e5f79e87a3271789e1))
+* finish offsets on new navigation views ([c8283fc](https://github.com/leinelissen/jellyfin-audio-player/commit/c8283fc5803abcd24efb71f1832e0a524e1a36f0))
+* show artist in playlist view ([c3c32ae](https://github.com/leinelissen/jellyfin-audio-player/commit/c3c32ae565ca40f17249c59f66843e15701398f4))
+* update tab bars with blurview ([7601408](https://github.com/leinelissen/jellyfin-audio-player/commit/7601408d49ac7eb60f012e4656b139835240fc1c))
+
+
+
 ## [2.0.5](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.0.4...v2.0.5) (2023-04-12)
 
 
