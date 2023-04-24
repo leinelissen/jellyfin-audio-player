@@ -3,9 +3,14 @@
 ![Fintunes](./docs/images/fintunes-banner.png)
 
 [![Get Fintunes on the App Store](./docs/images/app-store.svg)](https://apple.co/3MFYIJH)
+[<img src="./docs/images/f-droid.png"
+    alt="Get it on F-Droid"
+    height="40">](https://f-droid.org/en/packages/nl.moeilijkedingen.jellyfinaudioplayer/)
 
 [![Latest GitHub release](https://img.shields.io/github/v/release/leinelissen/jellyfin-audio-player?label=latest%20release)](https://github.com/leinelissen/jellyfin-audio-player/releases/latest)
 [![Latest App Store release](https://img.shields.io/itunes/v/1527732194?label=app%20store)](https://apple.co/3MFYIJH)
+[![Join the TestFlight beta](https://img.shields.io/badge/TestFlight-beta-blue)](https://testflight.apple.com/join/cf2AMDpx)
+[![Latest F-Droid release](https://img.shields.io/f-droid/v/nl.moeilijkedingen.jellyfinaudioplayer)](https://f-droid.org/en/packages/nl.moeilijkedingen.jellyfinaudioplayer/)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/leinelissen/jellyfin-audio-player/fastlane.yml)
 [![MIT License](https://img.shields.io/github/license/leinelissen/jellyfin-audio-player)](./LICENSE.md)
 [![Discord](https://img.shields.io/discord/1080781083882307594)](https://discord.gg/xyd97GpC4Q)
