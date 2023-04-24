@@ -19,8 +19,8 @@ type Route = RouteProp<StackParams, 'Album'>;
 const Screen = Dimensions.get('screen');
 
 const Cover = styled(AlbumImage)`
-    height: ${Screen.width / 2.8};
-    width: ${Screen.width / 2.8};
+    height: ${Screen.width / 2.8}px;
+    width: ${Screen.width / 2.8}px;
     border-radius: 12px;
     margin-bottom: 8px;
 `;
