@@ -70,7 +70,7 @@ platform :ios do
         end
 
         sentry_create_release(
-            version: "1.0+#{build_number}",
+            version: package["version"],
             app_identifier: 'nl.moeilijkedingen.jellyfinaudioplayer',
             finalize: true
         )
@@ -79,15 +79,15 @@ platform :ios do
             info_plist: 'ios/Fintunes/Info.plist',
         )
         sentry_upload_file(
-            version: "1.0+#{build_number}",
+            version: package["version"],
             app_identifier: 'nl.moeilijkedingen.jellyfinaudioplayer',
-            dist: build_number,
+            build: build_number,
             file: 'build/index.ios.bundle',
         )
         sentry_upload_sourcemap(
-            version: "1.0+#{build_number}",
+            version: package["version"],
             app_identifier: 'nl.moeilijkedingen.jellyfinaudioplayer',
-            dist: build_number,
+            build: build_number,
             sourcemap: 'build/index.ios.bundle.map',
             rewrite: true
         )
