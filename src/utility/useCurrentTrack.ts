@@ -20,12 +20,15 @@ export default function useCurrentTrack(): CurrentTrackResponse {
         if (currentTrackIndex !== null) {
             setTrack(queue[currentTrackIndex]);
             setIndex(currentTrackIndex);
+        } else {
+            setTrack(undefined);
+            setIndex(undefined);
         }
     }, [setTrack, setIndex]);
 
     // Then execute the function on component mount and track changes
     useEffect(() => { retrieveCurrentTrack(); }, [retrieveCurrentTrack]);
-    useTrackPlayerEvents([ Event.PlaybackTrackChanged ], retrieveCurrentTrack);
+    useTrackPlayerEvents([ Event.PlaybackTrackChanged, Event.PlaybackState ], retrieveCurrentTrack);
     
     return { track, index };
 }
