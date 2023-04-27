@@ -33,7 +33,17 @@ const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
                     queued: []
                 }
             };
-        }
+        },
+        // @ts-expect-error migrations are poorly typed
+        3: (state: AppState) => {
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    enablePlaybackReporting: true,
+                }
+            };
+        },
     })
 };
 

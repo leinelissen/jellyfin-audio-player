@@ -61,5 +61,7 @@
     "local-playback": "Local playback",
     "streaming": "Streaming",
     "total-duration": "Total duration",
-    "similar-albums": "Similar albums"
+    "similar-albums": "Similar albums",
+    "playback-reporting": "Playback Reporting",
+    "playback-reporting-description": "With Playback Reporting, all your playback events are relayed back to Jellyfin. This allows you to track your most listened songs, particularly with Jellyfin plugins such as ListenBrainz."
 }

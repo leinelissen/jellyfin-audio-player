@@ -1,4 +1,4 @@
-import { Track } from 'react-native-track-player';
+import TrackPlayer, { RepeatMode, State, Track } from 'react-native-track-player';
 import { AppState, useTypedSelector } from 'store';
 import { Album, AlbumTrack, SimilarAlbum } from 'store/music/types';
 
@@ -240,4 +240,59 @@ export async function retrievePlaylistTracks(ItemId: string, credentials: Creden
         .then(response => response.json());
 
     return playlists.Items;
+}
+
+/**
+ * This maps the react-native-track-player RepeatMode to a RepeatMode that is
+ * expected by Jellyfin when reporting playback events.
+ */
+const RepeatModeMap: Record<RepeatMode, string> = {
+    [RepeatMode.Off]: 'RepeatNone',
+    [RepeatMode.Track]: 'RepeatOne',
+    [RepeatMode.Queue]: 'RepeatAll',
+};
+
+/**
+ * This will generate the payload that is required for playback events and send
+ * it to the supplied path.
+ */
+export async function sendPlaybackEvent(path: string, credentials: Credentials) {
+    // Extract all data from react-native-track-player
+    const [
+        track, position, repeatMode, volume, queue, state,
+    ] = await Promise.all([
+        TrackPlayer.getCurrentTrack(),
+        TrackPlayer.getPosition(),
+        TrackPlayer.getRepeatMode(),
+        TrackPlayer.getVolume(),
+        TrackPlayer.getQueue(),
+        TrackPlayer.getState(),
+    ]);
+
+    // Generate a payload from the gathered data
+    const payload = {
+        VolumeLevel: volume * 100,
+        IsMuted: false,
+        IsPaused: state === State.Paused,
+        RepeatMode: RepeatModeMap[repeatMode],
+        ShuffleMode: 'Sorted',
+        PositionTicks: position * 1_000_000,
+        PlaybackRate: 1,
+        PlayMethod: 'transcode',
+        MediaSourceId: track ? queue[track].backendId : null,
+        ItemId: track ? queue[track].backendId : null,
+        CanSeek: true,
+        PlaybackStartTimeTicks: null,
+    };
+
+    // Generate a config from the credentials and dispatch the request
+    const config = generateConfig(credentials);
+    await fetch(`${credentials?.uri}${path}`, { 
+        headers: {
+            ...config.headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+    // Swallow and errors from the request
+    }).catch(() => {});
 }

@@ -30,9 +30,12 @@ const DarkTheme = {
     }
 };
 
+// Track whether the player has already been setup, so that we don't
+// accidentally do it twice.
+let hasSetupPlayer = false;
+
 export default function App(): JSX.Element {
     const colorScheme = useColorScheme();
-    // const colorScheme = 'dark';
     const theme = themes[colorScheme || 'light'];
 
     useEffect(() => {
@@ -47,9 +50,14 @@ export default function App(): JSX.Element {
                     Capability.Stop,
                     Capability.SeekTo,
                 ],
+                progressUpdateEventInterval: 5,
             });
         }
-        setupTrackPlayer();
+
+        if (!hasSetupPlayer) {
+            setupTrackPlayer();
+            hasSetupPlayer = true;
+        }
     }, []);
 
     return (
