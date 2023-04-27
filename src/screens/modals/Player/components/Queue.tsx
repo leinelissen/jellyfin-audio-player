@@ -9,6 +9,7 @@ import { t } from '@localisation';
 import useDefaultStyles from 'components/Colors';
 import { Text } from 'components/Typography';
 import RepeatIcon from 'assets/icons/repeat.svg';
+import RepeatSingleIcon from 'assets/icons/repeat.1.svg';
 import Button from 'components/Button';
 import { THEME_COLOR } from 'CONSTANTS';
 import DownloadIcon from 'components/DownloadIcon';
@@ -74,7 +75,7 @@ interface Props {
 export default function Queue({ header }: Props) {
     const defaultStyles = useDefaultStyles();
     const queue = useQueue();
-    const [isRepeating, setIsRepeating] = useState(false);
+    const [repeatMode, setRepeatMode] = useState(RepeatMode.Off);
     const { index: currentIndex } = useCurrentTrack();
 
     const playTrack = useCallback(async (index: number) => {
@@ -86,19 +87,25 @@ export default function Queue({ header }: Props) {
         await TrackPlayer.reset();
     }, []);
 
-    const toggleLoop = useCallback(() => {
-        setIsRepeating((prev) => {
-            TrackPlayer.setRepeatMode(prev ? RepeatMode.Off : RepeatMode.Queue);
-            return !prev;
+    const toggleQueueLoop = useCallback(() => {
+        setRepeatMode((currentMode) => {
+            const newMode = currentMode === RepeatMode.Queue ? RepeatMode.Off : RepeatMode.Queue;
+            TrackPlayer.setRepeatMode(newMode);
+            return newMode;
+        });
+    }, []);
+
+    const toggleTrackLoop = useCallback(() => {
+        setRepeatMode((currentMode) => {
+            const newMode = currentMode === RepeatMode.Track ? RepeatMode.Off : RepeatMode.Track;
+            TrackPlayer.setRepeatMode(newMode);
+            return newMode;
         });
     }, []);
 
     // Retrieve the repeat mode and assign it to the state on component mount
     useEffect(() => {
-        TrackPlayer.getRepeatMode()
-            .then((mode) => {
-                setIsRepeating(mode === RepeatMode.Queue);
-            });
+        TrackPlayer.getRepeatMode().then(setRepeatMode);
     }, []);
 
     return (
@@ -112,11 +119,21 @@ export default function Queue({ header }: Props) {
                         <Text>{t('queue')}</Text>
                         <Divider style={{ marginHorizontal: 18 }} />
                         <IconButton
-                            style={isRepeating ? defaultStyles.activeBackground : undefined}
-                            onPress={toggleLoop}
+                            style={repeatMode === RepeatMode.Track ? defaultStyles.activeBackground : undefined}
+                            onPress={toggleTrackLoop}
+                        >
+                            <RepeatSingleIcon
+                                fill={repeatMode === RepeatMode.Track ? THEME_COLOR : defaultStyles.textHalfOpacity.color}
+                                width={ICON_SIZE}
+                                height={ICON_SIZE}
+                            />
+                        </IconButton>
+                        <IconButton
+                            style={repeatMode === RepeatMode.Queue ? defaultStyles.activeBackground : undefined}
+                            onPress={toggleQueueLoop}
                         >
                             <RepeatIcon
-                                fill={isRepeating ? THEME_COLOR : defaultStyles.textHalfOpacity.color}
+                                fill={repeatMode === RepeatMode.Queue ? THEME_COLOR : defaultStyles.textHalfOpacity.color}
                                 width={ICON_SIZE}
                                 height={ICON_SIZE}
                             />
