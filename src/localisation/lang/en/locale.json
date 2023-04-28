@@ -68,5 +68,6 @@
     "color-scheme-description": "By default, Fintunes will follow your operating system's color scheme. You can however choose to override this to make sure Fintunes is always in dark mode or light mode.",
     "color-scheme-system": "System",
     "color-scheme-light": "Light Mode",
-    "color-scheme-dark": "Dark Mode"
+    "color-scheme-dark": "Dark Mode",
+    "artists": "Artists"
 }

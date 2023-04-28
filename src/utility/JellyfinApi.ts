@@ -4,6 +4,11 @@ import { Album, AlbumTrack, SimilarAlbum } from 'store/music/types';
 
 type Credentials = AppState['settings']['jellyfin'];
 
+/**
+ * This is a convenience function that converts a set of Jellyfin credentials
+ * from the Redux store to a HTTP Header that authenticates the user against the
+ * Jellyfin server.
+ */
 function generateConfig(credentials: Credentials): RequestInit {
     return {
         headers: {

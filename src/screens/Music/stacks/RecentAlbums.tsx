@@ -35,10 +35,12 @@ const NavigationHeader: React.FC = () => {
     const navigation = useNavigation<NavigationProp>();
     const handleAllAlbumsClick = useCallback(() => { navigation.navigate('Albums'); }, [navigation]);
     const handlePlaylistsClick = useCallback(() => { navigation.navigate('Playlists'); }, [navigation]);
+    const handleArtistsClick = useCallback(() => { navigation.navigate('Artists'); }, [navigation]);
     
     return (
         <>
             <ListButton onPress={handleAllAlbumsClick} testID="all-albums">{t('all-albums')}</ListButton>
+            <ListButton onPress={handleArtistsClick} testID="artists">{t('artists')}</ListButton>
             <ListButton onPress={handlePlaylistsClick} testID="playlists">{t('playlists')}</ListButton>
             <ListContainer>
                 <HeaderContainer>

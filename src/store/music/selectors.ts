@@ -3,6 +3,7 @@ import { parseISO } from 'date-fns';
 import { ALPHABET_LETTERS } from 'CONSTANTS';
 import { createSelector, EntityId } from '@reduxjs/toolkit';
 import { SectionListData } from 'react-native';
+import { ArtistItem } from './types';
 
 /**
  * Retrieves a list of the n most recent albums
@@ -89,4 +90,65 @@ function splitAlbumsByAlphabet(state: AppState['music']['albums']): SectionedId[
 export const selectAlbumsByAlphabet = createSelector(
     (state: AppState) => state.music.albums,
     splitAlbumsByAlphabet,
+);
+
+export type SectionArtistItem = ArtistItem & { albumIds: EntityId[] };
+
+/**
+ * Retrieve all artists based on the available albums
+ */
+export function artistsFromAlbums(state: AppState['music']['albums']) {
+    // Loop through all albums to retrieve the AlbumArtists
+    const artists = state.ids.reduce((sum, id) => {
+        // Retrieve the album from the state
+        const album = state.entities[id];
+
+        // Then, loop through all artists
+        album?.ArtistItems.forEach((artist) => {
+            // GUARD: Check that an array already exists for this artist
+            if (!(artist.Name in sum)) {
+                sum[artist.Name] = { albumIds: [] as EntityId[], ...artist };
+            }
+
+            // Add the album id to the artist in the object
+            sum[artist.Name].albumIds.push(id);
+        }, []);
+
+        return sum;
+    }, {} as Record<string, SectionArtistItem>);
+
+    // Now, alphabetically order the object by artist names
+    const sortedArtists = Object.entries(artists)
+        .sort(([a], [b]) => a.localeCompare(b));
+
+    return sortedArtists;
+}
+
+export type SectionedArtist = SectionListData<SectionArtistItem>;
+
+function splitArtistsByAlphabet(state: AppState['music']['albums']) {
+    const artists = artistsFromAlbums(state);
+    const sections: SectionedArtist[] = ALPHABET_LETTERS.split('').map((l) => ({ label: l, data: [] }));
+
+    artists.forEach((artist) => {
+        const letter = artist[0].toUpperCase().charAt(0);
+        const index = letter ? ALPHABET_LETTERS.indexOf(letter) : 26;
+
+        // Then find the current row in this section (note that albums are
+        // grouped in pairs so we can render them more easily).
+        const section = sections[index >= 0 ? index : 26];
+
+        // Add the album to the row
+        (section.data as unknown as SectionArtistItem[]).push(artist[1]);
+    });
+
+    return sections;
+}
+
+/**
+ * Wrap splitByAlphabet into a memoized selector
+ */
+export const selectArtists = createSelector(
+    (state: AppState) => state.music.albums,
+    splitArtistsByAlphabet,
 );
