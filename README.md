@@ -14,6 +14,7 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/leinelissen/jellyfin-audio-player/fastlane.yml)
 [![MIT License](https://img.shields.io/github/license/leinelissen/jellyfin-audio-player)](./LICENSE.md)
 [![Discord](https://img.shields.io/discord/1080781083882307594)](https://discord.gg/xyd97GpC4Q)
+[![Translation status](https://hosted.weblate.org/widgets/fintunes/-/app/svg-badge.svg)](https://hosted.weblate.org/engage/fintunes/)
   
 <br />
 
@@ -62,6 +63,10 @@ When fastlane is setup, you can run either commands for generating IPA (iOS) or 
 fastlane ios beta
 fastlane android beta
 ```
+
+## Translations
+Translations for this project are managed using Weblate. All contributions are warmly welcomed. Click the chart below to contribute a translation.
+[![Translation status](https://hosted.weblate.org/widgets/fintunes/-/app/multi-blue.svg)](https://hosted.weblate.org/engage/fintunes/)
 
 ## Licensing and Credits
 This work is licensed under the MIT license and was built by Lei Nelissen.
