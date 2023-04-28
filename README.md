@@ -66,6 +66,7 @@ fastlane android beta
 
 ## Translations
 Translations for this project are managed using Weblate. All contributions are warmly welcomed. Click the chart below to contribute a translation.
+
 [![Translation status](https://hosted.weblate.org/widgets/fintunes/-/app/multi-blue.svg)](https://hosted.weblate.org/engage/fintunes/)
 
 ## Licensing and Credits
