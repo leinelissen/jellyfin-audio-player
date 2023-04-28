@@ -1,1 +1,1 @@
-
+Fraîchement sorti du four, une nouvelle version de Fintunes. Celui-ci contient quelques mises à jour mineures de l'interface utilisateur. Vous remarquerez que l'étiquette sur les barres inférieures a disparu, et nous avons quelques effets fantaisistes pour les barres de navigation en haut et en bas. Les albums incluent désormais un texte de description s'il est disponible sur le serveur, ainsi que des albums similaires extraits de votre instance Jellyfin. Enfin, la liste des pistes d'une playlist inclut désormais également l'artiste.
