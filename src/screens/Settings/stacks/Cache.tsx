@@ -6,14 +6,10 @@ import Button from 'components/Button';
 import styled from 'styled-components/native';
 import { Paragraph } from 'components/Typography';
 import { useAppDispatch } from 'store';
-import { SafeScrollView } from 'components/SafeNavigatorView';
+import Container from '../components/Container';
 
 const ClearCache = styled(Button)`
     margin-top: 16px;
-`;
-
-const Container = styled(SafeScrollView)`
-    padding: 24px;
 `;
 
 export default function CacheSettings() {

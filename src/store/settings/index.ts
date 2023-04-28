@@ -1,5 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setReceivedErrorReportingAlert, setBitrate, setJellyfinCredentials, setOnboardingStatus, setEnablePlaybackReporting } from './actions';
+import { setReceivedErrorReportingAlert, setBitrate, setJellyfinCredentials, setOnboardingStatus, setEnablePlaybackReporting, setColorScheme } from './actions';
+import { ColorScheme } from './types';
 
 interface State {
     jellyfin?: {
@@ -12,6 +13,7 @@ interface State {
     isOnboardingComplete: boolean;
     hasReceivedErrorReportingAlert: boolean;
     enablePlaybackReporting: boolean;
+    colorScheme: ColorScheme;
 }
 
 const initialState: State = {
@@ -19,6 +21,7 @@ const initialState: State = {
     isOnboardingComplete: false,
     hasReceivedErrorReportingAlert: false,
     enablePlaybackReporting: true,
+    colorScheme: ColorScheme.System,
 };
 
 const settings = createReducer(initialState, builder => {
@@ -41,6 +44,10 @@ const settings = createReducer(initialState, builder => {
     builder.addCase(setEnablePlaybackReporting, (state, action) => ({
         ...state,
         enablePlaybackReporting: action.payload,
+    }));
+    builder.addCase(setColorScheme, (state, action) => ({
+        ...state,
+        colorScheme: action.payload,
     }));
 });
 

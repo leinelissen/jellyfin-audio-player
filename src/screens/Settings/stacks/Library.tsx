@@ -1,4 +1,3 @@
-import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import useDefaultStyles from 'components/Colors';
@@ -7,21 +6,8 @@ import { useTypedSelector } from 'store';
 import { t } from '@localisation';
 import Button from 'components/Button';
 import { Paragraph } from 'components/Typography';
-import { SafeScrollView } from 'components/SafeNavigatorView';
-
-const InputContainer = styled.View`
-    margin: 10px 0;
-`;
-
-const Input = styled.TextInput`
-    padding: 15px;
-    margin-top: 5px;
-    border-radius: 5px;
-`;
-
-const Container = styled(SafeScrollView)`
-    padding: 24px;
-`;
+import Container from '../components/Container';
+import { InputContainer, Input } from '../components/Input';
 
 export default function LibrarySettings() {
     const defaultStyles = useDefaultStyles();

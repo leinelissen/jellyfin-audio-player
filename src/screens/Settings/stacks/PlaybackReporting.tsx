@@ -1,26 +1,12 @@
-import { Paragraph, Text } from 'components/Typography';
+import { Paragraph } from 'components/Typography';
 import React, { useCallback } from 'react';
 import { Switch } from 'react-native-gesture-handler';
-import styled from 'styled-components/native';
 import { t } from '@localisation';
 import { SafeScrollView } from 'components/SafeNavigatorView';
 import { useAppDispatch, useTypedSelector } from 'store';
 import { setEnablePlaybackReporting } from 'store/settings/actions';
-
-const Container = styled.View`
-    padding: 24px;
-`;
-
-const SwitchContainer = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 16px 0;
-`;
-
-const Label = styled(Text)`
-    font-size: 16px;
-`;
+import Container from '../components/Container';
+import { SwitchContainer, SwitchLabel } from '../components/Switch';
 
 export default function PlaybackReporting() {
     const isEnabled = useTypedSelector((state) => state.settings.enablePlaybackReporting);
@@ -35,7 +21,7 @@ export default function PlaybackReporting() {
             <Container>
                 <Paragraph>{t('playback-reporting-description')}</Paragraph>
                 <SwitchContainer>
-                    <Label>{t('playback-reporting')}</Label>
+                    <SwitchLabel>{t('playback-reporting')}</SwitchLabel>
                     <Switch value={isEnabled} onValueChange={toggleSwitch} />
                 </SwitchContainer>
             </Container>

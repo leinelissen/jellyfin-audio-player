@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import TrackPlayer, { Capability } from 'react-native-track-player';
 import { PersistGate } from 'redux-persist/integration/react';
 import Routes from '../screens';
-import store, { persistedStore } from 'store';
+import store, { persistedStore, useTypedSelector } from 'store';
 import {
     NavigationContainer,
     DefaultTheme,
     DarkTheme as BaseDarkTheme,
 } from '@react-navigation/native';
-import { useColorScheme } from 'react-native';
-import { ColorSchemeContext, themes } from './Colors';
+import { ColorSchemeProvider, themes } from './Colors';
 import DownloadManager from './DownloadManager';
-// import ErrorReportingAlert from 'utility/ErrorReportingAlert';
+import { useColorScheme } from 'react-native';
+import { ColorScheme } from 'store/settings/types';
 
 const LightTheme = {
     ...DefaultTheme,
@@ -30,14 +30,29 @@ const DarkTheme = {
     }
 };
 
+/**
+ * This is a convenience wrapper for NavigationContainer that ensures that the
+ * right theme is selected based on OS color scheme settings along with user preferences.
+ */
+function ThemedNavigationContainer({ children }: PropsWithChildren<{}>) {
+    const systemScheme = useColorScheme();
+    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
+    const scheme = userScheme === ColorScheme.System ? systemScheme : userScheme;
+
+    return (
+        <NavigationContainer
+            theme={scheme === 'dark' ? DarkTheme : LightTheme}
+        >
+            {children}
+        </NavigationContainer>
+    );
+}
+
 // Track whether the player has already been setup, so that we don't
 // accidentally do it twice.
 let hasSetupPlayer = false;
 
 export default function App(): JSX.Element {
-    const colorScheme = useColorScheme();
-    const theme = themes[colorScheme || 'light'];
-
     useEffect(() => {
         async function setupTrackPlayer() {
             await TrackPlayer.setupPlayer();
@@ -63,14 +78,12 @@ export default function App(): JSX.Element {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistedStore}>
-                <ColorSchemeContext.Provider value={theme}>
-                    <NavigationContainer
-                        theme={colorScheme === 'dark' ? DarkTheme : LightTheme}
-                    >
+                <ColorSchemeProvider>
+                    <ThemedNavigationContainer>
                         <Routes />
                         <DownloadManager />
-                    </NavigationContainer>
-                </ColorSchemeContext.Provider>
+                    </ThemedNavigationContainer>
+                </ColorSchemeProvider>
             </PersistGate>
         </Provider>
     );

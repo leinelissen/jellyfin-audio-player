@@ -63,5 +63,10 @@
     "total-duration": "Total duration",
     "similar-albums": "Similar albums",
     "playback-reporting": "Playback Reporting",
-    "playback-reporting-description": "With Playback Reporting, all your playback events are relayed back to Jellyfin. This allows you to track your most listened songs, particularly with Jellyfin plugins such as ListenBrainz."
+    "playback-reporting-description": "With Playback Reporting, all your playback events are relayed back to Jellyfin. This allows you to track your most listened songs, particularly with Jellyfin plugins such as ListenBrainz.",
+    "color-scheme": "Color Scheme",
+    "color-scheme-description": "By default, Fintunes will follow your operating system's color scheme. You can however choose to override this to make sure Fintunes is always in dark mode or light mode.",
+    "color-scheme-system": "System",
+    "color-scheme-light": "Light Mode",
+    "color-scheme-dark": "Dark Mode"
 }

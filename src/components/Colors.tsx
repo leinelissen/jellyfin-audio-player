@@ -3,6 +3,8 @@ import { THEME_COLOR } from 'CONSTANTS';
 import React, { PropsWithChildren } from 'react';
 import { useContext } from 'react';
 import { ColorSchemeName, Platform, StyleSheet, View, useColorScheme } from 'react-native';
+import { useTypedSelector } from 'store';
+import { ColorScheme } from 'store/settings/types';
 
 const majorPlatformVersion = typeof Platform.Version === 'string' ? parseInt(Platform.Version, 10) : Platform.Version;
 
@@ -78,6 +80,22 @@ export const themes: Record<'dark' | 'light', ReturnType<typeof generateStyles>>
 export const ColorSchemeContext = React.createContext(themes.dark);
 
 /**
+ * This provider contains the logic for settings the right theme on the ColorSchemeContext.
+ */
+export function ColorSchemeProvider({ children }: PropsWithChildren<{}>) {
+    const systemScheme = useColorScheme();
+    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
+    const scheme = userScheme === ColorScheme.System ? systemScheme : userScheme;
+    const theme = themes[scheme || 'light'];
+
+    return (
+        <ColorSchemeContext.Provider value={theme}>
+            {children}
+        </ColorSchemeContext.Provider>
+    );
+}
+
+/**
  * Retrieves the default styles object in hook form 
  */
 export default function useDefaultStyles() {
@@ -98,13 +116,15 @@ export function DefaultStylesProvider(props: DefaultStylesProviderProps) {
 }
 
 export function ColoredBlurView(props: PropsWithChildren<BlurViewProps>) {
-    const scheme = useColorScheme();
+    const systemScheme = useColorScheme();
+    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
+    const scheme = userScheme === ColorScheme.System ? systemScheme : userScheme;
 
     return Platform.OS === 'ios' ? (
         <BlurView
             {...props}
             blurType={Platform.OS === 'ios' && majorPlatformVersion >= 13 
-                ? 'material'
+                ? scheme === 'dark' ? 'materialDark' : 'materialLight'
                 : scheme === 'dark' ? 'extraDark' : 'xlight'
             } />
     ) : (

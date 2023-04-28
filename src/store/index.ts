@@ -8,6 +8,7 @@ import settings from './settings';
 import music, { initialState as musicInitialState } from './music';
 import downloads, { initialState as downloadsInitialState } from './downloads';
 import { PersistState } from 'redux-persist/es/types';
+import { ColorScheme } from './settings/types';
 
 const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
     key: 'root',
@@ -41,6 +42,16 @@ const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
                 settings: {
                     ...state.settings,
                     enablePlaybackReporting: true,
+                }
+            };
+        },
+        // @ts-expect-error migrations are poorly typed
+        4: (state: AppState) => {
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    colorScheme: ColorScheme.System,
                 }
             };
         },
