@@ -59,5 +59,15 @@
     "you-are-offline-message": "你当前处于离线状态，仅能播放缓存的歌曲。",
     "playing-on": "播放",
     "local-playback": "本地播放",
-    "streaming": "远程串流"
+    "streaming": "远程串流",
+    "color-scheme-description": "默认情况下，Fintunes 将遵循您操作系统的配色方案。但是，您可以选择覆盖它以确保 Fintunes 始终处于暗模式或亮模式。",
+    "total-duration": "总时长",
+    "similar-albums": "相似专辑",
+    "playback-reporting": "播放报告",
+    "color-scheme": "配色方案",
+    "color-scheme-system": "系统",
+    "artists": "艺术家",
+    "color-scheme-dark": "深色模式",
+    "playback-reporting-description": "借助回放报告，您的所有回放事件都会转发回 Jellyfin。这使您可以跟踪您最常听的歌曲，尤其是使用 ListenBrainz 等 Jellyfin 插件时。",
+    "color-scheme-light": "灯光模式"
 }

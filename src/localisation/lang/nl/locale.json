@@ -61,5 +61,13 @@
     "local-playback": "Lokaal afspelen",
     "streaming": "Streamen",
     "total-duration": "Totale duur",
-    "similar-albums": "Vergelijkbare albums"
+    "similar-albums": "Vergelijkbare albums",
+    "playback-reporting-description": "Met Playback Reporting worden al uw afspeelgebeurtenissen teruggestuurd naar Jellyfin. Hiermee kunt u uw meest beluisterde nummers volgen, vooral met Jellyfin-plug-ins zoals ListenBrainz.",
+    "color-scheme-description": "Fintunes volgt standaard het kleurenschema van uw besturingssysteem. U kunt er echter voor kiezen om dit te overschrijven om ervoor te zorgen dat Fintunes altijd in de donkere of lichte modus staat.",
+    "color-scheme": "Kleurenschema",
+    "artists": "Artiesten",
+    "playback-reporting": "Afspeelrapportage",
+    "color-scheme-system": "Systeem",
+    "color-scheme-light": "Lichte modus",
+    "color-scheme-dark": "Donkere modus"
 }
