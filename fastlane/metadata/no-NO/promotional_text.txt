@@ -1,0 +1,1 @@
+En streaming-lydspiller for Jellyfin, med støtte for søk og nedlastinger.
