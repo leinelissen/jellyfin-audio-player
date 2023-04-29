@@ -1,1 +1,1 @@
-jellyfin, lyd, spiller, streaming, nedlastinger, musikk
+jellyfin, lyd, spiller, strømming, nedlastinger, musikk
