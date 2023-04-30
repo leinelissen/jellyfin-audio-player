@@ -23,7 +23,8 @@
     "@react-navigation/stack": "^6.3.4",
     "@reduxjs/toolkit": "^1.9.0",
     "@sentry/react-native": "^4.8.0",
-    "@shopify/react-native-skia": "^0.1.157",
+    "@shopify/react-native-skia": "^0.1.185",
+    "@tsconfig/react-native": "^3.0.0",
     "@types/lodash": "^4.14.188",
     "date-fns": "^2.29.3",
     "events": "^3.3.0",
@@ -34,7 +35,7 @@
     "patch-package": "^6.5.1",
     "react": "18.2.0",
     "react-airplay": "^1.2.0",
-    "react-native": "^0.70.8",
+    "react-native": "^0.71.7",
     "react-native-collapsible": "^1.6.0",
     "react-native-dotenv": "^3.4.2",
     "react-native-fast-image": "^8.6.3",
@@ -46,6 +47,7 @@
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.18.2",
     "react-native-shadow-2": "^7.0.6",
+    "react-native-skia": "^0.0.1",
     "react-native-svg": "^13.5.0",
     "react-native-svg-transformer": "^1.0.0",
     "react-native-track-player": "^3.2.0",
@@ -65,7 +67,6 @@
     "@sentry/cli": "^2.8.1",
     "@types/i18n-js": "^3.8.3",
     "@types/jest": "^29.2.2",
-    "@types/react-native": "^0.70.6",
     "@types/react-test-renderer": "^18.0.0",
     "@types/redux-logger": "^3.0.9",
     "@types/styled-components": "^5.1.26",
@@ -94,8 +95,5 @@
       "json",
       "node"
     ]
-  },
-  "overrides": {
-    "@types/react-native": "^0.70.6"
   }
 }
