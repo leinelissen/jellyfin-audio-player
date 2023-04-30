@@ -1,0 +1,1 @@
+Strumieniowy odtwarzacz audio dla Jellyfin, z obsługą wyszukiwania i pobierania.
