@@ -1,1 +1,1 @@
-Audio player for Jellyfin
+Lecteur audio pour Jellyfin
