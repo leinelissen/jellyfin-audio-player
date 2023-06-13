@@ -1,3 +1,5 @@
+Privacy policy for Fintunes
+
 Fintunes does not collect any personal data. Period. We respect your right to
 autonomy and vow to not collect any information without user consent at all.
 
