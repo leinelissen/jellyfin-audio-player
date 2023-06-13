@@ -15,6 +15,7 @@ import Library from './stacks/Library';
 import ColorScheme from './stacks/ColorScheme';
 import PlaybackReporting from './stacks/PlaybackReporting';
 import { SafeScrollView } from 'components/SafeNavigatorView';
+import PrivacyPolicy from './components/PrivacyPolicy';
 
 export function SettingsList() {
     const navigation = useNavigation<SettingsNavigationProp>();
@@ -23,6 +24,7 @@ export function SettingsList() {
     const handleSentryClick = useCallback(() => { navigation.navigate('Sentry'); }, [navigation]);
     const handlePlaybackReportingClick = useCallback(() => { navigation.navigate('Playback Reporting'); }, [navigation]);
     const handleColorSchemeClick = useCallback(() => { navigation.navigate('Color Scheme'); }, [navigation]);
+    const handlePrivacyPolicyClick = useCallback(() => { navigation.navigate('PrivacyPolicy'); }, [navigation]);
 
     return (
         <SafeScrollView>
@@ -31,6 +33,7 @@ export function SettingsList() {
             <ListButton onPress={handleSentryClick}>{t('error-reporting')}</ListButton>
             <ListButton onPress={handlePlaybackReportingClick}>{t('playback-reporting')}</ListButton>
             <ListButton onPress={handleColorSchemeClick}>{t('color-scheme')}</ListButton>
+            <ListButton onPress={handlePrivacyPolicyClick}>{t('privacy-policy')}</ListButton>
         </SafeScrollView>
     );
 }
@@ -53,6 +56,7 @@ export default function Settings() {
             <Stack.Screen name="Sentry" component={Sentry} options={{ headerTitle: t('error-reporting') }} />
             <Stack.Screen name="Playback Reporting" component={PlaybackReporting} options={{ headerTitle: t('playback-reporting')}} />
             <Stack.Screen name="Color Scheme" component={ColorScheme} options={{ headerTitle: t('color-scheme')}} />
+            <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} options={{ headerTitle: t('privacy-policy') }} />
         </Stack.Navigator>
     );
 }
