@@ -5,10 +5,10 @@ package = load_json(json_path: "package.json")
 platform :ios do
     before_all do
         get_certificates(
-            output_path: 'certificates/'
+            output_path: "certificates/"
         )
         get_provisioning_profile(
-            output_path: 'certificates/',
+            output_path: "certificates/",
             filename: "provisioning.mobileprovision",
             fail_on_name_taken: false,
         )
@@ -75,8 +75,8 @@ platform :ios do
             finalize: true
         )
         sentry_upload_dsym(
-            dsym_path: 'build/Fintunes.app.dSYM.zip',
-            info_plist: 'ios/Fintunes/Info.plist',
+            dsym_path: "build/Fintunes.app.dSYM.zip",
+            info_plist: "ios/Fintunes/Info.plist",
         )
         sentry_upload_file(
             version: package["version"],
@@ -103,7 +103,7 @@ platform :android do
     desc "Generate beta build"
     lane :beta do
         android_set_version_name(
-            version_name: package['version'],
+            version_name: package["version"],
             gradle_file: "android/app/build.gradle"
         )
         android_set_version_code(    
@@ -114,14 +114,25 @@ platform :android do
             build_type: "Release",
             project_dir: "android"
         )
+        gradle(
+            task: "bundle",
+            build_type: "Release",
+            project_dir: "android"
+        )
+        upload_to_play_store(
+            track: "beta",
+            skip_upload_apk: true
+        )
     end
 
     lane :release do
         gradle(
             task: "bundle",
-            build_type: 'Release',
+            build_type: "Release",
             project_dir: "android"
         )
-        upload_to_play_store
+        upload_to_play_store(
+            skip_upload_apk: true
+        )
     end
 end
