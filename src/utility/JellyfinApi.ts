@@ -293,11 +293,14 @@ export async function sendPlaybackEvent(path: string, credentials: Credentials) 
     // Generate a config from the credentials and dispatch the request
     const config = generateConfig(credentials);
     await fetch(`${credentials?.uri}${path}`, { 
+        method: 'POST',
         headers: {
             ...config.headers,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload),
     // Swallow and errors from the request
-    }).catch(() => {});
+    }).catch((err) => {
+        console.error(err);
+    });
 }
