@@ -69,5 +69,6 @@
     "no-downloads": "まだトラックをダウンロードしていません",
     "streaming": "ストリーミング",
     "local-playback": "ローカル再生",
-    "color-scheme-system": "システム"
+    "color-scheme-system": "システム",
+    "privacy-policy": "プライバシーポリシー"
 }
