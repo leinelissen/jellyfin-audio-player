@@ -62,8 +62,8 @@ export default async function() {
     });
 
     TrackPlayer.addEventListener(Event.PlaybackState, (event) => {
-        // GUARD: Only respond to paused and stopped events
-        if (event.state === State.Paused || event.state === State.Stopped) {
+        // GUARD: Only respond to stopped events
+        if (event.state === State.Stopped) {
             // Retrieve the current settings from the Redux store
             const settings = store.getState().settings;
 
