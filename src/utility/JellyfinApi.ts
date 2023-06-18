@@ -284,8 +284,8 @@ export async function sendPlaybackEvent(path: string, credentials: Credentials) 
         PositionTicks: position * 1_000_000,
         PlaybackRate: 1,
         PlayMethod: 'transcode',
-        MediaSourceId: track ? queue[track].backendId : null,
-        ItemId: track ? queue[track].backendId : null,
+        MediaSourceId: track !== null ? queue[track].backendId : null,
+        ItemId: track !== null ? queue[track].backendId : null,
         CanSeek: true,
         PlaybackStartTimeTicks: null,
     };
