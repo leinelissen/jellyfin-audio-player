@@ -36,12 +36,17 @@ export default async function() {
         TrackPlayer.seekTo(event.position);
     });
 
-    TrackPlayer.addEventListener(Event.PlaybackTrackChanged, () => {
+    TrackPlayer.addEventListener(Event.PlaybackTrackChanged, async (e) => {
         // Retrieve the current settings from the Redux store
         const settings = store.getState().settings;
 
         // GUARD: Only report playback when the settings is enabled
-        if (settings.enablePlaybackReporting) {
+        if (settings.enablePlaybackReporting && 'track' in e) {
+            // GUARD: End the previous track if it's about to end
+            if ('nextTrack' in e && typeof e.track === 'number') {
+                sendPlaybackEvent('/Sessions/Stopped', settings.jellyfin, e.track);
+            }
+
             sendPlaybackEvent('/Sessions/Playing', settings.jellyfin);
         }
     });
