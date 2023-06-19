@@ -5,11 +5,14 @@ import { LocaleKeys } from './types';
 // Lazy loaders for locale
 const localeGetters: Record<string, () => object> = {
     en: () => require('./lang/en/locale.json'),
-    fr: () => require('./lang/fr/locale.json'),
-    nl: () => require('./lang/nl/locale.json'),
     es: () => require('./lang/es/locale.json'),
-    zh: () => require('./lang/zh/locale.json'),
+    fr: () => require('./lang/fr/locale.json'),
     ja: () => require('./lang/ja/locale.json'),
+    nb_NO: () => require('./lang/nb_NO/locale.json'),
+    nl: () => require('./lang/nl/locale.json'),
+    pl: () => require('./lang/pl/locale.json'),
+    uk: () => require('./lang/uk/locale.json'),
+    zh: () => require('./lang/zh/locale.json'),
 };
 
 // Have RNLocalize pick the best locale from the languages on offer
