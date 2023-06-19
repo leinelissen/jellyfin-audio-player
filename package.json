@@ -1,6 +1,6 @@
 {
   "name": "fintunes",
-  "version": "2.2.0-beta.3",
+  "version": "2.2.0",
   "main": "src/index.js",
   "private": true,
   "scripts": {

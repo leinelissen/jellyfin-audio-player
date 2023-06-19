@@ -7,6 +7,7 @@ const localeGetters: Record<string, () => object> = {
     en: () => require('./lang/en/locale.json'),
     es: () => require('./lang/es/locale.json'),
     fr: () => require('./lang/fr/locale.json'),
+    it: () => require('./lang/it/locale.json'),
     ja: () => require('./lang/ja/locale.json'),
     nb_NO: () => require('./lang/nb_NO/locale.json'),
     nl: () => require('./lang/nl/locale.json'),
