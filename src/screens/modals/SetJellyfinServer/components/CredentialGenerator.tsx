@@ -28,7 +28,7 @@ class CredentialGenerator extends Component<Props> {
         `);
     }, 500);
 
-    handleMessage = (event: WebViewMessageEvent) => {
+    handleMessage = async (event: WebViewMessageEvent) => {
         // GUARD: Something must be returned for this thing to work
         if (!event.nativeEvent.data) {
             return;
@@ -44,8 +44,22 @@ class CredentialGenerator extends Component<Props> {
             return;
         }
 
-        // If a message is received, the credentials should be there
         const { credentials: { Servers: [ credentials ] }, deviceId } = data;
+
+        // Attempt to perform a request using the credentials to see if they're
+        // good
+        const response = await fetch(`${credentials.ManualAddress}/Users/Me`, {
+            headers: {
+                'X-Emby-Authorization': `MediaBrowser Client="", Device="", DeviceId="", Version="", Token="${credentials.AccessToken}"`
+            }
+        });
+
+        // GUARD: The request must succeed
+        if (response.status !== 200) {
+            return;
+        }
+
+        // If a message is received, the credentials should be there
         this.props.onCredentialsRetrieved({
             uri: credentials.ManualAddress,
             user_id: credentials.UserId,
