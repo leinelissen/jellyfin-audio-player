@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { showRoutePicker, useAirplayRoutes } from 'react-airplay';
 import { TouchableOpacity } from 'react-native';
 import styled, { css } from 'styled-components/native';
-import AirplayAudioIcon from 'assets/icons/airplay-audio.svg';
+import AirplayAudioIcon from '@/assets/icons/airplay-audio.svg';
 import useDefaultStyles from '@/components/Colors';
 import { t } from '@/localisation';
 

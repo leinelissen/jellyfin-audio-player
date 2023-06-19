@@ -16,7 +16,7 @@ import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import { Album } from '@/store/music/types';
 import { Text } from '@/components/Typography';
 import { ShadowWrapper } from '@/components/Shadow';
-import { NavigationProp } from 'screens/types';
+import { NavigationProp } from '@/screens/types';
 import { SafeSectionList } from '@/components/SafeNavigatorView';
 
 const HeadingHeight = 50;

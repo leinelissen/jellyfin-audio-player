@@ -10,7 +10,7 @@ import TouchableHandler from '@/components/TouchableHandler';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
 import { EntityId } from '@reduxjs/toolkit';
 import useDefaultStyles from '@/components/Colors';
-import { NavigationProp } from 'screens/types';
+import { NavigationProp } from '@/screens/types';
 import { SafeFlatList, useNavigationOffsets } from '@/components/SafeNavigatorView';
 
 interface GeneratedAlbumItemProps {

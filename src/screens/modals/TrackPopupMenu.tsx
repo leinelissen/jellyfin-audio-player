@@ -1,14 +1,14 @@
 import React, { useCallback } from 'react';
 import { useNavigation, StackActions, useRoute, RouteProp } from '@react-navigation/native';
-import { StackParams } from 'screens/types';
+import { StackParams } from '@/screens/types';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import { Header, SubHeader } from '@/components/Typography';
 import styled from 'styled-components/native';
 import { t } from '@/localisation';
-import PlayIcon from 'assets/icons/play.svg';
-import DownloadIcon from 'assets/icons/cloud-down-arrow.svg';
-import QueueAppendIcon from 'assets/icons/queue-append.svg';
-import TrashIcon from 'assets/icons/trash.svg';
+import PlayIcon from '@/assets/icons/play.svg';
+import DownloadIcon from '@/assets/icons/cloud-down-arrow.svg';
+import QueueAppendIcon from '@/assets/icons/queue-append.svg';
+import TrashIcon from '@/assets/icons/trash.svg';
 
 import { WrappableButton, WrappableButtonRow } from '@/components/WrappableButtonRow';
 import CoverImage from '@/components/CoverImage';

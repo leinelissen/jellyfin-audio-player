@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { TouchableOpacityProps } from 'react-native';
-import ChevronRight from 'assets/icons/chevron-right.svg';
+import ChevronRight from '@/assets/icons/chevron-right.svg';
 import styled from 'styled-components/native';
 import { THEME_COLOR } from '@/CONSTANTS';
 import useDefaultStyles from './Colors';

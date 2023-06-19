@@ -3,11 +3,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { THEME_COLOR } from '@/CONSTANTS';
 import { t } from '@/localisation';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
-import { StackParams } from 'screens/types';
+import { StackParams } from '@/screens/types';
 import Search from './stacks/Search';
-import Album from 'screens/Music/stacks/Album';
+import Album from '@/screens/Music/stacks/Album';
 import { StyleSheet } from 'react-native';
-import NowPlaying from 'screens/Music/overlays/NowPlaying';
+import NowPlaying from '@/screens/Music/overlays/NowPlaying';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator<StackParams>();

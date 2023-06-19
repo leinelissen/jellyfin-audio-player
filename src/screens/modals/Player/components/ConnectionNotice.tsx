@@ -2,7 +2,7 @@ import React from 'react';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { THEME_COLOR } from '@/CONSTANTS';
 import styled from 'styled-components/native';
-import CloudSlash from 'assets/icons/cloud-slash.svg';
+import CloudSlash from '@/assets/icons/cloud-slash.svg';
 import { Text } from 'react-native';
 import { t } from '@/localisation';
 import useDefaultStyles from '@/components/Colors';

@@ -19,13 +19,7 @@ module.exports = {
                     '.json',
                 ],
                 alias: {
-                    store: './src/store',
-                    components: './src/components',
-                    utility: './src/utility',
-                    screens: './src/screens',
-                    assets: './src/assets',
-                    '@localisation': './src/localisation',
-                    CONSTANTS: './src/CONSTANTS',
+                    '@': './src',
                 }
             }
         ],

@@ -16,7 +16,7 @@ import { Album } from '@/store/music/types';
 import Divider from '@/components/Divider';
 import styled from 'styled-components/native';
 import { ShadowWrapper } from '@/components/Shadow';
-import { NavigationProp } from 'screens/types';
+import { NavigationProp } from '@/screens/types';
 import { SafeFlatList } from '@/components/SafeNavigatorView';
 
 const styles = StyleSheet.create({

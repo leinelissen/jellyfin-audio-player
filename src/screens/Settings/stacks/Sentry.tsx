@@ -5,7 +5,7 @@ import { Switch } from 'react-native-gesture-handler';
 import styled, { css } from 'styled-components/native';
 import { isSentryEnabled, setSentryStatus } from '@/utility/Sentry';
 import Accordion from 'react-native-collapsible/Accordion';
-import ChevronIcon from 'assets/icons/chevron-right.svg';
+import ChevronIcon from '@/assets/icons/chevron-right.svg';
 import { THEME_COLOR } from '@/CONSTANTS';
 import useDefaultStyles, { DefaultStylesProvider } from '@/components/Colors';
 import { t } from '@/localisation';

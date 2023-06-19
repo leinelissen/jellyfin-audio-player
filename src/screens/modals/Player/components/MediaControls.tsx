@@ -3,10 +3,10 @@ import TrackPlayer, { State, usePlaybackState } from 'react-native-track-player'
 import { TouchableOpacity, useColorScheme } from 'react-native';
 import styled from 'styled-components/native';
 import { useHasNextQueue, useHasPreviousQueue } from '@/utility/useQueue';
-import ForwardIcon from 'assets/icons/forward-end.svg';
-import BackwardIcon from 'assets/icons/backward-end.svg';
-import PlayIcon from 'assets/icons/play.svg';
-import PauseIcon from 'assets/icons/pause.svg';
+import ForwardIcon from '@/assets/icons/forward-end.svg';
+import BackwardIcon from '@/assets/icons/backward-end.svg';
+import PlayIcon from '@/assets/icons/play.svg';
+import PauseIcon from '@/assets/icons/pause.svg';
 
 const BUTTON_SIZE = 40;
 

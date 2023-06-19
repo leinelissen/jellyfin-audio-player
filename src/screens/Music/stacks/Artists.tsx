@@ -12,7 +12,7 @@ import AlphabetScroller from '@/components/AlphabetScroller';
 import styled from 'styled-components/native';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import { Text } from '@/components/Typography';
-import { NavigationProp } from 'screens/types';
+import { NavigationProp } from '@/screens/types';
 import { SafeSectionList } from '@/components/SafeNavigatorView';
 import { Gap } from '@/components/Utility';
 

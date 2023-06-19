@@ -48,7 +48,7 @@ function CoverImage({
     const colorScheme = useColorScheme();
 
     const image = useImage(src || null);
-    const fallback = useImage(colorScheme === 'light' ? require('assets/images/empty-album-light.png') : require('assets/images/empty-album-dark.png'));
+    const fallback = useImage(colorScheme === 'light' ? require('@/assets/images/empty-album-light.png') : require('@/assets/images/empty-album-dark.png'));
     const { canvasSize, imageSize } = useMemo(() => {
         const imageSize = Screen.width - margin;
         const canvasSize = imageSize + blurRadius * 2;

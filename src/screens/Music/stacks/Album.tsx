@@ -6,7 +6,7 @@ import { fetchAlbum, fetchTracksByAlbum } from '@/store/music/actions';
 import { differenceInDays } from 'date-fns';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import { t } from '@/localisation';
-import { NavigationProp, StackParams } from 'screens/types';
+import { NavigationProp, StackParams } from '@/screens/types';
 import { SubHeader, Text } from '@/components/Typography';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useGetImage } from '@/utility/JellyfinApi';

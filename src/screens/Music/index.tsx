@@ -5,7 +5,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { THEME_COLOR } from '@/CONSTANTS';
 import { t } from '@/localisation';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
-import { StackParams } from 'screens/types';
+import { StackParams } from '@/screens/types';
 import NowPlaying from './overlays/NowPlaying';
 
 import RecentAlbums from './stacks/RecentAlbums';

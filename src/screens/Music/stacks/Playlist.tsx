@@ -6,7 +6,7 @@ import { fetchTracksByPlaylist } from '@/store/music/actions';
 import { differenceInDays } from 'date-fns';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import { t } from '@/localisation';
-import { StackParams } from 'screens/types';
+import { StackParams } from '@/screens/types';
 
 type Route = RouteProp<StackParams, 'Album'>;
 

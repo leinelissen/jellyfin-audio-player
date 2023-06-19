@@ -14,7 +14,7 @@ import useDefaultStyles from '@/components/Colors';
 import { Album } from '@/store/music/types';
 import { Text } from '@/components/Typography';
 import { ShadowWrapper } from '@/components/Shadow';
-import { NavigationProp, StackParams } from 'screens/types';
+import { NavigationProp, StackParams } from '@/screens/types';
 import { SafeFlatList } from '@/components/SafeNavigatorView';
 import { chunk } from 'lodash';
 

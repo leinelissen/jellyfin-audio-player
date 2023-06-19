@@ -5,7 +5,7 @@ import { t } from '@/localisation';
 import { setReceivedErrorReportingAlert } from '@/store/settings/actions';
 import { setSentryStatus } from './Sentry';
 import { useNavigation } from '@react-navigation/native';
-import { NavigationProp } from 'screens/types';
+import { NavigationProp } from '@/screens/types';
 
 /**
  * This will send out an alert message asking the user if they want to enable

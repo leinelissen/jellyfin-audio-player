@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import useCurrentTrack from '@/utility/useCurrentTrack';
-import CloudIcon from 'assets/icons/cloud.svg';
-import InternalDriveIcon from 'assets/icons/internal-drive.svg';
+import CloudIcon from '@/assets/icons/cloud.svg';
+import InternalDriveIcon from '@/assets/icons/internal-drive.svg';
 import useDefaultStyles from '@/components/Colors';
 import { Text } from '@/components/Typography';
 import styled from 'styled-components/native';

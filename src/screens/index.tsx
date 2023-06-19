@@ -13,10 +13,10 @@ import Onboarding from './Onboarding';
 import TrackPopupMenu from './modals/TrackPopupMenu';
 import SetJellyfinServer from './modals/SetJellyfinServer';
 
-import SearchIcon from 'assets/icons/magnifying-glass.svg';
-import NotesIcon from 'assets/icons/notes.svg';
-import GearIcon from 'assets/icons/gear.svg';
-import DownloadsIcon from 'assets/icons/arrow-down-to-line.svg';
+import SearchIcon from '@/assets/icons/magnifying-glass.svg';
+import NotesIcon from '@/assets/icons/notes.svg';
+import GearIcon from '@/assets/icons/gear.svg';
+import DownloadsIcon from '@/assets/icons/arrow-down-to-line.svg';
 import { useTypedSelector } from '@/store';
 import { t } from '@/localisation';
 import ErrorReportingAlert from '@/utility/ErrorReportingAlert';

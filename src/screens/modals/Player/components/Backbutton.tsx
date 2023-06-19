@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import XmarkIcon from 'assets/icons/xmark.svg';
+import XmarkIcon from '@/assets/icons/xmark.svg';
 import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
