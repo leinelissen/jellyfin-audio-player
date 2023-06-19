@@ -44,7 +44,7 @@ export default async function() {
         if (settings.enablePlaybackReporting && 'track' in e) {
             // GUARD: End the previous track if it's about to end
             if ('nextTrack' in e && typeof e.track === 'number') {
-                sendPlaybackEvent('/Sessions/Stopped', settings.jellyfin, e.track);
+                sendPlaybackEvent('/Sessions/Playing/Stopped', settings.jellyfin, e.track);
             }
 
             sendPlaybackEvent('/Sessions/Playing', settings.jellyfin);
