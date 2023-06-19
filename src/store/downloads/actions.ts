@@ -1,9 +1,9 @@
 import { createAction, createAsyncThunk, createEntityAdapter, EntityId } from '@reduxjs/toolkit';
-import { AppState } from 'store';
-import { generateTrackUrl } from 'utility/JellyfinApi';
+import { AppState } from '@/store';
+import { generateTrackUrl } from '@/utility/JellyfinApi';
 import { downloadFile, unlink, DocumentDirectoryPath, exists } from 'react-native-fs';
 import { DownloadEntity } from './types';
-import MimeTypes from 'utility/MimeTypes';
+import MimeTypes from '@/utility/MimeTypes';
 
 export const downloadAdapter = createEntityAdapter<DownloadEntity>({
     selectId: (entity) => entity.id,

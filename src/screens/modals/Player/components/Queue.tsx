@@ -1,20 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import useQueue from 'utility/useQueue';
+import useQueue from '@/utility/useQueue';
 import { View, StyleSheet, ListRenderItemInfo } from 'react-native';
 import styled, { css } from 'styled-components/native';
-import useCurrentTrack from 'utility/useCurrentTrack';
-import TouchableHandler from 'components/TouchableHandler';
+import useCurrentTrack from '@/utility/useCurrentTrack';
+import TouchableHandler from '@/components/TouchableHandler';
 import TrackPlayer, { RepeatMode, Track } from 'react-native-track-player';
-import { t } from '@localisation';
-import useDefaultStyles from 'components/Colors';
-import { Text } from 'components/Typography';
+import { t } from '@/localisation';
+import useDefaultStyles from '@/components/Colors';
+import { Text } from '@/components/Typography';
 import RepeatIcon from 'assets/icons/repeat.svg';
 import RepeatSingleIcon from 'assets/icons/repeat.1.svg';
-import Button from 'components/Button';
-import { THEME_COLOR } from 'CONSTANTS';
-import DownloadIcon from 'components/DownloadIcon';
-import Divider from 'components/Divider';
-import ticksToDuration from 'utility/ticksToDuration';
+import Button from '@/components/Button';
+import { THEME_COLOR } from '@/CONSTANTS';
+import DownloadIcon from '@/components/DownloadIcon';
+import Divider from '@/components/Divider';
+import ticksToDuration from '@/utility/ticksToDuration';
 
 const ICON_SIZE = 16;
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
-import useCurrentTrack from 'utility/useCurrentTrack';
+import useCurrentTrack from '@/utility/useCurrentTrack';
 import styled from 'styled-components/native';
-import CoverImage from 'components/CoverImage';
-import { Header, SubHeader } from 'components/Typography';
+import CoverImage from '@/components/CoverImage';
+import { Header, SubHeader } from '@/components/Typography';
 
 const Artwork = styled(CoverImage)`
     margin: 0 auto 25px auto;

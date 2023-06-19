@@ -12,7 +12,7 @@ import {
 } from './actions';
 import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
 import { Album, AlbumTrack, Playlist } from './types';
-import { setJellyfinCredentials } from 'store/settings/actions';
+import { setJellyfinCredentials } from '@/store/settings/actions';
 
 export interface State {
     albums: {

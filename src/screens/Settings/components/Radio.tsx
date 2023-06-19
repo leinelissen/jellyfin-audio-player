@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components/native';
 import CheckmarkIcon from 'assets/icons/checkmark.svg';
-import { Text } from 'components/Typography';
-import useDefaultStyles from 'components/Colors';
-import { THEME_COLOR } from 'CONSTANTS';
-import { Gap } from 'components/Utility';
+import { Text } from '@/components/Typography';
+import useDefaultStyles from '@/components/Colors';
+import { THEME_COLOR } from '@/CONSTANTS';
+import { Gap } from '@/components/Utility';
 import { View } from 'react-native';
 
 export const RadioList = styled.View`

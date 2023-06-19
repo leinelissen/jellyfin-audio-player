@@ -1,6 +1,6 @@
 import TrackPlayer, { RepeatMode, State, Track } from 'react-native-track-player';
-import { AppState, useTypedSelector } from 'store';
-import { Album, AlbumTrack, SimilarAlbum } from 'store/music/types';
+import { AppState, useTypedSelector } from '@/store';
+import { Album, AlbumTrack, SimilarAlbum } from '@/store/music/types';
 
 type Credentials = AppState['settings']['jellyfin'];
 

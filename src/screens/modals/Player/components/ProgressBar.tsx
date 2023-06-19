@@ -6,9 +6,9 @@ import ProgressTrack, {
     getMinutes,
     getSeconds,
     ProgressTrackContainer
-} from 'components/Progresstrack';
+} from '@/components/Progresstrack';
 import { Gesture, GestureDetector, gestureHandlerRootHOC } from 'react-native-gesture-handler';
-import { THEME_COLOR } from 'CONSTANTS';
+import { THEME_COLOR } from '@/CONSTANTS';
 import Reanimated, {
     useSharedValue,
     useAnimatedStyle,
@@ -17,8 +17,8 @@ import Reanimated, {
     useDerivedValue,
     runOnJS,
 } from 'react-native-reanimated';
-import ReText from 'components/ReText';
-import useCurrentTrack from 'utility/useCurrentTrack';
+import ReText from '@/components/ReText';
+import useCurrentTrack from '@/utility/useCurrentTrack';
 
 const DRAG_HANDLE_SIZE = 20;
 const PADDING_TOP = 12;

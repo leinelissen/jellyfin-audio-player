@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useRef, ReactText } from 'react';
-import { useGetImage } from 'utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi';
 import { Text, View, FlatList, ListRenderItem, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
-import { useAppDispatch, useTypedSelector } from 'store';
-import { fetchAllPlaylists } from 'store/music/actions';
-import { PLAYLIST_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
-import TouchableHandler from 'components/TouchableHandler';
+import { useAppDispatch, useTypedSelector } from '@/store';
+import { fetchAllPlaylists } from '@/store/music/actions';
+import { PLAYLIST_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
+import TouchableHandler from '@/components/TouchableHandler';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
 import { EntityId } from '@reduxjs/toolkit';
-import useDefaultStyles from 'components/Colors';
+import useDefaultStyles from '@/components/Colors';
 import { NavigationProp } from 'screens/types';
-import { SafeFlatList, useNavigationOffsets } from 'components/SafeNavigatorView';
+import { SafeFlatList, useNavigationOffsets } from '@/components/SafeNavigatorView';
 
 interface GeneratedAlbumItemProps {
     id: ReactText;

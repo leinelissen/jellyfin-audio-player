@@ -3,7 +3,7 @@ import { SvgProps } from 'react-native-svg';
 import { 
     PressableProps, ViewProps, View,
 } from 'react-native';
-import { THEME_COLOR } from 'CONSTANTS';
+import { THEME_COLOR } from '@/CONSTANTS';
 import styled, { css } from 'styled-components/native';
 import useDefaultStyles from './Colors';
 

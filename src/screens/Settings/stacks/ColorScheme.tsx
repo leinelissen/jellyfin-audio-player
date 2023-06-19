@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
-import { Paragraph } from 'components/Typography';
+import { Paragraph } from '@/components/Typography';
 import Container from '../components/Container';
-import { t } from '@localisation';
+import { t } from '@/localisation';
 import { RadioItem, RadioList } from '../components/Radio';
-import { ColorScheme } from 'store/settings/types';
-import { useAppDispatch, useTypedSelector } from 'store';
-import { setColorScheme } from 'store/settings/actions';
+import { ColorScheme } from '@/store/settings/types';
+import { useAppDispatch, useTypedSelector } from '@/store';
+import { setColorScheme } from '@/store/settings/actions';
 
 export default function ColorSchemeSetting() {
     const dispatch = useAppDispatch();

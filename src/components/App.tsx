@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import TrackPlayer, { Capability } from 'react-native-track-player';
 import { PersistGate } from 'redux-persist/integration/react';
 import Routes from '../screens';
-import store, { persistedStore, useTypedSelector } from 'store';
+import store, { persistedStore, useTypedSelector } from '@/store';
 import {
     NavigationContainer,
     DefaultTheme,
@@ -12,7 +12,7 @@ import {
 import { ColorSchemeProvider, themes } from './Colors';
 import DownloadManager from './DownloadManager';
 import { useColorScheme } from 'react-native';
-import { ColorScheme } from 'store/settings/types';
+import { ColorScheme } from '@/store/settings/types';
 
 const LightTheme = {
     ...DefaultTheme,

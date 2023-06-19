@@ -5,18 +5,18 @@ import styled, { css } from 'styled-components/native';
 
 import PlayIcon from 'assets/icons/play.svg';
 import PauseIcon from 'assets/icons/pause.svg';
-import useCurrentTrack from 'utility/useCurrentTrack';
+import useCurrentTrack from '@/utility/useCurrentTrack';
 import TrackPlayer, { State, usePlaybackState, useProgress } from 'react-native-track-player';
 import { Shadow } from 'react-native-shadow-2';
-import usePrevious from 'utility/usePrevious';
-import { Text } from 'components/Typography';
+import usePrevious from '@/utility/usePrevious';
+import { Text } from '@/components/Typography';
 
-import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
+import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import { useNavigation } from '@react-navigation/native';
-import { calculateProgressTranslation } from 'components/Progresstrack';
-import { THEME_COLOR } from 'CONSTANTS';
+import { calculateProgressTranslation } from '@/components/Progresstrack';
+import { THEME_COLOR } from '@/CONSTANTS';
 import { NavigationProp } from 'screens/types';
-import { ShadowWrapper } from 'components/Shadow';
+import { ShadowWrapper } from '@/components/Shadow';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 const NOW_PLAYING_POPOVER_MARGIN = 6;

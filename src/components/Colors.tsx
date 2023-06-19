@@ -1,10 +1,10 @@
 import { BlurView, BlurViewProps } from '@react-native-community/blur';
-import { THEME_COLOR } from 'CONSTANTS';
+import { THEME_COLOR } from '@/CONSTANTS';
 import React, { PropsWithChildren } from 'react';
 import { useContext } from 'react';
 import { ColorSchemeName, Platform, StyleSheet, View, useColorScheme } from 'react-native';
-import { useTypedSelector } from 'store';
-import { ColorScheme } from 'store/settings/types';
+import { useTypedSelector } from '@/store';
+import { ColorScheme } from '@/store/settings/types';
 
 const majorPlatformVersion = typeof Platform.Version === 'string' ? parseInt(Platform.Version, 10) : Platform.Version;
 

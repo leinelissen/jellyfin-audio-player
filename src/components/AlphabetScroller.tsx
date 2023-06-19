@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
-import { ALPHABET_LETTERS, THEME_COLOR } from 'CONSTANTS';
+import { ALPHABET_LETTERS, THEME_COLOR } from '@/CONSTANTS';
 import { View, LayoutChangeEvent } from 'react-native';
 import { 
     PanGestureHandler, 

@@ -8,7 +8,7 @@
 */
 
 import TrackPlayer, { Event, State } from 'react-native-track-player';
-import store from 'store';
+import store from '@/store';
 import { sendPlaybackEvent } from './JellyfinApi';
 
 export default async function() {

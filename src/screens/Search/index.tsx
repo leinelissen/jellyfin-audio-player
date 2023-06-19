@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { THEME_COLOR } from 'CONSTANTS';
-import { t } from '@localisation';
-import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
+import { THEME_COLOR } from '@/CONSTANTS';
+import { t } from '@/localisation';
+import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import { StackParams } from 'screens/types';
 import Search from './stacks/Search';
 import Album from 'screens/Music/stacks/Album';

@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import TrackPlayer from 'react-native-track-player';
-import music from 'store/music';
-import { t } from '@localisation';
-import Button from 'components/Button';
+import music from '@/store/music';
+import { t } from '@/localisation';
+import Button from '@/components/Button';
 import styled from 'styled-components/native';
-import { Paragraph } from 'components/Typography';
-import { useAppDispatch } from 'store';
+import { Paragraph } from '@/components/Typography';
+import { useAppDispatch } from '@/store';
 import Container from '../components/Container';
 
 const ClearCache = styled(Button)`

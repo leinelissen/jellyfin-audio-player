@@ -1,23 +1,23 @@
 import React, { useCallback, useEffect, useRef, ReactText, useMemo } from 'react';
-import { useGetImage } from 'utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi';
 import { SectionList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
-import { useAppDispatch, useTypedSelector } from 'store';
-import { fetchAllAlbums } from 'store/music/actions';
-import { ALBUM_CACHE_AMOUNT_OF_DAYS } from 'CONSTANTS';
-import TouchableHandler from 'components/TouchableHandler';
+import { useAppDispatch, useTypedSelector } from '@/store';
+import { fetchAllAlbums } from '@/store/music/actions';
+import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
+import TouchableHandler from '@/components/TouchableHandler';
 import AlbumImage, { AlbumHeight, AlbumItem } from './components/AlbumImage';
-import { selectAlbumsByAlphabet, SectionedId } from 'store/music/selectors';
-import AlphabetScroller from 'components/AlphabetScroller';
+import { selectAlbumsByAlphabet, SectionedId } from '@/store/music/selectors';
+import AlphabetScroller from '@/components/AlphabetScroller';
 import { EntityId } from '@reduxjs/toolkit';
 import styled from 'styled-components/native';
-import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
-import { Album } from 'store/music/types';
-import { Text } from 'components/Typography';
-import { ShadowWrapper } from 'components/Shadow';
+import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
+import { Album } from '@/store/music/types';
+import { Text } from '@/components/Typography';
+import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp } from 'screens/types';
-import { SafeSectionList } from 'components/SafeNavigatorView';
+import { SafeSectionList } from '@/components/SafeNavigatorView';
 
 const HeadingHeight = 50;
 

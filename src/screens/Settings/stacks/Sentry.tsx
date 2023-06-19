@@ -1,15 +1,15 @@
-import { Paragraph, Text } from 'components/Typography';
+import { Paragraph, Text } from '@/components/Typography';
 
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-native-gesture-handler';
 import styled, { css } from 'styled-components/native';
-import { isSentryEnabled, setSentryStatus } from 'utility/Sentry';
+import { isSentryEnabled, setSentryStatus } from '@/utility/Sentry';
 import Accordion from 'react-native-collapsible/Accordion';
 import ChevronIcon from 'assets/icons/chevron-right.svg';
-import { THEME_COLOR } from 'CONSTANTS';
-import useDefaultStyles, { DefaultStylesProvider } from 'components/Colors';
-import { t } from '@localisation';
-import { SafeScrollView } from 'components/SafeNavigatorView';
+import { THEME_COLOR } from '@/CONSTANTS';
+import useDefaultStyles, { DefaultStylesProvider } from '@/components/Colors';
+import { t } from '@/localisation';
+import { SafeScrollView } from '@/components/SafeNavigatorView';
 
 const Container = styled.View`
     padding: 24px;

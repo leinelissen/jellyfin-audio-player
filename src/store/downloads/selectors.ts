@@ -1,6 +1,6 @@
 import { createSelector, EntityId } from '@reduxjs/toolkit';
 import { intersection } from 'lodash';
-import { AppState } from 'store';
+import { AppState } from '@/store';
 
 export const selectAllDownloads = (state: AppState) => state.downloads;
 export const selectDownloadedEntities = (state: AppState) => state.downloads.entities;

@@ -3,7 +3,7 @@ import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-naviga
 import { StackNavigationProp } from '@react-navigation/stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
-import { THEME_COLOR } from 'CONSTANTS';
+import { THEME_COLOR } from '@/CONSTANTS';
 
 import SearchStack from './Search';
 import Music from './Music';
@@ -17,13 +17,13 @@ import SearchIcon from 'assets/icons/magnifying-glass.svg';
 import NotesIcon from 'assets/icons/notes.svg';
 import GearIcon from 'assets/icons/gear.svg';
 import DownloadsIcon from 'assets/icons/arrow-down-to-line.svg';
-import { useTypedSelector } from 'store';
-import { t } from '@localisation';
-import ErrorReportingAlert from 'utility/ErrorReportingAlert';
+import { useTypedSelector } from '@/store';
+import { t } from '@/localisation';
+import ErrorReportingAlert from '@/utility/ErrorReportingAlert';
 import ErrorReportingPopup from './modals/ErrorReportingPopup';
 import Player from './modals/Player';
 import { StyleSheet } from 'react-native';
-import { ColoredBlurView } from 'components/Colors';
+import { ColoredBlurView } from '@/components/Colors';
 import { StackParams } from './types';
 
 const Stack = createNativeStackNavigator<StackParams>();

@@ -1,4 +1,4 @@
-import { useTypedSelector } from 'store';
+import { useTypedSelector } from '@/store';
 import { useCallback } from 'react';
 import TrackPlayer, { Track } from 'react-native-track-player';
 import { generateTrack } from './JellyfinApi';

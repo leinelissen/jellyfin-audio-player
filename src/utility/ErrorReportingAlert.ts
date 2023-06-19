@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Alert } from 'react-native';
-import { useAppDispatch, useTypedSelector } from 'store';
-import { t } from '@localisation';
-import { setReceivedErrorReportingAlert } from 'store/settings/actions';
+import { useAppDispatch, useTypedSelector } from '@/store';
+import { t } from '@/localisation';
+import { setReceivedErrorReportingAlert } from '@/store/settings/actions';
 import { setSentryStatus } from './Sentry';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from 'screens/types';

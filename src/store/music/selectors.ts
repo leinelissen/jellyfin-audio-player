@@ -1,6 +1,6 @@
-import { useTypedSelector, AppState } from 'store';
+import { useTypedSelector, AppState } from '@/store';
 import { parseISO } from 'date-fns';
-import { ALPHABET_LETTERS } from 'CONSTANTS';
+import { ALPHABET_LETTERS } from '@/CONSTANTS';
 import { createSelector, EntityId } from '@reduxjs/toolkit';
 import { SectionListData } from 'react-native';
 import { ArtistItem } from './types';

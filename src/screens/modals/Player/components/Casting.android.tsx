@@ -1,4 +1,4 @@
-import { t } from '@localisation';
+import { t } from '@/localisation';
 import React from 'react';
 import styled from 'styled-components/native';
 

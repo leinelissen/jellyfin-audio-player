@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
-import { t } from '@localisation';
+import { t } from '@/localisation';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import { THEME_COLOR } from 'CONSTANTS';
-import ListButton from 'components/ListButton';
-import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
+import { THEME_COLOR } from '@/CONSTANTS';
+import ListButton from '@/components/ListButton';
+import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 
 import { SettingsNavigationProp } from './types';
 
@@ -14,7 +14,7 @@ import Sentry from './stacks/Sentry';
 import Library from './stacks/Library';
 import ColorScheme from './stacks/ColorScheme';
 import PlaybackReporting from './stacks/PlaybackReporting';
-import { SafeScrollView } from 'components/SafeNavigatorView';
+import { SafeScrollView } from '@/components/SafeNavigatorView';
 import PrivacyPolicy from './components/PrivacyPolicy';
 
 export function SettingsList() {

@@ -1,22 +1,22 @@
-import useDefaultStyles from 'components/Colors';
+import useDefaultStyles from '@/components/Colors';
 import React, { useCallback, useMemo } from 'react';
 import { FlatListProps, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAppDispatch, useTypedSelector } from 'store';
-import formatBytes from 'utility/formatBytes';
+import { useAppDispatch, useTypedSelector } from '@/store';
+import formatBytes from '@/utility/formatBytes';
 import TrashIcon from 'assets/icons/trash.svg';
 import ArrowClockwise from 'assets/icons/arrow-clockwise.svg';
 import { EntityId } from '@reduxjs/toolkit';
-import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
-import Button from 'components/Button';
+import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/actions';
+import Button from '@/components/Button';
 import { t } from 'i18n-js';
-import DownloadIcon from 'components/DownloadIcon';
+import DownloadIcon from '@/components/DownloadIcon';
 import styled from 'styled-components/native';
-import { Text } from 'components/Typography';
+import { Text } from '@/components/Typography';
 import FastImage from 'react-native-fast-image';
-import { useGetImage } from 'utility/JellyfinApi';
-import { ShadowWrapper } from 'components/Shadow';
-import { SafeFlatList } from 'components/SafeNavigatorView';
+import { useGetImage } from '@/utility/JellyfinApi';
+import { ShadowWrapper } from '@/components/Shadow';
+import { SafeFlatList } from '@/components/SafeNavigatorView';
 
 const DownloadedTrack = styled.View`
     flex: 1 0 auto;

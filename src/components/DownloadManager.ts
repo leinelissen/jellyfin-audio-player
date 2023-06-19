@@ -2,8 +2,8 @@ import { EntityId } from '@reduxjs/toolkit';
 import { xor } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { DocumentDirectoryPath, readDir } from 'react-native-fs';
-import { useAppDispatch, useTypedSelector } from 'store';
-import { completeDownload, downloadTrack } from 'store/downloads/actions';
+import { useAppDispatch, useTypedSelector } from '@/store';
+import { completeDownload, downloadTrack } from '@/store/downloads/actions';
 
 /**
  * The maximum number of concurrent downloads we allow to take place at once.

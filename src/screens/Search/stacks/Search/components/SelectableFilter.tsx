@@ -1,6 +1,6 @@
-import useDefaultStyles from 'components/Colors';
-import { Text } from 'components/Typography';
-import { THEME_COLOR } from 'CONSTANTS';
+import useDefaultStyles from '@/components/Colors';
+import { Text } from '@/components/Typography';
+import { THEME_COLOR } from '@/CONSTANTS';
 import React from 'react';
 import { SvgProps } from 'react-native-svg';
 import styled, { css } from 'styled-components/native';

@@ -2,12 +2,12 @@ import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from 'screens';
-import { useAppDispatch, useTypedSelector } from 'store';
-import { setOnboardingStatus } from 'store/settings/actions';
-import { t } from '@localisation';
-import Button from 'components/Button';
-import { Header, Text as BaseText } from 'components/Typography';
-import { ShadowWrapper } from 'components/Shadow';
+import { useAppDispatch, useTypedSelector } from '@/store';
+import { setOnboardingStatus } from '@/store/settings/actions';
+import { t } from '@/localisation';
+import Button from '@/components/Button';
+import { Header, Text as BaseText } from '@/components/Typography';
+import { ShadowWrapper } from '@/components/Shadow';
 
 const Container = styled.SafeAreaView`
     flex: 1;

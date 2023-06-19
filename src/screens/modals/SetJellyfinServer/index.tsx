@@ -1,15 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import { Button, View } from 'react-native';
-import Modal from 'components/Modal';
-import Input from 'components/Input';
-import { setJellyfinCredentials } from 'store/settings/actions';
+import Modal from '@/components/Modal';
+import Input from '@/components/Input';
+import { setJellyfinCredentials } from '@/store/settings/actions';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import CredentialGenerator from './components/CredentialGenerator';
-import { THEME_COLOR } from 'CONSTANTS';
-import { t } from '@localisation';
-import useDefaultStyles from 'components/Colors';
-import { Text } from 'components/Typography';
-import { useAppDispatch } from 'store';
+import { THEME_COLOR } from '@/CONSTANTS';
+import { t } from '@/localisation';
+import useDefaultStyles from '@/components/Colors';
+import { Text } from '@/components/Typography';
+import { useAppDispatch } from '@/store';
 
 
 export default function SetJellyfinServer() {

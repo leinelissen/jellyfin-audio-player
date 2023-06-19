@@ -1,23 +1,23 @@
 import React, { useCallback, useEffect } from 'react';
-import { useGetImage } from 'utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi';
 import { Text, SafeAreaView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch, useTypedSelector } from 'store';
-import { fetchRecentAlbums } from 'store/music/actions';
-import TouchableHandler from 'components/TouchableHandler';
+import { useAppDispatch, useTypedSelector } from '@/store';
+import { fetchRecentAlbums } from '@/store/music/actions';
+import TouchableHandler from '@/components/TouchableHandler';
 import ListContainer from './components/ListContainer';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
-import { useRecentAlbums } from 'store/music/selectors';
-import { Header } from 'components/Typography';
-import ListButton from 'components/ListButton';
-import { t } from '@localisation';
-import useDefaultStyles from 'components/Colors';
-import { Album } from 'store/music/types';
-import Divider from 'components/Divider';
+import { useRecentAlbums } from '@/store/music/selectors';
+import { Header } from '@/components/Typography';
+import ListButton from '@/components/ListButton';
+import { t } from '@/localisation';
+import useDefaultStyles from '@/components/Colors';
+import { Album } from '@/store/music/types';
+import Divider from '@/components/Divider';
 import styled from 'styled-components/native';
-import { ShadowWrapper } from 'components/Shadow';
+import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp } from 'screens/types';
-import { SafeFlatList } from 'components/SafeNavigatorView';
+import { SafeFlatList } from '@/components/SafeNavigatorView';
 
 const styles = StyleSheet.create({
     columnWrapper: {

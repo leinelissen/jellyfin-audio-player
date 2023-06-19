@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useTypedSelector } from 'store';
+import { useTypedSelector } from '@/store';
 import CloudIcon from 'assets/icons/cloud.svg';
 import CloudDownArrow from 'assets/icons/cloud-down-arrow.svg';
 import CloudExclamationMarkIcon from 'assets/icons/cloud-exclamation-mark.svg';

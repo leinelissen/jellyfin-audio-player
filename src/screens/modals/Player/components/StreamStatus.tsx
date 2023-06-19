@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
-import useCurrentTrack from 'utility/useCurrentTrack';
+import useCurrentTrack from '@/utility/useCurrentTrack';
 import CloudIcon from 'assets/icons/cloud.svg';
 import InternalDriveIcon from 'assets/icons/internal-drive.svg';
-import useDefaultStyles from 'components/Colors';
-import { Text } from 'components/Typography';
+import useDefaultStyles from '@/components/Colors';
+import { Text } from '@/components/Typography';
 import styled from 'styled-components/native';
 import Casting from './Casting';
-import { t } from '@localisation';
+import { t } from '@/localisation';
 
 const ICON_SIZE = 16;
 

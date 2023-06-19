@@ -1,20 +1,20 @@
 import React, { useCallback, useEffect, useRef, useMemo } from 'react';
-import { useGetImage } from 'utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi';
 import { SectionList, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
-import { useAppDispatch, useTypedSelector } from 'store';
-import { fetchAllAlbums } from 'store/music/actions';
-import { ALBUM_CACHE_AMOUNT_OF_DAYS, THEME_COLOR } from 'CONSTANTS';
+import { useAppDispatch, useTypedSelector } from '@/store';
+import { fetchAllAlbums } from '@/store/music/actions';
+import { ALBUM_CACHE_AMOUNT_OF_DAYS, THEME_COLOR } from '@/CONSTANTS';
 import AlbumImage from './components/AlbumImage';
-import { SectionArtistItem, SectionedArtist, selectArtists } from 'store/music/selectors';
-import AlphabetScroller from 'components/AlphabetScroller';
+import { SectionArtistItem, SectionedArtist, selectArtists } from '@/store/music/selectors';
+import AlphabetScroller from '@/components/AlphabetScroller';
 import styled from 'styled-components/native';
-import useDefaultStyles, { ColoredBlurView } from 'components/Colors';
-import { Text } from 'components/Typography';
+import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
+import { Text } from '@/components/Typography';
 import { NavigationProp } from 'screens/types';
-import { SafeSectionList } from 'components/SafeNavigatorView';
-import { Gap } from 'components/Utility';
+import { SafeSectionList } from '@/components/SafeNavigatorView';
+import { Gap } from '@/components/Utility';
 
 const HeadingHeight = 50;
 

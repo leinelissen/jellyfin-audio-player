@@ -1,32 +1,32 @@
 import React, { PropsWithChildren, useCallback, useMemo } from 'react';
 import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
-import { useGetImage } from 'utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch, useTypedSelector } from 'store';
-import { THEME_COLOR } from 'CONSTANTS';
-import TouchableHandler from 'components/TouchableHandler';
-import useCurrentTrack from 'utility/useCurrentTrack';
+import { useAppDispatch, useTypedSelector } from '@/store';
+import { THEME_COLOR } from '@/CONSTANTS';
+import TouchableHandler from '@/components/TouchableHandler';
+import useCurrentTrack from '@/utility/useCurrentTrack';
 import TrackPlayer from 'react-native-track-player';
 import Play from 'assets/icons/play.svg';
 import Shuffle from 'assets/icons/shuffle.svg';
-import useDefaultStyles from 'components/Colors';
-import usePlayTracks from 'utility/usePlayTracks';
+import useDefaultStyles from '@/components/Colors';
+import usePlayTracks from '@/utility/usePlayTracks';
 import { EntityId } from '@reduxjs/toolkit';
-import { WrappableButtonRow, WrappableButton } from 'components/WrappableButtonRow';
+import { WrappableButtonRow, WrappableButton } from '@/components/WrappableButtonRow';
 import { NavigationProp } from 'screens/types';
-import DownloadIcon from 'components/DownloadIcon';
+import DownloadIcon from '@/components/DownloadIcon';
 import CloudDownArrow from 'assets/icons/cloud-down-arrow.svg';
 import Trash from 'assets/icons/trash.svg';
-import { queueTrackForDownload, removeDownloadedTrack } from 'store/downloads/actions';
-import { selectDownloadedTracks } from 'store/downloads/selectors';
-import { Header, SubHeader } from 'components/Typography';
-import { Text } from 'components/Typography';
+import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/actions';
+import { selectDownloadedTracks } from '@/store/downloads/selectors';
+import { Header, SubHeader } from '@/components/Typography';
+import { Text } from '@/components/Typography';
 
-import CoverImage from 'components/CoverImage';
-import ticksToDuration from 'utility/ticksToDuration';
-import { t } from '@localisation';
-import { SafeScrollView, useNavigationOffsets } from 'components/SafeNavigatorView';
+import CoverImage from '@/components/CoverImage';
+import ticksToDuration from '@/utility/ticksToDuration';
+import { t } from '@/localisation';
+import { SafeScrollView, useNavigationOffsets } from '@/components/SafeNavigatorView';
 
 const styles = StyleSheet.create({
     index: {
