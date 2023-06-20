@@ -155,7 +155,6 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                             <TrackContainer
                                 isPlaying={currentTrack?.backendId === trackId || false}
                                 style={[defaultStyles.border, currentTrack?.backendId === trackId || false ? defaultStyles.activeBackground : null ]}
-                                small={itemDisplayStyle === 'playlist'}
                             >
                                 <Text
                                     style={[
