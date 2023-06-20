@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { THEME_COLOR } from '@/CONSTANTS';
 import { t } from '@/localisation';
