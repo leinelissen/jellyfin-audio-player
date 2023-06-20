@@ -279,6 +279,7 @@ export default function Search() {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <FlatList
+                keyboardShouldPersistTaps="handled"
                 style={{ flex: 2, }}
                 contentContainerStyle={{ paddingTop: offsets.top, paddingBottom: offsets.bottom + SEARCH_INPUT_HEIGHT }}
                 scrollIndicatorInsets={{ top: offsets.top  / 2, bottom: offsets.bottom / 2 + 10 + SEARCH_INPUT_HEIGHT }}
