@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { THEME_COLOR } from '@/CONSTANTS';
 import { t } from '@/localisation';
@@ -14,21 +14,29 @@ const Stack = createStackNavigator<StackParams>();
 
 function SearchStack() {
     const defaultStyles = useDefaultStyles();
+    const [isInitialRoute, setIsInitialRoute] = useState(true);
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <Stack.Navigator initialRouteName="Search" screenOptions={{
-                headerTintColor: THEME_COLOR,
-                headerTitleStyle: defaultStyles.stackHeader,
-                cardStyle: defaultStyles.view,
-                headerTransparent: true,
-                headerBackground: () => <ColoredBlurView style={StyleSheet.absoluteFill} />,
-                
-            }}>
+            <Stack.Navigator initialRouteName="Search"
+                screenOptions={{
+                    headerTintColor: THEME_COLOR,
+                    headerTitleStyle: defaultStyles.stackHeader,
+                    cardStyle: defaultStyles.view,
+                    headerTransparent: true,
+                    headerBackground: () => <ColoredBlurView style={StyleSheet.absoluteFill} />,
+                }}
+                screenListeners={{
+                    state: (e) => {
+                        const { state: { routes } } = e.data as { state: { routes?: { key: string, name: string }[] } };
+                        setIsInitialRoute(routes?.length === 1);
+                    }
+                }}
+            >
                 <Stack.Screen name="Search" component={Search} options={{ headerTitle: t('search'), headerShown: false }} />
                 <Stack.Screen name="Album" component={Album} options={{ headerTitle: t('album') }} />
             </Stack.Navigator>
-            <NowPlaying />
+            <NowPlaying offset={isInitialRoute ? 64 : 0} />
         </GestureHandlerRootView>
     );
 }

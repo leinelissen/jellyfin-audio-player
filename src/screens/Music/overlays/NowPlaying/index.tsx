@@ -107,7 +107,7 @@ function SelectActionButton() {
     }
 }
 
-function NowPlaying() {
+function NowPlaying({ offset = 0 }: { offset?: number }) {
     const { index, track } = useCurrentTrack();
     const { buffered, position } = useProgress();
     const defaultStyles = useDefaultStyles();
@@ -165,7 +165,7 @@ function NowPlaying() {
     }
 
     return (
-        <Container style={{ bottom: tabBarHeight + NOW_PLAYING_POPOVER_MARGIN }}>
+        <Container style={{ bottom: tabBarHeight + NOW_PLAYING_POPOVER_MARGIN + offset }}>
             {/** TODO: Fix shadow overflow on Android */}
             {Platform.OS === 'ios' ? (
                 <ShadowOverlay pointerEvents='none'>
