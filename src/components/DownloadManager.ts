@@ -55,7 +55,7 @@ function DownloadManager () {
     }, [queued, dispatch, activeDownloads]);
 
     useEffect(() => {
-        // GUARD: We only run this functino once
+        // GUARD: We only run this function once
         if (hasRehydratedOrphans) {
             return;
         }
@@ -98,7 +98,6 @@ function DownloadManager () {
         hydrateOrphanedDownloads();
         setHasRehydratedOrphans(true);
     }, [rehydrated, ids, hasRehydratedOrphans, dispatch]);
-
 
     return null;
 }

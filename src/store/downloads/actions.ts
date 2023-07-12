@@ -33,7 +33,7 @@ export const downloadTrack = createAsyncThunk(
         // Then convert the MIME-type to an extension
         const extension = MimeTypes[contentType as keyof typeof MimeTypes];
         if (!extension) {
-            throw new Error('Jellyfin returned an unrecognized MIME-type');
+            throw new Error(`Unsupported MIME-type ${contentType}`);
         }
 
         // Then generate the proper location
@@ -74,7 +74,7 @@ export const removeDownloadedTrack = createAsyncThunk(
         }
 
         // Then unlink the file, if it exists
-        if (await exists(download.location)) {
+        if (download.location && await exists(download.location)) {
             return unlink(download.location);
         }
     }

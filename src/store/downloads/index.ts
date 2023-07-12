@@ -2,6 +2,7 @@ import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
 import {
     completeDownload,
     downloadAdapter,
+    downloadTrack,
     failDownload,
     initializeDownload,
     progressDownload,
@@ -49,6 +50,7 @@ const downloads = createSlice({
                     ...action.payload,
                     isFailed: false,
                     isComplete: true,
+                    error: undefined,
                 }
             });
 
@@ -66,6 +68,20 @@ const downloads = createSlice({
                     progress: 0,
                 }
             });
+        });
+        builder.addCase(downloadTrack.rejected, (state, action) => {
+            downloadAdapter.upsertOne(state, {
+                id: action.meta.arg,
+                isComplete: false,
+                isFailed: true,
+                progress: 0,
+                error: action.error.message,
+            });
+
+            // Remove the item from the queue
+            const newSet = new Set(state.queued);
+            newSet.delete(action.meta.arg);
+            state.queued = Array.from(newSet);
         });
         builder.addCase(removeDownloadedTrack.fulfilled, (state, action) => {
             // Remove the download if it exists

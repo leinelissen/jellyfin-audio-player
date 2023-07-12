@@ -17,6 +17,7 @@ import FastImage from 'react-native-fast-image';
 import { useGetImage } from '@/utility/JellyfinApi';
 import { ShadowWrapper } from '@/components/Shadow';
 import { SafeFlatList } from '@/components/SafeNavigatorView';
+import { THEME_COLOR } from '@/CONSTANTS';
 
 const DownloadedTrack = styled.View`
     flex: 1 0 auto;
@@ -30,6 +31,10 @@ const AlbumImage = styled(FastImage)`
     height: 32px;
     width: 32px;
     border-radius: 4px;
+`;
+
+const ErrorWrapper = styled.View`
+    padding: 2px 16px 8px 16px;
 `;
 
 function Downloads() {
@@ -106,35 +111,42 @@ function Downloads() {
     ), [totalDownloadSize, defaultStyles, failedIds.length, handleRetryFailed, handleDeleteAllTracks, ids.length]);
     
     const renderItem = useCallback<NonNullable<FlatListProps<EntityId>['renderItem']>>(({ item }) => (
-        <DownloadedTrack>
-            <View style={{ marginRight: 12 }}>
-                <ShadowWrapper size="small">
-                    <AlbumImage source={{ uri: getImage(item as string) }} style={defaultStyles.imageBackground} />
-                </ShadowWrapper>
-            </View>
-            <View style={{ flexShrink: 1, marginRight: 8 }}>
-                <Text style={[{ fontSize: 16, marginBottom: 4 }, defaultStyles.text]} numberOfLines={1}>
-                    {tracks[item]?.Name}
-                </Text>
-                <Text style={[{ flexShrink: 1, fontSize: 11 }, defaultStyles.textHalfOpacity]} numberOfLines={1}>
-                    {tracks[item]?.AlbumArtist} {tracks[item]?.Album ? `— ${tracks[item]?.Album}` : ''}
-                </Text>
-            </View>
-            <View style={{ marginLeft: 'auto', flexDirection: 'row', alignItems: 'center' }}>
-                {entities[item]?.isComplete && entities[item]?.size ? (
-                    <Text style={[defaultStyles.textQuarterOpacity, { marginRight: 12, fontSize: 12 }]}>
-                        {formatBytes(entities[item]?.size || 0)}
-                    </Text>
-                ) : null}
+        <>
+            <DownloadedTrack>
                 <View style={{ marginRight: 12 }}>
-                    <DownloadIcon trackId={item} />
+                    <ShadowWrapper size="small">
+                        <AlbumImage source={{ uri: getImage(item as string) }} style={defaultStyles.imageBackground} />
+                    </ShadowWrapper>
                 </View>
-                <Button onPress={() => handleDelete(item)} size="small" icon={TrashIcon} testID={`delete-track-${item}`} />
-                {!entities[item]?.isComplete && (
-                    <Button onPress={() => retryTrack(item)} size="small" icon={ArrowClockwise} style={{ marginLeft: 4 }} />
-                )}
-            </View>
-        </DownloadedTrack>
+                <View style={{ flexShrink: 1, marginRight: 8 }}>
+                    <Text style={[{ fontSize: 16, marginBottom: 4 }, defaultStyles.text]} numberOfLines={1}>
+                        {tracks[item]?.Name}
+                    </Text>
+                    <Text style={[{ flexShrink: 1, fontSize: 11 }, defaultStyles.textHalfOpacity]} numberOfLines={1}>
+                        {tracks[item]?.AlbumArtist} {tracks[item]?.Album ? `— ${tracks[item]?.Album}` : ''}
+                    </Text>
+                </View>
+                <View style={{ marginLeft: 'auto', flexDirection: 'row', alignItems: 'center' }}>
+                    {entities[item]?.isComplete && entities[item]?.size ? (
+                        <Text style={[defaultStyles.textQuarterOpacity, { marginRight: 12, fontSize: 12 }]}>
+                            {formatBytes(entities[item]?.size || 0)}
+                        </Text>
+                    ) : null}
+                    <View style={{ marginRight: 12 }}>
+                        <DownloadIcon trackId={item} />
+                    </View>
+                    <Button onPress={() => handleDelete(item)} size="small" icon={TrashIcon} testID={`delete-track-${item}`} />
+                    {!entities[item]?.isComplete && (
+                        <Button onPress={() => retryTrack(item)} size="small" icon={ArrowClockwise} style={{ marginLeft: 4 }} />
+                    )}
+                </View>
+            </DownloadedTrack>
+            {entities[item]?.error && (
+                <ErrorWrapper>
+                    <Text style={{ color: THEME_COLOR }}>{entities[item]?.error}</Text>
+                </ErrorWrapper>
+            )}
+        </>
     ), [entities, retryTrack, handleDelete, defaultStyles, tracks, getImage]);
 
     // If no tracks have been downloaded, show a short message describing this
