@@ -101,6 +101,15 @@ end
 
 platform :android do
     desc "Generate beta build"
+
+    lane :build do
+        gradle(
+            task: "assemble",
+            build_type: "Release",
+            project_dir: "android"
+        )
+    end
+
     lane :beta do
         android_set_version_name(
             version_name: package["version"],
