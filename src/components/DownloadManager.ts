@@ -17,7 +17,7 @@ const MAX_CONCURRENT_DOWNLOADS = 5;
  */
 function DownloadManager () {
     // Retrieve store helpers
-    const { queued, ids } = useTypedSelector((state) => state.downloads);
+    const { queued, ids, entities } = useTypedSelector((state) => state.downloads);
     const rehydrated = useTypedSelector((state) => state._persist.rehydrated);
     const dispatch = useAppDispatch();
     
@@ -76,13 +76,13 @@ function DownloadManager () {
             const files = await readDir(DocumentDirectoryPath);
 
             // Loop through the mp3 files
-            files.filter((file) => file.isFile() && file.name.endsWith('.mp3'))
+            files.filter((file) => file.isFile())
                 .forEach((file) => {
-                    const id = file.name.replace('.mp3', '');
+                    const [id] = file.name.split('.');
 
                     // GUARD: If the id is already in the store, there's nothing
                     // left for us to do.
-                    if (ids.includes(id)) {
+                    if (ids.includes(id) && file.path === entities[id]?.location) {
                         return;
                     }
 
@@ -97,7 +97,7 @@ function DownloadManager () {
         
         hydrateOrphanedDownloads();
         setHasRehydratedOrphans(true);
-    }, [rehydrated, ids, hasRehydratedOrphans, dispatch]);
+    }, [rehydrated, ids, hasRehydratedOrphans, dispatch, entities]);
 
     return null;
 }
