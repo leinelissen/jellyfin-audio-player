@@ -52,13 +52,21 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
+### android build
+
+```sh
+[bundle exec] fastlane android build
+```
+
+Generate beta build
+
 ### android beta
 
 ```sh
 [bundle exec] fastlane android beta
 ```
 
-Generate beta build
+
 
 ### android release
 
