@@ -1,3 +1,53 @@
+# [2.2.0](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.1.0...v2.2.0) (2023-07-14)
+
+
+### Bug Fixes
+
+* add getters for new locales ([f199789](https://github.com/leinelissen/jellyfin-audio-player/commit/f199789469d0b6c5610c9ddaea6f2f3fcbe963de))
+* allow tapping search result directly without closing keyboard first ([a330824](https://github.com/leinelissen/jellyfin-audio-player/commit/a33082425b3b727edb9e6c8b85794260d330245f))
+* also set itemid for first track in queue ([f540424](https://github.com/leinelissen/jellyfin-audio-player/commit/f540424edd788d96462ed30d872b80bf1581045d))
+* Deleted translation using Weblate (English (United Kingdom)) ([d5e863f](https://github.com/leinelissen/jellyfin-audio-player/commit/d5e863fb8c9e69ef184729613f69d00a06490987))
+* Deleted translation using Weblate (English (United Kingdom)) ([0cb65f5](https://github.com/leinelissen/jellyfin-audio-player/commit/0cb65f5e20a5f262a15c7a3ab5a8df2e8185153d))
+* Deleted translation using Weblate (English (United Kingdom)) ([70e4015](https://github.com/leinelissen/jellyfin-audio-player/commit/70e401538ce23fd60e313d73d35c0e58aadb3198))
+* Deleted translation using Weblate (English (United Kingdom)) ([1febe64](https://github.com/leinelissen/jellyfin-audio-player/commit/1febe64aad5b767793249f978ca2085cd2dd740d))
+* Deleted translation using Weblate (English (United Kingdom)) ([0aac29b](https://github.com/leinelissen/jellyfin-audio-player/commit/0aac29b15f5a7b9491daa057b9a54448c8e23fdb))
+* do a request when generating credentials to ensure the access token is valid ([440d789](https://github.com/leinelissen/jellyfin-audio-player/commit/440d789f5e66f6fbe3fd56febaa353a2e712c24a))
+* don't emit any paused events ([9aff784](https://github.com/leinelissen/jellyfin-audio-player/commit/9aff784580f72e0856f58213a6c6bc3e070b9ef4))
+* downloads disappear after update (fixes [#136](https://github.com/leinelissen/jellyfin-audio-player/issues/136)) ([ba73aaa](https://github.com/leinelissen/jellyfin-audio-player/commit/ba73aaa383e1c06ae86f3b8c81b5311dc5da58f4))
+* include play modal on search page ([e140a0e](https://github.com/leinelissen/jellyfin-audio-player/commit/e140a0e487d377d6bfe3c847dd2fdc90fafbd8d8))
+* include width units for similar album cover image ([ed78e4a](https://github.com/leinelissen/jellyfin-audio-player/commit/ed78e4ab491733e33f562fa7eff0482c542e68ae))
+* move now playing overlay on search tab to make space for input field ([fd3c348](https://github.com/leinelissen/jellyfin-audio-player/commit/fd3c3487bef5095fc3e8b5fc4fec0e58997fb55e))
+* POST the scrobble payload instead of GET ([3650a0f](https://github.com/leinelissen/jellyfin-audio-player/commit/3650a0fedee9ca01a31d616a27e1b08141c47f9e))
+* properly end previous playing track ([8ff785d](https://github.com/leinelissen/jellyfin-audio-player/commit/8ff785da40a96d882cdae8c8dd7d2bd1424759ba))
+* send correct amount of ticks for playback reporting ([d15b7ea](https://github.com/leinelissen/jellyfin-audio-player/commit/d15b7ea29d7cdacf098478922a43b8d300b8d3f3))
+* send stopped event to right URL ([8209db3](https://github.com/leinelissen/jellyfin-audio-player/commit/8209db3a4b8d68046fb9ba16687689dff6548a07))
+* show empty queue when resetting state ([dd220ec](https://github.com/leinelissen/jellyfin-audio-player/commit/dd220ec0f2b8222ca0db3c75afc27ff5776b9de8))
+* show error messages when tracks fail to download ([2bd9cf9](https://github.com/leinelissen/jellyfin-audio-player/commit/2bd9cf99505dcf700e8cc52a7b506acf9661cc6b))
+* supply positionticks for scrobbling as integer ([1270390](https://github.com/leinelissen/jellyfin-audio-player/commit/1270390a9c04163591ade2fdb38bda117f04f151))
+* the privacy policy is in fact a privacy policy ([4a43583](https://github.com/leinelissen/jellyfin-audio-player/commit/4a43583e4a51f1f37a367cd0025b586548d5b06d))
+* weird active style in playlist view ([8b1ce6b](https://github.com/leinelissen/jellyfin-audio-player/commit/8b1ce6b97c418853ec76d46ab59adc25287df63d))
+
+
+### Features
+
+* add artist views ([c9036b5](https://github.com/leinelissen/jellyfin-audio-player/commit/c9036b56ed427be82a25c1d2c7af893c0aebd98f))
+* Added translation using Weblate (English (United Kingdom)) ([161344d](https://github.com/leinelissen/jellyfin-audio-player/commit/161344d00c2a79a759e011eeed2bc195122f739a))
+* Added translation using Weblate (English (United Kingdom)) ([4806fbd](https://github.com/leinelissen/jellyfin-audio-player/commit/4806fbd92797457a595171586a1f8236c0aefe50))
+* Added translation using Weblate (English (United Kingdom)) ([c260c15](https://github.com/leinelissen/jellyfin-audio-player/commit/c260c15c01ab4f23fb81fd68a02316e8a37c3c3c))
+* Added translation using Weblate (English (United Kingdom)) ([0fc40aa](https://github.com/leinelissen/jellyfin-audio-player/commit/0fc40aaff60291f5a38ecd0d11f5a91a9b5d72a5))
+* Added translation using Weblate (English (United Kingdom)) ([b49e1e5](https://github.com/leinelissen/jellyfin-audio-player/commit/b49e1e5436ac4a67c19903e1966ac302f0312347))
+* Added translation using Weblate (Italian) ([123a7b3](https://github.com/leinelissen/jellyfin-audio-player/commit/123a7b36c7477bfb7819f9440a2eb35df27e03cd))
+* Added translation using Weblate (Norwegian Bokmål) ([57d569b](https://github.com/leinelissen/jellyfin-audio-player/commit/57d569bd4f306aac59faf0f285154dbb175f3e83))
+* Added translation using Weblate (Polish) ([464192b](https://github.com/leinelissen/jellyfin-audio-player/commit/464192b1ded72a7f3f154b5435d2412277288e74))
+* Added translation using Weblate (Ukrainian) ([0cf1c20](https://github.com/leinelissen/jellyfin-audio-player/commit/0cf1c20ec1788e42ebeba4089bb3d340f5f44748))
+* allow users to override color scheme (closes [#138](https://github.com/leinelissen/jellyfin-audio-player/issues/138)) ([130b18b](https://github.com/leinelissen/jellyfin-audio-player/commit/130b18bc2edb70e7c67ac36e7a1e2b570457a91d))
+* incorporate italian language ([73af159](https://github.com/leinelissen/jellyfin-audio-player/commit/73af159b2eba8a8c7b830145521b6419ea64c801))
+* loop a single song (closes [#139](https://github.com/leinelissen/jellyfin-audio-player/issues/139)) ([fb4d393](https://github.com/leinelissen/jellyfin-audio-player/commit/fb4d3932e5038acf57778fe3eedad0dee6078cfa))
+* make downloads available from iOS File app ([7d6e897](https://github.com/leinelissen/jellyfin-audio-player/commit/7d6e897cf61bc845ccf097cc7006530ddb127709))
+* naive scrobbling integration ([0bf2775](https://github.com/leinelissen/jellyfin-audio-player/commit/0bf2775c93b4a8fad91d810834411dc01779f8f7))
+
+
+
 # [2.1.0](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.0.5...v2.1.0) (2023-04-23)
 
 
