@@ -4,6 +4,7 @@ import { LocaleKeys } from './types';
 
 // Lazy loaders for locale
 const localeGetters: Record<string, () => object> = {
+    de: () => require('./lang/de/locale.json'),
     en: () => require('./lang/en/locale.json'),
     es: () => require('./lang/es/locale.json'),
     fr: () => require('./lang/fr/locale.json'),
@@ -12,6 +13,8 @@ const localeGetters: Record<string, () => object> = {
     nb_NO: () => require('./lang/nb_NO/locale.json'),
     nl: () => require('./lang/nl/locale.json'),
     pl: () => require('./lang/pl/locale.json'),
+    ru: () => require('./lang/ru/locale.json'),
+    sv: () => require('./lang/sv/locale.json'),
     uk: () => require('./lang/uk/locale.json'),
     zh: () => require('./lang/zh/locale.json'),
 };
