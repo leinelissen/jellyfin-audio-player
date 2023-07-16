@@ -35,7 +35,7 @@
     "what-data-is-gathered": "Jakie dane są gromadzone?",
     "what-data-is-gathered-description": "Rejestrujemy błąd, typ urządzenia, wersję systemu operacyjnego, wersję aplikacji i identyfikator urządzenia. Żaden stan aplikacji nie jest wysyłany w żadnym raporcie błędów. Identyfikator urządzenia to unikalny skrót, który można zresetować w ustawieniach urządzenia i nie możemy wywnioskować żadnych danych osobowych z tego identyfikatora.",
     "where-is-data-stored": "Gdzie są przechowywane dane?",
-    "where-is-data-stored-description": "Backend Sentry jest hostowany samodzielnie w naszej własnej infrastrukturze. Nikt poza nami nie ma dostępu do serwerów, baz danych, aplikacji i logów danych, a już najmniej pracownicy Sentry. Infrastruktura jest hostowana w Unii Europejskiej.",
+    "where-is-data-stored-description": "Backend Sentry jest hostowany samodzielnie w naszej własnej infrastrukturze. Nikt oprócz nas nie ma dostępu do serwerów, baz danych, aplikacji i logów danych, a już najmniej pracownicy Sentry. Infrastruktura jest hostowana w Unii Europejskiej.",
     "enable-error-reporting": "Czy chcesz włączyć raportowanie błędów?",
     "enable-error-reporting-description": "Pomaga to ulepszyć działanie aplikacji, wysyłając do nas raporty o awariach i błędach.",
     "enable": "Włączać",
