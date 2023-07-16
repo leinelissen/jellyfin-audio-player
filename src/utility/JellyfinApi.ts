@@ -1,6 +1,7 @@
 import TrackPlayer, { RepeatMode, State, Track } from 'react-native-track-player';
 import { AppState, useTypedSelector } from '@/store';
 import { Album, AlbumTrack, SimilarAlbum } from '@/store/music/types';
+import { Platform } from 'react-native';
 
 type Credentials = AppState['settings']['jellyfin'];
 
@@ -17,12 +18,24 @@ function generateConfig(credentials: Credentials): RequestInit {
     };
 }
 
+const trackOptionsOsOverrides: Record<typeof Platform.OS, Record<string, string>> = {
+    ios: {
+        Container: 'mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,wav,m4a,aiff,aif',
+    },
+    android: {
+        Container: 'mp3,aac,flac,wav,ogg,ogg|vorbis,ogg|opus,mka|mp3,mka|opus,mka|mp3',
+    },
+    macos: {},
+    web: {},
+    windows: {},
+};
+
 const baseTrackOptions: Record<string, string> = {
-    // This must be set to support client seeking
     TranscodingProtocol: 'http',
     TranscodingContainer: 'aac',
-    Container: 'mp3,aac,m4a,m4b|aac,flac,alac,m4a,m4b|alac',
-    static: 'true',
+    AudioCodec: 'aac',
+    Container: 'mp3,aac',
+    ...trackOptionsOsOverrides[Platform.OS],
 };
 
 /**
@@ -32,6 +45,7 @@ const baseTrackOptions: Record<string, string> = {
 export function generateTrack(track: AlbumTrack, credentials: Credentials): Track {
     // Also construct the URL for the stream
     const url = generateTrackUrl(track.Id, credentials);
+    console.log(url);
 
     return {
         url,
