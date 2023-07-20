@@ -6,6 +6,7 @@ export type SettingsStackParams = {
     Library: undefined;
     Cache: undefined;
     Sentry: undefined;
+    Timer: undefined;
 };
 
 export type SettingsNavigationProp = StackNavigationProp<SettingsStackParams>; 

@@ -55,6 +55,18 @@ const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
                 }
             };
         },
+        // @ts-expect-error migrations are poorly typed
+        4: (state: AppState) => {
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    enableSleepTimer: false,
+                    sleepTime: 60,
+                    remainingSleepTime: 0
+                }
+            };
+        },
     })
 };
 

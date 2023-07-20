@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setReceivedErrorReportingAlert, setBitrate, setJellyfinCredentials, setOnboardingStatus, setEnablePlaybackReporting, setColorScheme } from './actions';
+import { setReceivedErrorReportingAlert, setBitrate, setJellyfinCredentials, setOnboardingStatus, setEnablePlaybackReporting, setColorScheme, setSleepTime, setEnableSleepTimer, setRemainingSleepTime } from './actions';
 import { ColorScheme } from './types';
 
 interface State {
@@ -14,6 +14,7 @@ interface State {
     hasReceivedErrorReportingAlert: boolean;
     enablePlaybackReporting: boolean;
     colorScheme: ColorScheme;
+    sleepTime: number;
 }
 
 const initialState: State = {
@@ -22,6 +23,7 @@ const initialState: State = {
     hasReceivedErrorReportingAlert: false,
     enablePlaybackReporting: true,
     colorScheme: ColorScheme.System,
+    sleepTime: 60,
 };
 
 const settings = createReducer(initialState, builder => {
@@ -48,6 +50,18 @@ const settings = createReducer(initialState, builder => {
     builder.addCase(setColorScheme, (state, action) => ({
         ...state,
         colorScheme: action.payload,
+    }));
+    builder.addCase(setSleepTime, (state, action) => ({
+        ...state,
+        sleepTime: action.payload,
+    }));
+    builder.addCase(setEnableSleepTimer, (state, action) => ({
+        ...state,
+        enableSleepTimer: action.payload,
+    }));
+    builder.addCase(setRemainingSleepTime, (state, action) => ({
+        ...state,
+        remainingSleepTime: action.payload,
     }));
 });
 
