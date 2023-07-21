@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setReceivedErrorReportingAlert, setBitrate, setJellyfinCredentials, setOnboardingStatus, setEnablePlaybackReporting, setColorScheme, setSleepTime, setEnableSleepTimer, setRemainingSleepTime } from './actions';
+import { setReceivedErrorReportingAlert, setBitrate, setJellyfinCredentials, setOnboardingStatus, setEnablePlaybackReporting, setColorScheme, setSleepTime, setEnableSleepTimer, setRemainingSleepTime, setEnabledSleeper } from './actions';
 import { ColorScheme } from './types';
 
 interface State {
@@ -15,6 +15,7 @@ interface State {
     enablePlaybackReporting: boolean;
     colorScheme: ColorScheme;
     sleepTime: number;
+    enabledSleeper: boolean
 }
 
 const initialState: State = {
@@ -24,6 +25,7 @@ const initialState: State = {
     enablePlaybackReporting: true,
     colorScheme: ColorScheme.System,
     sleepTime: 60,
+    enabledSleeper: false,
 };
 
 const settings = createReducer(initialState, builder => {
@@ -62,6 +64,10 @@ const settings = createReducer(initialState, builder => {
     builder.addCase(setRemainingSleepTime, (state, action) => ({
         ...state,
         remainingSleepTime: action.payload,
+    }));
+    builder.addCase(setEnabledSleeper, (state, action) => ({
+        ...state,
+        enabledSleeper: action.payload,
     }));
 });
 

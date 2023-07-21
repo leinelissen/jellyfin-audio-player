@@ -33,18 +33,18 @@ export function SettingsList() {
     const { sleepTime } = useTypedSelector(state => state.settings);
 
     const getTime = () => {
+        let hours = 0;
+        let minutes = 0;
         if (!Number.isNaN(sleepTime)) {
-            const hours = Math.round(sleepTime / 3600);
+            hours = Math.round(sleepTime / 3600);
             const timeRemaining = sleepTime % 3600;
-            let minutes = 0;
 
-            if (timeRemaining > 60) {
+            if (timeRemaining >= 60) {
                 minutes = Math.round(timeRemaining / 60);
             }
-            return `${hours} hrs ${minutes} min`;
-        } else {
-            return 0;
         }
+
+        return `${hours} hrs ${minutes} min`;
     }
 
     return (

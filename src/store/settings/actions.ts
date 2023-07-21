@@ -10,3 +10,4 @@ export const setColorScheme = createAction<ColorScheme>('SET_COLOR_SCHEME');
 export const setSleepTime = createAction<number>('SET_SLEEP_TIME');
 export const setEnableSleepTimer = createAction<boolean>('SET_ENABLE_SLEEP_TIMER');
 export const setRemainingSleepTime = createAction<number>('SET_REMAINING_SLEEP_TIME');
+export const setEnabledSleeper = createAction<boolean>('SET_ENABLE_SLEEPER');

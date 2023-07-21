@@ -16,6 +16,18 @@ export function generateTimerStyles() {
             flexDirection: 'row',
             alignItems: 'center',
             gap: 3
+        },
+        checkbox: {
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center'
+        },
+        timerSetting: {
+            marginStart: 30
+        },
+        timerSettingsDisabled: {
+            color: '#cbcbcb',
+            marginStart: 30
         }
     })
 }
