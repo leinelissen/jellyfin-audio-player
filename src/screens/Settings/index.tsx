@@ -16,12 +16,11 @@ import ColorScheme from './stacks/ColorScheme';
 import PlaybackReporting from './stacks/PlaybackReporting';
 import { SafeScrollView } from '@/components/SafeNavigatorView';
 import PrivacyPolicy from './components/PrivacyPolicy';
-import Timer from './stacks/Timer';
+import Timer from './stacks/timer/Timer';
 import { Paragraph, Text } from '@/components/Typography';
 import { useTypedSelector } from '@/store';
 
 export function SettingsList() {
-    const defaultStyles = useDefaultStyles();
     const navigation = useNavigation<SettingsNavigationProp>();
     const handleLibraryClick = useCallback(() => { navigation.navigate('Library'); }, [navigation]);
     const handleCacheClick = useCallback(() => { navigation.navigate('Cache'); }, [navigation]);
@@ -33,10 +32,28 @@ export function SettingsList() {
 
     const { sleepTime } = useTypedSelector(state => state.settings);
 
+    const getTime = () => {
+        if (!Number.isNaN(sleepTime)) {
+            const hours = Math.round(sleepTime / 3600);
+            const timeRemaining = sleepTime % 3600;
+            let minutes = 0;
+
+            if (timeRemaining > 60) {
+                minutes = Math.round(timeRemaining / 60);
+            }
+            return `${hours} hrs ${minutes} min`;
+        } else {
+            return 0;
+        }
+    }
+
     return (
         <SafeScrollView>
             <ListButton onPress={handleLibraryClick}>{t('jellyfin-library')}</ListButton>
-            <ListButton onPress={handleTimerClick}>{t('timer')} <Text>Set Time: {sleepTime}</Text></ListButton>
+            <ListButton onPress={handleTimerClick}>
+                {t('timer')}
+                <Text> {`Set Time: ${getTime()}s`}</Text>
+            </ListButton>
             <ListButton onPress={handleCacheClick}>{t('setting-cache')}</ListButton>
             <ListButton onPress={handleSentryClick}>{t('error-reporting')}</ListButton>
             <ListButton onPress={handlePlaybackReportingClick}>{t('playback-reporting')}</ListButton>

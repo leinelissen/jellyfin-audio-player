@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { TouchableOpacityProps } from 'react-native';
+import { StyleSheet, TouchableOpacityProps, View } from 'react-native';
 import ChevronRight from '@/assets/icons/chevron-right.svg';
 import styled from 'styled-components/native';
 import { THEME_COLOR } from '@/CONSTANTS';
 import useDefaultStyles from './Colors';
+import { Text } from './Typography';
 
 const BUTTON_SIZE = 14;
 
@@ -19,10 +20,28 @@ const Container = styled.Pressable<{ active?: boolean }>`
 const Label = styled.Text<{ active?: boolean }>`
     color: ${THEME_COLOR};
     font-size: 16px;
+    display: flex;
 `;
 
+function generateListButtonStyles() {
+    const styles = useDefaultStyles();
+    return StyleSheet.create({
+        ...styles,
+        descriptionNote: {
+            display: 'flex',
+            flexDirection: 'column'
+        },
+        showDescription: {
+            display: 'flex'
+        },
+        hideDescription: {
+            display: 'none'
+        }
+    })
+}
+
 const ListButton: React.FC<TouchableOpacityProps> = ({ children, ...props }) => {
-    const defaultStyles = useDefaultStyles();
+    const defaultStyles = generateListButtonStyles();
     const [isPressed, setPressed] = useState(false);
     const handlePressIn = useCallback(() => setPressed(true), []);
     const handlePressOut = useCallback(() => setPressed(false), []);
