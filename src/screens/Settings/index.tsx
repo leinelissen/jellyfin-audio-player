@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { t } from '@/localisation';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
@@ -17,8 +17,6 @@ import PlaybackReporting from './stacks/PlaybackReporting';
 import { SafeScrollView } from '@/components/SafeNavigatorView';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import Timer from './stacks/timer/Timer';
-import { Paragraph, Text } from '@/components/Typography';
-import { useTypedSelector } from '@/store';
 
 export function SettingsList() {
     const navigation = useNavigation<SettingsNavigationProp>();
@@ -30,27 +28,10 @@ export function SettingsList() {
     const handlePrivacyPolicyClick = useCallback(() => { navigation.navigate('PrivacyPolicy'); }, [navigation]);
     const handleTimerClick = useCallback(() => { navigation.navigate('Timer'); }, [navigation]);
 
-    const { sleepTime } = useTypedSelector(state => state.settings);
-
-    const getTime = () => {
-        let hours = 0;
-        let minutes = 0;
-        if (!Number.isNaN(sleepTime)) {
-            hours = Math.round(sleepTime / 3600);
-            const timeRemaining = sleepTime % 3600;
-
-            if (timeRemaining >= 60) {
-                minutes = Math.round(timeRemaining / 60);
-            }
-        }
-
-        return `${hours} hrs ${minutes} min`;
-    }
-
     return (
         <SafeScrollView>
             <ListButton onPress={handleLibraryClick}>{t('jellyfin-library')}</ListButton>
-            <ListButton onPress={handleTimerClick}>{t('timer')}</ListButton>
+            <ListButton onPress={handleTimerClick}>Set Sleep Timer</ListButton>
             <ListButton onPress={handleCacheClick}>{t('setting-cache')}</ListButton>
             <ListButton onPress={handleSentryClick}>{t('error-reporting')}</ListButton>
             <ListButton onPress={handlePlaybackReportingClick}>{t('playback-reporting')}</ListButton>
@@ -74,7 +55,7 @@ export default function Settings() {
         }}>
             <Stack.Screen name="SettingList" component={SettingsList} options={{ headerTitle: t('settings') }} />
             <Stack.Screen name="Library" component={Library} options={{ headerTitle: t('jellyfin-library') }} />
-            <Stack.Screen name="Timer" component={Timer} options={{ headerTitle: t('timer') }} />
+            <Stack.Screen name="Timer" component={Timer} options={{ headerTitle: "Set Sleep Timer" }} />
             <Stack.Screen name="Cache" component={Cache} options={{ headerTitle: t('setting-cache') }} />
             <Stack.Screen name="Sentry" component={Sentry} options={{ headerTitle: t('error-reporting') }} />
             <Stack.Screen name="Playback Reporting" component={PlaybackReporting} options={{ headerTitle: t('playback-reporting')}} />

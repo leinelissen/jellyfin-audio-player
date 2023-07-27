@@ -79,7 +79,7 @@ function Timer() {
                         value={enableSleeper}
                         onValueChange={(value) => handleEnabledSleeper(value)}
                     />
-                    <SwitchLabel>{t('enable-sleeper')}</SwitchLabel>
+                    <SwitchLabel>Enable Sleeper</SwitchLabel>
                 </SwitchContainer>
                 <View style={enabledSleeper ? timerStyles.timerSetting : timerStyles.timerSettingsDisabled}>
                     <View style={timerStyles.timer}>

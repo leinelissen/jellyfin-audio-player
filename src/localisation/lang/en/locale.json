@@ -41,7 +41,6 @@
     "more-info": "More Info",
     "track": "Track",
     "playlists": "Playlists",
-    "timer": "Set Sleep Timer",
     "playlist": "Playlist",
     "play-playlist": "Play Playlist",
     "shuffle-album": "Shuffle Album",
@@ -71,6 +70,5 @@
     "color-scheme-light": "Light Mode",
     "color-scheme-dark": "Dark Mode",
     "artists": "Artists",
-    "privacy-policy": "Privacy Policy",
-    "enable-sleeper": "Enable Sleeper"
+    "privacy-policy": "Privacy Policy"
 }
