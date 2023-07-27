@@ -18,6 +18,9 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { time } from 'console';
 import CheckBox from '@react-native-community/checkbox';
 import TrackPlayer from 'react-native-track-player';
+import { Switch } from 'react-native-gesture-handler';
+import { SwitchContainer, SwitchLabel } from '../../components/Switch';
+import { t } from '@/localisation';
 
 function Timer() {
     const { sleepTime } = useTypedSelector(state => state.settings);
@@ -53,7 +56,7 @@ function Timer() {
         }
 
         return `${hours} hrs ${minutes} min`;
-    }
+    };
 
     const handleEnabledSleeper = useCallback((value: boolean) => {
         dispatch(setEnabledSleeper(value));
@@ -62,8 +65,8 @@ function Timer() {
         // If value is true sleeper has been enabled, pause then play tack
         // to trigger play state and start sleeper timer
         if (value) {
-            TrackPlayer.pause()
-            TrackPlayer.play()
+            TrackPlayer.pause();
+            TrackPlayer.play();
         }
     }, [dispatch]);
 
@@ -71,13 +74,13 @@ function Timer() {
         <Container>
             <InputContainer>
                 <Text>Set Sleep Timer. Time Set Previously: {getTime()}</Text>
-                <View style={timerStyles.checkbox}>
-                    <CheckBox
+                <SwitchContainer style={timerStyles.checkbox}>
+                    <Switch
                         value={enableSleeper}
                         onValueChange={(value) => handleEnabledSleeper(value)}
                     />
-                    <Text> Enable Sleeper</Text>
-                </View>
+                    <SwitchLabel>{t('enable-sleeper')}</SwitchLabel>
+                </SwitchContainer>
                 <View style={enabledSleeper ? timerStyles.timerSetting : timerStyles.timerSettingsDisabled}>
                     <View style={timerStyles.timer}>
                         <View style={timerStyles.timeInput}>

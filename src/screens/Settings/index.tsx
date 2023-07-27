@@ -50,10 +50,7 @@ export function SettingsList() {
     return (
         <SafeScrollView>
             <ListButton onPress={handleLibraryClick}>{t('jellyfin-library')}</ListButton>
-            <ListButton onPress={handleTimerClick}>
-                {t('timer')}
-                <Text> {`Set Time: ${getTime()}s`}</Text>
-            </ListButton>
+            <ListButton onPress={handleTimerClick}>{t('timer')}</ListButton>
             <ListButton onPress={handleCacheClick}>{t('setting-cache')}</ListButton>
             <ListButton onPress={handleSentryClick}>{t('error-reporting')}</ListButton>
             <ListButton onPress={handlePlaybackReportingClick}>{t('playback-reporting')}</ListButton>
