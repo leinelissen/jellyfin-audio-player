@@ -61,10 +61,8 @@ const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
                 ...state,
                 settings: {
                     ...state.settings,
-                    enableSleepTimer: false,
-                    sleepTime: 0,
-                    remainingSleepTime: 0,
-                    enabledSleeper: false
+                    enableSleepTime: false,
+                    dateTime: Date
                 }
             };
         },

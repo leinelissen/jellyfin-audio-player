@@ -8,14 +8,10 @@
 */
 
 import TrackPlayer, { Event, State } from 'react-native-track-player';
-import store, { useTypedSelector } from '@/store';
+import store from '@/store';
 import { sendPlaybackEvent } from './JellyfinApi';
-import { useDispatch } from 'react-redux';
-import { setSleepTime } from '@/store/settings/actions';
-import internal from 'stream';
 
 export default async function() {
-    let interval = setInterval(() => {}, 0);
 
     TrackPlayer.addEventListener(Event.RemotePlay, () => {
         TrackPlayer.play();
@@ -65,9 +61,18 @@ export default async function() {
             sendPlaybackEvent('/Sessions/Playing/Progress', settings.jellyfin);
         }
 
-        // regularly check if sleeper is enabled, then disable the timer
-        if (!settings.enabledSleeper) {
-            clearInterval(interval);
+        // regularly check if sleeper is enabled, pause the audio after 30 minutes.
+        if (settings.enableSleepTime && settings.dateTime !== undefined) {
+            const dateSet = new Date(settings.dateTime.toString());
+            const dateNow = new Date(Date.now());
+            const diff = Math.abs(dateSet.getMinutes() - dateNow.getMinutes());
+
+            console.log(`Difference: ${diff}`);
+
+            if (diff >= 30 && dateNow >= dateSet) {
+                console.log('Music Paused');
+                TrackPlayer.pause();
+            }
         }
     });
 
@@ -80,24 +85,6 @@ export default async function() {
             // GUARD: Only report playback when the settings is enabled
             if (settings.enablePlaybackReporting) {
                 sendPlaybackEvent('/Sessions/Playing/Stopped', settings.jellyfin);
-            }
-        }
-
-        // Handle is playback state is playing
-        if (event.state === State.Playing) {
-            const settings = store.getState().settings;
-            
-            // Start timer is sleeper is enabled
-            if (settings.enabledSleeper) {
-                let time = settings.sleepTime;
-                interval = setInterval(() => {
-                    if (time > 0) {
-                        time -= 1;
-                    } else {
-                        TrackPlayer.pause();
-                        clearInterval(interval);
-                    }
-                }, 1000);
             }
         }
     });

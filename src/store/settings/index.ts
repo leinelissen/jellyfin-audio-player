@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setReceivedErrorReportingAlert, setBitrate, setJellyfinCredentials, setOnboardingStatus, setEnablePlaybackReporting, setColorScheme, setSleepTime, setEnableSleepTimer, setRemainingSleepTime, setEnabledSleeper } from './actions';
+import { setReceivedErrorReportingAlert, setBitrate, setJellyfinCredentials, setOnboardingStatus, setEnablePlaybackReporting, setColorScheme, setDateTime, setEnableSleepTime, setRemainingSleepTime } from './actions';
 import { ColorScheme } from './types';
 
 interface State {
@@ -14,8 +14,8 @@ interface State {
     hasReceivedErrorReportingAlert: boolean;
     enablePlaybackReporting: boolean;
     colorScheme: ColorScheme;
-    sleepTime: number;
-    enabledSleeper: boolean
+    dateTime?: Date;
+    enableSleepTime: boolean
 }
 
 const initialState: State = {
@@ -24,8 +24,8 @@ const initialState: State = {
     hasReceivedErrorReportingAlert: false,
     enablePlaybackReporting: true,
     colorScheme: ColorScheme.System,
-    sleepTime: 60,
-    enabledSleeper: false,
+    dateTime: new Date(),
+    enableSleepTime: false
 };
 
 const settings = createReducer(initialState, builder => {
@@ -53,21 +53,17 @@ const settings = createReducer(initialState, builder => {
         ...state,
         colorScheme: action.payload,
     }));
-    builder.addCase(setSleepTime, (state, action) => ({
+    builder.addCase(setDateTime, (state, action) => ({
         ...state,
-        sleepTime: action.payload,
+        dateTime: action.payload,
     }));
-    builder.addCase(setEnableSleepTimer, (state, action) => ({
+    builder.addCase(setEnableSleepTime, (state, action) => ({
         ...state,
-        enableSleepTimer: action.payload,
+        enableSleepTime: action.payload,
     }));
     builder.addCase(setRemainingSleepTime, (state, action) => ({
         ...state,
         remainingSleepTime: action.payload,
-    }));
-    builder.addCase(setEnabledSleeper, (state, action) => ({
-        ...state,
-        enabledSleeper: action.payload,
     }));
 });
 

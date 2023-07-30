@@ -1,8 +1,7 @@
-import useDefaultStyles from "@/components/Colors";
-import { ColorScheme } from "@/store/settings/types";
-import { StyleSheet } from "react-native";
+import useDefaultStyles from '@/components/Colors';
+import { StyleSheet } from 'react-native';
 
-export function generateTimerStyles() {
+export function useTimeStyles() {
     const styles = useDefaultStyles();
 
     return StyleSheet.create({
@@ -23,11 +22,17 @@ export function generateTimerStyles() {
             alignItems: 'center'
         },
         timerSetting: {
-            marginStart: 30
+            marginStart: 10
         },
         timerSettingsDisabled: {
             color: '#cbcbcb',
-            marginStart: 30
+            marginStart: 10
+        },
+        showDateTime: {
+            display: 'flex'
+        },
+        hideDateTime: {
+            display: 'none'
         }
-    })
+    });
 }

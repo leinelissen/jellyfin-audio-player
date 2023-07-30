@@ -55,7 +55,7 @@ export default function Settings() {
         }}>
             <Stack.Screen name="SettingList" component={SettingsList} options={{ headerTitle: t('settings') }} />
             <Stack.Screen name="Library" component={Library} options={{ headerTitle: t('jellyfin-library') }} />
-            <Stack.Screen name="Timer" component={Timer} options={{ headerTitle: "Set Sleep Timer" }} />
+            <Stack.Screen name="Timer" component={Timer} options={{ headerTitle: 'Set Sleep Timer' }} />
             <Stack.Screen name="Cache" component={Cache} options={{ headerTitle: t('setting-cache') }} />
             <Stack.Screen name="Sentry" component={Sentry} options={{ headerTitle: t('error-reporting') }} />
             <Stack.Screen name="Playback Reporting" component={PlaybackReporting} options={{ headerTitle: t('playback-reporting')}} />
