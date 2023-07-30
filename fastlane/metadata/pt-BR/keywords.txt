@@ -1,1 +1,1 @@
-água-viva, áudio, player, streaming, downloads, música
+jellyfin, áudio, player, streaming, downloads, música
