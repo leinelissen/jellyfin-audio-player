@@ -1,10 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, TouchableOpacityProps, View } from 'react-native';
+import { StyleSheet, TouchableOpacityProps } from 'react-native';
 import ChevronRight from '@/assets/icons/chevron-right.svg';
 import styled from 'styled-components/native';
 import { THEME_COLOR } from '@/CONSTANTS';
 import useDefaultStyles from './Colors';
-import { Text } from './Typography';
 
 const BUTTON_SIZE = 14;
 
@@ -37,7 +36,7 @@ function generateListButtonStyles() {
         hideDescription: {
             display: 'none'
         }
-    })
+    });
 }
 
 const ListButton: React.FC<TouchableOpacityProps> = ({ children, ...props }) => {
