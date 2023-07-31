@@ -10,6 +10,7 @@
 import TrackPlayer, { Event, State } from 'react-native-track-player';
 import store from '@/store';
 import { sendPlaybackEvent } from './JellyfinApi';
+import { setRemainingSleepTime } from '@/store/settings/actions';
 
 export default async function() {
 
@@ -61,26 +62,53 @@ export default async function() {
             sendPlaybackEvent('/Sessions/Playing/Progress', settings.jellyfin);
         }
 
-        // regularly check if sleeper is enabled, pause the audio after 30 minutes.
-        if (settings.enableSleepTime && settings.dateTime !== undefined) {
-            const dateSet = new Date(settings.dateTime.toString());
-            const dateNow = new Date(Date.now());
-            const diff = Math.abs(dateSet.getMinutes() - dateNow.getMinutes());
+        // check if datetime is undefined, otherwise start timer
+        if (settings.dateTime === undefined) {
+            store.dispatch(setRemainingSleepTime(''));
+        } else {
+            const millisecondsDiff = settings.dateTime.valueOf() - new Date().valueOf();
 
-            console.log(`Difference: ${diff}`);
+            const timeDiff = new Date(millisecondsDiff);
+            let interval = setInterval(() => {});
 
-            if (diff >= 30 && dateNow >= dateSet) {
-                console.log('Music Paused');
-                TrackPlayer.pause();
+            if (timeDiff.getTime() > 0) {
+                interval = setInterval(() => {
+                    const settings = store.getState().settings;
+
+                    if (settings.dateTime !== undefined) {
+                        const millisecondsDiff = settings.dateTime.valueOf() - new Date().valueOf();
+
+                        const timeDiff = new Date(millisecondsDiff);
+            
+                        if (timeDiff.getTime() > 0) {
+                            let sec = Math.floor(timeDiff.getTime() / 1000);
+                            let min = Math.floor(sec/60);
+                            sec = sec%60;
+                            const hours = Math.floor(min/60);
+                            min = min%60;
+            
+                            const timer = `${hours.toString().length === 1 ? '0' + hours : hours}:${min.toString().length === 1 ? '0' + min : min}:${sec.toString().length === 1 ? '0' + sec : sec}`;
+            
+                            store.dispatch(setRemainingSleepTime(timer));
+                        } else {
+                            store.dispatch(setRemainingSleepTime(''));
+                            TrackPlayer.pause();
+                            clearInterval(interval);
+                        }
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 1000);
             }
         }
     });
 
     TrackPlayer.addEventListener(Event.PlaybackState, (event) => {
+        // Retrieve the current settings from the Redux store
+        const settings = store.getState().settings;
+
         // GUARD: Only respond to stopped events
         if (event.state === State.Stopped) {
-            // Retrieve the current settings from the Redux store
-            const settings = store.getState().settings;
 
             // GUARD: Only report playback when the settings is enabled
             if (settings.enablePlaybackReporting) {

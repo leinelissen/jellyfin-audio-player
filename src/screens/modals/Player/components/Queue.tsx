@@ -27,7 +27,7 @@ const Header = styled.View`
     flex-direction: row;
     align-items: center;
     padding-bottom: 8px;
-    padding-top: 52px;
+    padding-top: 27px;
 `;
 
 const IconButton = styled.TouchableOpacity`

@@ -15,7 +15,7 @@ interface State {
     enablePlaybackReporting: boolean;
     colorScheme: ColorScheme;
     dateTime?: Date;
-    enableSleepTime: boolean
+    remainingSleepTime: String
 }
 
 const initialState: State = {
@@ -24,8 +24,7 @@ const initialState: State = {
     hasReceivedErrorReportingAlert: false,
     enablePlaybackReporting: true,
     colorScheme: ColorScheme.System,
-    dateTime: new Date(),
-    enableSleepTime: false
+    remainingSleepTime: ''
 };
 
 const settings = createReducer(initialState, builder => {

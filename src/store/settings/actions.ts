@@ -9,4 +9,4 @@ export const setEnablePlaybackReporting = createAction<boolean>('SET_ENABLE_PLAY
 export const setColorScheme = createAction<ColorScheme>('SET_COLOR_SCHEME');
 export const setDateTime = createAction<Date>('SET_DATE_TIME');
 export const setEnableSleepTime = createAction<boolean>('SET_ENABLE_SLEEP_TIME');
-export const setRemainingSleepTime = createAction<number>('SET_REMAINING_SLEEP_TIME');
+export const setRemainingSleepTime = createAction<String>('SET_REMAINING_SLEEP_TIME');
