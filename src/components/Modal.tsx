@@ -4,6 +4,7 @@ import { useNavigation, StackActions } from '@react-navigation/native';
 import useDefaultStyles from './Colors';
 
 interface Props {
+    children?: any;
     fullSize?: boolean;
 }
 

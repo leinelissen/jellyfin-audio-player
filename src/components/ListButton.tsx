@@ -22,7 +22,7 @@ const Label = styled.Text<{ active?: boolean }>`
     display: flex;
 `;
 
-function generateListButtonStyles() {
+function useListButtonStyles() {
     const styles = useDefaultStyles();
     return StyleSheet.create({
         ...styles,
@@ -40,7 +40,7 @@ function generateListButtonStyles() {
 }
 
 const ListButton: React.FC<TouchableOpacityProps> = ({ children, ...props }) => {
-    const defaultStyles = generateListButtonStyles();
+    const defaultStyles = useListButtonStyles();
     const [isPressed, setPressed] = useState(false);
     const handlePressIn = useCallback(() => setPressed(true), []);
     const handlePressOut = useCallback(() => setPressed(false), []);
