@@ -1,55 +1,75 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import styled from 'styled-components/native';
 import { THEME_COLOR } from '@/CONSTANTS';
 import { useDispatch } from 'react-redux';
-import { setDateTime } from '@/store/settings/actions';
 import { useTypedSelector } from '@/store';
 import TimerIcon from '@/assets/icons/timer-icon.svg';
+import { Text } from '@/components/Typography';
+import { setTimerDate } from '@/store/music/actions';
 
 const Container = styled.View`
-    align-item: left;
+    align-items: flex-start;
     margin-top: 60px;
 `;
 
 const View = styled.View`
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 4px;
-`;
-
-const Text = styled.Text`
-    font-size: 10px;
 `;
 
 export default function Timer() {
     const [showPicker, setShowPicker] = useState<boolean>(false);
-    const { remainingSleepTime } = useTypedSelector(state => state.settings);
+    const [remainingTime, setRemainingTime] = useState<String|null>();
+    const { timerDate } = useTypedSelector(state => state.music);
 
     const dispatch = useDispatch();
 
-    const handleConfirm = (date: Date) => {
+    const handleConfirm = useCallback((date: Date) => {
         date.setSeconds(0);
-        dispatch(setDateTime(date));
+        dispatch(setTimerDate(date));
         setShowPicker(false);
-    };
+    }, [dispatch]);
 
-    const handleCancelDatePicker = () => {
-        console.log('Handle cancel implement this event');
-    };
+    const handleCancelDatePicker = useCallback(() => {
+        setShowPicker(false);
+    }, []);
 
-    const showDatePicker = () => {
-        setShowPicker(true);
-    };
-    
+    const showDatePicker = useCallback(() => {
+        setShowPicker(!showPicker);
+    }, [showPicker]);
+
+    useEffect(() => {
+        if (!timerDate) {
+            setRemainingTime(null);
+            return;
+        }
+
+        const interval = setInterval(() => {
+            const dateSet = timerDate ? timerDate : new Date();
+            const millisecondsDiff = dateSet.valueOf() - new Date().valueOf();
+            let sec = Math.floor(millisecondsDiff / 1000);
+            let min = Math.floor(sec/60);
+            sec = sec%60;
+            const hours = Math.floor(min/60);
+            min = min%60;
+            const ticks = `${hours.toString().length === 1 ? '0' + hours : hours}:${min.toString().length === 1 ? '0' + min : min}:${sec.toString().length === 1 ? '0' + sec : sec}`;
+            setRemainingTime(ticks);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [setRemainingTime, timerDate]);
+
     return (
         <Container>
             <View>
-                <TimerIcon fill={showPicker || remainingSleepTime !== '' ? THEME_COLOR : undefined} />
+                <TimerIcon fill={showPicker || timerDate ? THEME_COLOR : undefined} />
                 <Text
-                    style={showPicker || remainingSleepTime !== '' ? {color: THEME_COLOR} : {}}
+                    style={showPicker || timerDate ? {color: THEME_COLOR} : {}}
                     onPress={showDatePicker}
-                >{remainingSleepTime === '' ? 'Sleep Timer' : remainingSleepTime}</Text>
+                >{!timerDate ? 'Sleep Timer' : remainingTime}</Text>
                 <DateTimePickerModal
                     isVisible={showPicker}
                     mode='time'

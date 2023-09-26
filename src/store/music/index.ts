@@ -8,7 +8,8 @@ import {
     playlistAdapter,
     fetchAllPlaylists,
     fetchTracksByPlaylist,
-    fetchAlbum
+    fetchAlbum,
+    setTimerDate
 } from './actions';
 import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
 import { Album, AlbumTrack, Playlist } from './types';
@@ -33,7 +34,8 @@ export interface State {
         entities: Dictionary<Playlist>;
         ids: EntityId[];
         lastRefreshed?: number,
-    }
+    },
+    timerDate?: Date | null;
 }
 
 export const initialState: State = {
@@ -50,7 +52,8 @@ export const initialState: State = {
     playlists: {
         ...playlistAdapter.getInitialState(),
         isLoading: false,
-    }
+    },
+    timerDate: null
 };
 
 const music = createSlice({
@@ -153,6 +156,11 @@ const music = createSlice({
         
         // Reset any caches we have when a new server is set
         builder.addCase(setJellyfinCredentials, () => initialState);
+
+        builder.addCase(setTimerDate, (state, action) => ({
+            ...state,
+            timerDate: action.payload,
+        }));
     }
 });
 

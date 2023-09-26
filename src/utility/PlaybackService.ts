@@ -10,7 +10,7 @@
 import TrackPlayer, { Event, State } from 'react-native-track-player';
 import store from '@/store';
 import { sendPlaybackEvent } from './JellyfinApi';
-import { setRemainingSleepTime } from '@/store/settings/actions';
+import { setTimerDate } from '@/store/music/actions';
 
 export default async function() {
 
@@ -56,59 +56,25 @@ export default async function() {
     TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, () => {
         // Retrieve the current settings from the Redux store
         const settings = store.getState().settings;
+        const music = store.getState().music;
 
         // GUARD: Only report playback when the settings is enabled
         if (settings.enablePlaybackReporting) {
             sendPlaybackEvent('/Sessions/Playing/Progress', settings.jellyfin);
         }
 
-        // check if datetime is undefined, otherwise start timer
-        if (settings.dateTime === undefined) {
-            store.dispatch(setRemainingSleepTime(''));
-        } else {
-            const millisecondsDiff = settings.dateTime.valueOf() - new Date().valueOf();
-
-            const timeDiff = new Date(millisecondsDiff);
-            let interval = setInterval(() => {});
-
-            if (timeDiff.getTime() > 0) {
-                interval = setInterval(() => {
-                    const settings = store.getState().settings;
-
-                    if (settings.dateTime !== undefined) {
-                        const millisecondsDiff = settings.dateTime.valueOf() - new Date().valueOf();
-
-                        const timeDiff = new Date(millisecondsDiff);
-            
-                        if (timeDiff.getTime() > 0) {
-                            let sec = Math.floor(timeDiff.getTime() / 1000);
-                            let min = Math.floor(sec/60);
-                            sec = sec%60;
-                            const hours = Math.floor(min/60);
-                            min = min%60;
-            
-                            const timer = `${hours.toString().length === 1 ? '0' + hours : hours}:${min.toString().length === 1 ? '0' + min : min}:${sec.toString().length === 1 ? '0' + sec : sec}`;
-            
-                            store.dispatch(setRemainingSleepTime(timer));
-                        } else {
-                            store.dispatch(setRemainingSleepTime(''));
-                            TrackPlayer.pause();
-                            clearInterval(interval);
-                        }
-                    } else {
-                        clearInterval(interval);
-                    }
-                }, 1000);
-            }
+        // check if timerDate is undefined, otherwise start timer
+        if (music.timerDate && music.timerDate.valueOf() < new Date().valueOf()) {
+            TrackPlayer.pause();
+            store.dispatch(setTimerDate(null));
         }
     });
 
     TrackPlayer.addEventListener(Event.PlaybackState, (event) => {
-        // Retrieve the current settings from the Redux store
-        const settings = store.getState().settings;
-
         // GUARD: Only respond to stopped events
         if (event.state === State.Stopped) {
+            // Retrieve the current settings from the Redux store
+            const settings = store.getState().settings;
 
             // GUARD: Only report playback when the settings is enabled
             if (settings.enablePlaybackReporting) {

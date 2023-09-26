@@ -7,6 +7,3 @@ export const setOnboardingStatus = createAction<boolean>('SET_ONBOARDING_STATUS'
 export const setReceivedErrorReportingAlert = createAction<void>('SET_RECEIVED_ERROR_REPORTING_ALERT');
 export const setEnablePlaybackReporting = createAction<boolean>('SET_ENABLE_PLAYBACK_REPORTING');
 export const setColorScheme = createAction<ColorScheme>('SET_COLOR_SCHEME');
-export const setDateTime = createAction<Date>('SET_DATE_TIME');
-export const setEnableSleepTime = createAction<boolean>('SET_ENABLE_SLEEP_TIME');
-export const setRemainingSleepTime = createAction<String>('SET_REMAINING_SLEEP_TIME');
