@@ -82,6 +82,7 @@
     "metro-react-native-babel-preset": "^0.73.3",
     "metro-react-native-babel-transformer": "^0.73.3",
     "react-native-codegen": "^0.72.0",
+    "react-native-debugger-open": "^0.4.3",
     "react-test-renderer": "^18.2.0",
     "typescript": "^4.8.4"
   },
@@ -95,5 +96,8 @@
       "json",
       "node"
     ]
+  },
+  "overrides": {
+    "@react-native-community/cli-debugger-ui": "8.0.0"
   }
 }

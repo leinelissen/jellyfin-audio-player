@@ -70,8 +70,10 @@ export interface TrackListViewProps extends PropsWithChildren<{}> {
     shuffleButtonText: string;
     downloadButtonText: string;
     deleteButtonText: string;
+    saveMixPlaylistButtonText: string;
     listNumberingStyle?: 'album' | 'index';
     itemDisplayStyle?: 'album' | 'playlist';
+    isMix: boolean;
 }
 
 const TrackListView: React.FC<TrackListViewProps> = ({
@@ -84,8 +86,10 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     shuffleButtonText,
     downloadButtonText,
     deleteButtonText,
+    saveMixPlaylistButtonText,
     listNumberingStyle = 'album',
     itemDisplayStyle = 'album',
+    isMix,
     children
 }) => {
     const defaultStyles = useDefaultStyles();
@@ -107,6 +111,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const { track: currentTrack } = useCurrentTrack();
     const navigation = useNavigation<NavigationProp>();
     const dispatch = useAppDispatch();
+
 
     // Setup callbacks
     const playEntity = useCallback(() => { playTracks(trackIds); }, [playTracks, trackIds]);

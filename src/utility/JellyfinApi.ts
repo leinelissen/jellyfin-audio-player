@@ -1,6 +1,6 @@
 import TrackPlayer, { RepeatMode, State, Track } from 'react-native-track-player';
 import { AppState, useTypedSelector } from '@/store';
-import { Album, AlbumTrack, SimilarAlbum } from '@/store/music/types';
+import { Album, AlbumTrack, MusicArtist, Playlist, SimilarAlbum } from '@/store/music/types';
 import { Platform } from 'react-native';
 
 type Credentials = AppState['settings']['jellyfin'];
@@ -173,6 +173,15 @@ export function useGetImage() {
     return (ItemId: string) => getImage(ItemId, credentials);
 }
 
+export async function getArtistOverview(ItemId: string, credentials: Credentials): Promise<string> {
+    const config = generateConfig(credentials);
+
+    const results = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items/${ItemId}`, config).then(response => response.json());
+
+    return results.Overview;
+}
+
+
 const trackParams = {
     SortBy: 'AlbumArtist,SortName',
     SortOrder: 'Ascending',
@@ -193,7 +202,7 @@ export async function retrieveAllTracks(credentials: Credentials) {
 }
 
 const searchParams = {
-    IncludeItemTypes: 'Audio,MusicAlbum',
+    IncludeItemTypes: 'Audio,MusicAlbum,MusicArtist,Playlist,MusicGenre',
     SortBy: 'Album,SortName',
     SortOrder: 'Ascending',
     Recursive: 'true',
@@ -205,7 +214,7 @@ const searchParams = {
 export async function searchItem(
     credentials: Credentials,
     term: string, limit = 24
-): Promise<(Album | AlbumTrack)[]> {
+): Promise<(Album | AlbumTrack | MusicArtist | Playlist)[]> {
     const config = generateConfig(credentials);
 
     const params = new URLSearchParams({
@@ -320,4 +329,41 @@ export async function sendPlaybackEvent(path: string, credentials: Credentials, 
     }).catch((err) => {
         console.error(err);
     });
+}
+
+const artistOptions = {
+    SortBy: 'SortName',
+    SortOrder: 'Ascending',
+    IncludeItemTypes: 'MusicArtist',
+    Recursive: 'true',
+    Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated',
+    ImageTypeLimit: '1',
+    EnableImageTypes: 'Primary,Backdrop,Banner,Thumb',
+};
+
+const artistParams = new URLSearchParams(artistOptions).toString();
+
+/**
+ * Retrieve all artists that are available on the Jellyfin server
+ */
+export async function retrieveAllArtists(credentials: Credentials) {
+    const config = generateConfig(credentials);
+    const artists = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${artistParams}`, config)
+        .then(response => response.json());
+
+    return artists.Items;
+}
+
+export async function retrieveInstantMixByTrackId(credentials: Credentials, trackId: string, limit = 100) {
+    const config = generateConfig(credentials);
+    
+    const instantMixOptions = {
+        UserId: credentials?.user_id ?? '',
+        Limit: limit.toString()
+    };
+    const instantMixParams = new URLSearchParams(instantMixOptions).toString();
+    const mix = await fetch(`${credentials?.uri}/Items/${trackId}/InstantMix?${instantMixParams}`, config)
+        .then(response => response.json());
+
+    return mix.Items;
 }

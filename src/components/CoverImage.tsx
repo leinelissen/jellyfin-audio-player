@@ -69,12 +69,12 @@ function CoverImage({
                 </RoundedRect>
                 {skiaImage ? (
                     <>
-                        <SkiaImage image={skiaImage} width={imageSize} height={imageSize} opacity={opacity}>
+                        <SkiaImage image={skiaImage} fit="fill" width={imageSize} height={imageSize} opacity={opacity}>
                             <Offset x={blurRadius} y={blurRadius} />
                             <Blur blur={blurRadius / 2} />
                         </SkiaImage>
                         <Mask mask={<RoundedRect width={imageSize} height={imageSize} x={blurRadius} y={blurRadius} r={radius}  />}>
-                            <SkiaImage image={skiaImage} width={imageSize} height={imageSize}>
+                            <SkiaImage image={skiaImage} fit="cover" width={imageSize} height={imageSize}>
                                 <Offset x={blurRadius} y={blurRadius} />
                             </SkiaImage>
                         </Mask>

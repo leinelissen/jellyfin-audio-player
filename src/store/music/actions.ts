@@ -1,7 +1,7 @@
 import { createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
-import { Album, AlbumTrack, Playlist } from './types';
+import { Album, AlbumTrack, Playlist, MusicArtist } from './types';
 import { AsyncThunkAPI } from '..';
-import { retrieveAllAlbums, retrieveAlbumTracks, retrieveRecentAlbums, searchItem, retrieveAlbum, retrieveAllPlaylists, retrievePlaylistTracks } from '@/utility/JellyfinApi';
+import { retrieveAllAlbums, retrieveAlbumTracks, retrieveRecentAlbums, searchItem, retrieveAlbum, retrieveAllPlaylists, retrievePlaylistTracks, retrieveAllArtists, retrieveInstantMixByTrackId, getArtistOverview } from '@/utility/JellyfinApi';
 
 export const albumAdapter = createEntityAdapter<Album>({
     selectId: album => album.Id,
@@ -35,6 +35,8 @@ export const trackAdapter = createEntityAdapter<AlbumTrack>({
     sortComparer: (a, b) => a.IndexNumber - b.IndexNumber,
 });
 
+export const trackSelectors = trackAdapter.getSelectors((state) => state);
+
 /**
  * Retrieve all tracks from a particular album
  */
@@ -55,11 +57,11 @@ export const fetchAlbum = createAsyncThunk<Album, string, AsyncThunkAPI>(
 );
 
 type SearchAndFetchResults = {
-    albums: Album[];
-    results: (Album | AlbumTrack)[]; 
+    // albums: Album[];
+    results: (Album | AlbumTrack | MusicArtist | Playlist)[];
 };
 
-export const searchAndFetchAlbums = createAsyncThunk<
+export const searchAndFetch = createAsyncThunk<
 SearchAndFetchResults,
 { term: string, limit?: number },
 AsyncThunkAPI
@@ -69,18 +71,7 @@ AsyncThunkAPI
         const state = thunkAPI.getState();
         const results = await searchItem(state.settings.jellyfin, term, limit);
 
-        const albums = await Promise.all(results.filter((item) => (
-            !state.music.albums.ids.includes(item.Type === 'MusicAlbum' ? item.Id : item.AlbumId)
-        )).map(async (item) => {
-            if (item.Type === 'MusicAlbum') {
-                return item;
-            }
-
-            return retrieveAlbum(state.settings.jellyfin, item.AlbumId);
-        }));
-
         return {
-            albums,
             results
         };
     }
@@ -110,5 +101,37 @@ export const fetchTracksByPlaylist = createAsyncThunk<AlbumTrack[], string, Asyn
     async (ItemId, thunkAPI) => {
         const credentials = thunkAPI.getState().settings.jellyfin;
         return retrievePlaylistTracks(ItemId, credentials) as Promise<AlbumTrack[]>;
+    }
+);
+
+export const artistAdapter = createEntityAdapter<MusicArtist>({
+    selectId: artist => artist.Id,
+    sortComparer: (a, b) => a.Name.localeCompare(b.Name)
+});
+
+/**
+ * Fetch all albums available on the jellyfin server
+ */
+export const fetchAllArtists = createAsyncThunk<MusicArtist[], undefined, AsyncThunkAPI>(
+    '/artists/all',
+    async (empty, thunkAPI) => {
+        const credentials = thunkAPI.getState().settings.jellyfin;
+        return retrieveAllArtists(credentials) as Promise<MusicArtist[]>;
+    }
+);
+
+export const fetchInstantMixByTrackId = createAsyncThunk<AlbumTrack[], string, AsyncThunkAPI>(
+    '/instantMix/byTrackId',
+    async (trackId, thunkAPI) => {
+        const credentials = thunkAPI.getState().settings.jellyfin;
+        return retrieveInstantMixByTrackId(credentials, trackId) as Promise<AlbumTrack[]>;
+    }
+);
+
+export const fetchArtistOverview = createAsyncThunk<string, string, AsyncThunkAPI>(
+    '/overview/byId',
+    async (artistId, thunkAPI) => {
+        const credentials = thunkAPI.getState().settings.jellyfin;
+        return getArtistOverview(artistId, credentials);
     }
 );

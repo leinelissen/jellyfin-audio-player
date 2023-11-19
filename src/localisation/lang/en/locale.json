@@ -70,5 +70,8 @@
     "color-scheme-light": "Light Mode",
     "color-scheme-dark": "Dark Mode",
     "artists": "Artists",
-    "privacy-policy": "Privacy Policy"
+    "artist": "Artist",
+    "privacy-policy": "Privacy Policy",
+    "mix": "Mix",
+    "save-mix-playlist": "Save Mix as Playlist"
 }
