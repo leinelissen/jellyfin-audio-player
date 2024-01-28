@@ -9,6 +9,7 @@ import music, { initialState as musicInitialState } from './music';
 import downloads, { initialState as downloadsInitialState } from './downloads';
 import { PersistState } from 'redux-persist/es/types';
 import { ColorScheme } from './settings/types';
+import sleepTimer from './sleep-timer';
 
 const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
     key: 'root',
@@ -59,9 +60,8 @@ const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
         4: (state: AppState) => {
             return {
                 ...state,
-                music: {
-                    ...state.music,
-                    timerDate: Date
+                sleepTimer: {
+                    date: null,
                 }
             };
         },
@@ -72,6 +72,7 @@ const reducers = combineReducers({
     settings,
     music: music.reducer,
     downloads: downloads.reducer,
+    sleepTimer: sleepTimer.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

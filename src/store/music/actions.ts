@@ -1,4 +1,4 @@
-import { createAction, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
+import { createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { Album, AlbumTrack, Playlist } from './types';
 import { AsyncThunkAPI } from '..';
 import { retrieveAllAlbums, retrieveAlbumTracks, retrieveRecentAlbums, searchItem, retrieveAlbum, retrieveAllPlaylists, retrievePlaylistTracks } from '@/utility/JellyfinApi';
@@ -112,5 +112,3 @@ export const fetchTracksByPlaylist = createAsyncThunk<AlbumTrack[], string, Asyn
         return retrievePlaylistTracks(ItemId, credentials) as Promise<AlbumTrack[]>;
     }
 );
-
-export const setTimerDate = createAction<Date|null>('SET_TIMER_DATE');
