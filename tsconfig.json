@@ -8,7 +8,6 @@
       ],
     },
     "types": [
-      "@types/styled-components-react-native",
       "@types/node"
     ],
   },

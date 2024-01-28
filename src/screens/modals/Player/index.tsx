@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import StreamStatus from './components/StreamStatus';
 import { Platform } from 'react-native';
 import BackButton from './components/Backbutton';
+import Timer from './components/Timer';
 
 export default function Player() {    
     return (
@@ -20,6 +21,7 @@ export default function Player() {
                     <StreamStatus />
                     <ProgressBar />
                     <MediaControls />
+                    <Timer />
                 </>                    
             )} />
         </GestureHandlerRootView>

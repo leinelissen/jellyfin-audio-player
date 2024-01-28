@@ -9,7 +9,7 @@ import { THEME_COLOR } from '@/CONSTANTS';
 import { t } from '@/localisation';
 import useDefaultStyles from '@/components/Colors';
 import { Text } from '@/components/Typography';
-import { useAppDispatch } from '@/store';
+import { AppState, useAppDispatch } from '@/store';
 
 
 export default function SetJellyfinServer() {
@@ -23,9 +23,11 @@ export default function SetJellyfinServer() {
     const navigation = useNavigation();
 
     // Save creedentials to store and close the modal
-    const saveCredentials = useCallback((credentials) => {
-        dispatch(setJellyfinCredentials(credentials));
-        navigation.dispatch(StackActions.popToTop());    
+    const saveCredentials = useCallback((credentials: AppState['settings']['jellyfin']) => {
+        if (credentials) {
+            dispatch(setJellyfinCredentials(credentials));
+            navigation.dispatch(StackActions.popToTop());    
+        }
     }, [navigation, dispatch]);
 
     return (

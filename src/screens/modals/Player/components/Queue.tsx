@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import useQueue from '@/utility/useQueue';
-import { View, StyleSheet, ListRenderItemInfo } from 'react-native';
+import { View, StyleSheet, ListRenderItemInfo, FlatList } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import useCurrentTrack from '@/utility/useCurrentTrack';
 import TouchableHandler from '@/components/TouchableHandler';
@@ -18,7 +18,7 @@ import ticksToDuration from '@/utility/ticksToDuration';
 
 const ICON_SIZE = 16;
 
-const Container = styled.FlatList<Track>`
+const Container = styled(FlatList<Track>)`
 
 `;
 
@@ -27,7 +27,7 @@ const Header = styled.View`
     flex-direction: row;
     align-items: center;
     padding-bottom: 8px;
-    padding-top: 52px;
+    padding-top: 27px;
 `;
 
 const IconButton = styled.TouchableOpacity`
