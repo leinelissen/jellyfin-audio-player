@@ -21,7 +21,7 @@ const initialState: State = {
     isOnboardingComplete: false,
     hasReceivedErrorReportingAlert: false,
     enablePlaybackReporting: true,
-    colorScheme: ColorScheme.System
+    colorScheme: ColorScheme.System,
 };
 
 const settings = createReducer(initialState, builder => {
