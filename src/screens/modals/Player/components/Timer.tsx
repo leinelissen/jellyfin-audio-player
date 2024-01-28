@@ -5,78 +5,132 @@ import { THEME_COLOR } from '@/CONSTANTS';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '@/store';
 import TimerIcon from '@/assets/icons/timer-icon.svg';
-import { Text } from '@/components/Typography';
-import { setTimerDate } from '@/store/music/actions';
+import { setTimerDate } from '@/store/sleep-timer';
+import ticksToDuration from '@/utility/ticksToDuration';
+import useDefaultStyles from '@/components/Colors';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { t } from '@/localisation';
 
 const Container = styled.View`
+    align-self: flex-start;
     align-items: flex-start;
-    margin-top: 60px;
+    margin-top: 52px;
+    padding: 8px;
+    margin-left: -8px;
+    flex: 0 1 auto;
+    border-radius: 8px;
 `;
 
 const View = styled.View`
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
+`;
+
+const Label = styled.Text`
+    font-size: 13px;
 `;
 
 export default function Timer() {
+    // Keep an incrementing counter to force the component to update when the
+    // interval is active.
+    const [, setCounter] = useState(0);
+
+    // Show the picker or not
     const [showPicker, setShowPicker] = useState<boolean>(false);
-    const [remainingTime, setRemainingTime] = useState<String|null>();
-    const { timerDate } = useTypedSelector(state => state.music);
-
+    
+    // Retrieve Redux state and methods
+    const date = useTypedSelector(state => state.sleepTimer.date);
     const dispatch = useDispatch();
+    
+    // Retrieve styles
+    const defaultStyles = useDefaultStyles();
 
+    // Deal with a date being selected
     const handleConfirm = useCallback((date: Date) => {
+        // GUARD: If the date is in the past, we need to add 24 hours to it to
+        // ensure it is in the future
+        if (date.getTime() < new Date().getTime()) {
+            date = new Date(date.getTime() + 24 * 60 * 60 * 1_000);
+        }
+
+        // Only accept minutes and hours
         date.setSeconds(0);
+
+        // Set the date and close the picker
         dispatch(setTimerDate(date));
         setShowPicker(false);
     }, [dispatch]);
 
+    // Close the picker when it is canceled
     const handleCancelDatePicker = useCallback(() => {
         setShowPicker(false);
     }, []);
 
+    // Show it when it should be opened
     const showDatePicker = useCallback(() => {
         setShowPicker(!showPicker);
     }, [showPicker]);
 
+    // Periodically trigger updates
     useEffect(() => {
-        if (!timerDate) {
-            setRemainingTime(null);
+        // GUARD: If there's no date, there's no need to update
+        if (!date) {
             return;
         }
 
+        // Set an interval that periodically increments the counter when a date
+        // is active
         const interval = setInterval(() => {
-            const dateSet = timerDate ? timerDate : new Date();
-            const millisecondsDiff = dateSet.valueOf() - new Date().valueOf();
-            let sec = Math.floor(millisecondsDiff / 1000);
-            let min = Math.floor(sec/60);
-            sec = sec%60;
-            const hours = Math.floor(min/60);
-            min = min%60;
-            const ticks = `${hours.toString().length === 1 ? '0' + hours : hours}:${min.toString().length === 1 ? '0' + min : min}:${sec.toString().length === 1 ? '0' + sec : sec}`;
-            setRemainingTime(ticks);
-        }, 1000);
+            setCounter((i) => i + 1);
+        }, 1_000);
 
+        // Clean up the interval on re-renders
         return () => clearInterval(interval);
-    }, [setRemainingTime, timerDate]);
+    }, [date]);
+
+    // Calculate the remaining time by subtracting it from the current date
+    const remainingTime = date && date - new Date().getTime();
 
     return (
-        <Container>
-            <View>
-                <TimerIcon fill={showPicker || timerDate ? THEME_COLOR : undefined} />
-                <Text
-                    style={showPicker || timerDate ? {color: THEME_COLOR} : {}}
-                    onPress={showDatePicker}
-                >{!timerDate ? 'Sleep Timer' : remainingTime}</Text>
-                <DateTimePickerModal
-                    isVisible={showPicker}
-                    mode='time'
-                    onConfirm={handleConfirm}
-                    onCancel={handleCancelDatePicker}
-                />
-            </View>
-        </Container>
+        <TouchableOpacity
+            onPress={showDatePicker} 
+            activeOpacity={0.6}
+            style={{ flexGrow: 0 }}
+        >
+            <Container
+                style={{ backgroundColor: showPicker || date
+                    ? defaultStyles.activeBackground.backgroundColor 
+                    : undefined 
+                }}
+            >
+                <View>
+                    <TimerIcon
+                        fill={showPicker || date
+                            ? THEME_COLOR
+                            : defaultStyles.textHalfOpacity.color
+                        } 
+                    />
+                    <Label
+                        style={{ color: showPicker || date
+                            ? THEME_COLOR
+                            : defaultStyles.textHalfOpacity.color
+                        }}
+                    >
+                        {!remainingTime
+                            ? t('sleep-timer')
+                            : ticksToDuration(remainingTime * 10_000)
+                        }
+                    </Label>
+                    <DateTimePickerModal
+                        isVisible={showPicker}
+                        mode='time'
+                        onConfirm={handleConfirm}
+                        onCancel={handleCancelDatePicker}
+                    />
+                </View>
+            </Container>
+        </TouchableOpacity>
     );
 }

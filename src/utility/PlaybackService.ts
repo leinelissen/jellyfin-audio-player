@@ -10,10 +10,9 @@
 import TrackPlayer, { Event, State } from 'react-native-track-player';
 import store from '@/store';
 import { sendPlaybackEvent } from './JellyfinApi';
-import { setTimerDate } from '@/store/music/actions';
+import { setTimerDate } from '@/store/sleep-timer';
 
 export default async function() {
-
     TrackPlayer.addEventListener(Event.RemotePlay, () => {
         TrackPlayer.play();
     });
@@ -55,8 +54,7 @@ export default async function() {
 
     TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, () => {
         // Retrieve the current settings from the Redux store
-        const settings = store.getState().settings;
-        const music = store.getState().music;
+        const { settings, sleepTimer } = store.getState();
 
         // GUARD: Only report playback when the settings is enabled
         if (settings.enablePlaybackReporting) {
@@ -64,7 +62,7 @@ export default async function() {
         }
 
         // check if timerDate is undefined, otherwise start timer
-        if (music.timerDate && music.timerDate.valueOf() < new Date().valueOf()) {
+        if (sleepTimer.date && sleepTimer.date < new Date().valueOf()) {
             TrackPlayer.pause();
             store.dispatch(setTimerDate(null));
         }
