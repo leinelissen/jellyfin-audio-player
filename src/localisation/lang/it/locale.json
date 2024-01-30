@@ -35,7 +35,7 @@
     "error-reporting": "Segnalazione Errori",
     "error-reporting-description": "Durante l'utilizzo di questa app, potresti riscontrare errori. La segnalazione di questi errori ci aiuta a creare un'esperienza dell'app più sicura e stabile.",
     "error-reporting-rationale": "Quando abiliti la segnalazione degli errori, ogni volta che si verifica un errore, viene creato automaticamente un rapporto e inviato a un server, insieme a utili informazioni di debug come dispositivi, versioni e l'errore specifico.",
-    "why-use-tracking-description": "Il monitoraggio aiuta ad accelerare lo sviluppo di questa app segnalando casi strani e sviste. Ciò ci aiuta a rendere l'app più stabile e robusta, aumentando così l'esperienza dell'app per tutti.",
+    "why-use-tracking-description": "Il tracciamento aiuta a velocizzare lo sviluppo di questa applicazione segnalando strani casi di bordo e sovratensioni. Questo aiuta a rendere l'applicazione più stabile e robusta, migliorando così l'esperienza app per tutti.",
     "what-data-is-gathered": "Quali dati vengono raccolti?",
     "what-data-is-gathered-description": "Registriamo l'errore, il tipo di dispositivo, la versione del sistema operativo, la versione dell'app e l'ID del dispositivo. Nessuno stato dell'applicazione viene inviato in nessuna segnalazione di errore. L'ID del dispositivo è un hash unico che può essere ripristinato nelle impostazioni del dispositivo e non possiamo dedurre alcuna informazione personale da questo identificatore.",
     "where-is-data-stored": "Dove vengono archiviati i dati?",
@@ -70,5 +70,6 @@
     "playback-reporting": "Rapporto di Riproduzione",
     "playback-reporting-description": "Con il Rapporto di Riproduzione, tutti i tuoi eventi di riproduzione vengono ritrasmessi a Jellyfin. Ciò ti consente di tenere traccia delle tue canzoni più ascoltate, in particolare con i plug-in Jellyfin come ListenBrainz.",
     "color-scheme-description": "Di default, Fintunes usa il tema colori del tuo sistema operativo. Puoi tuttavia scegliere di sovrascrivere questa impostazione per assicurarti che Fintunes sia sempre in modalità notte o luce.",
-    "privacy-policy": "Politica sulla riservatezza"
+    "privacy-policy": "Politica sulla riservatezza",
+    "sleep-timer": "Tempo di sonno"
 }
