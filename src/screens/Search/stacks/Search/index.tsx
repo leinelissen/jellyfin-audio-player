@@ -228,6 +228,7 @@ export default function Search() {
                             placeholder={t('search') + '...'}
                             icon={<SearchIcon width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />}
                             testID="search-input"
+                            autoCorrect={false}
                         />
                         {isLoading && <Loading style={{ marginTop: -4 }}><ActivityIndicator /></Loading>}
                     </View>
