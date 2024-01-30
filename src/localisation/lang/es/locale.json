@@ -64,11 +64,12 @@
     "artists": "Artistas",
     "error-reporting": "Error al reportar",
     "error-reporting-description": "Durante el uso de esta aplicación, puede encontrar errores. Informar estos errores ayuda a crear una experiencia de aplicación más segura y estable.",
-    "why-use-tracking-description": "El seguimiento ayuda a acelerar el desarrollo de esta aplicación al informar casos extraños y descuidos. Esto ayuda a que la aplicación sea más estable y sólida, lo que aumenta la experiencia de la aplicación para todos.",
+    "why-use-tracking-description": "El rastreo ayuda a acelerar el desarrollo de esta aplicación informando de casos extraños y descuidos. Esto ayuda a hacer la aplicación más estable y robusta, mejorando así la experiencia de la aplicación para todos.",
     "streaming": "Transmisión",
     "total-duration": "Duración total",
     "similar-albums": "Álbumes similares",
     "color-scheme": "Esquema de colores",
     "color-scheme-system": "Sistema",
-    "privacy-policy": "Política de privacidad"
+    "privacy-policy": "Política de privacidad",
+    "sleep-timer": "Hora del sueño"
 }

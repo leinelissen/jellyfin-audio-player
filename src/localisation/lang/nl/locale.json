@@ -29,7 +29,7 @@
     "error-reporting-description": "Gedurende het gebruik van deze app kun je tegen fouten aanlopen. Het rapporteren van deze foutmeldingen helpt om een veiligere en stabielere app-ervaring te maken.",
     "error-reporting-rationale": "Wanneer je foutmeldingen aanzet, wordt er elke keer als je een foutmelding krijgt een automatisch rapport gegenereerd en naar onze server gestuurd. Deze bevat behulpzame informatie, zoals apparaat, versies en de specifieke foutmelding.",
     "why-use-tracking": "Waarom tracking gebruiken?",
-    "why-use-tracking-description": "Tracking helpt het versnellen van het ontwikkeltempo doordat we beter inzicht hebben op rare gevallen en dingen die we gemist hebben. Dit helpt met het stabieler en veiliger maken van de voor iedereen.",
+    "why-use-tracking-description": "Tracing helpt het versnellen van het ontwikkeltempo doordat we beter inzicht hebben op rare gevallen en dingen die we gemist hebben. Dit helpt Fintunes stabieler en veiliger maken van de voor iedereen.",
     "what-data-is-gathered": "Welke data wordt er verzameld?",
     "what-data-is-gathered-description": "We loggen de foutmeldingen, je apparaattype, versienummers en een device id. Geen applicatiestaat wordt gedeeld in de rapportage. Het device id is een unieke hash die gereset kan worden in de instellingen van je apparaat. Wij kunnen geen verdere informatie afleiden van deze identifier.",
     "where-is-data-stored": "Waar wordt de data opgeslagen?",

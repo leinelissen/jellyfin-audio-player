@@ -70,5 +70,6 @@
     "color-scheme-dark": "深色模式",
     "playback-reporting-description": "借助回放报告，您的所有回放事件都会转发回 Jellyfin。这使您可以跟踪您最常听的歌曲，尤其是使用 ListenBrainz 等 Jellyfin 插件时。",
     "color-scheme-light": "灯光模式",
-    "privacy-policy": "隐私政策"
+    "privacy-policy": "隐私政策",
+    "sleep-timer": "睡眠定时器"
 }
