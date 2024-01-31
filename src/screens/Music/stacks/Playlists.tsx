@@ -48,7 +48,7 @@ const Playlists: React.FC = () => {
     const getImage = useGetImage();
     const listRef = useRef<FlatList<EntityId>>(null);
 
-    const getItemLayout = useCallback((data: EntityId[] | null | undefined, index: number): { offset: number, length: number, index: number } => {
+    const getItemLayout = useCallback((data: ArrayLike<EntityId> | null | undefined, index: number): { offset: number, length: number, index: number } => {
         const length = 220;
         const offset = length * index;
         return { index, length, offset };

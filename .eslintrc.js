@@ -8,7 +8,6 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:react-hooks/recommended',
-        '@react-native',
         // 'plugin:@typescript-eslint/recommended'
     ],
     globals: {
