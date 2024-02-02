@@ -1,0 +1,25 @@
+diff --git a/node_modules/@sentry/react-native/scripts/sentry-xcode-debug-files.sh b/node_modules/@sentry/react-native/scripts/sentry-xcode-debug-files.sh
+index 6427338..c84ac33 100755
+--- a/node_modules/@sentry/react-native/scripts/sentry-xcode-debug-files.sh
++++ b/node_modules/@sentry/react-native/scripts/sentry-xcode-debug-files.sh
+@@ -2,8 +2,8 @@
+ # Upload Debug Symbols to Sentry Xcode Build Phase
+ # PWD=ios
+ 
+-# print commands before executing them and stop on first error
+-set -x -e
++# print commands before executing them
++set -x
+ 
+ [ -z "$WITH_ENVIRONMENT" ] && WITH_ENVIRONMENT="../node_modules/react-native/scripts/xcode/with-environment.sh"
+ 
+@@ -12,6 +12,9 @@ if [ -f "$WITH_ENVIRONMENT" ]; then
+   . "$WITH_ENVIRONMENT"
+ fi
+ 
++# stop on first error (we can't use -e before as any failed command in WITH_ENVIRONMENT would stop the debug files upload)
++set -e
++
+ LOCAL_NODE_BINARY=${NODE_BINARY:-node}
+ 
+ [ -z "$SENTRY_PROPERTIES" ] && export SENTRY_PROPERTIES=sentry.properties

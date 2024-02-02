@@ -1,5 +1,9 @@
 const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
 
+const {
+    createSentryMetroSerializer
+} = require('@sentry/react-native/dist/js/tools/sentryMetroSerializer');
+
 const defaultConfig = getDefaultConfig(__dirname);
 const { assetExts, sourceExts } = defaultConfig.resolver;
 
@@ -24,17 +28,9 @@ const config = {
             'md'
         ]
     },
-
-    // plugins: [
-    //     ['content-transformer', {
-    //         transformers: [
-    //             {
-    //                 file: /\.md$/,
-    //                 format: 'string'
-    //             }
-    //         ],
-    //     }],
-    // ]
+    serializer: {
+        customSerializer: createSentryMetroSerializer()
+    }
 };
 
 module.exports = mergeConfig(defaultConfig, config);
