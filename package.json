@@ -24,6 +24,7 @@
     "@reduxjs/toolkit": "^1.9.0",
     "@shopify/react-native-skia": "^0.1.237",
     "date-fns": "^2.29.3",
+    "events": "^3.3.0",
     "fuse.js": "^6.6.2",
     "i18n-js": "^3.9.2",
     "lodash": "^4.17.21",
