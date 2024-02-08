@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 import { THEME_COLOR } from '@/CONSTANTS';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '@/store';
-import TimerIcon from '@/assets/icons/timer-icon.svg';
+import TimerIcon from '@/assets/icons/timer.svg';
 import { setTimerDate } from '@/store/sleep-timer';
 import ticksToDuration from '@/utility/ticksToDuration';
 import useDefaultStyles from '@/components/Colors';
@@ -66,7 +66,8 @@ export default function Timer() {
     // Close the picker when it is canceled
     const handleCancelDatePicker = useCallback(() => {
         setShowPicker(false);
-    }, []);
+        dispatch(setTimerDate(null));
+    }, [dispatch]);
 
     // Show it when it should be opened
     const showDatePicker = useCallback(() => {
@@ -110,7 +111,9 @@ export default function Timer() {
                         fill={showPicker || date
                             ? THEME_COLOR
                             : defaultStyles.textHalfOpacity.color
-                        } 
+                        }
+                        width={16}
+                        height={16}
                     />
                     <Label
                         style={{ color: showPicker || date
@@ -126,6 +129,7 @@ export default function Timer() {
                     <DateTimePickerModal
                         isVisible={showPicker}
                         mode='time'
+                        date={new Date()}
                         onConfirm={handleConfirm}
                         onCancel={handleCancelDatePicker}
                     />
