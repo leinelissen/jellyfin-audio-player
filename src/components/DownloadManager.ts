@@ -1,4 +1,3 @@
-import { EntityId } from '@reduxjs/toolkit';
 import { xor } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { DocumentDirectoryPath, readDir } from 'react-native-fs';
@@ -24,7 +23,7 @@ function DownloadManager () {
     // Keep state for the currently active downloads (i.e. the downloads that
     // have actually been pushed out to react-native-fs).
     const [hasRehydratedOrphans, setHasRehydratedOrphans] = useState(false);
-    const activeDownloads = useRef(new Set<EntityId>());
+    const activeDownloads = useRef(new Set<string>());
 
     useEffect(() => {
         // GUARD: Check if the queue is empty

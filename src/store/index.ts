@@ -1,15 +1,14 @@
-import { configureStore, getDefaultMiddleware, combineReducers } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { persistStore, persistReducer, PersistConfig, createMigrate } from 'redux-persist';
+import { persistStore, persistReducer, PersistConfig, createMigrate, PersistState } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 import settings from './settings';
 import music, { initialState as musicInitialState } from './music';
 import downloads, { initialState as downloadsInitialState } from './downloads';
-import { PersistState } from 'redux-persist/es/types';
-import { ColorScheme } from './settings/types';
 import sleepTimer from './sleep-timer';
+import { ColorScheme } from './settings/types';
 
 const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
     key: 'root',
@@ -77,16 +76,11 @@ const reducers = combineReducers({
 
 const persistedReducer = persistReducer(persistConfig, reducers);
 
-const middlewares = [];
-if (__DEV__) {
-    middlewares.push(require('redux-flipper').default());
-}
-
 const store = configureStore({
     reducer: persistedReducer,
-    middleware: getDefaultMiddleware({ serializableCheck: false, immutableCheck: false }).concat(
-        // logger,
-        ...middlewares,
+    middleware: (getDefaultMiddleware) => (
+        getDefaultMiddleware({ serializableCheck: false, immutableCheck: false })
+            .concat(__DEV__ ? [require('redux-flipper').default()] : [])
     ),
 });
 
@@ -94,7 +88,7 @@ export type AppState = ReturnType<typeof reducers> & { _persist: PersistState };
 export type AppDispatch = typeof store.dispatch;
 export type AsyncThunkAPI = { state: AppState, dispatch: AppDispatch };
 export const useTypedSelector: TypedUseSelectorHook<AppState> = useSelector;
-export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export const persistedStore = persistStore(store);
 

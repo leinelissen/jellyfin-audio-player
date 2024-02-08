@@ -6,10 +6,8 @@ import { useAppDispatch, useTypedSelector } from '@/store';
 import formatBytes from '@/utility/formatBytes';
 import TrashIcon from '@/assets/icons/trash.svg';
 import ArrowClockwise from '@/assets/icons/arrow-clockwise.svg';
-import { EntityId } from '@reduxjs/toolkit';
 import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/actions';
 import Button from '@/components/Button';
-import { t } from 'i18n-js';
 import DownloadIcon from '@/components/DownloadIcon';
 import styled from 'styled-components/native';
 import { Text } from '@/components/Typography';
@@ -18,6 +16,7 @@ import { useGetImage } from '@/utility/JellyfinApi';
 import { ShadowWrapper } from '@/components/Shadow';
 import { SafeFlatList } from '@/components/SafeNavigatorView';
 import { THEME_COLOR } from '@/CONSTANTS';
+import { t } from '@/localisation';
 
 const DownloadedTrack = styled.View`
     flex: 1 0 auto;
@@ -55,7 +54,7 @@ function Downloads() {
      */
 
     // Delete a single downloaded track
-    const handleDelete = useCallback((id: EntityId) => {
+    const handleDelete = useCallback((id: string) => {
         dispatch(removeDownloadedTrack(id));
     }, [dispatch]);
 
@@ -63,7 +62,7 @@ function Downloads() {
     const handleDeleteAllTracks = useCallback(() => ids.forEach(handleDelete), [handleDelete, ids]);
 
     // Retry a single failed track
-    const retryTrack = useCallback((id: EntityId) => {
+    const retryTrack = useCallback((id: string) => {
         dispatch(queueTrackForDownload(id));
     }, [dispatch]);
 
@@ -110,7 +109,7 @@ function Downloads() {
         </View>
     ), [totalDownloadSize, defaultStyles, failedIds.length, handleRetryFailed, handleDeleteAllTracks, ids.length]);
     
-    const renderItem = useCallback<NonNullable<FlatListProps<EntityId>['renderItem']>>(({ item }) => (
+    const renderItem = useCallback<NonNullable<FlatListProps<string>['renderItem']>>(({ item }) => (
         <>
             <DownloadedTrack>
                 <View style={{ marginRight: 12 }}>

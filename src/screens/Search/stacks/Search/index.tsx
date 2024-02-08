@@ -3,7 +3,7 @@ import Input from '@/components/Input';
 import { ActivityIndicator, Animated, SafeAreaView, View } from 'react-native';
 import styled from 'styled-components/native';
 import { useAppDispatch, useTypedSelector } from '@/store';
-import Fuse from 'fuse.js';
+import Fuse, { IFuseOptions } from 'fuse.js';
 import { Album, AlbumTrack } from '@/store/music/types';
 import { FlatList } from 'react-native-gesture-handler';
 import TouchableHandler from '@/components/TouchableHandler';
@@ -73,7 +73,7 @@ const SearchResult = styled.View`
     height: 54px;
 `;
 
-const fuseOptions: Fuse.IFuseOptions<Album> = {
+const fuseOptions: IFuseOptions<Album> = {
     keys: ['Name', 'AlbumArtist', 'AlbumArtists', 'Artists'],
     threshold: 0.1,
     includeScore: true,

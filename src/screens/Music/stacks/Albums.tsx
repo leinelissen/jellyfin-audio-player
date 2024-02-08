@@ -10,7 +10,6 @@ import TouchableHandler from '@/components/TouchableHandler';
 import AlbumImage, { AlbumHeight, AlbumItem } from './components/AlbumImage';
 import { selectAlbumsByAlphabet, SectionedId } from '@/store/music/selectors';
 import AlphabetScroller from '@/components/AlphabetScroller';
-import { EntityId } from '@reduxjs/toolkit';
 import styled from 'styled-components/native';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import { Album } from '@/store/music/types';
@@ -90,7 +89,7 @@ const Albums: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
-    const listRef = useRef<SectionList<EntityId[]>>(null);
+    const listRef = useRef<SectionList<string[]>>(null);
 
     // Create an array that computes all the height data for the entire list in
     // advance. We can then use this pre-computed data to respond to
@@ -143,7 +142,7 @@ const Albums: React.FC = () => {
     const selectLetter = useCallback((sectionIndex: number) => { 
         listRef.current?.scrollToLocation({ sectionIndex, itemIndex: 0, animated: false, }); 
     }, [listRef]);
-    const generateItem = useCallback(({ item }: { item: EntityId[] }) => {
+    const generateItem = useCallback(({ item }: { item: string[] }) => {
         return (
             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }} key={item.join('-')}>
                 {item.map((id) => (

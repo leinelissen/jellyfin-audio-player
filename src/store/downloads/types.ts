@@ -1,7 +1,5 @@
-import { EntityId } from '@reduxjs/toolkit';
-
 export interface DownloadEntity {
-    id: EntityId;
+    id: string;
     progress: number;
     isFailed: boolean;
     isComplete: boolean;

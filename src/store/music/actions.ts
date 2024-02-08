@@ -3,7 +3,7 @@ import { Album, AlbumTrack, Playlist } from './types';
 import { AsyncThunkAPI } from '..';
 import { retrieveAllAlbums, retrieveAlbumTracks, retrieveRecentAlbums, searchItem, retrieveAlbum, retrieveAllPlaylists, retrievePlaylistTracks } from '@/utility/JellyfinApi';
 
-export const albumAdapter = createEntityAdapter<Album>({
+export const albumAdapter = createEntityAdapter<Album, string>({
     selectId: album => album.Id,
     sortComparer: (a, b) => a.Name.localeCompare(b.Name),
 });
@@ -30,7 +30,7 @@ export const fetchRecentAlbums = createAsyncThunk<Album[], number | undefined, A
     }
 );
 
-export const trackAdapter = createEntityAdapter<AlbumTrack>({
+export const trackAdapter = createEntityAdapter<AlbumTrack, string>({
     selectId: track => track.Id,
     sortComparer: (a, b) => a.IndexNumber - b.IndexNumber,
 });
@@ -86,7 +86,7 @@ AsyncThunkAPI
     }
 );
 
-export const playlistAdapter = createEntityAdapter<Playlist>({
+export const playlistAdapter = createEntityAdapter<Playlist, string>({
     selectId: (playlist) => playlist.Id,
     sortComparer: (a, b) => a.Name.localeCompare(b.Name),
 });

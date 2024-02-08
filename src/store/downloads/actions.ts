@@ -1,23 +1,21 @@
-import { createAction, createAsyncThunk, createEntityAdapter, EntityId } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { AppState } from '@/store';
 import { generateTrackUrl } from '@/utility/JellyfinApi';
 import { downloadFile, unlink, DocumentDirectoryPath, exists } from 'react-native-fs';
 import { DownloadEntity } from './types';
 import MimeTypes from '@/utility/MimeTypes';
 
-export const downloadAdapter = createEntityAdapter<DownloadEntity>({
-    selectId: (entity) => entity.id,
-});
+export const downloadAdapter = createEntityAdapter<DownloadEntity>();
 
-export const queueTrackForDownload = createAction<EntityId>('download/queue');
-export const initializeDownload = createAction<{ id: EntityId, size?: number, jobId?: number, location: string }>('download/initialize');
-export const progressDownload = createAction<{ id: EntityId, progress: number, jobId?: number }>('download/progress');
-export const completeDownload = createAction<{ id: EntityId, location: string, size?: number }>('download/complete');
-export const failDownload = createAction<{ id: EntityId }>('download/fail');
+export const queueTrackForDownload = createAction<string>('download/queue');
+export const initializeDownload = createAction<{ id: string, size?: number, jobId?: number, location: string }>('download/initialize');
+export const progressDownload = createAction<{ id: string, progress: number, jobId?: number }>('download/progress');
+export const completeDownload = createAction<{ id: string, location: string, size?: number }>('download/complete');
+export const failDownload = createAction<{ id: string }>('download/fail');
 
 export const downloadTrack = createAsyncThunk(
     '/downloads/track',
-    async (id: EntityId, { dispatch, getState }) => {
+    async (id: string, { dispatch, getState }) => {
         // Get the credentials from the store
         const { settings: { jellyfin: credentials } } = (getState() as AppState);
 
@@ -63,7 +61,7 @@ export const downloadTrack = createAsyncThunk(
 
 export const removeDownloadedTrack = createAsyncThunk(
     '/downloads/remove/track',
-    async(id: EntityId, { getState }) => {
+    async(id: string, { getState }) => {
         // Retrieve the state
         const { downloads: { entities }} = getState() as AppState;
 

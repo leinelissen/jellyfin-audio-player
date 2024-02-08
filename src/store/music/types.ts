@@ -1,5 +1,3 @@
-import { Dictionary } from '@reduxjs/toolkit';
-
 export interface UserData {
     PlaybackPositionTicks: number;
     PlayCount: number;
@@ -73,7 +71,7 @@ export interface AlbumTrack {
 export interface State {
     albums: {
         ids: string[];
-        entities: Dictionary<Album>;
+        entities: Record<string, Album>;
         isLoading: boolean;
     }
 }

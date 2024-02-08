@@ -12,7 +12,6 @@ import Play from '@/assets/icons/play.svg';
 import Shuffle from '@/assets/icons/shuffle.svg';
 import useDefaultStyles from '@/components/Colors';
 import usePlayTracks from '@/utility/usePlayTracks';
-import { EntityId } from '@reduxjs/toolkit';
 import { WrappableButtonRow, WrappableButton } from '@/components/WrappableButtonRow';
 import { NavigationProp } from '@/screens/types';
 import DownloadIcon from '@/components/DownloadIcon';
@@ -63,7 +62,7 @@ const TrackContainer = styled.View<{ isPlaying: boolean, small?: boolean }>`
 export interface TrackListViewProps extends PropsWithChildren<{}> {
     title?: string;
     artist?: string;
-    trackIds: EntityId[];
+    trackIds: string[];
     entityId: string;
     refresh: () => void;
     playButtonText: string;

@@ -1,4 +1,4 @@
-import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import {
     completeDownload,
     downloadAdapter,
@@ -12,9 +12,9 @@ import {
 import { DownloadEntity } from './types';
 
 interface State {
-    entities: Dictionary<DownloadEntity>;
-    ids: EntityId[];
-    queued: EntityId[];
+    entities: Record<string, DownloadEntity>;
+    ids: string[];
+    queued: string[];
 }
 
 export const initialState: State = {

@@ -10,28 +10,28 @@ import {
     fetchTracksByPlaylist,
     fetchAlbum
 } from './actions';
-import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { Album, AlbumTrack, Playlist } from './types';
 import { setJellyfinCredentials } from '@/store/settings/actions';
 
 export interface State {
     albums: {
         isLoading: boolean;
-        entities: Dictionary<Album>;
-        ids: EntityId[];
+        entities: Record<string, Album>;
+        ids: string[];
         lastRefreshed?: number,
     },
     tracks: {
         isLoading: boolean;
-        entities: Dictionary<AlbumTrack>;
-        ids: EntityId[];
-        byAlbum: Dictionary<EntityId[]>;
-        byPlaylist: Dictionary<EntityId[]>;
+        entities: Record<string, AlbumTrack>;
+        ids: string[];
+        byAlbum: Record<string, string[]>;
+        byPlaylist: Record<string, string[]>;
     },
     playlists: {
         isLoading: boolean;
-        entities: Dictionary<Playlist>;
-        ids: EntityId[];
+        entities: Record<string, Playlist>;
+        ids: string[];
         lastRefreshed?: number,
     }
 }

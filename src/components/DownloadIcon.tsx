@@ -5,13 +5,12 @@ import CloudDownArrow from '@/assets/icons/cloud-down-arrow.svg';
 import CloudExclamationMarkIcon from '@/assets/icons/cloud-exclamation-mark.svg';
 import InternalDriveIcon from '@/assets/icons/internal-drive.svg';
 import useDefaultStyles from './Colors';
-import { EntityId } from '@reduxjs/toolkit';
 import Svg, { Circle, CircleProps } from 'react-native-svg';
 import { Animated, Easing } from 'react-native';
 import styled from 'styled-components/native';
 
 interface DownloadIconProps {
-    trackId: EntityId;
+    trackId: string;
     size?: number;
     fill?: string;
 }

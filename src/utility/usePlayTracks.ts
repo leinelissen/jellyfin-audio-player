@@ -2,7 +2,6 @@ import { useTypedSelector } from '@/store';
 import { useCallback } from 'react';
 import TrackPlayer, { Track } from 'react-native-track-player';
 import { generateTrack } from './JellyfinApi';
-import { EntityId } from '@reduxjs/toolkit';
 import { shuffle as shuffleArray } from 'lodash';
 
 interface PlayOptions {
@@ -27,7 +26,7 @@ export default function usePlayTracks() {
     const downloads = useTypedSelector(state => state.downloads.entities);
 
     return useCallback(async function playTracks(
-        trackIds: EntityId[] | undefined,
+        trackIds: string[] | undefined,
         options: Partial<PlayOptions> = {},
     ): Promise<Track[] | undefined> {
         if (!trackIds) {

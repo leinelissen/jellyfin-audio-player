@@ -8,7 +8,6 @@ import { fetchAllAlbums } from '@/store/music/actions';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import TouchableHandler from '@/components/TouchableHandler';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
-import { EntityId } from '@reduxjs/toolkit';
 import styled from 'styled-components/native';
 import useDefaultStyles from '@/components/Colors';
 import { Album } from '@/store/music/types';
@@ -62,7 +61,7 @@ const Artist: React.FC = () => {
     // Set callbacks
     const retrieveData = useCallback(() => dispatch(fetchAllAlbums()), [dispatch]);
     const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
-    const generateItem = useCallback(({ item }: { item: EntityId[] }) => {
+    const generateItem = useCallback(({ item }: { item: string[] }) => {
         return (
             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }} key={item.join('-')}>
                 {item.map((id) => (
