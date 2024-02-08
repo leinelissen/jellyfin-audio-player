@@ -78,7 +78,7 @@ const ActionButton = styled.Pressable`
 `;
 
 function SelectActionButton() {
-    const state = usePlaybackState();
+    const { state } = usePlaybackState();
     const defaultStyles = useDefaultStyles();
 
     switch(state) {

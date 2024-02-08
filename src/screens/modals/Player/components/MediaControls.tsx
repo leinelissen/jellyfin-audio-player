@@ -72,7 +72,7 @@ export function NextButton({ fill }: { fill: string }) {
 }
 
 export function MainButton({ fill }: { fill: string }) {
-    const state = usePlaybackState();
+    const { state } = usePlaybackState();
 
     switch (state) {
         case State.Playing:

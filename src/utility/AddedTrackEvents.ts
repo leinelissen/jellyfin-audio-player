@@ -1,4 +1,4 @@
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { AddTrack } from 'react-native-track-player';
 import { useEffect } from 'react';
 import EventEmitter from 'events';
 
@@ -31,13 +31,19 @@ export function useOnTrackAdded(callback: () => void) {
     });
 }
 
+type OverloadedParameters<T> =
+    T extends { (...args: infer A1): any; (...args: infer A2): any; (...args: infer A3): any; (...args: infer A4): any } ? A1 | A2 | A3 | A4 :
+        T extends { (...args: infer A1): any; (...args: infer A2): any; (...args: infer A3): any } ? A1 | A2 | A3 :
+            T extends { (...args: infer A1): any; (...args: infer A2): any } ? A1 | A2 :
+                T extends (...args: infer A) => any ? A : any
+
 /**
  * Monkey-patch the track-player to also emit track added events
  */
 export function patchTrackPlayer() {
     const oldAddFunction = TrackPlayer.add;
-    TrackPlayer.add = (...args: Parameters<typeof oldAddFunction>) => {
+    TrackPlayer.add = (...args: OverloadedParameters<typeof oldAddFunction>) => {
         emitTrackAdded();
-        return oldAddFunction(...args);
+        return oldAddFunction(args[0] as AddTrack, args[1]);
     };
 }

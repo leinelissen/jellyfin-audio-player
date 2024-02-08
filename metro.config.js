@@ -16,7 +16,6 @@ const { assetExts, sourceExts } = defaultConfig.resolver;
 const config = {
     transformer: {
         babelTransformerPath: require.resolve('./scripts/transformer.js'),
-
     },
     resolver: {
         assetExts: [
