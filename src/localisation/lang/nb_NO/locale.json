@@ -71,5 +71,8 @@
     "streaming": "Strømming",
     "total-duration": "Total varighet",
     "privacy-policy": "Personvernspraksis",
-    "sleep-timer": "Sleep timer"
+    "sleep-timer": "Sleep timer",
+    "delete": "Slett",
+    "cancel": "Avbryt",
+    "confirm-delete-all-tracks": "Er du sikker på at du vil slette alle nedlastede spor?"
 }

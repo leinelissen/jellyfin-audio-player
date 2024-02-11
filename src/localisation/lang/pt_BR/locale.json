@@ -71,5 +71,8 @@
     "color-scheme-dark": "Modo Escuro",
     "artists": "Artistas",
     "privacy-policy": "Política de Privacidade",
-    "sleep-timer": "Temporizador de sono"
+    "sleep-timer": "Temporizador de sono",
+    "confirm-delete-all-tracks": "Você tem certeza de que deseja excluir todas as faixas atualmente baixadas?",
+    "delete": "Excluir",
+    "cancel": "Cancelar"
 }

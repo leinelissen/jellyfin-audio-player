@@ -71,5 +71,8 @@
     "color-scheme": "Esquema de colores",
     "color-scheme-system": "Sistema",
     "privacy-policy": "Política de privacidad",
-    "sleep-timer": "Hora del sueño"
+    "sleep-timer": "Temporizador",
+    "confirm-delete-all-tracks": "¿Estás seguro de que quieres eliminar todas las pistas descargadas actualmente?",
+    "delete": "Suprimir",
+    "cancel": "Cancelar"
 }

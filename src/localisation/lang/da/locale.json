@@ -71,5 +71,8 @@
     "you-are-offline-message": "Du er i øjeblikket offline. Du kan kun afspille tidligere downloadet musik.",
     "playing-on": "At spille på",
     "playback-reporting-description": "Med Playback Reporting bliver alle dine afspilningsbegivenheder sendt tilbage til Jellyfin. Dette giver dig mulighed for at spore dine mest lyttede sange, især med Jellyfin plugins såsom LytBrainz.",
-    "color-scheme-description": "Som standard vil Fineunes følge dit operativsystems farveordning. Du kan dog vælge at tilsidesætte dette for at sikre, at Fineunes altid er i mørk tilstand eller lystilstand."
+    "color-scheme-description": "Som standard vil Fineunes følge dit operativsystems farveordning. Du kan dog vælge at tilsidesætte dette for at sikre, at Fineunes altid er i mørk tilstand eller lystilstand.",
+    "delete": "Slet",
+    "cancel": "Annuller",
+    "confirm-delete-all-tracks": "Er du sikker på, at du vil slette alle aktuelt downloadede spor?"
 }

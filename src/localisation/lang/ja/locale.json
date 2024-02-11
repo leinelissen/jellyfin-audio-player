@@ -71,5 +71,8 @@
     "local-playback": "ローカル再生",
     "color-scheme-system": "システム",
     "privacy-policy": "プライバシーポリシー",
-    "sleep-timer": "睡眠タイマー"
+    "sleep-timer": "睡眠タイマー",
+    "confirm-delete-all-tracks": "現在ダウンロードしたすべてのトラックを削除したいですか?",
+    "delete": "削除",
+    "cancel": "キャンセル"
 }
