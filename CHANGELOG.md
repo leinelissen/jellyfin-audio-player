@@ -1,3 +1,46 @@
+# [2.3.0](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.2.0...v2.3.0) (2024-02-11)
+
+
+### Bug Fixes
+
+* add tslib dependency ([89a621a](https://github.com/leinelissen/jellyfin-audio-player/commit/89a621a86d8830f1b8d8ac38aec390a3cf5544ea))
+* be more specific about which types can be played back directly ([227efad](https://github.com/leinelissen/jellyfin-audio-player/commit/227efad08d81b09525d194d677d1fbbb192f64be))
+* disable autocorrect in search field ([92cd957](https://github.com/leinelissen/jellyfin-audio-player/commit/92cd95745d25ce8df3befd5dbd7c1bb5d140dc09))
+* gemfile lock file ([5592d5c](https://github.com/leinelissen/jellyfin-audio-player/commit/5592d5c32f6df1b34caa4a1fef4f5204da768eec))
+* icon spacing ([59b3700](https://github.com/leinelissen/jellyfin-audio-player/commit/59b370049f07a1faf7b72a249975fcc561b6f554))
+* linter ([26198e5](https://github.com/leinelissen/jellyfin-audio-player/commit/26198e5fe6d7352783a8b6a4e211722d89dd3864))
+* make some more room for download totals ([f95c79b](https://github.com/leinelissen/jellyfin-audio-player/commit/f95c79b2549356ef6b90c33ab2f197c048a23ca3)), closes [#193](https://github.com/leinelissen/jellyfin-audio-player/issues/193)
+* move sleep-timer to separate reducer ([0f211b0](https://github.com/leinelissen/jellyfin-audio-player/commit/0f211b00b89ddf8f23227bf7ef0ad00d8031b9ed))
+* package-lock ([6c59e93](https://github.com/leinelissen/jellyfin-audio-player/commit/6c59e932947a48fa3c74737e1c55adce61f9dcc4))
+* prevent sentry from uploading sourcemaps in GitHub actions ([b257656](https://github.com/leinelissen/jellyfin-audio-player/commit/b257656ef925d4a361563a1f879ede5c4cc44c80))
+* re-add events dependency ([0489e1a](https://github.com/leinelissen/jellyfin-audio-player/commit/0489e1a86ddef2fa311c72b0308e86979c722bae))
+* re-enable sentry on ios build, fix react-native-flipper not building on ios ([1945cfd](https://github.com/leinelissen/jellyfin-audio-player/commit/1945cfd12cb1f60b6856b4eaecc1aaac75c8731e))
+* refactor timer and design ([3bcd749](https://github.com/leinelissen/jellyfin-audio-player/commit/3bcd7496c2c98113b6f4d98afa4062cbf34469aa))
+* remove fill from svg ([2d22a6f](https://github.com/leinelissen/jellyfin-audio-player/commit/2d22a6f6e3435006c66a97ea60ee8ac3100d8c0e))
+* restore comma ([713b232](https://github.com/leinelissen/jellyfin-audio-player/commit/713b232289ed15a23c2ce4c3e7fd8360d561de0b))
+* timer icon and resetting on cancel ([04ce9f2](https://github.com/leinelissen/jellyfin-audio-player/commit/04ce9f2979c3d374a0eb8875daa2140a677214f2))
+* type errors ([6411bfb](https://github.com/leinelissen/jellyfin-audio-player/commit/6411bfbbb6ce27a5c070abb7c3342a33186af05b))
+* unnecessary changes ([2d9b816](https://github.com/leinelissen/jellyfin-audio-player/commit/2d9b81651c3880b65ec2d83afa128513365259f4))
+* update to react-native 0.71.15 so builds on ios work again ([3f60224](https://github.com/leinelissen/jellyfin-audio-player/commit/3f6022412172ecbe85399725e1a4a4ac6637c0c8))
+* upgrade react-native-reanimated to fix typing issues ([34b3cd3](https://github.com/leinelissen/jellyfin-audio-player/commit/34b3cd3ba343406cf738724443da5f7be4ba0efe))
+* use JVM v17 in GitHub actions ([8862d6b](https://github.com/leinelissen/jellyfin-audio-player/commit/8862d6b43582e73326b56527151e9ff616106d4e))
+
+
+### Features
+
+* add translations for sleep timer ([0f126d4](https://github.com/leinelissen/jellyfin-audio-player/commit/0f126d40ad8ea07f1f6b81e048e606805586f8a0))
+* Added translation using Weblate (Bulgarian) ([73fc7a1](https://github.com/leinelissen/jellyfin-audio-player/commit/73fc7a1f0d1a62726c547730d7b67d9000402660))
+* Added translation using Weblate (Catalan) ([b6b3e12](https://github.com/leinelissen/jellyfin-audio-player/commit/b6b3e12ec5fe7e4e652d32405a84ea83870d8d50))
+* Added translation using Weblate (Czech) ([ce85503](https://github.com/leinelissen/jellyfin-audio-player/commit/ce8550300f5dca11a69ba482e66ada766d3aaed2))
+* Added translation using Weblate (Danish) ([5c49197](https://github.com/leinelissen/jellyfin-audio-player/commit/5c4919797426b7c08438c41716a39d2b9cbb021b))
+* Added translation using Weblate (Portuguese (Brazil)) ([1cdb98d](https://github.com/leinelissen/jellyfin-audio-player/commit/1cdb98d6422339c530a9106807841e947e38c395))
+* Added translation using Weblate (Slovenian) ([4a2acd9](https://github.com/leinelissen/jellyfin-audio-player/commit/4a2acd9fdd9f3a8c6347084693d69f5446a6f346))
+* enable de, ru, and sv as available languages ([6de1f97](https://github.com/leinelissen/jellyfin-audio-player/commit/6de1f97b7ff26a42e6ff44d5042b147053f76c65))
+* introduce high contrast mode for ios ([82b4223](https://github.com/leinelissen/jellyfin-audio-player/commit/82b4223939f215a5799ba27ef029cbfa2637044c)), closes [#194](https://github.com/leinelissen/jellyfin-audio-player/issues/194)
+* upgrade to react native 0.73 ([7cb4629](https://github.com/leinelissen/jellyfin-audio-player/commit/7cb4629b4a09e42a0b52aa5cc0ac64db4f38352f))
+
+
+
 # [2.2.0](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.1.0...v2.2.0) (2023-07-14)
 
 
