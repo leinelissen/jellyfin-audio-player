@@ -1,5 +1,4 @@
 import { Text } from '@/components/Typography';
-import { THEME_COLOR } from '@/CONSTANTS';
 import React, { useCallback } from 'react';
 import { showRoutePicker, useAirplayRoutes } from 'react-airplay';
 import { TouchableOpacity } from 'react-native';
@@ -27,7 +26,6 @@ const Label = styled(Text)<{ active?: boolean }>`
     font-size: 13px;
 
     ${(props) => props.active && css`
-        color: ${THEME_COLOR};
         opacity: 1;
     `}
 `;
@@ -43,9 +41,13 @@ function Casting() {
                 <AirplayAudioIcon
                     width={20}
                     height={20}
-                    fill={routes.length > 0 ? THEME_COLOR : defaultStyles.textHalfOpacity.color}
+                    fill={routes.length > 0 ? defaultStyles.themeColor.color : defaultStyles.textHalfOpacity.color}
                 />
-                <Label active={routes.length > 0} numberOfLines={1}>
+                <Label
+                    active={routes.length > 0}
+                    numberOfLines={1}
+                    style={routes.length > 0 && defaultStyles.themeColor}
+                >
                     {routes.length > 0
                         ? `${t('playing-on')} ${routes.map((route) => route.portName).join(', ')}`
                         : t('local-playback')

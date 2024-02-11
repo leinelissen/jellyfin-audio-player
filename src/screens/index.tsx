@@ -3,7 +3,6 @@ import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-naviga
 import { StackNavigationProp } from '@react-navigation/stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
-import { THEME_COLOR } from '@/CONSTANTS';
 
 import SearchStack from './Search';
 import Music from './Music';
@@ -23,7 +22,7 @@ import ErrorReportingAlert from '@/utility/ErrorReportingAlert';
 import ErrorReportingPopup from './modals/ErrorReportingPopup';
 import Player from './modals/Player';
 import { StyleSheet } from 'react-native';
-import { ColoredBlurView } from '@/components/Colors';
+import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import { StackParams } from './types';
 
 const Stack = createNativeStackNavigator<StackParams>();
@@ -35,6 +34,7 @@ type Screens = {
 }
 
 function Screens() {
+    const styles = useDefaultStyles();
     const isOnboardingComplete = useTypedSelector(state => state.settings.isOnboardingComplete);
     
     // GUARD: If onboarding has not been completed, we instead render the
@@ -62,7 +62,7 @@ function Screens() {
                                 return null;
                         }
                     },
-                    tabBarActiveTintColor: THEME_COLOR,
+                    tabBarActiveTintColor: styles.themeColor.color,
                     tabBarInactiveTintColor: 'gray',
                     headerShown: false,
                     tabBarShowLabel: false,

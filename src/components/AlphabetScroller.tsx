@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components/native';
-import { ALPHABET_LETTERS, THEME_COLOR } from '@/CONSTANTS';
+import { ALPHABET_LETTERS } from '@/CONSTANTS';
 import { View, LayoutChangeEvent } from 'react-native';
 import { 
     PanGestureHandler, 
@@ -8,6 +8,7 @@ import {
     TapGestureHandler, 
     TapGestureHandlerGestureEvent 
 } from 'react-native-gesture-handler';
+import useDefaultStyles from './Colors';
 
 // interface LetterContainerProps {
 //     onPress: (letter: string) => void;
@@ -29,7 +30,6 @@ const Letter = styled.Text`
     text-align: center;
     padding: 1px 0;
     font-size: 12px;
-    color: ${THEME_COLOR};
 `;
 
 interface Props {
@@ -41,6 +41,7 @@ interface Props {
  * screen with all letters of the Alphabet.
  */
 const AlphabetScroller: React.FC<Props> = ({ onSelect }) => {
+    const styles = useDefaultStyles();
     const [ height, setHeight ] = useState(0);
     const [ index, setIndex ] = useState<number>();
 
@@ -69,7 +70,9 @@ const AlphabetScroller: React.FC<Props> = ({ onSelect }) => {
                                 key={l}
                                 onLayout={i === 0 ? handleLayout : undefined}
                             >
-                                <Letter>{l}</Letter>
+                                <Letter style={styles.themeColor}>
+                                    {l}
+                                </Letter>
                             </View>
                         ))}
                     </View>

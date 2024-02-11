@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 import { t } from '@/localisation';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import { THEME_COLOR } from '@/CONSTANTS';
 import ListButton from '@/components/ListButton';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 
@@ -45,7 +44,7 @@ export default function Settings() {
 
     return (
         <Stack.Navigator initialRouteName="SettingList" screenOptions={{
-            headerTintColor: THEME_COLOR,
+            headerTintColor: defaultStyles.themeColor.color,
             headerTitleStyle: defaultStyles.stackHeader,
             headerTransparent: true,
             headerBackground: () => <ColoredBlurView style={StyleSheet.absoluteFill} />,

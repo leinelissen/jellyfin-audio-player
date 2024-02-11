@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import styled from 'styled-components/native';
-import { THEME_COLOR } from '@/CONSTANTS';
 import { useDispatch } from 'react-redux';
 import { useTypedSelector } from '@/store';
 import TimerIcon from '@/assets/icons/timer.svg';
@@ -109,7 +108,7 @@ export default function Timer() {
                 <View>
                     <TimerIcon
                         fill={showPicker || date
-                            ? THEME_COLOR
+                            ? defaultStyles.themeColor.color
                             : defaultStyles.textHalfOpacity.color
                         }
                         width={16}
@@ -117,7 +116,7 @@ export default function Timer() {
                     />
                     <Label
                         style={{ color: showPicker || date
-                            ? THEME_COLOR
+                            ? defaultStyles.themeColor.color
                             : defaultStyles.textHalfOpacity.color
                         }}
                     >

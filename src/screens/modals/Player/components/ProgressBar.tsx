@@ -8,7 +8,6 @@ import ProgressTrack, {
     ProgressTrackContainer
 } from '@/components/Progresstrack';
 import { Gesture, GestureDetector, gestureHandlerRootHOC } from 'react-native-gesture-handler';
-import { THEME_COLOR } from '@/CONSTANTS';
 import Reanimated, {
     useSharedValue,
     useAnimatedStyle,
@@ -19,6 +18,7 @@ import Reanimated, {
 } from 'react-native-reanimated';
 import ReText from '@/components/ReText';
 import useCurrentTrack from '@/utility/useCurrentTrack';
+import useDefaultStyles from '@/components/Colors';
 
 const DRAG_HANDLE_SIZE = 20;
 const PADDING_TOP = 12;
@@ -43,7 +43,6 @@ const DragHandle = styled(Reanimated.View)`
     width: ${DRAG_HANDLE_SIZE}px;
     height: ${DRAG_HANDLE_SIZE}px;
     border-radius: ${DRAG_HANDLE_SIZE}px;
-    background-color: ${THEME_COLOR};
     position: absolute;
     left: -${DRAG_HANDLE_SIZE / 2}px;
     top: ${PADDING_TOP - DRAG_HANDLE_SIZE / 2 + 2.5}px;
@@ -51,6 +50,7 @@ const DragHandle = styled(Reanimated.View)`
 `;
 
 function ProgressBar() {
+    const styles = useDefaultStyles();
     const { position, buffered } = useProgress();
     const { track } = useCurrentTrack();
 
@@ -182,16 +182,28 @@ function ProgressBar() {
                 <ProgressTrackContainer>
                     <ProgressTrack
                         opacity={0.15}
+                        style={styles.themeBackground}
                     />
                     <ProgressTrack
-                        style={bufferStyles}
+                        style={[
+                            styles.themeBackground,
+                            bufferStyles
+                        ]}
                         opacity={0.15}
                     />
                     <ProgressTrack
-                        style={progressStyles}
+                        style={[
+                            progressStyles,
+                            styles.themeBackground,
+                        ]}
                     />
                 </ProgressTrackContainer>
-                <DragHandle style={dragHandleStyles} />
+                <DragHandle
+                    style={[
+                        styles.themeBackground,
+                        dragHandleStyles,
+                    ]} 
+                />
                 <NumberBar style={{ flex: 1 }}>
                     <Number text={timePassed} style={timePassedStyles} />
                     <Number text={timeRemaining} style={timeRemainingStyles} />

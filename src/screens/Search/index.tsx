@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { THEME_COLOR } from '@/CONSTANTS';
 import { t } from '@/localisation';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import { StackParams } from '@/screens/types';
@@ -20,7 +19,7 @@ function SearchStack() {
         <GestureHandlerRootView style={{ flex: 1 }}>
             <Stack.Navigator initialRouteName="Search"
                 screenOptions={{
-                    headerTintColor: THEME_COLOR,
+                    headerTintColor: defaultStyles.themeColor.color,
                     headerTitleStyle: defaultStyles.stackHeader,
                     cardStyle: defaultStyles.view,
                     headerTransparent: true,

@@ -4,7 +4,6 @@ import { useGetImage } from '@/utility/JellyfinApi';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from '@/store';
-import { THEME_COLOR } from '@/CONSTANTS';
 import TouchableHandler from '@/components/TouchableHandler';
 import useCurrentTrack from '@/utility/useCurrentTrack';
 import TrackPlayer from 'react-native-track-player';
@@ -32,7 +31,6 @@ const styles = StyleSheet.create({
         marginRight: 12
     },
     activeText: {
-        color: THEME_COLOR,
         fontWeight: '500',
     },
 });
@@ -153,13 +151,17 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                         >
                             <TrackContainer
                                 isPlaying={currentTrack?.backendId === trackId || false}
-                                style={[defaultStyles.border, currentTrack?.backendId === trackId || false ? defaultStyles.activeBackground : null ]}
+                                style={[
+                                    defaultStyles.border,
+                                    currentTrack?.backendId === trackId ? defaultStyles.activeBackground : null 
+                                ]}
                             >
                                 <Text
                                     style={[
                                         styles.index,
-                                        { opacity: 0.25 },
-                                        currentTrack?.backendId === trackId && styles.activeText
+                                        defaultStyles.textQuarterOpacity,
+                                        currentTrack?.backendId === trackId && styles.activeText,
+                                        currentTrack?.backendId === trackId && defaultStyles.themeColorQuarterOpacity,
                                     ]}
                                     numberOfLines={1}
                                 >
@@ -169,23 +171,29 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                                 </Text>
                                 <View style={{ flexShrink: 1 }}>
                                     <Text
-                                        style={{ 
-                                            ...currentTrack?.backendId === trackId && styles.activeText,
-                                            flexShrink: 1,
-                                            marginRight: 4,
-                                        }}
+                                        style={[
+                                            currentTrack?.backendId === trackId && styles.activeText,
+                                            currentTrack?.backendId === trackId && defaultStyles.themeColor,
+                                            { 
+                                                flexShrink: 1,
+                                                marginRight: 4,
+                                            }
+                                        ]}
                                         numberOfLines={1}
                                     >
                                         {tracks[trackId]?.Name}
                                     </Text>
                                     {itemDisplayStyle === 'playlist' && (
                                         <Text
-                                            style={{ 
-                                                ...currentTrack?.backendId === trackId && styles.activeText,
-                                                flexShrink: 1,
-                                                marginRight: 4,
-                                                opacity:currentTrack?.backendId === trackId ? 0.5 : 0.25,
-                                            }}
+                                            style={[
+                                                currentTrack?.backendId === trackId && styles.activeText,
+                                                currentTrack?.backendId === trackId && defaultStyles.themeColor,
+                                                { 
+                                                    flexShrink: 1,
+                                                    marginRight: 4,
+                                                    opacity: currentTrack?.backendId === trackId ? 0.5 : 0.25,
+                                                }
+                                            ]}
                                             numberOfLines={1}
                                         >
                                             {tracks[trackId]?.Artists.join(', ')}
@@ -195,19 +203,26 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                                 <View style={{ marginLeft: 'auto', flexDirection: 'row' }}>
                                     <Text
                                         style={[
-                                            { marginRight: 12, opacity: 0.25 },
-                                            currentTrack?.backendId === trackId && styles.activeText
+                                            { marginRight: 12 },
+                                            defaultStyles.textQuarterOpacity,
+                                            currentTrack?.backendId === trackId && styles.activeText,
+                                            currentTrack?.backendId === trackId && defaultStyles.themeColorQuarterOpacity,
                                         ]}
                                         numberOfLines={1}
                                     >
                                         {ticksToDuration(tracks[trackId]?.RunTimeTicks || 0)}
                                     </Text>
-                                    <DownloadIcon trackId={trackId} fill={currentTrack?.backendId === trackId ? `${THEME_COLOR}44` : undefined} />
+                                    <DownloadIcon
+                                        trackId={trackId}
+                                        fill={currentTrack?.backendId === trackId ? defaultStyles.themeColorQuarterOpacity.color : undefined}
+                                    />
                                 </View>
                             </TrackContainer>
                         </TouchableHandler>
                     )}
-                    <Text style={{ paddingTop: 24, paddingBottom: 12, textAlign: 'center', opacity: 0.5 }}>{t('total-duration')}{': '}{ticksToDuration(totalDuration)}</Text>
+                    <Text style={{ paddingTop: 24, paddingBottom: 12, textAlign: 'center', opacity: 0.5 }}>
+                        {t('total-duration')}{': '}{ticksToDuration(totalDuration)}
+                    </Text>
                     <WrappableButtonRow style={{ marginTop: 24 }}>
                         <WrappableButton
                             icon={CloudDownArrow}

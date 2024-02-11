@@ -15,7 +15,6 @@ import FastImage from 'react-native-fast-image';
 import { useGetImage } from '@/utility/JellyfinApi';
 import { ShadowWrapper } from '@/components/Shadow';
 import { SafeFlatList } from '@/components/SafeNavigatorView';
-import { THEME_COLOR } from '@/CONSTANTS';
 import { t } from '@/localisation';
 
 const DownloadedTrack = styled.View`
@@ -165,7 +164,9 @@ function Downloads() {
             </DownloadedTrack>
             {entities[item]?.error && (
                 <ErrorWrapper>
-                    <Text style={{ color: THEME_COLOR }}>{entities[item]?.error}</Text>
+                    <Text style={defaultStyles.themeColor}>
+                        {entities[item]?.error}
+                    </Text>
                 </ErrorWrapper>
             )}
         </>

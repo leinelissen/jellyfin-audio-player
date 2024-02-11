@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import { fetchAllAlbums } from '@/store/music/actions';
-import { ALBUM_CACHE_AMOUNT_OF_DAYS, THEME_COLOR } from '@/CONSTANTS';
+import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import AlbumImage from './components/AlbumImage';
 import { SectionArtistItem, SectionedArtist, selectArtists } from '@/store/music/selectors';
 import AlphabetScroller from '@/components/AlphabetScroller';
@@ -92,7 +92,7 @@ const GeneratedArtistItem = React.memo(function GeneratedArtistItem(props: Gener
                         numberOfLines={1}
                         style={[
                             defaultStyles.text,
-                            pressed && { color: THEME_COLOR },
+                            pressed && defaultStyles.themeColor,
                             { flexShrink: 1 }
                         ]}
 
@@ -201,7 +201,7 @@ const Artists: React.FC = () => {
                 onRefresh={retrieveData}
                 getItemLayout={(_, i) => {
                     if (!(i in itemLayouts)) {
-                        console.log('COuLD NOT FIND LAYOUT ITEM', i, _);
+                        // console.log('COuLD NOT FIND LAYOUT ITEM', i, _);
                     }
                     return itemLayouts[i] ?? { length: 0, offset: 0, index: i };
                 }}

@@ -1,4 +1,3 @@
-import { THEME_COLOR } from '@/CONSTANTS';
 import styled from 'styled-components/native';
 import Animated from 'react-native-reanimated';
 
@@ -51,7 +50,6 @@ const ProgressTrack = styled(Animated.View)<ProgressTrackProps>`
     left: 0;
     right: 0;
     height: ${(props) => props.stroke ? props.stroke + 'px' : '100%'};
-    background-color: ${THEME_COLOR};
     opacity: ${(props) => props.opacity || 1};
     border-radius: 99px;
 `;

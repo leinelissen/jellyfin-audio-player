@@ -3,7 +3,6 @@ import { SvgProps } from 'react-native-svg';
 import { 
     PressableProps, ViewProps, View,
 } from 'react-native';
-import { THEME_COLOR } from '@/CONSTANTS';
 import styled, { css } from 'styled-components/native';
 import useDefaultStyles from './Colors';
 
@@ -35,7 +34,6 @@ const BaseButton = styled.Pressable<{ size: ButtonSize }>`
 `;
 
 const ButtonText = styled.Text<{ active?: boolean, size: ButtonSize }>`
-    color: ${THEME_COLOR};
     font-weight: 500;
     font-size: 14px;
     flex-shrink: 1;
@@ -72,16 +70,17 @@ const Button = React.forwardRef<View, ButtonProps>(function Button(props, ref) {
                 <Icon
                     width={14}
                     height={14}
-                    fill={THEME_COLOR}
-                    style={{ 
-                        marginRight: title ? 8 : 0,
-                    }} 
+                    fill={defaultStyles.themeColor.color}
+                    style={[
+                        { marginRight: title ? 8 : 0 }
+                    ]} 
                 />
             }
             {title ? (
                 <ButtonText
                     active={isPressed}
                     size={size}
+                    style={defaultStyles.themeColor}
                     numberOfLines={1}
                 >
                     {title}

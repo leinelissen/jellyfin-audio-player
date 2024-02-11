@@ -45,7 +45,6 @@ const baseTrackOptions: Record<string, string> = {
 export function generateTrack(track: AlbumTrack, credentials: Credentials): Track {
     // Also construct the URL for the stream
     const url = generateTrackUrl(track.Id, credentials);
-    console.log(url);
 
     return {
         url,

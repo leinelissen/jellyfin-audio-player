@@ -5,7 +5,6 @@ import Input from '@/components/Input';
 import { setJellyfinCredentials } from '@/store/settings/actions';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import CredentialGenerator from './components/CredentialGenerator';
-import { THEME_COLOR } from '@/CONSTANTS';
 import { t } from '@/localisation';
 import useDefaultStyles from '@/components/Colors';
 import { Text } from '@/components/Typography';
@@ -55,7 +54,7 @@ export default function SetJellyfinServer() {
                         title={t('set-jellyfin-server')}
                         onPress={() => setIsLogginIn(true)}
                         disabled={!serverUrl?.length} 
-                        color={THEME_COLOR}
+                        color={defaultStyles.themeColor.color}
                     />
                 </View>
             )}

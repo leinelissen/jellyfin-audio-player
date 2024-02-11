@@ -14,7 +14,6 @@ import { Text } from '@/components/Typography';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { calculateProgressTranslation } from '@/components/Progresstrack';
-import { THEME_COLOR } from '@/CONSTANTS';
 import { NavigationProp } from '@/screens/types';
 import { ShadowWrapper } from '@/components/Shadow';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -48,7 +47,6 @@ const ProgressTrack = styled(Animated.View)<{ stroke?: number; opacity?: number}
     left: 0;
     right: 0;
     height: ${(props) => props.stroke ? props.stroke + 'px' : '100%'};
-    background-color: ${THEME_COLOR};
     opacity: ${(props) => props.opacity || 1};
     border-radius: 99px;
 `;
@@ -191,12 +189,18 @@ function NowPlaying({ offset = 0 }: { offset?: number }) {
                         <SelectActionButton />
                     </ActionButton>
                     <ProgressTrack
-                        style={{ transform: [{ translateX: bufferAnimation.current }]}}
+                        style={[
+                            { transform: [{ translateX: bufferAnimation.current }]},
+                            defaultStyles.themeBackground,
+                        ]}
                         opacity={0.15}
                         stroke={4}
                     />
                     <ProgressTrack
-                        style={{ transform: [{ translateX: progressAnimation.current }]}}
+                        style={[
+                            { transform: [{ translateX: progressAnimation.current }]},
+                            defaultStyles.themeBackground,
+                        ]}
                         stroke={4}
                     />
                 </InnerContainer>

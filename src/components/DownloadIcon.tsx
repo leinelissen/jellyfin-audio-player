@@ -6,13 +6,14 @@ import CloudExclamationMarkIcon from '@/assets/icons/cloud-exclamation-mark.svg'
 import InternalDriveIcon from '@/assets/icons/internal-drive.svg';
 import useDefaultStyles from './Colors';
 import Svg, { Circle, CircleProps } from 'react-native-svg';
-import { Animated, Easing } from 'react-native';
+import { Animated, Easing, ViewProps } from 'react-native';
 import styled from 'styled-components/native';
 
 interface DownloadIconProps {
     trackId: string;
     size?: number;
     fill?: string;
+    style?: ViewProps['style'];
 }
 
 const DownloadContainer = styled.View`
@@ -26,7 +27,7 @@ const IconOverlay = styled.View`
     transform: scale(0.5);
 `;
 
-function DownloadIcon({ trackId, size = 16, fill }: DownloadIconProps) {
+function DownloadIcon({ trackId, size = 16, fill, style }: DownloadIconProps) {
     // determine styles
     const defaultStyles = useDefaultStyles();
     const iconFill = fill || defaultStyles.textQuarterOpacity.color;
@@ -66,19 +67,19 @@ function DownloadIcon({ trackId, size = 16, fill }: DownloadIconProps) {
 
     if (!entity && !isQueued) {
         return (
-            <CloudIcon width={size} height={size} fill={iconFill} />
+            <CloudIcon width={size} height={size} fill={iconFill} style={style} />
         );
     }
 
     if (entity?.isComplete) {
         return (
-            <InternalDriveIcon width={size} height={size} fill={iconFill} />
+            <InternalDriveIcon width={size} height={size} fill={iconFill} style={style} />
         );
     }
 
     if (entity?.isFailed) {
         return (
-            <CloudExclamationMarkIcon width={size} height={size} fill={iconFill} />
+            <CloudExclamationMarkIcon width={size} height={size} fill={iconFill} style={style} />
         );
     }
 
@@ -100,7 +101,7 @@ function DownloadIcon({ trackId, size = 16, fill }: DownloadIconProps) {
                     />
                 </Svg>
                 <IconOverlay>
-                    <CloudDownArrow width={size} height={size} fill={iconFill} />
+                    <CloudDownArrow width={size} height={size} fill={iconFill} style={style} />
                 </IconOverlay>
             </DownloadContainer>
         );

@@ -6,7 +6,6 @@ import styled, { css } from 'styled-components/native';
 import { isSentryEnabled, setSentryStatus } from '@/utility/Sentry';
 import Accordion from 'react-native-collapsible/Accordion';
 import ChevronIcon from '@/assets/icons/chevron-right.svg';
-import { THEME_COLOR } from '@/CONSTANTS';
 import useDefaultStyles, { DefaultStylesProvider } from '@/components/Colors';
 import { t } from '@/localisation';
 import { SafeScrollView } from '@/components/SafeNavigatorView';
@@ -29,10 +28,6 @@ const HeaderContainer = styled.View<{ isActive?: boolean }>`
     padding: 16px 24px;
     border-radius: 8px;
     overflow: hidden;
-
-    ${props => props.isActive && css`
-        background-color: ${THEME_COLOR};
-    `}
 `;
 
 const HeaderText = styled(Text)`

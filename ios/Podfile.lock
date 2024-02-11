@@ -958,6 +958,10 @@ PODS:
   - React-Mapbuffer (0.73.4):
     - glog
     - React-debug
+  - react-native-accessibility-settings (0.1.2):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
   - react-native-blur (4.4.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1246,6 +1250,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector-modern`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
+  - react-native-accessibility-settings (from `../node_modules/react-native-accessibility-settings`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -1364,6 +1369,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
+  react-native-accessibility-settings:
+    :path: "../node_modules/react-native-accessibility-settings"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
   react-native-netinfo:
@@ -1481,6 +1488,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 9ac353eccf6ab54d1e0a33862ba91221d1e88460
   React-logger: 0a57b68dd2aec7ff738195f081f0520724b35dab
   React-Mapbuffer: 63913773ed7f96b814a2521e13e6d010282096ad
+  react-native-accessibility-settings: 9e1c5c6e8268015f8447faa7d34a5834fbaf4d8c
   react-native-blur: 27113acc008facbc8accae5fb3a78b8424f64cfd
   react-native-netinfo: 8a7fd3f7130ef4ad2fb4276d5c9f8d3f28d2df3d
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
