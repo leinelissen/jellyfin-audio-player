@@ -71,5 +71,8 @@
     "color-scheme-system": "System",
     "artists": "Artysta",
     "privacy-policy": "Polityka prywatna",
-    "sleep-timer": "Sleep timer"
+    "sleep-timer": "Sleep timer",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "confirm-delete-all-tracks": "Czy chcesz usunąć wszystkie aktualne utwory?"
 }
