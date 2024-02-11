@@ -38,6 +38,7 @@ const ButtonText = styled.Text<{ active?: boolean, size: ButtonSize }>`
     color: ${THEME_COLOR};
     font-weight: 500;
     font-size: 14px;
+    flex-shrink: 1;
 
     ${(props) => props.size === 'small' && css`
         font-size: 12px;
@@ -78,7 +79,13 @@ const Button = React.forwardRef<View, ButtonProps>(function Button(props, ref) {
                 />
             }
             {title ? (
-                <ButtonText active={isPressed} size={size}>{title}</ButtonText>
+                <ButtonText
+                    active={isPressed}
+                    size={size}
+                    numberOfLines={1}
+                >
+                    {title}
+                </ButtonText>
             ) : undefined}
         </BaseButton>
     );

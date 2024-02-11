@@ -52,6 +52,7 @@
     "no-downloads": "Je hebt nog geen nummers gedownload",
     "delete-track": "Verwijder Track",
     "delete-all-tracks": "Verwijder alle nummers",
+    "confirm-delete-all-tracks": "Weet je zeker dat je alle eerdere gedownloadede tracks wil verwijderen?",
     "delete-album": "Verwijder Album",
     "delete-playlist": "Verwijder Playlist",
     "total-download-size": "Totale grootte downloads",
@@ -71,5 +72,7 @@
     "color-scheme-light": "Lichte modus",
     "color-scheme-dark": "Donkere modus",
     "privacy-policy": "Privacybeleid",
-    "sleep-timer": "Slaaptimer"
+    "sleep-timer": "Slaaptimer",
+    "delete": "Verwijder",
+    "cancel": "Annuleer"
 }

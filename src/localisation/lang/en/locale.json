@@ -52,6 +52,7 @@
     "no-downloads": "You have not yet downloaded any tracks",
     "delete-track": "Delete Track",
     "delete-all-tracks": "Delete All Tracks",
+    "confirm-delete-all-tracks": "Are you sure you want to delete all currently downloaded tracks?",
     "delete-album": "Delete Album",
     "delete-playlist": "Delete Playlist",
     "total-download-size": "Total Download Size",
@@ -71,5 +72,7 @@
     "color-scheme-dark": "Dark Mode",
     "artists": "Artists",
     "privacy-policy": "Privacy Policy",
-    "sleep-timer": "Sleep timer"
+    "sleep-timer": "Sleep timer",
+    "delete": "Delete",
+    "cancel": "Cancel"
 }

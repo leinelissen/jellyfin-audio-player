@@ -1,6 +1,6 @@
 import useDefaultStyles from '@/components/Colors';
 import React, { useCallback, useMemo } from 'react';
-import { FlatListProps, View } from 'react-native';
+import { Alert, FlatListProps, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import formatBytes from '@/utility/formatBytes';
@@ -59,7 +59,22 @@ function Downloads() {
     }, [dispatch]);
 
     // Delete all downloaded tracks
-    const handleDeleteAllTracks = useCallback(() => ids.forEach(handleDelete), [handleDelete, ids]);
+    const handleDeleteAllTracks = useCallback(() => {
+        Alert.alert(
+            t('delete-all-tracks'),
+            t('confirm-delete-all-tracks'),
+            [{
+                text: t('delete'),
+                style: 'destructive',
+                onPress() {
+                    ids.forEach(handleDelete);
+                }
+            }, {
+                text: t('cancel'),
+                style: 'cancel',
+            }]
+        );
+    }, [handleDelete, ids]);
 
     // Retry a single failed track
     const retryTrack = useCallback((id: string) => {
@@ -78,23 +93,31 @@ function Downloads() {
 
     const ListHeaderComponent = useMemo(() => (
         <View style={[{ paddingHorizontal: 20, paddingBottom: 12, paddingTop: 12, borderBottomWidth: 0.5 }, defaultStyles.border]}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text 
-                    style={[
-                        defaultStyles.textHalfOpacity,
-                        { marginRight: 8, flex: 1, fontSize: 12 },
-                    ]}
-                    numberOfLines={1}
-                >
-                    {t('total-download-size')}{': '}{formatBytes(totalDownloadSize)}
-                </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 24 }}>
+                <View>
+                    <Text style={[
+                        defaultStyles.text,
+                        { fontSize: 16, fontWeight: '600' },
+                    ]}>
+                        {formatBytes(totalDownloadSize)}
+                    </Text>
+                    <Text 
+                        style={[
+                            defaultStyles.textHalfOpacity,
+                            { fontSize: 12 },
+                        ]}
+                        numberOfLines={1}
+                    >
+                        {t('total-download-size')}
+                    </Text>
+                </View>
                 <Button
                     icon={TrashIcon}
-                    title={t('delete-all-tracks')}
                     onPress={handleDeleteAllTracks}
+                    title={t('delete-all-tracks')}
                     disabled={!ids.length}
-                    size="small"
                     testID="delete-all-tracks"
+                    style={{ flexShrink: 1, flexGrow: 0 }}
                 />
             </View>
             {failedIds.length > 0 && (
