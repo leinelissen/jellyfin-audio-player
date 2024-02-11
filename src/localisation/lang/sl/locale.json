@@ -71,5 +71,8 @@
     "color-scheme-dark": "Temni način",
     "artists": "Izvajalci",
     "privacy-policy": "Politika zasebnosti",
-    "sleep-timer": "Časovnik za spanje"
+    "sleep-timer": "Časovnik za spanje",
+    "cancel": "Prekliči",
+    "confirm-delete-all-tracks": "Ali ste prepričani, da želite izbrisati vse trenutno prenesene skladbe?",
+    "delete": "Izbriši"
 }
