@@ -71,5 +71,8 @@
     "playback-reporting-description": "Con il Rapporto di Riproduzione, tutti i tuoi eventi di riproduzione vengono ritrasmessi a Jellyfin. Ciò ti consente di tenere traccia delle tue canzoni più ascoltate, in particolare con i plug-in Jellyfin come ListenBrainz.",
     "color-scheme-description": "Di default, Fintunes usa il tema colori del tuo sistema operativo. Puoi tuttavia scegliere di sovrascrivere questa impostazione per assicurarti che Fintunes sia sempre in modalità notte o luce.",
     "privacy-policy": "Politica sulla riservatezza",
-    "sleep-timer": "Tempo di sonno"
+    "sleep-timer": "Tempo di sonno",
+    "delete": "Cancella",
+    "cancel": "Annulla",
+    "confirm-delete-all-tracks": "Sei sicuro di voler eliminare tutte le tracce attualmente scaricate?"
 }
