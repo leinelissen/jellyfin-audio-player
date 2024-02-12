@@ -1,1 +1,1 @@
-jellyfin, audio, odtwarzacz, przesyłanie strumieniowe, pobieranie, muzyka
+jellyfin, audio, odtwarzacz, streaming, pobrane, muzyka
