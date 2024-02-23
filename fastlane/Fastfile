@@ -13,7 +13,7 @@ platform :ios do
             fail_on_name_taken: false,
         )
         update_code_signing_settings(
-            use_automatic_signing: true,
+            use_automatic_signing: false,
             path: "ios/Fintunes.xcodeproj"
         )
         increment_version_number(
