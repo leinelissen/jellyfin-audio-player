@@ -24,10 +24,17 @@ const Container = styled(FastImage)`
 function AlbumImage(props: FastImageProps) {
     const [hasError, setError] = useState(false);
     const colorScheme = useColorScheme();
+    let imageSource = require('@/assets/images/empty-album-light.png');
+
+    switch (colorScheme) {
+        case 'dark':
+            imageSource = require('@/assets/images/empty-album-dark.png');
+            break;
+    }
 
     if (!props.source || hasError) {
         return (
-            <Container {...props} source={colorScheme === 'light' ? require('@/assets/images/empty-album-light.png') : require('@/assets/images/empty-album-dark.png')}  />
+            <Container {...props} source={imageSource}  />
         );
     }
 

@@ -11,8 +11,9 @@ import { SubHeader, Text } from '@/components/Typography';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useGetImage } from '@/utility/JellyfinApi';
 import styled from 'styled-components';
-import { Dimensions, Pressable } from 'react-native';
+import { Dimensions, Platform, Pressable, StatusBar, View } from 'react-native';
 import AlbumImage from './components/AlbumImage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Route = RouteProp<StackParams, 'Album'>;
 
@@ -71,32 +72,45 @@ const Album: React.FC = () => {
         }
     }, [album?.lastRefreshed, refresh]);
 
+    let containerStyle = {};
+
+    if (Platform.OS === 'ios') {
+        containerStyle = {
+            paddingTop: 20,
+        };
+    }
+
     return (
-        <TrackListView
-            trackIds={albumTracks || []}
-            title={album?.Name}
-            artist={album?.AlbumArtist}
-            entityId={id}
-            refresh={refresh}
-            playButtonText={t('play-album')}
-            shuffleButtonText={t('shuffle-album')}
-            downloadButtonText={t('download-album')}
-            deleteButtonText={t('delete-album')}
-        >
-            {album?.Overview ? (
-                <Text style={{ opacity: 0.5, lineHeight: 20, fontSize: 12, paddingBottom: 24 }}>{album?.Overview}</Text>
-            ) : null}
-            {album?.Similar?.length ? (
-                <>
-                    <SubHeader>{t('similar-albums')}</SubHeader>
-                    <ScrollView horizontal style={{ marginLeft: -24, marginRight: -24, marginTop: 8 }} contentContainerStyle={{ paddingHorizontal: 24 }} showsHorizontalScrollIndicator={false}>
-                        {album.Similar.map((id) => (
-                            <SimilarAlbum id={id} key={id} />
-                        ))}
-                    </ScrollView>
-                </>
-            ) : null}
-        </TrackListView>
+        <>
+            <StatusBar translucent={true} backgroundColor={'transparent'}/>
+            <View style={containerStyle}>
+                <TrackListView
+                    trackIds={albumTracks || []}
+                    title={album?.Name}
+                    artist={album?.AlbumArtist}
+                    entityId={id}
+                    refresh={refresh}
+                    playButtonText={t('play-album')}
+                    shuffleButtonText={t('shuffle-album')}
+                    downloadButtonText={t('download-album')}
+                    deleteButtonText={t('delete-album')}
+                >
+                    {album?.Overview ? (
+                        <Text style={{ opacity: 0.5, lineHeight: 20, fontSize: 12, paddingBottom: 24 }}>{album?.Overview}</Text>
+                    ) : null}
+                    {album?.Similar?.length ? (
+                        <>
+                            <SubHeader>{t('similar-albums')}</SubHeader>
+                            <ScrollView horizontal style={{ marginLeft: -24, marginRight: -24, marginTop: 8 }} contentContainerStyle={{ paddingHorizontal: 24 }} showsHorizontalScrollIndicator={false}>
+                                {album.Similar.map((id) => (
+                                    <SimilarAlbum id={id} key={id} />
+                                ))}
+                            </ScrollView>
+                        </>
+                    ) : null}
+                </TrackListView>
+            </View>
+        </>
     );
 };
 

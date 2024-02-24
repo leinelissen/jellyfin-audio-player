@@ -39,6 +39,7 @@
     "react-native-gesture-handler": "^2.15.0",
     "react-native-localize": "^3.0.6",
     "react-native-modal-datetime-picker": "^17.1.0",
+    "react-native-navigation-bar-color": "^2.0.2",
     "react-native-reanimated": "^3.7.0",
     "react-native-safe-area-context": "^4.9.0",
     "react-native-screens": "^3.29.0",

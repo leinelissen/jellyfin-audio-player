@@ -7,6 +7,8 @@ import ForwardIcon from '@/assets/icons/forward-end.svg';
 import BackwardIcon from '@/assets/icons/backward-end.svg';
 import PlayIcon from '@/assets/icons/play.svg';
 import PauseIcon from '@/assets/icons/pause.svg';
+import { useTypedSelector } from '@/store';
+import { ColorScheme } from '@/store/settings/types';
 
 const BUTTON_SIZE = 40;
 
@@ -33,8 +35,19 @@ const Button = styled.View`
 `;
 
 export default function MediaControls() {
-    const scheme = useColorScheme();
-    const fill = scheme === 'dark' ? '#ffffff' : '#000000';
+    const systemScheme = useColorScheme();
+    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
+    const scheme = userScheme === ColorScheme.System ? systemScheme : userScheme;
+    let fill = '#000';
+
+    switch (scheme) {
+        case 'dark':
+            fill = '#fff';
+            break;
+        case 'black':
+            fill = '#fff';
+            break;
+    }
 
     return (
         <Container>

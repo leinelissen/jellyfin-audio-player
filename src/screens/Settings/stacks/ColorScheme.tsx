@@ -37,6 +37,12 @@ export default function ColorSchemeSetting() {
                     value={ColorScheme.Dark}
                     onPress={handlePress}
                     checked={scheme === ColorScheme.Dark}
+                />
+                <RadioItem
+                    label={t('color-scheme-black')}
+                    value={ColorScheme.Black}
+                    onPress={handlePress}
+                    checked={scheme === ColorScheme.Black}
                     last
                 />
             </RadioList>
