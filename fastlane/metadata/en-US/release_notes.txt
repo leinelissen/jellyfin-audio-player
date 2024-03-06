@@ -1,1 +1,1 @@
-Fresh from the oven, a new Fintunes release. This one contains some minor UI updates. You'll notice that the label on the bottom bars are gone, and we have some fancy effects for the navigation bars up top and on the bottom. Albums now include a description text if it is available from the server, as well as similar albums that are pulled from your Jellyfin instance. Lastly, the track listing for a playlist now also includes the artist.
+This is a hotfix that makes it possible to access your Jellyfin server over HTTP again. Do please use HTTPS if that's available to you.

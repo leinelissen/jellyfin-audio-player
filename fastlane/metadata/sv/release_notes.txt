@@ -1,1 +1,1 @@
-Färsk från ugnen, en ny Fintunes-release. Den här innehåller några mindre UI-uppdateringar. Du kommer att märka att etiketten på de nedre fälten är borta, och vi har några snygga effekter för navigeringsfälten uppe och nere. Album innehåller nu en beskrivningstext om den är tillgänglig från servern, såväl som liknande album som hämtas från din Jellyfin-instans. Slutligen inkluderar låtlistan för en spellista nu även artisten.
+Detta är en snabbkorrigering som gör det möjligt att komma åt din Jellyfin-server över HTTP igen. Använd HTTPS om det är tillgängligt för dig.

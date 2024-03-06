@@ -1,1 +1,1 @@
-Reproductor de audio para Jellyfin
+Reproductor para Jellyfin

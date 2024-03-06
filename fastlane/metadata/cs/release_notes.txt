@@ -1,1 +1,1 @@
-Čerstvé z trouby, nové vydání Fintunes. Toto vydání obsahuje několik drobných aktualizací uživatelského rozhraní. Všimnete si, že štítek na spodních lištách je pryč a máme nějaké efektní efekty pro navigační lišty nahoře a dole. Alba nyní obsahují popisný text, pokud je dostupný ze serveru, a také podobná alba, která jsou stažena z vaší instance Jellyfin. A konečně, seznam skladeb pro seznam skladeb nyní obsahuje také interpreta.
+Toto je oprava hotfix, která umožňuje znovu přistupovat k serveru Jellyfin přes HTTP. Použijte prosím HTTPS, pokud je to pro vás dostupné.

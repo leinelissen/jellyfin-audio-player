@@ -135,6 +135,13 @@ platform :android do
     end
 
     lane :release do
+        android_set_version_name(
+            version_name: package["version"],
+            gradle_file: "android/app/build.gradle"
+        )
+        android_set_version_code(    
+            gradle_file: "android/app/build.gradle"
+        )
         gradle(
             task: "bundle",
             build_type: "Release",
