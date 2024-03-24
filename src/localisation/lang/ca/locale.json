@@ -69,7 +69,7 @@
     "why-use-tracking-description": "El seguiment ajuda a accelerar el desenvolupament d'aquesta aplicació mitjançant l'informe de casos de vora estranys i oversights. Això ajuda a fer que l’aplicació sigui més estable i robusta, millorant així l’experiència de l’aplicació per a tothom.",
     "what-data-is-gathered": "Quines dades es recullen?",
     "what-data-is-gathered-description": "Registrem l'error, el tipus de dispositiu, la versió del sistema operatiu, la versió de l'aplicació i l'identificador del dispositiu. No s'envia cap estat de l'aplicació en cap informe d'errors. L'identificador del dispositiu és un hash únic que es pot restablir a la configuració del dispositiu i no podem deduir cap informació personal d'aquest identificador.",
-    "where-is-data-stored": "Caché",
+    "where-is-data-stored": "On s’emmagatzemen les dades?",
     "where-is-data-stored-description": "El backend Sentry està auto-allotjat en la nostra pròpia infraestructura. No hi ha ningú que tingui accés als servidors, bases de dades, aplicacions i registres de dades, com a mínim de tot el personal de Sentry. La infraestructura està allotjada a la Unió Europea.",
     "sleep-timer": "Temporitzador son",
     "confirm-delete-all-tracks": "Estàs segur que vols eliminar totes les pistes descarregades actualment?",
