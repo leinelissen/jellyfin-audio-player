@@ -72,7 +72,7 @@
     "artists": "Исполнители",
     "privacy-policy": "Политика конфиденциальности",
     "sleep-timer": "Время сна",
-    "confirm-delete-all-tracks": "Отмена",
+    "confirm-delete-all-tracks": "Вы уверены, что хотите удалить все загруженные в настоящее время треки?",
     "delete": "Удалить",
     "cancel": "Отмена"
 }
