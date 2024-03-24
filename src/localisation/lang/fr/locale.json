@@ -72,7 +72,7 @@
     "error-reporting": "Rapport d'erreur",
     "privacy-policy": "Politique de confidentialité",
     "sleep-timer": "Temporaire de sommeil",
-    "confirm-delete-all-tracks": "Annuler",
+    "confirm-delete-all-tracks": "Êtes-vous sûr de vouloir supprimer toutes les pistes actuellement téléchargées?",
     "delete": "Supprimer",
     "cancel": "Annuler"
 }
