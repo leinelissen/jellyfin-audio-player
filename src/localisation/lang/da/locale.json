@@ -64,7 +64,7 @@
     "download-track": "Download Track",
     "download-album": "Download Album",
     "download-playlist": "Download Playlist",
-    "no-downloads": "Hvor gemmes data?",
+    "no-downloads": "Du har endnu ikke downloadet nogen spor",
     "delete-playlist": "Slet Playlist",
     "total-download-size": "Samlet download Størrelse Størrelse Størrelse",
     "retry-failed-downloads": "Detaljerede downloads",
