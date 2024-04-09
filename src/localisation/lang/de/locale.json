@@ -71,7 +71,7 @@
     "playback-reporting": "Wiedergabeberichte",
     "playback-reporting-description": "Mit Wiedergabeberichte werden alle Ihre Wiedergabeereignisse zurück an Jellyfin weitergeleitet. Auf diese Weise können Sie Ihre am häufigsten gehörten Songs verfolgen, insbesondere mit Jellyfin-Plugins wie ListenBrainz.",
     "color-scheme": "Farbschema",
-    "sleep-timer": "Schlafdauer",
+    "sleep-timer": "Schlummerfunktion",
     "confirm-delete-all-tracks": "Sind Sie sicher, dass Sie alle aktuell heruntergeladenen Titel löschen möchten?",
     "delete": "Löschen",
     "cancel": "Abbrechen"
