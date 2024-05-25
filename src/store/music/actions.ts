@@ -71,6 +71,7 @@ AsyncThunkAPI
 
         const albums = await Promise.all(results.filter((item) => (
             !state.music.albums.ids.includes(item.Type === 'MusicAlbum' ? item.Id : item.AlbumId)
+            && (item.Type === 'Audio' ? item.AlbumId : true)
         )).map(async (item) => {
             if (item.Type === 'MusicAlbum') {
                 return item;

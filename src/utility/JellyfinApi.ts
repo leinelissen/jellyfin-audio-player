@@ -214,9 +214,13 @@ export async function searchItem(
     }).toString();
 
     const results = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${params}`, config)
-        .then(response => response.json());
+        .then(response => response.json() as Promise<{ Items: (Album | AlbumTrack)[] }>);
 
-    return results.Items;
+    return results.Items
+        .filter((item) => (
+            // GUARD: Ensure that we're either dealing with an album or a track from an album.
+            item.Type === 'MusicAlbum' || (item.Type === 'Audio' && item.AlbumId)
+        ));
 }
 
 const playlistOptions = {
