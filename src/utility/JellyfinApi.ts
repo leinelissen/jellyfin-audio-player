@@ -94,7 +94,10 @@ const albumParams = new URLSearchParams(albumOptions).toString();
 export async function retrieveAllAlbums(credentials: Credentials) {
     const config = generateConfig(credentials);
     const albums = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${albumParams}`, config)
-        .then(response => response.json());
+        .then(response => {
+            if (response.ok) return response.json();
+            throw response;
+        });
 
     return albums.Items;
 }
@@ -106,8 +109,13 @@ export async function retrieveAlbum(credentials: Credentials, id: string): Promi
     const config = generateConfig(credentials);
 
     const Similar = await fetch(`${credentials?.uri}/Items/${id}/Similar?userId=${credentials?.user_id}&limit=12`, config)
-        .then(response => response.json() as Promise<{ Items: SimilarAlbum[] }>)
-        .then((albums) => albums.Items.map((a) => a.Id));
+        .then(response => {
+            if (response.ok) {
+                return response.json() as Promise<{ Items: SimilarAlbum[] }>;
+            } 
+
+            throw response;
+        }).then((albums) => albums.Items.map((a) => a.Id));
 
     return fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items/${id}`, config)
         .then(response => response.json() as Promise<Album>)
@@ -135,7 +143,10 @@ export async function retrieveRecentAlbums(credentials: Credentials, numberOfAlb
 
     // Retrieve albums
     const albums = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items/Latest?${params}`, config)
-        .then(response => response.json());
+        .then(response => {
+            if (response.ok) return response.json();
+            throw response;
+        });
 
     return albums;
 }
@@ -152,7 +163,10 @@ export async function retrieveAlbumTracks(ItemId: string, credentials: Credentia
 
     const config = generateConfig(credentials);
     const album = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${singleAlbumParams}`, config)
-        .then(response => response.json());
+        .then(response => {
+            if (response.ok) return response.json();
+            throw response;
+        });
 
     return album.Items;
 }
@@ -186,7 +200,10 @@ const trackParams = {
 export async function retrieveAllTracks(credentials: Credentials) {
     const config = generateConfig(credentials);
     const tracks = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${trackParams}`, config)
-        .then(response => response.json());
+        .then(response => {
+            if (response.ok) return response.json();
+            throw response;
+        });
 
     return tracks.Items;
 }
@@ -214,7 +231,13 @@ export async function searchItem(
     }).toString();
 
     const results = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${params}`, config)
-        .then(response => response.json() as Promise<{ Items: (Album | AlbumTrack)[] }>);
+        .then(response => {
+            if (response.ok) {
+                return response.json() as Promise<{ Items: (Album | AlbumTrack)[] }>;
+            }
+
+            throw response;
+        });
 
     return results.Items
         .filter((item) => (
@@ -242,7 +265,10 @@ export async function retrieveAllPlaylists(credentials: Credentials) {
     const playlistParams = new URLSearchParams(playlistOptions).toString();
     
     const albums = await fetch(`${credentials?.uri}/Users/${credentials?.user_id}/Items?${playlistParams}`, config)
-        .then(response => response.json());
+        .then(response => {
+            if (response.ok) return response.json();
+            throw response;
+        });
 
     return albums.Items;
 }
@@ -259,7 +285,10 @@ export async function retrievePlaylistTracks(ItemId: string, credentials: Creden
 
     const config = generateConfig(credentials);
     const playlists = await fetch(`${credentials?.uri}/Playlists/${ItemId}/Items?${singlePlaylistParams}`, config)
-        .then(response => response.json());
+        .then(response => {
+            if (response.ok) return response.json();
+            throw response;
+        });
 
     return playlists.Items;
 }
