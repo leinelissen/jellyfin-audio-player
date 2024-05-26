@@ -307,21 +307,21 @@ const RepeatModeMap: Record<RepeatMode, string> = {
  * This will generate the payload that is required for playback events and send
  * it to the supplied path.
  */
-export async function sendPlaybackEvent(path: string, credentials: Credentials, trackIndex?: number) {
+export async function sendPlaybackEvent(
+    path: string,
+    credentials: Credentials,
+    track?: Track
+) {
     // Extract all data from react-native-track-player
     const [
-        currentTrack, position, repeatMode, volume, queue, state,
+        activeTrack, { position }, repeatMode, volume, { state },
     ] = await Promise.all([
-        TrackPlayer.getCurrentTrack(),
-        TrackPlayer.getPosition(),
+        track || TrackPlayer.getActiveTrack(),
+        TrackPlayer.getProgress(),
         TrackPlayer.getRepeatMode(),
         TrackPlayer.getVolume(),
-        TrackPlayer.getQueue(),
-        TrackPlayer.getState(),
+        TrackPlayer.getPlaybackState(),
     ]);
-
-    // Switch between overriden track index and current track
-    const track = trackIndex !== undefined ? trackIndex : currentTrack;
 
     // Generate a payload from the gathered data
     const payload = {
@@ -333,8 +333,8 @@ export async function sendPlaybackEvent(path: string, credentials: Credentials, 
         PositionTicks: Math.round(position * 10_000_000),
         PlaybackRate: 1,
         PlayMethod: 'transcode',
-        MediaSourceId: track !== null ? queue[track].backendId : null,
-        ItemId: track !== null ? queue[track].backendId : null,
+        MediaSourceId: activeTrack?.backendId || null,
+        ItemId: activeTrack?.backendId || null,
         CanSeek: true,
         PlaybackStartTimeTicks: null,
     };

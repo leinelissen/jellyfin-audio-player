@@ -37,18 +37,18 @@ export default async function() {
         TrackPlayer.seekTo(event.position);
     });
 
-    TrackPlayer.addEventListener(Event.PlaybackTrackChanged, async (e) => {
+    TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
         // Retrieve the current settings from the Redux store
         const settings = store.getState().settings;
 
         // GUARD: Only report playback when the settings is enabled
         if (settings.enablePlaybackReporting && 'track' in e) {
             // GUARD: End the previous track if it's about to end
-            if ('nextTrack' in e && typeof e.track === 'number') {
-                sendPlaybackEvent('/Sessions/Playing/Stopped', settings.jellyfin, e.track);
+            if (e.lastTrack) {
+                await sendPlaybackEvent('/Sessions/Playing/Stopped', settings.jellyfin, e.lastTrack);
             }
 
-            sendPlaybackEvent('/Sessions/Playing', settings.jellyfin);
+            await sendPlaybackEvent('/Sessions/Playing', settings.jellyfin, e.track);
         }
     });
 
@@ -69,14 +69,16 @@ export default async function() {
     });
 
     TrackPlayer.addEventListener(Event.PlaybackState, (event) => {
-        // GUARD: Only respond to stopped events
-        if (event.state === State.Stopped) {
-            // Retrieve the current settings from the Redux store
-            const settings = store.getState().settings;
+        // Retrieve the current settings from the Redux store
+        const settings = store.getState().settings;
 
-            // GUARD: Only report playback when the settings is enabled
-            if (settings.enablePlaybackReporting) {
+        // GUARD: Only report playback when the settings is enabled
+        if (settings.enablePlaybackReporting) {
+            // GUARD: Only respond to stopped events
+            if (event.state === State.Stopped) {
                 sendPlaybackEvent('/Sessions/Playing/Stopped', settings.jellyfin);
+            } else if (event.state === State.Paused) {
+                sendPlaybackEvent('/Sessions/Playing/Progress', settings.jellyfin);
             }
         }
     });
