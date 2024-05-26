@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { useGetImage } from '@/utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { Text, SafeAreaView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from '@/store';

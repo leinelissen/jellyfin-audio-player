@@ -9,8 +9,8 @@
 
 import TrackPlayer, { Event, State } from 'react-native-track-player';
 import store from '@/store';
-import { sendPlaybackEvent } from './JellyfinApi';
 import { setTimerDate } from '@/store/sleep-timer';
+import { sendPlaybackEvent } from './JellyfinApi/playback';
 
 export default async function() {
     TrackPlayer.addEventListener(Event.RemotePlay, () => {
@@ -45,10 +45,10 @@ export default async function() {
         if (settings.enablePlaybackReporting && 'track' in e) {
             // GUARD: End the previous track if it's about to end
             if (e.lastTrack) {
-                await sendPlaybackEvent('/Sessions/Playing/Stopped', settings.jellyfin, e.lastTrack);
+                await sendPlaybackEvent('/Sessions/Playing/Stopped', e.lastTrack);
             }
 
-            await sendPlaybackEvent('/Sessions/Playing', settings.jellyfin, e.track);
+            await sendPlaybackEvent('/Sessions/Playing', e.track);
         }
     });
 
@@ -58,7 +58,7 @@ export default async function() {
 
         // GUARD: Only report playback when the settings is enabled
         if (settings.enablePlaybackReporting) {
-            sendPlaybackEvent('/Sessions/Playing/Progress', settings.jellyfin);
+            sendPlaybackEvent('/Sessions/Playing/Progress');
         }
 
         // check if timerDate is undefined, otherwise start timer
@@ -76,9 +76,9 @@ export default async function() {
         if (settings.enablePlaybackReporting) {
             // GUARD: Only respond to stopped events
             if (event.state === State.Stopped) {
-                sendPlaybackEvent('/Sessions/Playing/Stopped', settings.jellyfin);
+                sendPlaybackEvent('/Sessions/Playing/Stopped');
             } else if (event.state === State.Paused) {
-                sendPlaybackEvent('/Sessions/Playing/Progress', settings.jellyfin);
+                sendPlaybackEvent('/Sessions/Playing/Progress');
             }
         }
     });

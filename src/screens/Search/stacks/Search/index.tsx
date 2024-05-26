@@ -8,7 +8,7 @@ import { Album, AlbumTrack } from '@/store/music/types';
 import { FlatList } from 'react-native-gesture-handler';
 import TouchableHandler from '@/components/TouchableHandler';
 import { useNavigation } from '@react-navigation/native';
-import { useGetImage } from '@/utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi/lib';
 import FastImage from 'react-native-fast-image';
 import { t } from '@/localisation';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';

@@ -12,7 +12,7 @@ import DownloadIcon from '@/components/DownloadIcon';
 import styled from 'styled-components/native';
 import { Text } from '@/components/Typography';
 import FastImage from 'react-native-fast-image';
-import { useGetImage } from '@/utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { ShadowWrapper } from '@/components/Shadow';
 import { SafeFlatList } from '@/components/SafeNavigatorView';
 import { t } from '@/localisation';

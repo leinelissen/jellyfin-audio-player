@@ -1,8 +1,8 @@
 import { useTypedSelector } from '@/store';
 import { useCallback } from 'react';
 import TrackPlayer, { Track } from 'react-native-track-player';
-import { generateTrack } from './JellyfinApi';
 import { shuffle as shuffleArray } from 'lodash';
+import { generateTrack } from './JellyfinApi/track';
 
 interface PlayOptions {
     play: boolean;
@@ -21,7 +21,6 @@ const defaults: PlayOptions = {
  * supplied id.
  */
 export default function usePlayTracks() {
-    const credentials = useTypedSelector(state => state.settings.jellyfin);
     const tracks = useTypedSelector(state => state.music.tracks.entities);
     const downloads = useTypedSelector(state => state.downloads.entities);
 
@@ -51,7 +50,7 @@ export default function usePlayTracks() {
             }
 
             // Retrieve the generated track from Jellyfin
-            const generatedTrack = generateTrack(track, credentials);
+            const generatedTrack = generateTrack(track);
 
             // Check if a downloaded version exists, and if so rewrite the URL
             const download = downloads[trackId];
@@ -114,5 +113,5 @@ export default function usePlayTracks() {
                 break;
             }
         }
-    }, [credentials, downloads, tracks]);
+    }, [downloads, tracks]);
 }

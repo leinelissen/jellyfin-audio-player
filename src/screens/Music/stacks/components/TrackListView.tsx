@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useCallback, useMemo } from 'react';
 import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
-import { useGetImage } from '@/utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi/lib';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from '@/store';

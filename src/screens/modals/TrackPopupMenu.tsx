@@ -15,7 +15,7 @@ import CoverImage from '@/components/CoverImage';
 import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/actions';
 import usePlayTracks from '@/utility/usePlayTracks';
 import { selectIsDownloaded } from '@/store/downloads/selectors';
-import { useGetImage } from '@/utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi/lib';
 
 type Route = RouteProp<StackParams, 'TrackPopupMenu'>;
 

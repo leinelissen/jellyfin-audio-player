@@ -9,7 +9,7 @@ import { t } from '@/localisation';
 import { NavigationProp, StackParams } from '@/screens/types';
 import { SubHeader, Text } from '@/components/Typography';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useGetImage } from '@/utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi/lib';
 import styled from 'styled-components';
 import { Dimensions, Pressable } from 'react-native';
 import AlbumImage from './components/AlbumImage';

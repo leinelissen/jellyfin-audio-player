@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, ReactText } from 'react';
-import { useGetImage } from '@/utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';

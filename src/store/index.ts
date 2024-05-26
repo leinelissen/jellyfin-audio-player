@@ -87,6 +87,7 @@ const store = configureStore({
 export type AppState = ReturnType<typeof reducers> & { _persist: PersistState };
 export type AppDispatch = typeof store.dispatch;
 export type AsyncThunkAPI = { state: AppState, dispatch: AppDispatch };
+export type Store = typeof store;
 export const useTypedSelector: TypedUseSelectorHook<AppState> = useSelector;
 export const useAppDispatch: () => AppDispatch = useDispatch;
 

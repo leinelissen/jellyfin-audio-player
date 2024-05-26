@@ -1,9 +1,9 @@
 import { createAction, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { AppState } from '@/store';
-import { generateTrackUrl } from '@/utility/JellyfinApi';
 import { downloadFile, unlink, DocumentDirectoryPath, exists } from 'react-native-fs';
 import { DownloadEntity } from './types';
 import MimeTypes from '@/utility/MimeTypes';
+import { generateTrackUrl } from '@/utility/JellyfinApi/track';
 
 export const downloadAdapter = createEntityAdapter<DownloadEntity>();
 
@@ -15,12 +15,9 @@ export const failDownload = createAction<{ id: string }>('download/fail');
 
 export const downloadTrack = createAsyncThunk(
     '/downloads/track',
-    async (id: string, { dispatch, getState }) => {
-        // Get the credentials from the store
-        const { settings: { jellyfin: credentials } } = (getState() as AppState);
-
+    async (id: string, { dispatch }) => {
         // Generate the URL we can use to download the file
-        const url = generateTrackUrl(id as string, credentials);
+        const url = generateTrackUrl(id);
 
         // Get the content-type from the URL by doing a HEAD-only request
         const contentType = (await fetch(url, { method: 'HEAD' })).headers.get('Content-Type');
