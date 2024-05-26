@@ -15,8 +15,8 @@ export function useRecentAlbums(amount: number) {
     const sorted = [...albumIds].sort((a, b) => {
         const albumA = albums[a];
         const albumB = albums[b];
-        const dateA = albumA ? parseISO(albumA.DateCreated).getTime() : 0;
-        const dateB = albumB ? parseISO(albumB.DateCreated).getTime() : 0;
+        const dateA = albumA && albumA.DateCreated ? parseISO(albumA.DateCreated).getTime() : 0;
+        const dateB = albumB && albumB.DateCreated ? parseISO(albumB.DateCreated).getTime() : 0;
         return dateB - dateA;
     });
 
