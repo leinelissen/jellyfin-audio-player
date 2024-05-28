@@ -21,8 +21,9 @@ const baseTrackOptions: Record<string, string> = {
     TranscodingContainer: 'aac',
     AudioCodec: 'aac',
     Container: 'mp3,aac',
+    audioBitRate: '320000',
     ...trackOptionsOsOverrides[Platform.OS],
-};
+} as const;
 
 /**
  * Generate the track streaming url from the trackId
@@ -46,9 +47,11 @@ export function generateTrackUrl(trackId: string) {
  * Generate a track object from a Jellyfin ItemId so that
  * react-native-track-player can easily consume it.
  */
-export function generateTrack(track: AlbumTrack): Track {
+export async function generateTrack(track: AlbumTrack): Promise<Track> {
     // Also construct the URL for the stream
     const url = generateTrackUrl(track.Id);
+
+    const response = await fetch(url, { method: 'HEAD' });
 
     return {
         url,
@@ -60,6 +63,9 @@ export function generateTrack(track: AlbumTrack): Track {
         artwork: track.AlbumId
             ? getImage(track.AlbumId)
             : getImage(track.Id),
+        contentType: response.headers.get('Content-Type') || undefined,
+        isDirectPlay: response.headers.has('Content-Length'),
+        bitRate: baseTrackOptions.audioBitRate,
     };
 }
 

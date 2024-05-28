@@ -41,7 +41,7 @@ export default function usePlayTracks() {
         const queue = await TrackPlayer.getQueue();
 
         // Convert all trackIds to the relevant format for react-native-track-player
-        const generatedTracks = trackIds.map((trackId) => {
+        const generatedTracks = (await Promise.all(trackIds.map(async (trackId) => {
             const track = tracks[trackId];
 
             // GUARD: Check that the track actually exists in Redux
@@ -50,7 +50,7 @@ export default function usePlayTracks() {
             }
 
             // Retrieve the generated track from Jellyfin
-            const generatedTrack = generateTrack(track);
+            const generatedTrack = await generateTrack(track);
 
             // Check if a downloaded version exists, and if so rewrite the URL
             const download = downloads[trackId];
@@ -59,7 +59,7 @@ export default function usePlayTracks() {
             }
 
             return generatedTrack;
-        }).filter((t): t is Track => typeof t !== 'undefined');
+        }))).filter((t): t is Track => typeof t !== 'undefined');
 
         // Potentially shuffle all tracks
         const newTracks = shuffle ? shuffleArray(generatedTracks) : generatedTracks;

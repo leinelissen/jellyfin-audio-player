@@ -16,8 +16,8 @@ export default function useCurrentTrack(): CurrentTrackResponse {
     // Retrieve the current track from the queue using the index
     const retrieveCurrentTrack = useCallback(async () => {
         const queue = await TrackPlayer.getQueue();
-        const currentTrackIndex = await TrackPlayer.getCurrentTrack();
-        if (currentTrackIndex !== null) {
+        const currentTrackIndex = await TrackPlayer.getActiveTrackIndex();
+        if (currentTrackIndex !== undefined) {
             setTrack(queue[currentTrackIndex]);
             setIndex(currentTrackIndex);
         } else {
@@ -28,7 +28,7 @@ export default function useCurrentTrack(): CurrentTrackResponse {
 
     // Then execute the function on component mount and track changes
     useEffect(() => { retrieveCurrentTrack(); }, [retrieveCurrentTrack]);
-    useTrackPlayerEvents([ Event.PlaybackTrackChanged, Event.PlaybackState ], retrieveCurrentTrack);
+    useTrackPlayerEvents([ Event.PlaybackActiveTrackChanged, Event.PlaybackState ], retrieveCurrentTrack);
     
     return { track, index };
 }

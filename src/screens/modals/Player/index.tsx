@@ -9,6 +9,7 @@ import StreamStatus from './components/StreamStatus';
 import { Platform } from 'react-native';
 import BackButton from './components/Backbutton';
 import Timer from './components/Timer';
+import MediaInformation from './components/MediaInformation';
 
 export default function Player() {    
     return (
@@ -19,6 +20,7 @@ export default function Player() {
                     <NowPlaying />
                     <ConnectionNotice />
                     <StreamStatus />
+                    <MediaInformation />
                     <ProgressBar />
                     <MediaControls />
                     <Timer />
