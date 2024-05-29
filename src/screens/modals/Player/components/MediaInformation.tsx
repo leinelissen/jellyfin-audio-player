@@ -42,8 +42,6 @@ export default function MediaInformation() {
     const albumTrack = entities[track.backendId];
     const mediaStream = albumTrack.MediaStreams?.find((d) => d.Type === 'Audio');
 
-    console.log(mediaStream);
-
     return (
         <Container>
             <WaveformIcon fill={styles.icon.color} height={16} width={16} />
