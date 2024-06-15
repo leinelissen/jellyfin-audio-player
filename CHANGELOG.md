@@ -1,3 +1,37 @@
+## [2.3.3](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.3.2...v2.3.3) (2024-06-15)
+
+
+### Bug Fixes
+
+* actually send out /Playing events as session updates. ([b01470b](https://github.com/leinelissen/jellyfin-audio-player/commit/b01470bde8ea353ea7139c0708ec9cfdaf600fe4)), closes [#218](https://github.com/leinelissen/jellyfin-audio-player/issues/218)
+* do extra checks for album ids in ([00675bb](https://github.com/leinelissen/jellyfin-audio-player/commit/00675bbbd3e72e8e710d8aa9b73b491e65153d40))
+* double-check albums have dates ([881ab95](https://github.com/leinelissen/jellyfin-audio-player/commit/881ab9502960786dc9685cf3612793fea3c1be4c))
+* hermes version in cocoapods ([ea81702](https://github.com/leinelissen/jellyfin-audio-player/commit/ea817025e1bf67fcd3c183c12f4f1f93c3218785))
+* react-native-screens android setup ([968e98d](https://github.com/leinelissen/jellyfin-audio-player/commit/968e98d8dffa79ea3165d1209542bd91dd914ef5))
+* refactor JellyfinApi to be less burdensome to implement ([a6a306b](https://github.com/leinelissen/jellyfin-audio-player/commit/a6a306b5be6988469449b17ed527f1d365901e6d))
+* throw errors when requests do not yield 200 OKs ([16162d8](https://github.com/leinelissen/jellyfin-audio-player/commit/16162d8e3505ea195c8aaf03b82df88405196025))
+
+
+
+## [2.3.2](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.3.1...v2.3.2) (2024-03-10)
+
+
+### Bug Fixes
+
+* build with xcode 15.3 ([845eac7](https://github.com/leinelissen/jellyfin-audio-player/commit/845eac70a0afa189cd76e97f739ad627f648566a))
+* remove conflicting app transport properties ([c966276](https://github.com/leinelissen/jellyfin-audio-player/commit/c9662769faec8771b6a70da815ec36e62c8c43a2))
+
+
+
+## [2.3.1](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.3.0...v2.3.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* revert to supporting HTTP-based backends ([f310bb8](https://github.com/leinelissen/jellyfin-audio-player/commit/f310bb82f61f532f9557787d364e9f342166806d)), closes [#205](https://github.com/leinelissen/jellyfin-audio-player/issues/205)
+
+
+
 # [2.3.0](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.2.0...v2.3.0) (2024-02-11)
 
 
