@@ -6,14 +6,15 @@ import Queue from './components/Queue';
 import ConnectionNotice from './components/ConnectionNotice';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import StreamStatus from './components/StreamStatus';
-import { Platform } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import BackButton from './components/Backbutton';
 import Timer from './components/Timer';
 
-export default function Player() {    
+export default function Player() {   
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            {Platform.OS === 'android' && (<BackButton />)}
+            <StatusBar translucent={true} backgroundColor={'transparent'}/>
+            {/* {Platform.OS === 'android' && (<BackButton />)} */}
             <Queue header={(
                 <>
                     <NowPlaying />

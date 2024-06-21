@@ -31,7 +31,7 @@ function MusicStack() {
             }}>
                 <Stack.Screen name="RecentAlbums" component={RecentAlbums} options={{ headerTitle: t('recent-albums'), headerShown: false }} />
                 <Stack.Screen name="Albums" component={Albums} options={{ headerTitle: t('albums') }} />
-                <Stack.Screen name="Album" component={Album} options={{ headerTitle: t('album') }} />
+                <Stack.Screen name="Album" component={Album} options={{ headerTitle: t('album'), headerShown: false }} />
                 <Stack.Screen name="Artists" component={Artists} options={{ headerTitle: t('artists') }} />
                 <Stack.Screen name="Artist" component={Artist} options={({ route }) => ({ headerTitle: route.params.Name })} />
                 <Stack.Screen name="Playlists" component={Playlists} options={{ headerTitle: t('playlists') }} />
