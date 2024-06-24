@@ -35,7 +35,7 @@
     "error-reporting": "Segnalazione Errori",
     "error-reporting-description": "Durante l'utilizzo di questa app, potresti riscontrare errori. La segnalazione di questi errori ci aiuta a creare un'esperienza dell'app più sicura e stabile.",
     "error-reporting-rationale": "Quando abiliti la segnalazione degli errori, ogni volta che si verifica un errore, viene creato automaticamente un rapporto e inviato a un server, insieme a utili informazioni di debug come dispositivi, versioni e l'errore specifico.",
-    "why-use-tracking-description": "Il tracciamento aiuta a velocizzare lo sviluppo di questa applicazione segnalando strani casi di bordo e sovratensioni. Questo aiuta a rendere l'applicazione più stabile e robusta, migliorando così l'esperienza app per tutti.",
+    "why-use-tracking-description": "Il monitoraggio aiuta ad accelerare lo sviluppo di questa app segnalando casi strani e sviste. Ciò ci aiuta a rendere l'app più stabile e robusta, aumentando così l'esperienza dell'app per tutti.",
     "what-data-is-gathered": "Quali dati vengono raccolti?",
     "what-data-is-gathered-description": "Registriamo l'errore, il tipo di dispositivo, la versione del sistema operativo, la versione dell'app e l'ID del dispositivo. Nessuno stato dell'applicazione viene inviato in nessuna segnalazione di errore. L'ID del dispositivo è un hash unico che può essere ripristinato nelle impostazioni del dispositivo e non possiamo dedurre alcuna informazione personale da questo identificatore.",
     "where-is-data-stored": "Dove vengono archiviati i dati?",
