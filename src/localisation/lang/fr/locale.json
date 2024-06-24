@@ -27,7 +27,7 @@
     "recent-albums": "Albums récents",
     "what-data-is-gathered": "Quelles données sont collectées ?",
     "error-reporting-rationale": "Lorsque vous activez le rapport d'erreurs, chaque fois qu'une erreur se produit, un rapport est automatiquement créé et envoyé à un serveur, avec des informations de débogage utiles telles que les périphériques, les versions et l'erreur spécifique.",
-    "why-use-tracking-description": "Le traçage permet d'accélérer le développement de cette application en signalant des cas bizarres et des surveillances. Cela permet de rendre l'application plus stable et robuste, améliorant ainsi l'expérience de l'application pour tous.",
+    "why-use-tracking-description": "Le suivi aide à accélérer le développement de cette application en signalant les cas étranges et les oublis. Ceci contribue à rendre l'application plus stable et plus robuste, augmentant ainsi l'expérience de l'application pour tout le monde.",
     "what-data-is-gathered-description": "Nous enregistrons l'erreur, le type d'appareil, la version du système d'exploitation, la version de l'application et l'identifiant de l'appareil. Aucun état d'application n'est envoyé dans les rapports d'erreurs. L'identifiant de l'appareil est un hachage unique qui peut être réinitialisé dans les paramètres de votre appareil, et nous ne pouvons déduire aucune information personnelle de cet identifiant.",
     "more-info": "Plus d'informations",
     "play-playlist": "Lire la liste de lecture",
