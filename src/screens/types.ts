@@ -14,6 +14,7 @@ export type StackParams = {
     Search: undefined;
     SetJellyfinServer: undefined;
     TrackPopupMenu: { trackId: string };
+    Lyrics: undefined;
 };
 
-export type NavigationProp = StackNavigationProp<StackParams>; 
+export type NavigationProp = StackNavigationProp<StackParams>;

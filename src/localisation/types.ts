@@ -74,3 +74,6 @@ export type LocaleKeys = 'play-next'
 | 'sleep-timer'
 | 'delete'
 | 'cancel'
+| 'lyrics'
+
+// TODO add localizations to for all languages
