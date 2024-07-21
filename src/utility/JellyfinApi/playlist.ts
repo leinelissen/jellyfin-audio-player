@@ -28,7 +28,7 @@ export async function retrieveAllPlaylists() {
 export async function retrievePlaylistTracks(ItemId: string) {
     const credentials = asyncFetchStore().getState().settings.jellyfin;
     const singlePlaylistOptions = {
-        SortBy: 'SortName',
+        SortBy: 'IndexNumber,SortName',
         UserId: credentials?.user_id || '',
     };
     const singlePlaylistParams = new URLSearchParams(singlePlaylistOptions).toString();

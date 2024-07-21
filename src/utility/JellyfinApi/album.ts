@@ -59,7 +59,7 @@ export async function retrieveRecentAlbums(numberOfAlbums = 24) {
 export async function retrieveAlbumTracks(ItemId: string) {
     const singleAlbumOptions = {
         ParentId: ItemId,
-        SortBy: 'SortName',
+        SortBy: 'IndexNumber,SortName',
     };
     const singleAlbumParams = new URLSearchParams(singleAlbumOptions).toString();
 

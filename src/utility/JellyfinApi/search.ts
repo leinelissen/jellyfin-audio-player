@@ -3,7 +3,7 @@ import { fetchApi } from './lib';
 
 const searchParams = {
     IncludeItemTypes: 'Audio,MusicAlbum',
-    SortBy: 'Album,SortName',
+    SortBy: 'SearchScore,Album,SortName',
     SortOrder: 'Ascending',
     Recursive: 'true',
 };
