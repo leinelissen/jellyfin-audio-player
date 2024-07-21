@@ -52,6 +52,7 @@ export interface AlbumTrack {
     RunTimeTicks: number;
     ProductionYear: number;
     IndexNumber: number;
+    ParentIndexNumber: number;
     IsFolder: boolean;
     Type: 'Audio';
     UserData: UserData;
