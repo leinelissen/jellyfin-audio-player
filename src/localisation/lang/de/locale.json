@@ -74,5 +74,6 @@
     "sleep-timer": "Schlummerfunktion",
     "confirm-delete-all-tracks": "Sind Sie sicher, dass Sie alle aktuell heruntergeladenen Titel löschen möchten?",
     "delete": "Löschen",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "disc": "Scheiben"
 }
