@@ -22,7 +22,7 @@ export async function searchItem(
 
     const results = await fetchApi<{ Items: (Album | AlbumTrack)[]}>(({ user_id }) => `/Users/${user_id}/Items?${params}`);
 
-    return results.Items
+    return results!.Items
         .filter((item) => (
             // GUARD: Ensure that we're either dealing with an album or a track from an album.
             item.Type === 'MusicAlbum' || (item.Type === 'Audio' && item.AlbumId)

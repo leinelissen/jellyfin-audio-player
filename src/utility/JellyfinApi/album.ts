@@ -18,7 +18,7 @@ const albumParams = new URLSearchParams(albumOptions).toString();
  */
 export async function retrieveAllAlbums() {
     return fetchApi<{ Items: Album[] }>(({ user_id }) => `/Users/${user_id}/Items?${albumParams}`)
-        .then((data) => data.Items);
+        .then((data) => data!.Items);
 }
 
 /**
@@ -26,10 +26,10 @@ export async function retrieveAllAlbums() {
  */
 export async function retrieveAlbum(id: string): Promise<Album> {
     const Similar = await fetchApi<{ Items: SimilarAlbum[] }>(({ user_id }) => `/Items/${id}/Similar?userId=${user_id}&limit=12`)
-        .then((albums) => albums.Items.map((a) => a.Id));
+        .then((albums) => albums!.Items.map((a) => a.Id));
 
     return fetchApi<Album>(({ user_id }) => `/Users/${user_id}/Items/${id}`)
-        .then(album => ({ ...album, Similar }));
+        .then(album => ({ ...album!, Similar }));
 }
 
 const latestAlbumsOptions = {
@@ -64,5 +64,5 @@ export async function retrieveAlbumTracks(ItemId: string) {
     const singleAlbumParams = new URLSearchParams(singleAlbumOptions).toString();
 
     return fetchApi<{ Items: AlbumTrack[] }>(({ user_id }) => `/Users/${user_id}/Items?${singleAlbumParams}`)
-        .then((data) => data.Items);
+        .then((data) => data!.Items);
 }

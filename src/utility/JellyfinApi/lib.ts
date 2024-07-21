@@ -52,8 +52,9 @@ export async function fetchApi<T>(
     // Actually perform the request
     const response = await fetch(url, config);
 
-    if (__DEV__) {
-        console.log(`[HTTP][${response.status}]`, url, config);
+    if (__DEV__) { 
+        console.log(`%c[HTTP] → [${response.status}] ${url}`, 'font-weight:bold;');
+        console.log('\t', config);
     }
 
     // GUARD: Check if the response is as expected
@@ -88,7 +89,8 @@ export async function fetchApi<T>(
  */
 export function getImage(ItemId: string): string {
     const credentials = asyncFetchStore().getState().settings.jellyfin;
-    return encodeURI(`${credentials?.uri}/Items/${ItemId}/Images/Primary?format=jpeg`);
+    const uri = encodeURI(`${credentials?.uri}/Items/${ItemId}/Images/Primary?format=jpeg`);
+    return uri;
 }
 
 /**

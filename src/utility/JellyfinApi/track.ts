@@ -77,5 +77,5 @@ const trackParams = {
  */
 export async function retrieveAllTracks() {
     return fetchApi<{ Items: AlbumTrack[] }>(({ user_id }) => `/Users/${user_id}/Items?${trackParams}`)
-        .then((d) => d.Items);
+        .then((d) => d!.Items);
 }
