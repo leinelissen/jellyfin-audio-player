@@ -74,5 +74,6 @@
     "sleep-timer": "Minuterie de veille",
     "confirm-delete-all-tracks": "Êtes-vous sûr de vouloir supprimer toutes les pistes actuellement téléchargées ?",
     "delete": "Supprimer",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "disc": "Disc"
 }
