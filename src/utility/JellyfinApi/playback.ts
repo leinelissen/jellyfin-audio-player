@@ -17,11 +17,12 @@ const RepeatModeMap: Record<RepeatMode, string> = {
  */
 export async function sendPlaybackEvent(
     path: string,
-    track?: Track
+    track?: Track,
+    lastPosition?: number,
 ) {
     // Extract all data from react-native-track-player
     const [
-        activeTrack, { position }, repeatMode, volume, { state },
+        activeTrack, { position: currentPosition }, repeatMode, volume, { state },
     ] = await Promise.all([
         track || TrackPlayer.getActiveTrack(),
         TrackPlayer.getProgress(),
@@ -37,7 +38,7 @@ export async function sendPlaybackEvent(
         IsPaused: state === State.Paused,
         RepeatMode: RepeatModeMap[repeatMode],
         ShuffleMode: 'Sorted',
-        PositionTicks: Math.round(position * 10_000_000),
+        PositionTicks: Math.round((lastPosition || currentPosition) * 10_000_000),
         PlaybackRate: 1,
         PlayMethod: 'transcode',
         MediaSourceId: activeTrack?.backendId || null,

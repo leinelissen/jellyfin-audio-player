@@ -45,7 +45,7 @@ export default async function() {
         if (settings.enablePlaybackReporting && 'track' in e) {
             // GUARD: End the previous track if it's about to end
             if (e.lastTrack) {
-                await sendPlaybackEvent('/Sessions/Playing/Stopped', e.lastTrack);
+                await sendPlaybackEvent('/Sessions/Playing/Stopped', e.lastTrack, e.lastPosition);
             }
 
             await sendPlaybackEvent('/Sessions/Playing', e.track);
