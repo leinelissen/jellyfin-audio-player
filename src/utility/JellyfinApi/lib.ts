@@ -19,12 +19,16 @@ export function asyncFetchStore() {
     return require('@/store').default as Store;
 }
 
+export type PathOrCredentialInserter = string | ((credentials: NonNullable<Credentials>) => string);
+
 /**
  * A convenience function that accepts a request for fetch, injects it with the
  * proper Jellyfin credentials and attempts to catch any errors along the way.
  */
+export async function fetchApi<T>(path: PathOrCredentialInserter, providedConfig?: RequestInit, parseResponse?: true): Promise<T>;
+export async function fetchApi(path: PathOrCredentialInserter, providedConfig: RequestInit, parseResponse: false): Promise<null>;
 export async function fetchApi<T>(
-    path: string | ((credentials: NonNullable<Credentials>) => string),
+    path: PathOrCredentialInserter,
     providedConfig?: RequestInit,
     parseResponse = true
 ) { 
