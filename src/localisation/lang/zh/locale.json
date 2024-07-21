@@ -74,5 +74,6 @@
     "sleep-timer": "睡眠定时器",
     "confirm-delete-all-tracks": "您确定要删除所有当前下载的曲目吗？",
     "delete": "删除",
-    "cancel": "取消"
+    "cancel": "取消",
+    "disc": "歧视"
 }
