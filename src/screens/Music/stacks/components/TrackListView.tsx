@@ -28,7 +28,8 @@ import { SafeScrollView, useNavigationOffsets } from '@/components/SafeNavigator
 
 const styles = StyleSheet.create({
     index: {
-        marginRight: 12
+        marginRight: 12,
+        textAlign: 'right',
     },
     activeText: {
         fontWeight: '500',
@@ -105,6 +106,26 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const navigation = useNavigation<NavigationProp>();
     const dispatch = useAppDispatch();
 
+    // Visual helpers
+    const { indexWidth } = useMemo(() => {
+        // Retrieve the largest index in the current set of tracks
+        const largestIndex = trackIds.reduce((max, trackId, i) => {
+            // Retrieve the index for this trackid, depending on settings
+            const index = listNumberingStyle === 'index' 
+                ? i + 1
+                : tracks[trackId]?.IndexNumber;
+
+            // Check that the current index is larger than the current max.
+            return index > max ? index: max;
+        }, 0);
+        
+        // Retrieve the number of digits in the largest index
+        const noDigits = largestIndex.toFixed(0).toString().length;
+
+        // Set a minWidth proportional to the largest amount of digits in an index
+        return StyleSheet.create({ indexWidth: { minWidth: noDigits * 8 } });
+    }, [trackIds, tracks, listNumberingStyle]);
+
     // Setup callbacks
     const playEntity = useCallback(() => { playTracks(trackIds); }, [playTracks, trackIds]);
     const shuffleEntity = useCallback(() => { playTracks(trackIds, { shuffle: true }); }, [playTracks, trackIds]);
@@ -162,6 +183,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                                         defaultStyles.textQuarterOpacity,
                                         currentTrack?.backendId === trackId && styles.activeText,
                                         currentTrack?.backendId === trackId && defaultStyles.themeColorQuarterOpacity,
+                                        indexWidth,
                                     ]}
                                     numberOfLines={1}
                                 >
