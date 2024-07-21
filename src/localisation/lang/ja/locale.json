@@ -74,5 +74,6 @@
     "sleep-timer": "スリープタイマー",
     "confirm-delete-all-tracks": "ダウンロードしたすべてのトラックを削除したいですか?",
     "delete": "削除",
-    "cancel": "キャンセル"
+    "cancel": "キャンセル",
+    "disc": "ディスク"
 }
