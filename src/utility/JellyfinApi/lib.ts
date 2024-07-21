@@ -25,8 +25,9 @@ export function asyncFetchStore() {
  */
 export async function fetchApi<T>(
     path: string | ((credentials: NonNullable<Credentials>) => string),
-    config?: RequestInit
-) {
+    providedConfig?: RequestInit,
+    parseResponse = true
+) { 
     // Retrieve the latest credentials from the Redux store
     const credentials = asyncFetchStore().getState().settings.jellyfin;
 
@@ -39,14 +40,21 @@ export async function fetchApi<T>(
     const resolvedPath = typeof path === 'function' ? path(credentials) : path;
     const url = `${credentials.uri}${resolvedPath.startsWith('/') ? '' : '/'}${resolvedPath}`;
 
-    // Actually perform the request
-    const response = await fetch(url, {
-        ...config,
+    // Create config
+    const config = {
+        ...providedConfig,
         headers: {
-            ...config?.headers,
+            ...providedConfig?.headers,
             ...generateConfig(credentials).headers,
         }
-    });
+    };
+    
+    // Actually perform the request
+    const response = await fetch(url, config);
+
+    if (__DEV__) {
+        console.log(`[HTTP][${response.status}]`, url, config);
+    }
 
     // GUARD: Check if the response is as expected
     if (!response.ok) {
@@ -65,10 +73,14 @@ export async function fetchApi<T>(
         }
     }
 
-    // Parse body as JSON
-    const data = await response.json() as Promise<T>;
+    if (parseResponse) {
+        // Parse body as JSON
+        const data = await response.json() as Promise<T>;
+    
+        return data;
+    }
 
-    return data;
+    return null;
 }
 
 /**

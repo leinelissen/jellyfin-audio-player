@@ -54,7 +54,7 @@ export async function sendPlaybackEvent(
         },
         body: JSON.stringify(payload),
     // Swallow and errors from the request
-    }).catch((err) => {
+    }, false).catch((err) => {
         console.error(err);
     });
 }
