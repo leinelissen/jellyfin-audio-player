@@ -72,7 +72,8 @@
     "color-scheme-light": "灯光模式",
     "privacy-policy": "隐私政策",
     "sleep-timer": "睡眠定时器",
-    "confirm-delete-all-tracks": "你们是否希望删除目前下载的所有轨道?",
+    "confirm-delete-all-tracks": "您确定要删除所有当前下载的曲目吗？",
     "delete": "删除",
-    "cancel": "取消"
+    "cancel": "取消",
+    "disc": "歧视"
 }

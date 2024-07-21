@@ -29,7 +29,7 @@
     "set-jellyfin-server": "Nastavit Jellyfin Server",
     "similar-albums": "Podobná alba",
     "albums": "Alba",
-    "why-use-tracking-description": "Sledování pomáhá urychlit vývoj pro tuto aplikaci tím, že nahlásí divné případy hran a dohledy. To pomáhá, aby aplikace stabilnější a robustní, čímž zlepšuje zážitek z aplikace pro každého.",
+    "why-use-tracking-description": "Sledování pomáhá urychlit vývoj této aplikace hlášením podivných okrajových chyb a přehlédnutí. To pomáhá, aby byla aplikace stabilnější a robustnější, a tím se zlepšuje zážitek z aplikace pro každého.",
     "onboarding-welcome": "Vítejte!",
     "reset-cache": "Resetovat mezipaměť",
     "album": "Album",
@@ -74,5 +74,6 @@
     "sleep-timer": "Časovač spánku",
     "confirm-delete-all-tracks": "Přejete si skutečně odstranit všechny stažené skladby?",
     "delete": "Čeština",
-    "cancel": "Hledat"
+    "cancel": "Hledat",
+    "disc": "Čeština"
 }
