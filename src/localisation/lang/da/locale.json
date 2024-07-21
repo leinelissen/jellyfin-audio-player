@@ -74,5 +74,6 @@
     "color-scheme-description": "Som standard vil Fineunes følge dit operativsystems farveordning. Du kan dog vælge at tilsidesætte dette for at sikre, at Fineunes altid er i mørk tilstand eller lystilstand.",
     "delete": "Slet",
     "cancel": "Annuller",
-    "confirm-delete-all-tracks": "Er du sikker på, at du vil slette alle aktuelt downloadede spor?"
+    "confirm-delete-all-tracks": "Er du sikker på, at du vil slette alle aktuelt downloadede spor?",
+    "disc": "Disk"
 }
