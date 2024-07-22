@@ -3,16 +3,14 @@ import { Provider } from 'react-redux';
 import TrackPlayer, { Capability } from 'react-native-track-player';
 import { PersistGate } from 'redux-persist/integration/react';
 import Routes from '../screens';
-import store, { persistedStore, useTypedSelector } from '@/store';
+import store, { persistedStore } from '@/store';
 import {
     NavigationContainer,
     DefaultTheme,
     DarkTheme as BaseDarkTheme,
 } from '@react-navigation/native';
-import { ColorSchemeProvider, themes } from './Colors';
+import { ColorSchemeProvider, themes, useUserOrSystemScheme } from './Colors';
 import DownloadManager from './DownloadManager';
-import { useColorScheme } from 'react-native';
-import { ColorScheme } from '@/store/settings/types';
 
 const LightTheme = {
     ...DefaultTheme,
@@ -35,9 +33,7 @@ const DarkTheme = {
  * right theme is selected based on OS color scheme settings along with user preferences.
  */
 function ThemedNavigationContainer({ children }: PropsWithChildren<{}>) {
-    const systemScheme = useColorScheme();
-    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
-    const scheme = userScheme === ColorScheme.System ? systemScheme : userScheme;
+    const scheme = useUserOrSystemScheme();
 
     return (
         <NavigationContainer

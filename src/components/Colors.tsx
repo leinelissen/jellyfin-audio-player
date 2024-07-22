@@ -109,13 +109,20 @@ export const themes: Record<'dark' | 'light' | 'dark-highcontrast' | 'light-high
 export const ColorSchemeContext = React.createContext(themes.dark);
 
 /**
+ * This hook returns the proper color scheme, taking into account potential user overrides.
+ */
+export function useUserOrSystemScheme() {
+    const systemScheme = useColorScheme();
+    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
+    return userScheme === ColorScheme.System ? systemScheme : userScheme;
+}
+
+/**
  * This provider contains the logic for settings the right theme on the ColorSchemeContext.
  */
 export function ColorSchemeProvider({ children }: PropsWithChildren<{}>) {
-    const systemScheme = useColorScheme();
     const highContrast = useAccessibilitySetting('darkerSystemColors');
-    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
-    const scheme = userScheme === ColorScheme.System ? systemScheme : userScheme;
+    const scheme = useUserOrSystemScheme();
     const theme = highContrast
         ? themes[`${scheme || 'light'}-highcontrast`]
         : themes[scheme || 'light'];
