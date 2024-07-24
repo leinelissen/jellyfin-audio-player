@@ -6,6 +6,7 @@ import { t } from '@/localisation';
 import useDefaultStyles from '@/components/Colors.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {NavigationProp} from '@/screens/types.ts';
+import useCurrentTrack from '@/utility/useCurrentTrack';
 
 const Container = styled.View`
     align-self: flex-start;
@@ -30,15 +31,20 @@ const Label = styled.Text`
 `;
 
 export default function LyricsButton() {
-    // const [showLyrics, setShowLyrics] = useState(false);
+    const { albumTrack } = useCurrentTrack();
+    const defaultStyles = useDefaultStyles();
     const navigation = useNavigation<NavigationProp>();
 
     const handleShowLyrics = () => {
         navigation.navigate('Lyrics');
     };
 
+    // GUARD: Hide lyrics button if the track has none
+    if (!albumTrack || !albumTrack.HasLyrics) {
+        return null;
+    }
+
     // Retrieve styles
-    const defaultStyles = useDefaultStyles();
     return (
         <TouchableOpacity onPress={handleShowLyrics}>
             <Container>
