@@ -71,9 +71,9 @@
     "color-scheme-dark": "Темная тема",
     "artists": "Исполнители",
     "privacy-policy": "Политика конфиденциальности",
-    "sleep-timer": "Время сна",
+    "sleep-timer": "Таймер сна",
     "confirm-delete-all-tracks": "Вы уверены, что хотите удалить все загруженные в настоящее время треки?",
     "delete": "Удалить",
     "cancel": "Отмена",
-    "disc": "Disc"
+    "disc": "Диск"
 }
