@@ -47,9 +47,6 @@ export function generateTrackUrl(trackId: string) {
  * Generate a track object from a Jellyfin ItemId so that
  * react-native-track-player can easily consume it.
  */
-
-// TODO needs review
-// added hasLyrics and lyrics fields
 export function generateTrack(track: AlbumTrack): Track {
     // Also construct the URL for the stream
     const url = generateTrackUrl(track.Id);
