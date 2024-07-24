@@ -74,6 +74,6 @@
     "sleep-timer": "Timer för nedstängning",
     "delete": "Ta bort",
     "cancel": "Avbryt",
-    "confirm-delete-all-tracks": "Är du säker på att du vill ta bort alla för närvarande nedladdade spår?",
+    "confirm-delete-all-tracks": "Avbokning",
     "disc": "Skiva"
 }
