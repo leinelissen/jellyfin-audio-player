@@ -18,8 +18,9 @@ import { NavigationProp } from '@/screens/types';
 import { ShadowWrapper } from '@/components/Shadow';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
-const NOW_PLAYING_POPOVER_MARGIN = 6;
-const NOW_PLAYING_POPOVER_WIDTH = Dimensions.get('screen').width - 2 * NOW_PLAYING_POPOVER_MARGIN;
+export const NOW_PLAYING_POPOVER_MARGIN = 6;
+export const NOW_PLAYING_POPOVER_WIDTH = Dimensions.get('screen').width - 2 * NOW_PLAYING_POPOVER_MARGIN;
+export const NOW_PLAYING_POPOVER_HEIGHT = 58;
 
 const PopoverPosition = css`
     position: absolute;
@@ -34,6 +35,7 @@ const Container = styled.ScrollView`
 `;
 
 const InnerContainer = styled.TouchableOpacity`
+    height: ${NOW_PLAYING_POPOVER_HEIGHT}px;
     padding: 12px;
     overflow: hidden;
     flex: 1;
@@ -163,7 +165,7 @@ function NowPlaying({ offset = 0 }: { offset?: number }) {
     }
 
     return (
-        <Container style={{ bottom: tabBarHeight + NOW_PLAYING_POPOVER_MARGIN + offset }}>
+        <Container style={{ bottom: (tabBarHeight || 0) + NOW_PLAYING_POPOVER_MARGIN + offset }}>
             {/** TODO: Fix shadow overflow on Android */}
             {Platform.OS === 'ios' ? (
                 <ShadowOverlay pointerEvents='none'>

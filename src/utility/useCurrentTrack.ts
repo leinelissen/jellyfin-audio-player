@@ -1,17 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import TrackPlayer, { Event, Track, useTrackPlayerEvents } from 'react-native-track-player';
-import {Lyrics} from '@/utility/JellyfinApi/lyrics';
-
-
-// TODO need review
-
-interface TrackWithLyrics extends Track {
-    hasLyrics: boolean;
-    lyrics: Lyrics
-}
+import TrackPlayer, { Event, useTrackPlayerEvents, Track } from 'react-native-track-player';
 
 interface CurrentTrackResponse {
-    track: TrackWithLyrics | undefined;
+    track: Track | undefined;
     index: number | undefined;
 }
 
@@ -19,7 +10,7 @@ interface CurrentTrackResponse {
  * This hook retrieves the current playing track from TrackPlayer
  */
 export default function useCurrentTrack(): CurrentTrackResponse {
-    const [track, setTrack] = useState<TrackWithLyrics | undefined>();
+    const [track, setTrack] = useState<Track | undefined>();
     const [index, setIndex] = useState<number | undefined>();
 
     // Retrieve the current track from the queue using the index
@@ -27,7 +18,7 @@ export default function useCurrentTrack(): CurrentTrackResponse {
         const queue = await TrackPlayer.getQueue();
         const currentTrackIndex = await TrackPlayer.getCurrentTrack();
         if (currentTrackIndex !== null) {
-            setTrack(queue[currentTrackIndex] as TrackWithLyrics);
+            setTrack(queue[currentTrackIndex] as Track);
             setIndex(currentTrackIndex);
         } else {
             setTrack(undefined);

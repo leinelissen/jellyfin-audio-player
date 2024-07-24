@@ -92,6 +92,9 @@ export default function Routes() {
         <Stack.Navigator screenOptions={{
             presentation: 'modal',
             headerShown: false,
+            contentStyle: {
+                backgroundColor: 'transparent'
+            }
         }} id="MAIN">
             <Stack.Screen name="Screens" component={Screens} />
             <Stack.Screen name="SetJellyfinServer" component={SetJellyfinServer} />

@@ -1,12 +1,15 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {ActivityIndicator, LayoutChangeEvent, LayoutRectangle, View} from 'react-native';
+import {ActivityIndicator, LayoutChangeEvent, LayoutRectangle, StyleSheet, View} from 'react-native';
 import Animated from 'react-native-reanimated';
 import {Lyrics} from '@/utility/JellyfinApi/lyrics';
 import {useProgress} from 'react-native-track-player';
 import useCurrentTrack from '@/utility/useCurrentTrack';
 import LyricsLine from './LyricsLine';
 import styled from 'styled-components/native';
-import {Text} from '@/components/Typography';
+import { useNavigation } from '@react-navigation/native';
+import { useTypedSelector } from '@/store';
+import { NOW_PLAYING_POPOVER_HEIGHT } from '@/screens/Music/overlays/NowPlaying';
+import LyricsProgress from './LyricsProgress';
 
 type LyricsLine = Lyrics['Lyrics'][number]
 
@@ -16,20 +19,27 @@ const Loading = styled.View`
   justify-content: center;
 `;
 
-const Empty = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-`;
+const styles = StyleSheet.create({
+    lyricsContainer: {
+        padding: 40,
+        paddingBottom: 40 + NOW_PLAYING_POPOVER_HEIGHT,
+        gap: 12,
+        justifyContent: 'flex-start',
+    }
+});
+
+// Always hit the changes this amount of microseconds early so that it appears
+// to follow the track a bit more accurate.
+const TIME_OFFSET = 2e6;
 
 export default function LyricsRenderer() {
     const scrollViewRef = useRef<Animated.ScrollView>(null);
     const lineLayoutsRef = useRef(new Map<LyricsLine, LayoutRectangle>());
-    const {position, buffered} = useProgress();
-    const {track} = useCurrentTrack();
-
-    // Active lyrics line is for giving active props to LyricsLine component
-    const [activeLine, setActiveLine] = useState<LyricsLine | null>(null);
+    const {position, buffered} = useProgress(100);
+    const { track: trackPlayerTrack } = useCurrentTrack();
+    const tracks = useTypedSelector((state) => state.music.tracks.entities);
+    const track = useMemo(() => tracks[trackPlayerTrack?.backendId], [trackPlayerTrack?.backendId, tracks]);
+    const navigation = useNavigation();
 
     // We will be using isUserScrolling to prevent lyrics controller scroll lyrics view
     // while user is scrolling
@@ -76,20 +86,11 @@ export default function LyricsRenderer() {
     }, [isUserScrolling, containerHeight]);
 
     useEffect(() => {
-
-        if (!track) {
+        if (!track || scrollViewRef.current === null || !track.Lyrics) {
             return;
         }
 
-        if (scrollViewRef.current === null) {
-            return;
-        }
-
-        if (!track.lyrics) {
-            return;
-        }
-
-        const activeLine = track.lyrics.Lyrics.reduce<LyricsLine | null>((prev, cur) => {
+        const activeLine = track.Lyrics.Lyrics.reduce<LyricsLine | null>((prev, cur) => {
             return currentTime >= cur.Start? cur : prev;
         }, null);
 
@@ -97,19 +98,11 @@ export default function LyricsRenderer() {
             return;
         }
 
-        setActiveLine(state => {
+        const lineLayout = lineLayoutsRef.current.get(activeLine);
 
-            if (state !== activeLine) {
-                const lineLayout = lineLayoutsRef.current.get(activeLine);
-
-                if (lineLayout) {
-                    handleScrollDrag(lineLayout);
-                }
-
-            }
-
-            return activeLine;
-        });
+        if (lineLayout) {
+            handleScrollDrag(lineLayout);
+        }
 
     }, [currentTime, scrollViewRef, track, handleScrollDrag]);
 
@@ -120,13 +113,9 @@ export default function LyricsRenderer() {
 
     // If track has no lyrics
     // View with empty message
-    if (!track.hasLyrics || !track.lyrics) {
-        return (
-            <Empty>
-                {/*// TODO add localized key */}
-                <Text>{'Lyrics is not available'}</Text>
-            </Empty>
-        );
+    if (!track.HasLyrics || !track.Lyrics) {
+        navigation.goBack();
+        return null;
     }
 
     // Since we are listening changes to track and react-native-track-player controls
@@ -136,7 +125,7 @@ export default function LyricsRenderer() {
 
     // TODO need review
     if (!buffered) {
-        scrollViewRef.current?.scrollTo({y: 0});
+        scrollViewRef.current?.scrollTo({ y: 0 });
 
         return (
             <Loading>
@@ -148,21 +137,41 @@ export default function LyricsRenderer() {
     return (
         <View style={{flex: 1}}>
             <Animated.ScrollView
+                contentContainerStyle={styles.lyricsContainer}
                 ref={scrollViewRef}
                 onLayout={handleContainerLayout}
                 onScrollBeginDrag={handleScrollBeginDrag}
                 onScrollEndDrag={handleScrollEndDrag}
             >
-                {track.lyrics.Lyrics.map((lyrics, i) => (
-                    <LyricsLine
-                        key={lyrics.Start}
-                        active={activeLine === lyrics}
-                        lyrics={lyrics}
-                        onLayout={(e) => handleLayoutChange(lyrics, e)}
-                        isStart={i === 0}
-                        isEnd={i === track.lyrics.Lyrics.length - 1}
-                        containerHeight={containerHeight}
-                    />
+                <LyricsProgress
+                    start={0}
+                    end={track.Lyrics.Lyrics[0].Start - TIME_OFFSET}
+                    position={currentTime}
+                />
+                {track.Lyrics.Lyrics.map((lyrics, i) => (
+                    lyrics.Text ? (
+                        <LyricsLine
+                            key={lyrics.Start}
+                            start={lyrics.Start - TIME_OFFSET}
+                            end={track.Lyrics!.Lyrics.length === i + 1
+                                ? track.RunTimeTicks
+                                : track.Lyrics!.Lyrics[i + 1]?.Start - TIME_OFFSET
+                            }
+                            text={lyrics.Text}
+                            position={currentTime}
+                            onLayout={(e) => handleLayoutChange(lyrics, e)}
+                        />
+                    ) : (
+                        <LyricsProgress
+                            key={lyrics.Start}
+                            start={lyrics.Start - TIME_OFFSET}
+                            end={track.Lyrics!.Lyrics.length === i + 1
+                                ? track.RunTimeTicks
+                                : track.Lyrics!.Lyrics[i + 1]?.Start - TIME_OFFSET
+                            }
+                            position={currentTime}
+                        />
+                    )
                 ))}
             </Animated.ScrollView>
         </View>

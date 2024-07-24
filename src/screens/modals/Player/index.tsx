@@ -11,6 +11,7 @@ import BackButton from './components/Backbutton';
 import Timer from './components/Timer';
 import LyricsButton from './components/LyricsButton.tsx';
 import styled from 'styled-components/native';
+import { ColoredBlurView } from '@/components/Colors.tsx';
 
 const Group = styled.View`
     flex-direction: row;
@@ -20,20 +21,22 @@ const Group = styled.View`
 export default function Player() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            {Platform.OS === 'android' && (<BackButton />)}
-            <Queue header={(
-                <>
-                    <NowPlaying />
-                    <ConnectionNotice />
-                    <StreamStatus />
-                    <ProgressBar />
-                    <MediaControls />
-                    <Group>
-                        <Timer />
-                        <LyricsButton />
-                    </Group>
-                </>
-            )} />
+            <ColoredBlurView>
+                {Platform.OS === 'android' && (<BackButton />)}
+                <Queue header={(
+                    <>
+                        <NowPlaying />
+                        <ConnectionNotice />
+                        <StreamStatus />
+                        <ProgressBar />
+                        <MediaControls />
+                        <Group>
+                            <Timer />
+                            <LyricsButton />
+                        </Group>
+                    </>
+                )} />
+            </ColoredBlurView>
         </GestureHandlerRootView>
     );
 }
