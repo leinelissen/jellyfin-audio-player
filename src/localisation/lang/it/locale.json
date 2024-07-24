@@ -74,6 +74,6 @@
     "sleep-timer": "Tempo di spegnimento",
     "delete": "Elimina",
     "cancel": "Annulla",
-    "confirm-delete-all-tracks": "Sei sicuro di voler eliminare tutte le tracce attualmente scaricate?",
+    "confirm-delete-all-tracks": "Annulla",
     "disc": "Disco"
 }
