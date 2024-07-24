@@ -1,6 +1,6 @@
 {
     "play-album": "Přehrát Album",
-    "track": "Skladba",
+    "track": "Spoj",
     "jellyfin-user-id": "ID uživatele Jellyfin",
     "play-playlist": "Přehrát seznam skladeb",
     "color-scheme-system": "Systém",
@@ -17,7 +17,7 @@
     "total-duration": "Celková doba trvání",
     "error-reporting": "Hlášení chyb",
     "jellyfin-server-url": "Adresa URL serveru Jellyfin",
-    "downloads": "Ke stažení",
+    "downloads": "Stažené soubory",
     "onboarding-cta": "Abyste mohli začít, potřebujete server Jellyfin. Kliknutím na tlačítko níže zadejte adresu svého serveru Jellyfin a přihlaste se k němu.",
     "shuffle-album": "Zamíchat album",
     "total-download-size": "Celková velikost pro stažení",
@@ -71,9 +71,9 @@
     "where-is-data-stored": "Kde jsou data uložena?",
     "color-scheme-light": "Světlý Režim",
     "no-downloads": "Ještě jste si nestáhli žádné skladby",
-    "sleep-timer": "Časovač spánku",
+    "sleep-timer": "Odpočítávání uspání",
     "confirm-delete-all-tracks": "Přejete si skutečně odstranit všechny stažené skladby?",
-    "delete": "Čeština",
-    "cancel": "Hledat",
-    "disc": "Čeština"
+    "delete": "Smazat",
+    "cancel": "Zrušit",
+    "disc": "Disk"
 }
