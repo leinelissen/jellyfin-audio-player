@@ -29,6 +29,7 @@ export function calculateProgressTranslation(
     return output;
 }
 
+// Progress track did not show up on Lyrics screen if min height is not set
 export const ProgressTrackContainer = styled.View`
     overflow: hidden;
     height: 5px;
@@ -37,6 +38,7 @@ export const ProgressTrackContainer = styled.View`
     align-items: center;
     position: relative;
     border-radius: 6px;
+    min-height: 5px;
 `;
 
 export interface ProgressTrackProps {

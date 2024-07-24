@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import { Track } from 'react-native-track-player';
 import { fetchApi, getImage } from './lib';
 import store from '@/store';
+import {retrieveAndInjectLyricsToTracks} from '@/utility/JellyfinApi/lyrics';
 
 const trackOptionsOsOverrides: Record<typeof Platform.OS, Record<string, string>> = {
     ios: {
@@ -46,6 +47,9 @@ export function generateTrackUrl(trackId: string) {
  * Generate a track object from a Jellyfin ItemId so that
  * react-native-track-player can easily consume it.
  */
+
+// TODO needs review
+// added hasLyrics and lyrics fields
 export function generateTrack(track: AlbumTrack): Track {
     // Also construct the URL for the stream
     const url = generateTrackUrl(track.Id);
@@ -60,6 +64,8 @@ export function generateTrack(track: AlbumTrack): Track {
         artwork: track.AlbumId
             ? getImage(track.AlbumId)
             : getImage(track.Id),
+        hasLyrics: track.HasLyrics,
+        lyrics: track.Lyrics,
     };
 }
 
@@ -77,5 +83,5 @@ const trackParams = {
  */
 export async function retrieveAllTracks() {
     return fetchApi<{ Items: AlbumTrack[] }>(({ user_id }) => `/Users/${user_id}/Items?${trackParams}`)
-        .then((d) => d!.Items);
+        .then((d) => retrieveAndInjectLyricsToTracks(d.Items));
 }

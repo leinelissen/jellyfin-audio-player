@@ -1,3 +1,5 @@
+import {Lyrics} from '@/utility/JellyfinApi/lyrics.ts';
+
 export interface UserData {
     PlaybackPositionTicks: number;
     PlayCount: number;
@@ -67,6 +69,8 @@ export interface AlbumTrack {
     BackdropImageTags: any[];
     LocationType: string;
     MediaType: string;
+    HasLyrics: boolean;
+    Lyrics: Lyrics | null;
 }
 
 export interface State {
