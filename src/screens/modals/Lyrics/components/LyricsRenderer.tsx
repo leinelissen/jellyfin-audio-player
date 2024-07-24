@@ -1,23 +1,16 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {ActivityIndicator, LayoutChangeEvent, LayoutRectangle, StyleSheet, View} from 'react-native';
+import { LayoutChangeEvent, LayoutRectangle, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import {Lyrics} from '@/utility/JellyfinApi/lyrics';
-import {useProgress} from 'react-native-track-player';
+import { Lyrics } from '@/utility/JellyfinApi/lyrics';
+import { useProgress } from 'react-native-track-player';
 import useCurrentTrack from '@/utility/useCurrentTrack';
 import LyricsLine from './LyricsLine';
-import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { useTypedSelector } from '@/store';
 import { NOW_PLAYING_POPOVER_HEIGHT } from '@/screens/Music/overlays/NowPlaying';
 import LyricsProgress from './LyricsProgress';
 
-type LyricsLine = Lyrics['Lyrics'][number]
-
-const Loading = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-`;
+type LyricsLine = Lyrics['Lyrics'][number];
 
 const styles = StyleSheet.create({
     lyricsContainer: {
@@ -35,7 +28,7 @@ const TIME_OFFSET = 2e6;
 export default function LyricsRenderer() {
     const scrollViewRef = useRef<Animated.ScrollView>(null);
     const lineLayoutsRef = useRef(new Map<LyricsLine, LayoutRectangle>());
-    const {position, buffered} = useProgress(100);
+    const { position } = useProgress(100);
     const { track: trackPlayerTrack } = useCurrentTrack();
     const tracks = useTypedSelector((state) => state.music.tracks.entities);
     const track = useMemo(() => tracks[trackPlayerTrack?.backendId], [trackPlayerTrack?.backendId, tracks]);
@@ -48,90 +41,56 @@ export default function LyricsRenderer() {
     // We will be using containerHeight to make sure active lyrics line is in the center
     const [containerHeight, setContainerHeight] = useState(0);
 
+    // Calculate current ime
     const currentTime = useMemo(() => {
-        return position * 10000000;
+        return position * 10_000_000;
     }, [position]);
 
+    // Handler for saving line positions
     const handleLayoutChange = useCallback((line: LyricsLine, event: LayoutChangeEvent) => {
         lineLayoutsRef.current.set(line, event.nativeEvent.layout);
     }, []);
 
+    // Calculate current container height
     const handleContainerLayout = useCallback((event: LayoutChangeEvent) => {
         setContainerHeight(event.nativeEvent.layout.height);
     }, []);
 
-    const handleScrollBeginDrag = useCallback(() => {
-        setIsUserScrolling(true);
-    }, []);
-
-    const handleScrollEndDrag = useCallback(() => {
-        setIsUserScrolling(false);
-    }, []);
+    // Handlers for user scroll handling
+    const handleScrollBeginDrag = useCallback(() => setIsUserScrolling(true), []);
+    const handleScrollEndDrag = useCallback(() => setIsUserScrolling(false), []);
 
     const handleScrollDrag = useCallback((lineLayout: LayoutRectangle) => {
-        if (!containerHeight) {
-            return;
-        }
-
-        if (isUserScrolling) {
-            return;
-        }
+        if (!containerHeight || isUserScrolling) return;
 
         scrollViewRef.current?.scrollTo({
             y: lineLayout.y - containerHeight / 2,
             animated: true,
         });
-
-
     }, [isUserScrolling, containerHeight]);
 
     useEffect(() => {
-        if (!track || scrollViewRef.current === null || !track.Lyrics) {
-            return;
-        }
+        if (!track || scrollViewRef.current === null || !track.Lyrics) return;
 
         const activeLine = track.Lyrics.Lyrics.reduce<LyricsLine | null>((prev, cur) => {
             return currentTime >= cur.Start? cur : prev;
         }, null);
 
-        if (!activeLine) {
-            return;
-        }
 
+        if (!activeLine) return;
+
+        // Attempt to retrieve the layout for the current line
         const lineLayout = lineLayoutsRef.current.get(activeLine);
-
         if (lineLayout) {
+            // If it exists, scroll to it
             handleScrollDrag(lineLayout);
         }
-
     }, [currentTime, scrollViewRef, track, handleScrollDrag]);
 
-    // Safety guard for undefined track
-    if (!track) {
-        return null;
-    }
-
-    // If track has no lyrics
-    // View with empty message
-    if (!track.HasLyrics || !track.Lyrics) {
+    // GUARD: If the track has no lyrics, close the modal
+    if (!track || !track.HasLyrics || !track.Lyrics) {
         navigation.goBack();
         return null;
-    }
-
-    // Since we are listening changes to track and react-native-track-player controls
-    // track we can listen for useProgress()'s buffered value
-    // Whenever track changes buffer is set to 0
-    // And when track buffer loaded we can assume that track also changed
-
-    // TODO need review
-    if (!buffered) {
-        scrollViewRef.current?.scrollTo({ y: 0 });
-
-        return (
-            <Loading>
-                <ActivityIndicator />
-            </Loading>
-        );
     }
 
     return (

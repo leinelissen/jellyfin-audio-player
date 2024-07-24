@@ -20,13 +20,18 @@ export interface LyricsLineProps extends ViewProps {
     position: number;
 }
 
+/**
+ * A single lyric line
+ */
 function LyricsLine({ text, start, end, position, ...viewProps }: LyricsLineProps) {
     const defaultStyles = useDefaultStyles();
 
+    // Determine whether the current line should be active
     const active = useMemo(() => (
         position > start && position < end
     ), [start, end, position]);
 
+    // Determine the current style for this line
     const lyricsTextStyle: StyleProp<TextStyle> = useMemo(() => ({
         color: active ? defaultStyles.themeColor.color : defaultStyles.text.color,
         fontWeight: active? '600': 'normal',
