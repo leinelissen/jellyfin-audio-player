@@ -87,8 +87,12 @@ export default function LyricsRenderer() {
         }
     }, [currentTime, scrollViewRef, track, handleScrollDrag]);
 
+    if (!track) {
+        return null;
+    }
+
     // GUARD: If the track has no lyrics, close the modal
-    if (!track || !track.HasLyrics || !track.Lyrics) {
+    if (!track.HasLyrics || !track.Lyrics) {
         navigation.goBack();
         return null;
     }
