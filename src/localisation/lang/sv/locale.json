@@ -71,9 +71,9 @@
     "color-scheme-system": "System",
     "color-scheme-light": "Ljust läge",
     "color-scheme-dark": "Mörkt läge",
-    "sleep-timer": "Sova timer",
-    "delete": "Delete",
-    "cancel": "Avbokning",
+    "sleep-timer": "Timer för nedstängning",
+    "delete": "Ta bort",
+    "cancel": "Avbryt",
     "confirm-delete-all-tracks": "Är du säker på att du vill ta bort alla för närvarande nedladdade spår?",
-    "disc": "Disc"
+    "disc": "Skiva"
 }
