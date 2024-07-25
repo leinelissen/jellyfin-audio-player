@@ -76,5 +76,7 @@
     "cancel": "Avbokning",
     "confirm-delete-all-tracks": "Är du säker på att du vill ta bort alla för närvarande nedladdade spår?",
     "disc": "Disc",
-    "lyrics": "Låttext"
+    "lyrics": "Låttext",
+    "direct-play": "Direkt spel",
+    "transcoded": "Transkoded"
 }
