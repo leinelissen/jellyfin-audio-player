@@ -78,5 +78,7 @@
     "disc": "Диски",
     "lyrics": "Лірика",
     "direct-play": "Пряма гра",
-    "transcoded": "Перекодований"
+    "transcoded": "Перекодований",
+    "khz": "кГц",
+    "kbps": "kbps"
 }
