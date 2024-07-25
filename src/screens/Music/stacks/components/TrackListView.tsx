@@ -114,7 +114,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
             return [['0', trackIds]];
         }
 
-        const groups = groupBy(trackIds, (id) => tracks[id].ParentIndexNumber);
+        const groups = groupBy(trackIds, (id) => tracks[id]?.ParentIndexNumber);
         return Object.entries(groups);
     }, [trackIds, tracks, listNumberingStyle]);
 

@@ -1,6 +1,17 @@
 import type { AppState, Store } from '@/store';
+import { Platform } from 'react-native';
+import { version } from '../../../package.json';
 
-type Credentials = AppState['settings']['jellyfin'];
+type Credentials = AppState['settings']['credentials'];
+
+/** Map the output of `Platform.OS`, so that Jellyfin can understand it. */
+const deviceMap: Record<typeof Platform['OS'], string> = {
+    ios: 'iOS',
+    android: 'Android',
+    macos: 'macOS',
+    web: 'Web',
+    windows: 'Windows',
+};
 
 /**
  * This is a convenience function that converts a set of Jellyfin credentials
@@ -10,7 +21,7 @@ type Credentials = AppState['settings']['jellyfin'];
 function generateConfig(credentials: Credentials): RequestInit {
     return {
         headers: {
-            'X-Emby-Authorization': `MediaBrowser Client="", Device="", DeviceId="", Version="", Token="${credentials?.access_token}"`
+            'X-Emby-Authorization': `MediaBrowser Client="Fintunes", Device="${deviceMap[Platform.OS]}", DeviceId="${credentials?.device_id}", Version="${version}", Token="${credentials?.access_token}"`
         }
     };
 }
@@ -36,7 +47,7 @@ export async function fetchApi<T>(
     parseResponse = true
 ) { 
     // Retrieve the latest credentials from the Redux store
-    const credentials = asyncFetchStore().getState().settings.jellyfin;
+    const credentials = asyncFetchStore().getState().settings.credentials;
 
     // GUARD: Check that the credentials are present
     if (!credentials) {
@@ -95,7 +106,7 @@ export async function fetchApi<T>(
  * Retrieve an image URL for a given ItemId
  */
 export function getImage(ItemId: string): string {
-    const credentials = asyncFetchStore().getState().settings.jellyfin;
+    const credentials = asyncFetchStore().getState().settings.credentials;
     const uri = encodeURI(`${credentials?.uri}/Items/${ItemId}/Images/Primary?format=jpeg`);
     return uri;
 }

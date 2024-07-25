@@ -3,11 +3,12 @@ import { setReceivedErrorReportingAlert, setBitrate, setJellyfinCredentials, set
 import { ColorScheme } from './types';
 
 interface State {
-    jellyfin?: {
+    credentials?: {
         uri: string;
         user_id: string;
         access_token: string;
         device_id: string;
+        type: 'jellyfin' | 'emby';
     }
     bitrate: number;
     isOnboardingComplete: boolean;
@@ -27,7 +28,7 @@ const initialState: State = {
 const settings = createReducer(initialState, builder => {
     builder.addCase(setJellyfinCredentials, (state, action) => ({
         ...state,
-        jellyfin: action.payload,
+        credentials: action.payload,
     }));
     builder.addCase(setBitrate, (state, action) => ({
         ...state,

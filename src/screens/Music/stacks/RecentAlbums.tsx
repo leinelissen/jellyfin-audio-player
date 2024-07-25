@@ -32,6 +32,7 @@ const HeaderContainer = styled.View`
 `;
 
 const NavigationHeader: React.FC = () => {
+    const type = useTypedSelector((state) => state.settings.credentials?.type);
     const navigation = useNavigation<NavigationProp>();
     const handleAllAlbumsClick = useCallback(() => { navigation.navigate('Albums'); }, [navigation]);
     const handlePlaylistsClick = useCallback(() => { navigation.navigate('Playlists'); }, [navigation]);
@@ -39,9 +40,17 @@ const NavigationHeader: React.FC = () => {
     
     return (
         <>
-            <ListButton onPress={handleAllAlbumsClick} testID="all-albums">{t('all-albums')}</ListButton>
-            <ListButton onPress={handleArtistsClick} testID="artists">{t('artists')}</ListButton>
-            <ListButton onPress={handlePlaylistsClick} testID="playlists">{t('playlists')}</ListButton>
+            <ListButton onPress={handleAllAlbumsClick} testID="all-albums">
+                {t('all-albums')}
+            </ListButton>
+            <ListButton onPress={handleArtistsClick} testID="artists">
+                {t('artists')}
+            </ListButton>
+            {type === 'jellyfin' && (
+                <ListButton onPress={handlePlaylistsClick} testID="playlists">
+                    {t('playlists')}
+                </ListButton>
+            )}
             <ListContainer>
                 <HeaderContainer>
                     <Header>{t('recent-albums')}</Header>

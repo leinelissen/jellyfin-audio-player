@@ -27,7 +27,7 @@ export async function retrieveAllPlaylists() {
  * Retrieve all albums that are available on the Jellyfin server
  */
 export async function retrievePlaylistTracks(ItemId: string) {
-    const credentials = asyncFetchStore().getState().settings.jellyfin;
+    const credentials = asyncFetchStore().getState().settings.credentials;
     const singlePlaylistOptions = {
         SortBy: 'IndexNumber,SortName',
         UserId: credentials?.user_id || '',

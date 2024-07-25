@@ -48,6 +48,7 @@ export async function sendPlaybackEvent(
         ItemId: activeTrack.backendId,
         CanSeek: true,
         PlaybackStartTimeTicks: null,
+        PlaySessionId: activeTrack?.backendId || 'fintunes',
     };
 
     // Generate a config from the credentials and dispatch the request

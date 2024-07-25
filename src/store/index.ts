@@ -64,6 +64,23 @@ const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
                 }
             };
         },
+        // @ts-expect-error migrations are poorly typed
+        5: (state: AppState) => {
+            // @ts-expect-error
+            const credentials = state.settings.jellyfin && { 
+                // @ts-expect-error
+                ...(state.settings.jellyfin as AppState['settings']['credentials']),
+                type: 'jellyfin',
+            };
+
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    credentials,
+                },
+            };
+        }
     })
 };
 
