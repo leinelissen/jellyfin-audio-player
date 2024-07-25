@@ -78,5 +78,7 @@
     "disc": "Disc",
     "lyrics": "Testi",
     "direct-play": "Gioco diretto",
-    "transcoded": "Transcoded"
+    "transcoded": "Transcoded",
+    "khz": "kHz",
+    "kbps": "kbps"
 }
