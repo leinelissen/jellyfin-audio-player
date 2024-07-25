@@ -76,5 +76,6 @@
     "confirm-delete-all-tracks": "Ali ste prepričani, da želite izbrisati vse trenutno prenesene skladbe?",
     "delete": "Izbriši",
     "disc": "Disk",
-    "lyrics": "Besedilo"
+    "lyrics": "Besedilo",
+    "khz": "kHz"
 }
