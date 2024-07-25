@@ -79,5 +79,6 @@
     "lyrics": "Sangtekster",
     "direct-play": "Direkte spil",
     "transcoded": "Transkode",
-    "kbps": "kbps"
+    "kbps": "kbps",
+    "khz": "kHz"
 }
