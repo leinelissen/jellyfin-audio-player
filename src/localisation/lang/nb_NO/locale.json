@@ -75,5 +75,6 @@
     "delete": "Slett",
     "cancel": "Avbryt",
     "confirm-delete-all-tracks": "Er du sikker på at du vil slette alle nedlastede spor?",
-    "disc": "Plate"
+    "disc": "Plate",
+    "lyrics": "Sangtekster"
 }
