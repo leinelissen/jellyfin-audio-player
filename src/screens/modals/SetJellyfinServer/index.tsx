@@ -39,7 +39,7 @@ export default function SetJellyfinServer() {
             ) : (
                 <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text>
-                        {t('set-jellyfin-server-instruction')}
+                        {t('set-server-instruction')}
                     </Text>
                     <Input
                         placeholder="https://jellyfin.yourserver.io/"
@@ -51,7 +51,7 @@ export default function SetJellyfinServer() {
                         style={[ defaultStyles.input, { width: '100%' } ]}
                     />
                     <Button
-                        title={t('set-jellyfin-server')}
+                        title={t('set-server')}
                         onPress={() => setIsLogginIn(true)}
                         disabled={!serverUrl?.length} 
                         color={defaultStyles.themeColor.color}

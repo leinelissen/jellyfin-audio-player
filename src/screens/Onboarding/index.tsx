@@ -71,7 +71,7 @@ function Onboarding() {
                 </Text>
                 <ButtonContainer>
                     <Button
-                        title={t('set-jellyfin-server')}
+                        title={t('set-server')}
                         onPress={handleClick}/>
                 </ButtonContainer>
             </TextContainer>
