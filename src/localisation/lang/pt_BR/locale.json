@@ -23,7 +23,7 @@
     "now-playing": "Tocando agora",
     "onboarding-welcome": "Boas-vindas!",
     "onboarding-intro": "O Fintunes permite a você fazer streaming de sua biblioteca de músicas de qualquer lugar, com suporte total para reprodução de áudio em segundo plano e transmissão de áudio.",
-    "onboarding-cta": "Para usar o Fintunes, você precisa de um servidor Jellyfin. Clique no botão abaixo para inserir o endereço do servidor Jellyfin e fazer login.",
+    "onboarding-cta": "Para começar, você precisa de um servidor Jellyfin (ou Emby). Clique no botão abaixo para inserir o endereço do servidor e iniciá-lo.",
     "set-server": "Configurar o servidor Jellyfin",
     "set-server-instruction": "Insira a URL do servidor Jellyfin. Certifique-se de incluir o protocolo e a porta",
     "settings": "Configurações",
