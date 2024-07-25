@@ -76,5 +76,9 @@
     "delete": "Видалити",
     "cancel": "Скасувати",
     "disc": "Диски",
-    "lyrics": "Лірика"
+    "lyrics": "Лірика",
+    "direct-play": "Пряма гра",
+    "transcoded": "Перекодований",
+    "khz": "кГц",
+    "kbps": "kbps"
 }

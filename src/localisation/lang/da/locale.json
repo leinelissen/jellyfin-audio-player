@@ -39,7 +39,7 @@
     "set-jellyfin-server": "Sæt Jellyfin Server",
     "why-use-tracking": "Hvorfor bruge sporing?",
     "what-data-is-gathered": "Hvilke data indsamles?",
-    "where-is-data-stored": "Hvor gemmes data?",
+    "where-is-data-stored": "Indtast venligst din Jellyfin server URL. Sørg for at inkludere protokollen og havnen",
     "enable-error-reporting": "Vil du aktivere fejlrapportering?",
     "playlists": "Spillelister",
     "playlist": "Playlist",
@@ -76,5 +76,9 @@
     "cancel": "Annuller",
     "confirm-delete-all-tracks": "Er du sikker på, at du vil slette alle aktuelt downloadede spor?",
     "disc": "Disk",
-    "lyrics": "Sangtekster"
+    "lyrics": "Sangtekster",
+    "direct-play": "Direkte spil",
+    "transcoded": "Transkode",
+    "kbps": "kbps",
+    "khz": "kHz"
 }

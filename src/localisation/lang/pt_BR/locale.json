@@ -76,5 +76,9 @@
     "delete": "Excluir",
     "cancel": "Cancelar",
     "disc": "Disco",
-    "lyrics": "Letras"
+    "lyrics": "Letras",
+    "direct-play": "Jogo direto",
+    "transcoded": "Transcodificado",
+    "khz": "kHz",
+    "kbps": "kbps"
 }

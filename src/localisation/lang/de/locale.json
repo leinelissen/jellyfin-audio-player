@@ -76,5 +76,9 @@
     "delete": "Löschen",
     "cancel": "Abbrechen",
     "disc": "Scheiben",
-    "lyrics": "Sangtekster"
+    "lyrics": "Sangtekster",
+    "direct-play": "Direktes Spiel",
+    "transcoded": "Transcodiert",
+    "khz": "kHz",
+    "kbps": "kbps"
 }
