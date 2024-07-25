@@ -76,5 +76,7 @@
     "delete": "Удалить",
     "cancel": "Отмена",
     "disc": "Disc",
-    "lyrics": "Текст песни"
+    "lyrics": "Текст песни",
+    "direct-play": "Прямая игра",
+    "transcoded": "Transcode"
 }
