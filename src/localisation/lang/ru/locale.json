@@ -75,5 +75,6 @@
     "confirm-delete-all-tracks": "Отмена",
     "delete": "Удалить",
     "cancel": "Отмена",
-    "disc": "Диск"
+    "disc": "Диск",
+    "lyrics": "Текст песни"
 }
