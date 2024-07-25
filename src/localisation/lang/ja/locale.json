@@ -76,5 +76,7 @@
     "delete": "削除",
     "cancel": "キャンセル",
     "disc": "ディスク",
-    "lyrics": "歌詞"
+    "lyrics": "歌詞",
+    "direct-play": "ダイレクトプレイ",
+    "transcoded": "トランスコード"
 }
