@@ -1,4 +1,6 @@
 import type { AppState, Store } from '@/store';
+import { Platform } from 'react-native';
+import { version } from '../../../package.json';
 
 type Credentials = AppState['settings']['jellyfin'];
 
@@ -10,7 +12,7 @@ type Credentials = AppState['settings']['jellyfin'];
 function generateConfig(credentials: Credentials): RequestInit {
     return {
         headers: {
-            'X-Emby-Authorization': `MediaBrowser Client="", Device="", DeviceId="", Version="", Token="${credentials?.access_token}"`
+            'X-Emby-Authorization': `MediaBrowser Client="Fintunes", Device="${Platform.OS}", DeviceId="${credentials?.device_id}", Version="${version}", Token="${credentials?.access_token}"`
         }
     };
 }

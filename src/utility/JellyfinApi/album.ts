@@ -36,7 +36,9 @@ export async function retrieveAlbum(id: string): Promise<Album> {
 const latestAlbumsOptions = {
     IncludeItemTypes: 'MusicAlbum',
     Fields: 'DateCreated',
-    SortOrder: 'Ascending',
+    SortOrder: 'Descending',
+    SortBy: 'DateCreated',
+    Recursive: 'true',
 };
 
 /**
@@ -51,7 +53,8 @@ export async function retrieveRecentAlbums(numberOfAlbums = 24) {
     const params = new URLSearchParams(options).toString();
 
     // Retrieve albums
-    return fetchApi<Album[]>(({ user_id }) => `/Users/${user_id}/Items/Latest?${params}`);
+    return fetchApi<{ Items: Album[] }>(({ user_id }) => `/Users/${user_id}/Items?${params}`)
+        .then((d) => d.Items);
 }
 
 /**
