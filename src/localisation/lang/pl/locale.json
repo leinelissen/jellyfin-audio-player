@@ -75,5 +75,6 @@
     "delete": "Usuń",
     "cancel": "Anuluj",
     "confirm-delete-all-tracks": "Czy na pewno chcesz usunąć wszystkie aktualnie pobrane utwory?",
-    "disc": "Disc disc"
+    "disc": "Disc disc",
+    "lyrics": "Tekst utworu"
 }
