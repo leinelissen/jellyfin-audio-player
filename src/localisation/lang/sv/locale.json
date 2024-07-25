@@ -78,5 +78,7 @@
     "disc": "Disc",
     "lyrics": "Låttext",
     "direct-play": "Direkt spel",
-    "transcoded": "Transkoded"
+    "transcoded": "Transkoded",
+    "khz": "kHz",
+    "kbps": "kb/s"
 }
