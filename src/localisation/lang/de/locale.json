@@ -78,5 +78,7 @@
     "disc": "Scheiben",
     "lyrics": "Sangtekster",
     "direct-play": "Direktes Spiel",
-    "transcoded": "Transcodiert"
+    "transcoded": "Transcodiert",
+    "khz": "kHz",
+    "kbps": "kbps"
 }
