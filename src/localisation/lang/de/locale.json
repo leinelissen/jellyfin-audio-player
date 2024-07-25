@@ -75,5 +75,6 @@
     "confirm-delete-all-tracks": "Sind Sie sicher, dass Sie alle aktuell heruntergeladenen Titel löschen möchten?",
     "delete": "Löschen",
     "cancel": "Abbrechen",
-    "disc": "Scheiben"
+    "disc": "Scheiben",
+    "lyrics": "Sangtekster"
 }
