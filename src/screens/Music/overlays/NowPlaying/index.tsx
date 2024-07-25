@@ -17,6 +17,7 @@ import { calculateProgressTranslation } from '@/components/Progresstrack';
 import { NavigationProp } from '@/screens/types';
 import { ShadowWrapper } from '@/components/Shadow';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const NOW_PLAYING_POPOVER_MARGIN = 6;
 export const NOW_PLAYING_POPOVER_WIDTH = Dimensions.get('screen').width - 2 * NOW_PLAYING_POPOVER_MARGIN;
@@ -107,11 +108,12 @@ function SelectActionButton() {
     }
 }
 
-function NowPlaying({ offset = 0 }: { offset?: number }) {
+function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean }) {
     const { index, track } = useCurrentTrack();
     const { buffered, position } = useProgress();
     const defaultStyles = useDefaultStyles();
     const tabBarHeight = useBottomTabBarHeight();
+    const insets = useSafeAreaInsets();
     const previousBuffered = usePrevious(buffered);
     const previousPosition = usePrevious(position);
 
@@ -165,7 +167,14 @@ function NowPlaying({ offset = 0 }: { offset?: number }) {
     }
 
     return (
-        <Container style={{ bottom: (tabBarHeight || 0) + NOW_PLAYING_POPOVER_MARGIN + offset }}>
+        <Container
+            style={{ 
+                bottom: (tabBarHeight || 0) 
+                    + (inset ? insets.bottom : 0)
+                    + NOW_PLAYING_POPOVER_MARGIN
+                    + offset 
+            }}
+        >
             {/** TODO: Fix shadow overflow on Android */}
             {Platform.OS === 'ios' ? (
                 <ShadowOverlay pointerEvents='none'>

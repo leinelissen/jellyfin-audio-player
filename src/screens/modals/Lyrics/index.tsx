@@ -12,7 +12,7 @@ export default function Lyrics() {
             <ColoredBlurView style={{ flex: 1 }}>
                 {Platform.OS === 'android' && (<BackButton />)}
                 <LyricsRenderer />
-                <NowPlaying />
+                <NowPlaying inset />
             </ColoredBlurView>
         </GestureHandlerRootView>
     );

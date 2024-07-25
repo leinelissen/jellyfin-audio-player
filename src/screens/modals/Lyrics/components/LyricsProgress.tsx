@@ -1,27 +1,45 @@
 import useDefaultStyles from '@/components/Colors';
 import ProgressTrack, { calculateProgressTranslation, ProgressTrackContainer } from '@/components/Progresstrack';
-import React, { useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { LayoutChangeEvent } from 'react-native';
 import { useDerivedValue, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
 
-export interface LyricsProgressProps {
+export interface LyricsProgressProps extends Omit<ViewProps, 'onLayout'> {
     start: number;
     end: number;
     position: number;
+    index: number;
+    onActive: (index: number) => void;
+    onLayout: (index: number, event: LayoutChangeEvent) => void;
 }
 
 /**
  * Displays a loading bar when there is a silence in the lyrics.
  */
-export default function LyricsProgress({ start, end, position }: LyricsProgressProps) {
+export default function LyricsProgress({
+    start, end, position, index, onLayout, onActive, style, ...props
+}: LyricsProgressProps) {
     const defaultStyles = useDefaultStyles();
 
     // Keep a reference to the width of the container
     const width = useSharedValue(0);
 
+    // Pass on layout changes to the parent
+    const handleLayout = useCallback((e: LayoutChangeEvent) => {
+        onLayout?.(index, e);
+        width.value = e.nativeEvent.layout.width;
+    }, [onLayout, index, width]);
+
     // Determine whether the loader should be displayed
     const active = useMemo(() => (
         position > start && position < end
     ), [start, end, position]);
+
+    // Call the parent when the active state changes
+    useEffect(() => {
+        if (active) onActive(index);
+    }, [onActive, active, index]);
 
     // Determine the duration of the progress bar
     const duration = useMemo(() => (end - start), [end, start]);
@@ -54,8 +72,13 @@ export default function LyricsProgress({ start, end, position }: LyricsProgressP
 
     return (
         <ProgressTrackContainer
-            onLayout={(e) => width.value = e.nativeEvent.layout.width}
-            style={[defaultStyles.trackBackground, { flexGrow: 0, marginVertical: 8 }]}
+            {...props}
+            style={[
+                defaultStyles.trackBackground,
+                { flexGrow: 0, marginVertical: 8 },
+                style
+            ]}
+            onLayout={handleLayout}
         >
             <ProgressTrack style={[progressStyles, defaultStyles.themeBackground]} />
         </ProgressTrackContainer>

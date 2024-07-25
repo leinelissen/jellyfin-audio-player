@@ -9,9 +9,9 @@ import StreamStatus from './components/StreamStatus';
 import {Platform} from 'react-native';
 import BackButton from './components/Backbutton';
 import Timer from './components/Timer';
-import LyricsButton from './components/LyricsButton.tsx';
 import styled from 'styled-components/native';
 import { ColoredBlurView } from '@/components/Colors.tsx';
+import LyricsPreview from './components/LyricsPreview.tsx';
 
 const Group = styled.View`
     flex-direction: row;
@@ -32,8 +32,8 @@ export default function Player() {
                         <MediaControls />
                         <Group>
                             <Timer />
-                            <LyricsButton />
                         </Group>
+                        <LyricsPreview />
                     </>
                 )} />
             </ColoredBlurView>
