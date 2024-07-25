@@ -77,5 +77,6 @@
     "delete": "Izbriši",
     "disc": "Disk",
     "lyrics": "Besedilo",
-    "khz": "kHz"
+    "khz": "kHz",
+    "transcoded": "prekodiraj [▲]"
 }
