@@ -74,5 +74,7 @@
     "sleep-timer": "Časovnik za spanje",
     "cancel": "Prekliči",
     "confirm-delete-all-tracks": "Ali ste prepričani, da želite izbrisati vse trenutno prenesene skladbe?",
-    "delete": "Izbriši"
+    "delete": "Izbriši",
+    "disc": "Disk",
+    "lyrics": "Besedilo"
 }
