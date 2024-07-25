@@ -80,7 +80,6 @@ const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) => (
         getDefaultMiddleware({ serializableCheck: false, immutableCheck: false })
-            .concat(__DEV__ ? [require('redux-flipper').default()] : [])
     ),
 });
 
