@@ -119,8 +119,8 @@ function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean })
 
     const navigation = useNavigation<NavigationProp>();
 
-    const bufferAnimation = useRef(new Animated.Value(0));
-    const progressAnimation = useRef(new Animated.Value(0));
+    const bufferAnimation = useRef(new Animated.Value(-1_000));
+    const progressAnimation = useRef(new Animated.Value(-1_000));
 
     const openNowPlayingModal = useCallback(() => {
         navigation.navigate('Player');

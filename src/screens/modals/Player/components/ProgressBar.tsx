@@ -187,7 +187,7 @@ function ProgressBar() {
                     <ProgressTrack
                         style={[
                             styles.themeBackground,
-                            bufferStyles
+                            bufferStyles,
                         ]}
                         opacity={0.15}
                     />

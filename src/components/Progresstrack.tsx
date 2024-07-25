@@ -20,8 +20,8 @@ export function calculateProgressTranslation(
     const completion = position / reference;
 
     // GUARD: Check whether the calculated number is valid and not infinite
-    if (Number.isNaN(completion) || !Number.isFinite(completion)) {
-        return 0;
+    if (Number.isNaN(completion) || !Number.isFinite(completion) || !width) {
+        return -1_000;
     }
 
     const output = (1 - completion) * -1 * width;

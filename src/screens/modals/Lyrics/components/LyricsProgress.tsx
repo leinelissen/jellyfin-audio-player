@@ -47,7 +47,7 @@ export default function LyricsProgress({
     // Calculate the progress animation
     const progressAnimation = useDerivedValue(() => {
         // GUARD: If the animatino is not active, hide the progress bar
-        if (!active) return -width.value;
+        if (!active) return -1_000;
 
         // Calculate how far along we are
         const progress = calculateProgressTranslation(position - start, end - start, width.value);
@@ -64,6 +64,8 @@ export default function LyricsProgress({
             ]
         };
     });
+
+    console.log(progressAnimation.value);
 
     // GUARD: Only show durations if they last for more than 5 seconds.
     if (duration < 5e7) { 
