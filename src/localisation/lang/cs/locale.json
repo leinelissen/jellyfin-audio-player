@@ -75,5 +75,6 @@
     "confirm-delete-all-tracks": "Přejete si skutečně odstranit všechny stažené skladby?",
     "delete": "Smazat",
     "cancel": "Zrušit",
-    "disc": "Disk"
+    "disc": "Disk",
+    "lyrics": "Text skladby"
 }
