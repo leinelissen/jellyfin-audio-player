@@ -78,5 +78,7 @@
     "disc": "Disc disc",
     "lyrics": "Tekst utworu",
     "direct-play": "Dyrektywa",
-    "transcoded": "Transkod"
+    "transcoded": "Transkod",
+    "khz": "kHz",
+    "kbps": "kbps"
 }
