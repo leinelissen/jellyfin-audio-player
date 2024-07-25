@@ -13,7 +13,7 @@
     "now-playing": "Now Playing",
     "onboarding-welcome": "Welcome!",
     "onboarding-intro": "Fintunes will allow you to stream your music library from anywhere, with full support for background audio and casting.",
-    "onboarding-cta": "In order to get started, you need a server. Click the button below to enter your server address and login to it.",
+    "onboarding-cta": "In order to get started, you need a Jellyfin (or Emby) server. Click the button below to enter your server address and login to it.",
     "set-server": "Set Server",
     "set-server-instruction": "Please enter your server URL. Make sure to include the protocol and port",
     "settings": "Settings",
