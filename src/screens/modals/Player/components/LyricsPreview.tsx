@@ -78,10 +78,28 @@ function InnerLyricsPreview() {
             <HeaderBackground>
                 <Svg width={width} height={60} viewBox={`0 0 ${width} 60`}>
                     <Defs>
-                        <LinearGradient id="lyrics-label-gradient" x1="0" y1="0" x2="0" y2="1">
-                            <Stop offset="0" stopColor="#fff" stopOpacity={1} />
-                            <Stop offset="0.75" stopColor="#fff" stopOpacity={0.7} />
-                            <Stop offset="1" stopColor="#fff" stopOpacity={0} />
+                        <LinearGradient
+                            id="lyrics-label-gradient"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                        >
+                            <Stop
+                                offset="0"
+                                stopColor={defaultStyles.trackBackground.backgroundColor}
+                                stopOpacity={1}
+                            />
+                            <Stop
+                                offset="0.75"
+                                stopColor={defaultStyles.trackBackground.backgroundColor}
+                                stopOpacity={0.7}
+                            />
+                            <Stop
+                                offset="1"
+                                stopColor={defaultStyles.trackBackground.backgroundColor}
+                                stopOpacity={0}
+                            />
                         </LinearGradient>
                     </Defs>
                     <Rect x={0} y={0} height={60} width={width} fill="url(#lyrics-label-gradient)" />
