@@ -19,6 +19,7 @@ const previous = () => TrackPlayer.skipToPrevious();
 const Container = styled.View`
     align-items: center;
     margin-top: 40px;
+    margin-bottom: 52px;
 `;
 
 const Buttons = styled.View`

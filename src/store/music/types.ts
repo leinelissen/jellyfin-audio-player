@@ -8,6 +8,29 @@ export interface UserData {
     Key: string;
 }
 
+export interface MediaStream {
+    Codec: string
+    TimeBase: string
+    VideoRange: string
+    VideoRangeType: string
+    AudioSpatialFormat: string
+    DisplayTitle: string
+    IsInterlaced: boolean
+    ChannelLayout: string
+    BitRate: number
+    Channels: number
+    SampleRate: number
+    IsDefault: boolean
+    IsForced: boolean
+    IsHearingImpaired: boolean
+    Type: string
+    Index: number
+    IsExternal: boolean
+    IsTextSubtitleStream: boolean
+    SupportsExternalStream: boolean
+    Level: number
+} 
+
 export interface ArtistItem {
     Name: string;
     Id: string;
@@ -71,6 +94,7 @@ export interface AlbumTrack {
     MediaType: string;
     HasLyrics: boolean;
     Lyrics: Lyrics | null;
+    MediaStreams: MediaStream[];
 }
 
 export interface State {
