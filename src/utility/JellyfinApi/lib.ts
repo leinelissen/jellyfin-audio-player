@@ -4,6 +4,15 @@ import { version } from '../../../package.json';
 
 type Credentials = AppState['settings']['credentials'];
 
+/** Map the output of `Platform.OS`, so that Jellyfin can understand it. */
+const deviceMap: Record<typeof Platform['OS'], string> = {
+    ios: 'iOS',
+    android: 'Android',
+    macos: 'macOS',
+    web: 'Web',
+    windows: 'Windows',
+};
+
 /**
  * This is a convenience function that converts a set of Jellyfin credentials
  * from the Redux store to a HTTP Header that authenticates the user against the
@@ -12,7 +21,7 @@ type Credentials = AppState['settings']['credentials'];
 function generateConfig(credentials: Credentials): RequestInit {
     return {
         headers: {
-            'X-Emby-Authorization': `MediaBrowser Client="Fintunes", Device="${Platform.OS}", DeviceId="${credentials?.device_id}", Version="${version}", Token="${credentials?.access_token}"`
+            'X-Emby-Authorization': `MediaBrowser Client="Fintunes", Device="${deviceMap[Platform.OS]}", DeviceId="${credentials?.device_id}", Version="${version}", Token="${credentials?.access_token}"`
         }
     };
 }
