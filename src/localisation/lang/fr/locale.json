@@ -76,5 +76,7 @@
     "delete": "Supprimer",
     "cancel": "Annuler",
     "disc": "Disc",
-    "lyrics": "Paroles"
+    "lyrics": "Paroles",
+    "direct-play": "Jeu direct",
+    "transcoded": "Transcoded"
 }
