@@ -13,7 +13,6 @@ import { t } from '@/localisation';
 const Container = styled.View`
     align-self: flex-start;
     align-items: flex-start;
-    margin-top: 52px;
     padding: 8px;
     margin-left: -8px;
     flex: 0 1 auto;

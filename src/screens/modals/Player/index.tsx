@@ -12,6 +12,7 @@ import Timer from './components/Timer';
 import styled from 'styled-components/native';
 import { ColoredBlurView } from '@/components/Colors.tsx';
 import LyricsPreview from './components/LyricsPreview.tsx';
+import MediaInformation from './components/MediaInformation';
 
 const Group = styled.View`
     flex-direction: row;
@@ -28,6 +29,7 @@ export default function Player() {
                         <NowPlaying />
                         <ConnectionNotice />
                         <StreamStatus />
+                        <MediaInformation />
                         <ProgressBar />
                         <MediaControls />
                         <Group>

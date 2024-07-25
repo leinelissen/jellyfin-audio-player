@@ -15,6 +15,9 @@ function generateConfig(credentials: Credentials): RequestInit {
     };
 }
 
+/**
+ * Retrieve a copy of the store without getting caught in import cycles. 
+ */
 export function asyncFetchStore() {
     return require('@/store').default as Store;
 }
@@ -74,7 +77,7 @@ export async function fetchApi<T>(
             const data = await response.json();
             throw data;
         } catch {
-            throw response;
+            throw new Error('FailedRequest');
         }
     }
 

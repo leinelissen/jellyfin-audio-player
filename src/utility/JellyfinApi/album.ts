@@ -61,6 +61,7 @@ export async function retrieveAlbumTracks(ItemId: string) {
     const singleAlbumOptions = {
         ParentId: ItemId,
         SortBy: 'ParentIndexNumber,IndexNumber,SortName',
+        Fields: 'MediaStreams',
     };
     const singleAlbumParams = new URLSearchParams(singleAlbumOptions).toString();
 
