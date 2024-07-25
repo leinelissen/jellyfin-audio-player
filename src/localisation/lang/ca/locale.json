@@ -76,5 +76,8 @@
     "delete": "Esborrar",
     "cancel": "Cancel·la",
     "disc": "Disc",
-    "lyrics": "Lletres"
+    "lyrics": "Lletres",
+    "khz": "k Hz",
+    "direct-play": "Joc directe",
+    "transcoded": "Transcodificat"
 }
