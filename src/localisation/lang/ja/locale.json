@@ -75,5 +75,6 @@
     "confirm-delete-all-tracks": "ダウンロードしたすべてのトラックを削除したいですか?",
     "delete": "削除",
     "cancel": "キャンセル",
-    "disc": "ディスク"
+    "disc": "ディスク",
+    "lyrics": "歌詞"
 }
