@@ -30,7 +30,7 @@ const baseTrackOptions: Record<string, string> = {
  * Generate the track streaming url from the trackId
  */
 export function generateTrackUrl(trackId: string) {
-    const credentials = store.getState().settings.jellyfin;
+    const credentials = store.getState().settings.credentials;
     const trackOptions = {
         ...baseTrackOptions,
         UserId: credentials?.user_id || '',

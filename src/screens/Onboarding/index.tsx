@@ -38,7 +38,7 @@ const Logo = styled.Image`
 
 function Onboarding() {
     // Get account from Redux and dispatcher
-    const account = useTypedSelector(state => state.settings.jellyfin);
+    const account = useTypedSelector(state => state.settings.credentials);
     const dispatch = useAppDispatch();
 
     // Also retrieve the navigation handler so that we can open the modal in

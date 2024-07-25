@@ -5,7 +5,7 @@ import { AppState } from '@/store';
 
 interface Props {
     serverUrl: string;
-    onCredentialsRetrieved: (credentials: AppState['settings']['jellyfin']) => void;
+    onCredentialsRetrieved: (credentials: AppState['settings']['credentials']) => void;
 }
 
 type CredentialEventData = {
@@ -148,6 +148,7 @@ class CredentialGenerator extends Component<Props> {
             user_id: userId,
             access_token: accessToken,
             device_id: deviceId,
+            type: data.type,
         });
     };
 
