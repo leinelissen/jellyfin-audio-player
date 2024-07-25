@@ -76,5 +76,9 @@
     "delete": "删除",
     "cancel": "取消",
     "disc": "歧视",
-    "lyrics": "歌词"
+    "lyrics": "歌词",
+    "direct-play": "直接游戏",
+    "transcoded": "密码",
+    "khz": "kHz",
+    "kbps": "kbps"
 }

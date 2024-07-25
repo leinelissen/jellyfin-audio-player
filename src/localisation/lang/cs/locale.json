@@ -76,5 +76,9 @@
     "delete": "Čeština",
     "cancel": "Hledat",
     "disc": "Čeština",
-    "lyrics": "Text skladby"
+    "lyrics": "Text skladby",
+    "direct-play": "Přímé hraní",
+    "transcoded": "Transcoded",
+    "khz": "kHz",
+    "kbps": "kbps"
 }
