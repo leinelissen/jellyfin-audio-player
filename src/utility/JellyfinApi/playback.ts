@@ -31,6 +31,9 @@ export async function sendPlaybackEvent(
         TrackPlayer.getPlaybackState(),
     ]);
 
+    // GUARD: Ensure that no empty events are sent out
+    if (!activeTrack?.backendId) return;
+
     // Generate a payload from the gathered data
     const payload = {
         VolumeLevel: volume * 100,
@@ -41,8 +44,8 @@ export async function sendPlaybackEvent(
         PositionTicks: Math.round((lastPosition || currentPosition) * 10_000_000),
         PlaybackRate: 1,
         PlayMethod: 'transcode',
-        MediaSourceId: activeTrack?.backendId || null,
-        ItemId: activeTrack?.backendId || null,
+        MediaSourceId: activeTrack.backendId,
+        ItemId: activeTrack.backendId,
         CanSeek: true,
         PlaybackStartTimeTicks: null,
     };

@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import TouchableHandler from '@/components/TouchableHandler';
 import useCurrentTrack from '@/utility/useCurrentTrack';
-import TrackPlayer from 'react-native-track-player';
 import Play from '@/assets/icons/play.svg';
 import Shuffle from '@/assets/icons/shuffle.svg';
 import useDefaultStyles from '@/components/Colors';
@@ -150,9 +149,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const playEntity = useCallback(() => { playTracks(trackIds); }, [playTracks, trackIds]);
     const shuffleEntity = useCallback(() => { playTracks(trackIds, { shuffle: true }); }, [playTracks, trackIds]);
     const selectTrack = useCallback(async (index: number) => {
-        await playTracks(trackIds, { play: false });
-        await TrackPlayer.skip(index);
-        await TrackPlayer.play();
+        await playTracks(trackIds, { playIndex: index });
     }, [playTracks, trackIds]);
     const longPressTrack = useCallback((index: number) => {
         navigation.navigate('TrackPopupMenu', { trackId: trackIds[index].toString() });

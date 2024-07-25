@@ -8,6 +8,14 @@ interface PlayOptions {
     play: boolean;
     shuffle: boolean;
     method: 'add-to-end' | 'add-after-currently-playing' | 'replace';
+    /** 
+     * The index for the track that should start out playing. This ensures that
+     * no intermediate tracks are played (however briefly) while the queue skips
+     * to this index.
+     * 
+     * NOTE: This option is only available with the `replace` method. 
+     */
+    playIndex?: number;
 }
 
 const defaults: PlayOptions = {
@@ -103,11 +111,29 @@ export default function usePlayTracks() {
                 break;
             }
             case 'replace': {
+                // Reset the queue first
                 await TrackPlayer.reset();
-                await TrackPlayer.add(newTracks);
 
-                if (play) {
-                    await TrackPlayer.play();
+                // GUARD: Check if we need to skip to a particular index
+                if (options.playIndex) {
+                    // If so, we'll split the tracks into tracks before the
+                    // index that should be played, and the queue of tracks that
+                    // will start playing
+                    const before = newTracks.slice(0, options.playIndex);
+                    const current = newTracks.slice(options.playIndex);
+
+                    // First, we'll add the current queue and (optionally) force
+                    // it to start playing.
+                    await TrackPlayer.add(current);
+                    if (play) await TrackPlayer.play();
+
+                    // Then, we'll insert the "previous" tracks after the queue
+                    // has started playing. This ensures that these tracks won't
+                    // trigger any events on the track player.
+                    await TrackPlayer.add(before, options.playIndex);
+                } else {
+                    await TrackPlayer.add(newTracks);
+                    if (play) await TrackPlayer.play();
                 }
 
                 break;

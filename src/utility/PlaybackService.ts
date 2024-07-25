@@ -40,15 +40,16 @@ export default async function() {
     TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
         // Retrieve the current settings from the Redux store
         const settings = store.getState().settings;
+        console.log('TrackChanged', e?.track?.title);
 
         // GUARD: Only report playback when the settings is enabled
         if (settings.enablePlaybackReporting && 'track' in e) {
             // GUARD: End the previous track if it's about to end
             if (e.lastTrack) {
-                await sendPlaybackEvent('/Sessions/Playing/Stopped', e.lastTrack, e.lastPosition);
+                sendPlaybackEvent('/Sessions/Playing/Stopped', e.lastTrack, e.lastPosition);
             }
 
-            await sendPlaybackEvent('/Sessions/Playing', e.track);
+            sendPlaybackEvent('/Sessions/Playing', e.track);
         }
     });
 
