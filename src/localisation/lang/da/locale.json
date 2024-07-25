@@ -75,5 +75,6 @@
     "delete": "Slet",
     "cancel": "Annuller",
     "confirm-delete-all-tracks": "Er du sikker på, at du vil slette alle aktuelt downloadede spor?",
-    "disc": "Disk"
+    "disc": "Disk",
+    "lyrics": "Sangtekster"
 }
