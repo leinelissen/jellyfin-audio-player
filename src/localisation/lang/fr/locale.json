@@ -75,5 +75,6 @@
     "confirm-delete-all-tracks": "Êtes-vous sûr de vouloir supprimer toutes les pistes actuellement téléchargées ?",
     "delete": "Supprimer",
     "cancel": "Annuler",
-    "disc": "Disc"
+    "disc": "Disc",
+    "lyrics": "Paroles"
 }
