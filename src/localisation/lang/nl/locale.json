@@ -75,5 +75,9 @@
     "sleep-timer": "Slaaptimer",
     "delete": "Verwijder",
     "cancel": "Annuleer",
-    "disc": "Schijf"
+    "disc": "Schijf",
+    "direct-play": "Direct afgespeeld",
+    "transcoded": "Getranscodeerd",
+    "khz": "kHz",
+    "kbps": "kbps"
 }
