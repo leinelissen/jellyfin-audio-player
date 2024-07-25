@@ -75,5 +75,6 @@
     "confirm-delete-all-tracks": "¿Estás seguro de que quieres borrar todas las pistas descargadas actualmente?",
     "delete": "Borrar",
     "cancel": "Cancelar",
-    "disc": "Disco"
+    "disc": "Disco",
+    "lyrics": "Letras"
 }
