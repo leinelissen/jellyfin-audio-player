@@ -74,6 +74,7 @@
     "sleep-timer": "Temporitzador son",
     "confirm-delete-all-tracks": "Estàs segur que vols eliminar totes les pistes descarregades actualment?",
     "delete": "Esborrar",
-    "cancel": "Cancel·lar",
-    "disc": "Disc"
+    "cancel": "Cancel·la",
+    "disc": "Disc",
+    "lyrics": "Lletres"
 }
