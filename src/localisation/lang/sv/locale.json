@@ -75,5 +75,6 @@
     "delete": "Delete",
     "cancel": "Avbokning",
     "confirm-delete-all-tracks": "Är du säker på att du vill ta bort alla för närvarande nedladdade spår?",
-    "disc": "Disc"
+    "disc": "Disc",
+    "lyrics": "Låttext"
 }
