@@ -78,5 +78,7 @@
     "disc": "Čeština",
     "lyrics": "Text skladby",
     "direct-play": "Přímé hraní",
-    "transcoded": "Transcoded"
+    "transcoded": "Transcoded",
+    "khz": "kHz",
+    "kbps": "kbps"
 }
