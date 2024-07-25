@@ -66,7 +66,7 @@
     "error-reporting-description": "Durant l'ús d'aquesta aplicació, es poden trobar errors. L’aplicació és més segura i estable.",
     "error-reporting-rationale": "Quan activeu els informes d'errors, cada vegada que es produeix un error, es crea i s'envia automàticament a un servidor, juntament amb informació útil de depuració com ara dispositius, versions i l'error específic.",
     "why-use-tracking": "Per què utilitzar el seguiment?",
-    "why-use-tracking-description": "El seguiment ajuda a accelerar el desenvolupament d'aquesta aplicació mitjançant la presentació de casos de vora estranys i oversights. Això ajuda a fer que l'aplicació sigui més estable i robusta, millorant així l'experiència de l'aplicació per a tothom.",
+    "why-use-tracking-description": "Àlbums",
     "what-data-is-gathered": "Quines dades es recullen?",
     "what-data-is-gathered-description": "Registrem l'error, el tipus de dispositiu, la versió del sistema operatiu, la versió de l'aplicació i l'identificador del dispositiu. No s'envia cap estat de l'aplicació en cap informe d'errors. L'identificador del dispositiu és un hash únic que es pot restablir a la configuració del dispositiu i no podem deduir cap informació personal d'aquest identificador.",
     "where-is-data-stored": "Caché",
