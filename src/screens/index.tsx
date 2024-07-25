@@ -24,6 +24,7 @@ import ErrorReportingAlert from '@/utility/ErrorReportingAlert';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import Player from './modals/Player';
 import { StackParams } from './types';
+import Lyrics from './modals/Lyrics';
 
 const Stack = createNativeStackNavigator<StackParams>();
 const Tab = createBottomTabNavigator();
@@ -36,7 +37,7 @@ type Screens = {
 function Screens() {
     const styles = useDefaultStyles();
     const isOnboardingComplete = useTypedSelector(state => state.settings.isOnboardingComplete);
-    
+
     // GUARD: If onboarding has not been completed, we instead render the
     // onboarding component, so that the user can get setup in the app.
     if (!isOnboardingComplete) {
@@ -91,12 +92,16 @@ export default function Routes() {
         <Stack.Navigator screenOptions={{
             presentation: 'modal',
             headerShown: false,
+            contentStyle: {
+                backgroundColor: 'transparent'
+            }
         }} id="MAIN">
             <Stack.Screen name="Screens" component={Screens} />
             <Stack.Screen name="SetJellyfinServer" component={SetJellyfinServer} />
             <Stack.Screen name="TrackPopupMenu" component={TrackPopupMenu} options={{ presentation: 'formSheet' }} />
             <Stack.Screen name="ErrorReporting" component={ErrorReportingPopup} />
             <Stack.Screen name="Player" component={Player} />
+            <Stack.Screen name="Lyrics" component={Lyrics} />
         </Stack.Navigator>
     );
 }

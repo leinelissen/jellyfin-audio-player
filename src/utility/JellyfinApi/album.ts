@@ -1,5 +1,6 @@
 import { Album, AlbumTrack, SimilarAlbum } from '@/store/music/types';
 import { fetchApi } from './lib';
+import {retrieveAndInjectLyricsToTracks} from '@/utility/JellyfinApi/lyrics.ts';
 
 const albumOptions = {
     SortBy: 'AlbumArtist,SortName',
@@ -39,7 +40,7 @@ const latestAlbumsOptions = {
 };
 
 /**
- * Retrieve the most recently added albums on the Jellyfin server 
+ * Retrieve the most recently added albums on the Jellyfin server
  */
 export async function retrieveRecentAlbums(numberOfAlbums = 24) {
     // Generate custom config based on function input
@@ -64,5 +65,5 @@ export async function retrieveAlbumTracks(ItemId: string) {
     const singleAlbumParams = new URLSearchParams(singleAlbumOptions).toString();
 
     return fetchApi<{ Items: AlbumTrack[] }>(({ user_id }) => `/Users/${user_id}/Items?${singleAlbumParams}`)
-        .then((data) => data!.Items);
+        .then((data) => retrieveAndInjectLyricsToTracks(data.Items));
 }

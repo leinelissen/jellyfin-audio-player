@@ -62,6 +62,9 @@ function generateStyles(scheme: ColorSchemeName, highContrast: boolean) {
             backgroundColor: scheme === 'dark' ? '#191919' : '#f3f3f3',
             color: scheme === 'dark' ? '#fff' : '#000',
         },
+        trackBackground: {
+            backgroundColor: scheme === 'dark' ? '#111' : '#fff',
+        },
         stackHeader: {
             color: scheme === 'dark' ? 'white' : 'black'
         },

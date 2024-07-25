@@ -75,3 +75,4 @@ export type LocaleKeys = 'play-next'
 | 'delete'
 | 'cancel'
 | 'disc'
+| 'lyrics';
