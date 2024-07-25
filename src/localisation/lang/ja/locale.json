@@ -78,5 +78,7 @@
     "disc": "ディスク",
     "lyrics": "歌詞",
     "direct-play": "ダイレクトプレイ",
-    "transcoded": "トランスコード"
+    "transcoded": "トランスコード",
+    "khz": "kHz",
+    "kbps": "kbps"
 }
