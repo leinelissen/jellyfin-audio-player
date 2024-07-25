@@ -58,7 +58,7 @@
     "setting-cache-description": "Hvis du har opdateret dit Jellyfin-bibliotek, men appen holder på cachelagrede aktiver, kan du tvinges til at rydde cachen ved hjælp af denne knap. Dette vil tvinge app til at hente biblioteket fra bunden.",
     "error-reporting-description": "Under brug af denne app, kan du støde fejl. Rapportering af disse fejl hjælper med at skabe en mere sikker og stabil appoplevelse.",
     "error-reporting-rationale": "Når du aktiverer fejlrapportering, hver gang en fejl opstår, oprettes en rapport automatisk og sendes til en server, sammen med nyttige fejlfindingsoplysninger såsom enheder, versioner og den specifikke fejl.",
-    "what-data-is-gathered-description": "Vi logger fejlen, enhedstype, OS-version, app-version og enhed id. Ingen ansøgningstilstand sendes i enhver fejlrapportering. Enheden id er et unikt hash, der kan nulstilles i dine enhedsindstillinger, og vi kan ikke deducere personlige oplysninger fra denne identifikator.",
+    "what-data-is-gathered-description": "Sentry backend er selv-hosted på vores egen infrastruktur. Ingen, men vi har adgang til servere, databaser, ansøgning og dataloger, mindst af alle Sentry personale. infrastrukturen hostes i Den Europæiske Union.",
     "where-is-data-stored-description": "Sentry backend er selv-hosted på vores egen infrastruktur. Ingen, men vi har adgang til servere, databaser, ansøgning og dataloger, mindst af alle Sentry personale. infrastrukturen hostes i Den Europæiske Union.",
     "downloads": "Overførsler",
     "download-track": "Download Track",
