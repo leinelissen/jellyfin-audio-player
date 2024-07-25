@@ -76,5 +76,7 @@
     "cancel": "Annulla",
     "confirm-delete-all-tracks": "Sei sicuro di voler eliminare tutte le tracce attualmente scaricate?",
     "disc": "Disc",
-    "lyrics": "Testi"
+    "lyrics": "Testi",
+    "direct-play": "Gioco diretto",
+    "transcoded": "Transcoded"
 }
