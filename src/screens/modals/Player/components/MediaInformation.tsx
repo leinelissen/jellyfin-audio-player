@@ -54,7 +54,7 @@ export default function MediaInformation() {
                 <Label numberOfLines={1} overflow>
                     {track.isDirectPlay ? t('direct-play') : t('transcoded')}
                 </Label>
-                <Label numberOfLines={1} overflow>
+                <Label numberOfLines={1}>
                     {track.isDirectPlay
                         ? mediaStream?.Codec.toUpperCase()
                         : track.contentType?.replace('audio/', '').toUpperCase()
@@ -62,12 +62,12 @@ export default function MediaInformation() {
                 </Label>
                 {mediaStream && (
                     <>
-                        <Label numberOfLines={1} overflow>
+                        <Label numberOfLines={1}>
                             {((track.isDirectPlay ? mediaStream.BitRate : track.bitRate) / 1000)
                                 .toFixed(0)}
                             {t('kbps')}
                         </Label>
-                        <Label numberOfLines={1} overflow>
+                        <Label numberOfLines={1}>
                             {(mediaStream.SampleRate / 1000).toFixed(1)}
                             {t('khz')}
                         </Label>
