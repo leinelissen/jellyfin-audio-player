@@ -76,6 +76,7 @@ const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
             return {
                 ...state,
                 settings: {
+                    ...state.settings,
                     credentials,
                 },
             };
