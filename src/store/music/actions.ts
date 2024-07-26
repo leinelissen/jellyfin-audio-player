@@ -1,7 +1,7 @@
 import { createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { Album, AlbumTrack, Playlist } from './types';
 import { AsyncThunkAPI } from '..';
-import { retrieveAllAlbums, retrieveRecentAlbums, retrieveAlbumTracks, retrieveAlbum } from '@/utility/JellyfinApi/album';
+import { retrieveAllAlbums, retrieveRecentAlbums, retrieveAlbumTracks, retrieveAlbum, retrieveSimilarAlbums } from '@/utility/JellyfinApi/album';
 import { retrieveAllPlaylists, retrievePlaylistTracks } from '@/utility/JellyfinApi/playlist';
 import { searchItem } from '@/utility/JellyfinApi/search';
 
@@ -42,6 +42,11 @@ export const fetchTracksByAlbum = createAsyncThunk<AlbumTrack[], string, AsyncTh
 export const fetchAlbum = createAsyncThunk<Album, string, AsyncThunkAPI>(
     '/albums/single',
     retrieveAlbum,
+);
+
+export const fetchSimilarAlbums = createAsyncThunk<Album[], string, AsyncThunkAPI>(
+    '/albums/similar',
+    retrieveSimilarAlbums,
 );
 
 type SearchAndFetchResults = {

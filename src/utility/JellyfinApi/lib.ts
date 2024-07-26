@@ -1,6 +1,7 @@
-import type { AppState, Store } from '@/store';
+import { useTypedSelector, type AppState, type Store } from '@/store';
 import { Platform } from 'react-native';
 import { version } from '../../../package.json';
+import { Album, AlbumTrack, ArtistItem, Playlist } from '@/store/music/types';
 
 type Credentials = AppState['settings']['credentials'];
 
@@ -105,9 +106,13 @@ export async function fetchApi<T>(
 /**
  * Retrieve an image URL for a given ItemId
  */
-export function getImage(ItemId: string): string {
-    const credentials = asyncFetchStore().getState().settings.credentials;
-    const uri = encodeURI(`${credentials?.uri}/Items/${ItemId}/Images/Primary?format=jpeg`);
+export function getImage(ItemId: string | number, credentials?: AppState['settings']['credentials']): string {
+    // Either accept provided credentials, or retrieve them directly from the store
+    const { uri: serverUri } = credentials 
+        ?? asyncFetchStore().getState().settings.credentials ?? {};
+    
+    // Generate the uri and return
+    const uri = encodeURI(`${serverUri}/Items/${ItemId}/Images/Primary?format=jpeg`);
     return uri;
 }
 
@@ -115,5 +120,20 @@ export function getImage(ItemId: string): string {
  * Create a hook that can convert ItemIds to image URLs
  */
 export function useGetImage() {
-    return (ItemId: string) => getImage(ItemId);
+    const credentials = useTypedSelector((state) => state.settings.credentials);
+
+    return (item: string | number | Album | AlbumTrack | Playlist | ArtistItem | null) => {
+        if (!item) {
+            return '';
+        // GUARD: If the item's just the id, we'll pass it on directly.
+        } else if (typeof item === 'string' || typeof item === 'number') {
+            return getImage(item, credentials);
+        // GUARD: If the item has an `PrimaryImageItemId` (for Emby servers),
+        // we'll attemp to return that
+        } else if ('PrimaryImageItemId' in item) {
+            return getImage(item.PrimaryImageItemId || item.Id, credentials);
+        } else {
+            return getImage(item.Id);
+        }
+    };
 }

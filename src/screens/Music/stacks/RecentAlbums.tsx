@@ -95,7 +95,7 @@ const RecentAlbums: React.FC = () => {
                     <TouchableHandler id={item} onPress={selectAlbum} testID={`select-album-${item}`}>
                         <AlbumItem>
                             <ShadowWrapper size="medium">
-                                <AlbumImage source={{ uri: getImage(item) }} style={defaultStyles.imageBackground} />
+                                <AlbumImage source={{ uri: getImage(albums[item]) }} style={defaultStyles.imageBackground} />
                             </ShadowWrapper>
                             <Text style={defaultStyles.text} numberOfLines={1}>{albums[item]?.Name}</Text>
                             <Text style={defaultStyles.textHalfOpacity} numberOfLines={1}>{albums[item]?.AlbumArtist}</Text>

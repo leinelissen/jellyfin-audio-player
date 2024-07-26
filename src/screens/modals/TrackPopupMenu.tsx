@@ -75,7 +75,7 @@ function TrackPopupMenu() {
 
     return (
         <Container>
-            <Artwork src={getImage(track?.Id || '')} />
+            <Artwork src={getImage(track)} />
             <Header>{track?.Name}</Header>
             <SubHeader style={{ marginBottom: 18 }}>{track?.AlbumArtist} {track?.Album ? '— ' + track?.Album : ''}</SubHeader>
             <WrappableButtonRow>

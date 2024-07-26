@@ -298,7 +298,7 @@ export default function Search() {
                         <TouchableHandler<string> id={album.Id} onPress={selectAlbum} testID={`search-result-${album.Id}`}>
                             <SearchResult>
                                 <ShadowWrapper>
-                                    <AlbumImage source={{ uri: getImage(album.Id) }} style={defaultStyles.imageBackground} />
+                                    <AlbumImage source={{ uri: getImage(album) }} style={defaultStyles.imageBackground} />
                                 </ShadowWrapper>
                                 <View style={{ flex: 1 }}>
                                     <Text numberOfLines={1}>

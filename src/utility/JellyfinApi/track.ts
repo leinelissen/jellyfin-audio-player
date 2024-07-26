@@ -61,9 +61,7 @@ export async function generateTrack(track: AlbumTrack): Promise<Track> {
         artist: track.Artists.join(', '),
         album: track.Album,
         duration: track.RunTimeTicks,
-        artwork: track.AlbumId
-            ? getImage(track.AlbumId)
-            : getImage(track.Id),
+        artwork: getImage(track.Id),
         hasLyrics: track.HasLyrics,
         lyrics: track.Lyrics,
         contentType: response.headers.get('Content-Type') || undefined,

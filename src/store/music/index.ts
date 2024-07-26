@@ -8,7 +8,8 @@ import {
     playlistAdapter,
     fetchAllPlaylists,
     fetchTracksByPlaylist,
-    fetchAlbum
+    fetchAlbum,
+    fetchSimilarAlbums
 } from './actions';
 import { createSlice } from '@reduxjs/toolkit';
 import { Album, AlbumTrack, Playlist } from './types';
@@ -79,7 +80,15 @@ const music = createSlice({
         });
         builder.addCase(fetchAlbum.pending, (state) => { state.albums.isLoading = true; });
         builder.addCase(fetchAlbum.rejected, (state) => { state.albums.isLoading = false; });
-        
+       
+        /** 
+         * Fetch similar albums
+         */
+        builder.addCase(fetchSimilarAlbums.fulfilled, (state, { payload, meta }) => {
+            albumAdapter.upsertMany(state.albums, payload);
+            state.albums.entities[meta.arg].Similar = payload.map((a) => a.Id);
+        });
+
         /**
          * Fetch most recent albums
          */

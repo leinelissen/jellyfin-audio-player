@@ -68,6 +68,8 @@ export interface Album {
     DateCreated: string;
     Overview?: string;
     Similar?: string[];
+    /** Emby potentially carries different ids for primary images */
+    PrimaryImageItemId?: string;
 }
 
 export interface AlbumTrack {
@@ -123,8 +125,4 @@ export interface Playlist {
     MediaType: string;
     Tracks?: string[];
     lastRefreshed?: number;
-}
-
-export interface SimilarAlbum {
-    Id: string;
 }

@@ -149,7 +149,7 @@ const Albums: React.FC = () => {
                     <GeneratedAlbumItem
                         key={id}
                         id={id}
-                        imageUrl={getImage(id as string)}
+                        imageUrl={getImage(albums[id])}
                         name={albums[id]?.Name || ''}
                         artist={albums[id]?.AlbumArtist || ''}
                         onPress={selectAlbum}

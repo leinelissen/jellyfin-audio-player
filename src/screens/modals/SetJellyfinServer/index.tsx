@@ -9,6 +9,7 @@ import { t } from '@/localisation';
 import useDefaultStyles from '@/components/Colors';
 import { Text } from '@/components/Typography';
 import { AppState, useAppDispatch } from '@/store';
+import { fetchRecentAlbums } from '@/store/music/actions';
 
 
 export default function SetJellyfinServer() {
@@ -25,7 +26,8 @@ export default function SetJellyfinServer() {
     const saveCredentials = useCallback((credentials: AppState['settings']['credentials']) => {
         if (credentials) {
             dispatch(setJellyfinCredentials(credentials));
-            navigation.dispatch(StackActions.popToTop());    
+            navigation.dispatch(StackActions.popToTop());
+            dispatch(fetchRecentAlbums());
         }
     }, [navigation, dispatch]);
 

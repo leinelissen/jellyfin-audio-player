@@ -178,7 +178,7 @@ const Artists: React.FC = () => {
                     key={item.Id}
                     item={item}
                     onPress={selectArtist}
-                    imageURL={getImage(item.Id)}
+                    imageURL={getImage(item)}
                 />
             </View>
         );

@@ -1,4 +1,4 @@
-import { Album, AlbumTrack, SimilarAlbum } from '@/store/music/types';
+import { Album, AlbumTrack } from '@/store/music/types';
 import { fetchApi } from './lib';
 import {retrieveAndInjectLyricsToTracks} from '@/utility/JellyfinApi/lyrics.ts';
 
@@ -26,11 +26,15 @@ export async function retrieveAllAlbums() {
  * Retrieve a single album
  */
 export async function retrieveAlbum(id: string): Promise<Album> {
-    const Similar = await fetchApi<{ Items: SimilarAlbum[] }>(({ user_id }) => `/Items/${id}/Similar?userId=${user_id}&limit=12`)
-        .then((albums) => albums!.Items.map((a) => a.Id));
+    return fetchApi<Album>(({ user_id }) => `/Users/${user_id}/Items/${id}`);
+}
 
-    return fetchApi<Album>(({ user_id }) => `/Users/${user_id}/Items/${id}`)
-        .then(album => ({ ...album!, Similar }));
+/**
+ * Retrieve albums that are similar to the provided album
+ */
+export async function retrieveSimilarAlbums(id: string): Promise<Album[]> {
+    return fetchApi<{ Items: Album[] }>(({ user_id }) => `/Items/${id}/Similar?userId=${user_id}&limit=12`)
+        .then((albums) => albums!.Items);
 }
 
 const latestAlbumsOptions = {

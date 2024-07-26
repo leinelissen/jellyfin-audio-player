@@ -136,7 +136,7 @@ function Downloads() {
             <DownloadedTrack>
                 <View style={{ marginRight: 12 }}>
                     <ShadowWrapper size="small">
-                        <AlbumImage source={{ uri: getImage(item as string) }} style={defaultStyles.imageBackground} />
+                        <AlbumImage source={{ uri: getImage(item) }} style={defaultStyles.imageBackground} />
                     </ShadowWrapper>
                 </View>
                 <View style={{ flexShrink: 1, marginRight: 8 }}>

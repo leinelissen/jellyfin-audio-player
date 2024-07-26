@@ -70,14 +70,14 @@ const Playlists: React.FC = () => {
             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }} key={item}>
                 <GeneratedPlaylistItem
                     id={item}
-                    imageUrl={getImage(item as string)}
+                    imageUrl={getImage(entities[item])}
                     name={entities[item]?.Name || ''}
                     onPress={selectAlbum}
                 />
                 {nextItem && 
                     <GeneratedPlaylistItem
                         id={nextItemId}
-                        imageUrl={getImage(nextItemId as string)}
+                        imageUrl={getImage(nextItem)}
                         name={nextItem.Name || ''}
                         onPress={selectAlbum}
                     />
