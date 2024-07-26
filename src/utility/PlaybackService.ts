@@ -40,7 +40,6 @@ export default async function() {
     TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
         // Retrieve the current settings from the Redux store
         const settings = store.getState().settings;
-        console.log('TrackChanged', e?.track?.title);
 
         // GUARD: Only report playback when the settings is enabled
         if (settings.enablePlaybackReporting && 'track' in e) {

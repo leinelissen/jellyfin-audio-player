@@ -130,7 +130,7 @@ export default function usePlayTracks() {
                     // Then, we'll insert the "previous" tracks after the queue
                     // has started playing. This ensures that these tracks won't
                     // trigger any events on the track player.
-                    await TrackPlayer.add(before, options.playIndex);
+                    await TrackPlayer.add(before, 0);
                 } else {
                     await TrackPlayer.add(newTracks);
                     if (play) await TrackPlayer.play();

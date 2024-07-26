@@ -65,8 +65,6 @@ export default function LyricsProgress({
         };
     });
 
-    console.log(progressAnimation.value);
-
     // GUARD: Only show durations if they last for more than 5 seconds.
     if (duration < 5e7) { 
         return null;
