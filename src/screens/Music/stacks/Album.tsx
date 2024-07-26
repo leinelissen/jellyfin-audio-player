@@ -34,9 +34,6 @@ function SimilarAlbum({ id }: { id: string }) {
         album && navigation.push('Album', { id, album });
     }, [id, album, navigation]);
     
-    console.log(getImage(album));
-
-
     return (
         <Pressable
             style={({ pressed }) => ({ 
