@@ -65,7 +65,7 @@
     "total-duration": "Total varaktighet",
     "similar-albums": "Liknande album",
     "playback-reporting": "Uppspelningsrapportering",
-    "playback-reporting-description": "Med Playback Reporting vidarebefordras alla dina uppspelningshändelser tillbaka till din server. Detta gör att du kan spåra dina mest lyssnade låtar, särskilt med plugins som ListenBrainz eller LastFM.",
+    "playback-reporting-description": "Om du har uppdaterat ditt bibliotek, men appen håller fast vid cachade tillgångar, kan du kraftfullt rensa cache med denna knapp. Detta kommer att tvinga appen att hämta biblioteket från början.",
     "color-scheme": "Färgschema",
     "color-scheme-description": "Som standard följer Fintunes ditt operativsystems färgschema. Du kan dock välja att åsidosätta detta för att se till att Fintunes alltid är i mörkt läge eller ljust läge.",
     "color-scheme-system": "System",
