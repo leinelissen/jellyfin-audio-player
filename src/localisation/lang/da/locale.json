@@ -61,7 +61,7 @@
     "what-data-is-gathered-description": "Vi logger fejlen, enhedstype, OS-version, app-version og enhed id. Ingen ansøgningstilstand sendes i enhver fejlrapportering. Enheden id er et unikt hash, der kan nulstilles i dine enhedsindstillinger, og vi kan ikke deducere personlige oplysninger fra denne identifikator.",
     "where-is-data-stored-description": "Sentry backend er selv-hosted på vores egen infrastruktur. Ingen, men vi har adgang til servere, databaser, ansøgning og dataloger, mindst af alle Sentry personale. infrastrukturen hostes i Den Europæiske Union.",
     "downloads": "Downloads",
-    "download-track": "Download Track",
+    "download-track": "Annuller",
     "download-album": "Download Album",
     "download-playlist": "Download Playlist",
     "no-downloads": "Du har endnu ikke downloadet nogen spor",
