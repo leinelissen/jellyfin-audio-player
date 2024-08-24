@@ -37,7 +37,7 @@
     "you-are-offline-message": "Vous êtes actuellement hors ligne. Vous ne pouvez lire que de la musique précédemment téléchargée.",
     "similar-albums": "Albums similaires",
     "playback-reporting": "Rapport de lecture",
-    "playback-reporting-description": "Avec Playback Reporting, tous vos événements de lecture sont relayés vers votre serveur. Cela vous permet de suivre vos chansons les plus écoutées, notamment avec des plugins tels que ListenBrainz ou LastFM.",
+    "playback-reporting-description": "Si vous avez mis à jour votre bibliothèque, mais l'application se tient sur les actifs mis en cache, vous pouvez effacer le cache en utilisant ce bouton. Cela forcera l'application à récupérer la bibliothèque à partir de zéro.",
     "color-scheme-description": "Par défaut, Fintunes suivra le schéma de couleurs de votre système d'exploitation. Vous pouvez cependant choisir de forcer ce réglage pour vous assurer que Fintunes est toujours en mode sombre ou en mode clair.",
     "why-use-tracking": "Pourquoi utiliser le suivi ?",
     "where-is-data-stored": "Où sont stockées les données ?",
