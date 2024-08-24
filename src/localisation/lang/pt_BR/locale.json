@@ -63,7 +63,7 @@
     "delete-album": "Excluir álbum",
     "delete-playlist": "Excluir playlist",
     "total-download-size": "Tamanho total dos downloads",
-    "playback-reporting-description": "Com o Playback Reporting, todos os seus eventos de reprodução são retransmitidos de volta para o seu servidor. Isso permite que você rastreie suas músicas mais ouvidas, particularmente com plugins como ListenBrainz ou LastFM.",
+    "playback-reporting-description": "Se você tiver atualizado sua biblioteca, mas o aplicativo está segurando em ativos armazenados em cache, você pode limpar com força o cache usando este botão. Isso forçará o aplicativo a buscar a biblioteca do zero.",
     "color-scheme": "Tema",
     "color-scheme-description": "Por padrão, o Fintunes segue o esquema de cores do seu sistema operacional. No entanto, você pode mudar isso, para garantir que o Fintunes fique sempre no modo escuro ou no modo claro.",
     "color-scheme-system": "Sistema",
