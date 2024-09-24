@@ -65,7 +65,7 @@
     "total-duration": "Total varaktighet",
     "similar-albums": "Liknande album",
     "playback-reporting": "Uppspelningsrapportering",
-    "playback-reporting-description": "Om du har uppdaterat ditt bibliotek, men appen håller fast vid cachade tillgångar, kan du kraftfullt rensa cache med denna knapp. Detta kommer att tvinga appen att hämta biblioteket från början.",
+    "playback-reporting-description": "Direkt spel",
     "color-scheme": "Färgschema",
     "color-scheme-description": "Som standard följer Fintunes ditt operativsystems färgschema. Du kan dock välja att åsidosätta detta för att se till att Fintunes alltid är i mörkt läge eller ljust läge.",
     "color-scheme-system": "System",
