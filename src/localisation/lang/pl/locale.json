@@ -65,7 +65,7 @@
     "total-duration": "Całkowity czas trwania",
     "similar-albums": "Podobne albumy",
     "playback-reporting": "Raportowanie odtwarzania",
-    "playback-reporting-description": "Jeśli uaktualnisz swoją bibliotekę, ale aplikacja trzyma się w skrypcie aktywów, można wyjaśnić pamięć podręczną przy użyciu tego przycisku. Wykorzystuje to aplikację, aby uwolnić bibliotekę z odrzutu.",
+    "playback-reporting-description": "Dyrektywa",
     "color-scheme": "Schemat kolorów",
     "color-scheme-description": "Domyślnie Fintunes będzie stosować się do schematu kolorów Twojego systemu operacyjnego. Możesz jednak pominąć tę opcję, aby mieć pewność, że Fintunes jest zawsze w trybie ciemnym lub jasnym.",
     "color-scheme-system": "System",
