@@ -58,7 +58,7 @@
     "total-duration": "合計期間",
     "similar-albums": "類似のアルバム",
     "playback-reporting": "再生レポート",
-    "playback-reporting-description": "ライブラリを更新したが、アプリがキャッシュされたアセットを保持している場合、このボタンを使用してキャッシュを強制的にクリアできます。 これにより、アプリがライブラリをスクラッチから取得します.",
+    "playback-reporting-description": "ダイレクトプレイ",
     "color-scheme-description": "デフォルトでは、Fintunes はオペレーティング システムの配色に従います。ただし、Fintunes が常にダーク モードまたはライト モードであることを確認するために、これをオーバーライドすることを選択できます。",
     "color-scheme-light": "ライトモード",
     "color-scheme-dark": "ダークモード",
