@@ -15,6 +15,7 @@ const MimeTypes = {
     'audio/x-ape': '.ape',
     'audio/xsp': '.xsp',
     'audio/x-wavpack': '.wv',
+    'audio/ogg': '.ogg'
 };
 
 export default MimeTypes;
