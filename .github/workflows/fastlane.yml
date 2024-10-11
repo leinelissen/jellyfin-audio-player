@@ -32,7 +32,7 @@ jobs:
         SENTRY_DISABLE_AUTO_UPLOAD: true
       run: bundle exec fastlane android build
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: jellyfin-audio-player-android-${{ steps.vars.outputs.sha_short }}.apk
         path: android/app/build/outputs/**/*.apk
