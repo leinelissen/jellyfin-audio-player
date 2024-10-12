@@ -16,6 +16,7 @@ import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/
 import usePlayTracks from '@/utility/usePlayTracks';
 import { selectIsDownloaded } from '@/store/downloads/selectors';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
+import { ColoredBlurView } from '@/components/Colors';
 
 type Route = RouteProp<StackParams, 'TrackPopupMenu'>;
 
@@ -74,20 +75,22 @@ function TrackPopupMenu() {
     }, [trackId, dispatch, closeModal]);
 
     return (
-        <Container>
-            <Artwork src={getImage(track)} />
-            <Header>{track?.Name}</Header>
-            <SubHeader style={{ marginBottom: 18 }}>{track?.AlbumArtist} {track?.Album ? '— ' + track?.Album : ''}</SubHeader>
-            <WrappableButtonRow>
-                <WrappableButton title={t('play-next')} icon={PlayIcon} onPress={handlePlayNext} />
-                <WrappableButton title={t('add-to-queue')} icon={QueueAppendIcon} onPress={handleAddToQueue} />
-                {isDownloaded ? (
-                    <WrappableButton title={t('delete-track')} icon={TrashIcon} onPress={handleDelete} />
-                ) : (
-                    <WrappableButton title={t('download-track')} icon={DownloadIcon} onPress={handleDownload} />
-                )}
-            </WrappableButtonRow>
-        </Container>
+        <ColoredBlurView>
+            <Container>
+                <Artwork src={getImage(track)} />
+                <Header>{track?.Name}</Header>
+                <SubHeader style={{ marginBottom: 18 }}>{track?.AlbumArtist} {track?.Album ? '— ' + track?.Album : ''}</SubHeader>
+                <WrappableButtonRow>
+                    <WrappableButton title={t('play-next')} icon={PlayIcon} onPress={handlePlayNext} />
+                    <WrappableButton title={t('add-to-queue')} icon={QueueAppendIcon} onPress={handleAddToQueue} />
+                    {isDownloaded ? (
+                        <WrappableButton title={t('delete-track')} icon={TrashIcon} onPress={handleDelete} />
+                    ) : (
+                        <WrappableButton title={t('download-track')} icon={DownloadIcon} onPress={handleDownload} />
+                    )}
+                </WrappableButtonRow>
+            </Container>
+        </ColoredBlurView>
     );
 }
 
