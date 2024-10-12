@@ -2,8 +2,8 @@ import { createAction, createAsyncThunk, createEntityAdapter } from '@reduxjs/to
 import { AppState } from '@/store';
 import { downloadFile, unlink, DocumentDirectoryPath, exists } from 'react-native-fs';
 import { DownloadEntity } from './types';
-import MimeTypes from '@/utility/MimeTypes';
 import { generateTrackUrl } from '@/utility/JellyfinApi/track';
+import db from 'mime-db';
 
 export const downloadAdapter = createEntityAdapter<DownloadEntity>();
 
@@ -26,13 +26,13 @@ export const downloadTrack = createAsyncThunk(
         }
 
         // Then convert the MIME-type to an extension
-        const extension = MimeTypes[contentType as keyof typeof MimeTypes];
-        if (!extension) {
+        const extensions = db[contentType]?.extensions;
+        if (!extensions?.length) {
             throw new Error(`Unsupported MIME-type ${contentType}`);
         }
 
         // Then generate the proper location
-        const location = `${DocumentDirectoryPath}/${id}${extension}`;
+        const location = `${DocumentDirectoryPath}/${id}.${extensions[0]}`;
 
         // Actually kick off the download
         const { promise } = await downloadFile({
