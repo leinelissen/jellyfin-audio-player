@@ -59,7 +59,7 @@
     "@react-native/metro-config": "0.74.85",
     "@react-native/typescript-config": "0.74.85",
     "@sentry/cli": "^2.33.0",
-    "@sentry/react-native": "^5.26.0",
+    "@sentry/react-native": "^5.33.2",
     "@types/i18n-js": "^3.8.9",
     "@types/lodash": "^4.14.202",
     "@types/mime-db": "^1.43.5",
