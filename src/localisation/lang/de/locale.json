@@ -41,7 +41,7 @@
     "error-reporting-description": "Bei der Nutzung dieser App können Fehler auftreten. Das Melden dieser Fehler trägt dazu bei, ein sichereres und stabileres App-Erlebnis zu schaffen.",
     "error-reporting-rationale": "Wenn Sie die Fehlerberichterstattung aktivieren, wird jedes Mal, wenn ein Fehler auftritt, automatisch ein Bericht erstellt und an einen Server gesendet, zusammen mit hilfreichen Debugging-Informationen wie Geräte, Versionen und der spezifische Fehler.",
     "why-use-tracking": "Warum werden Tracker verwendet?",
-    "why-use-tracking-description": "Tracker helfen, die Entwicklung dieser App zu beschleunigen, indem merkwürdige Sonderfälle oder übersehende Fehler direkt an uns gemeldet werden können. Dies hilft uns die App stabiler, robuster und nutzerfreundlicher für alle zu machen.",
+    "why-use-tracking-description": "Tracer helfen, die Entwicklung dieser App zu beschleunigen, indem merkwürdige Sonderfälle oder übersehende Fehler direkt an uns gemeldet werden können. Dies hilft uns die App für alle zu verbessern.",
     "what-data-is-gathered": "Welche Daten werden gesammelt?",
     "what-data-is-gathered-description": "Wir protokollieren den Fehler, den Gerätetyp, die Betriebssystemversion, die App-Version und die Geräte-ID. In den Fehlerberichten wird kein Anwendungsstatus gesendet. Die Geräte-ID ist ein eindeutiger Hash, der in Ihren Geräteeinstellungen zurückgesetzt werden kann, und wir können aus dieser Kennung keine persönlichen Informationen ableiten.",
     "where-is-data-stored": "Wo werden die Daten gespeichert?",
