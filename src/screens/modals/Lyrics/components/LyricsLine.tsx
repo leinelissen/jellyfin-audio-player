@@ -41,6 +41,7 @@ function LyricsLine({
     const active = useMemo(() => (
         position > start && position < end
     ), [start, end, position]);
+    const past = useMemo(() => position > end, [end, position]);
 
     // Call the parent when the active state changes
     useEffect(() => {
@@ -50,10 +51,10 @@ function LyricsLine({
     // Determine the current style for this line
     const lyricsTextStyle: StyleProp<TextStyle> = useMemo(() => ({
         color: active ? defaultStyles.themeColor.color : defaultStyles.text.color,
-        opacity: active ? 1 : 0.7,
+        opacity: active ? 1 : (past ? 0.25 : 0.7),
         transformOrigin: 'left center',
         fontSize: size === 'full' ? 24 : 18,
-    }), [active, defaultStyles, size]);
+    }), [active, defaultStyles, size, past]);
 
     const scale = useDerivedValue(() => withTiming(active ? 1.05 : 1));
     const animatedStyle = useAnimatedStyle(() => ({
