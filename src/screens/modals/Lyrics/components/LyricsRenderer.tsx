@@ -1,16 +1,12 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import { LayoutChangeEvent, LayoutRectangle, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { Lyrics } from '@/utility/JellyfinApi/lyrics';
 import { useProgress } from 'react-native-track-player';
 import useCurrentTrack from '@/utility/useCurrentTrack';
 import LyricsLine from './LyricsLine';
 import { useNavigation } from '@react-navigation/native';
-import { useTypedSelector } from '@/store';
 import { NOW_PLAYING_POPOVER_HEIGHT } from '@/screens/Music/overlays/NowPlaying';
 import LyricsProgress, { LyricsProgressProps } from './LyricsProgress';
-
-type LyricsLine = Lyrics['Lyrics'][number];
 
 const styles = StyleSheet.create({
     lyricsContainerFull: {
@@ -42,9 +38,7 @@ export default function LyricsRenderer({ size = 'full' }: LyricsRendererProps) {
     const scrollViewRef = useRef<Animated.ScrollView>(null);
     const lineLayoutsRef = useRef(new Map<number, LayoutRectangle>());
     const { position } = useProgress(100);
-    const { track: trackPlayerTrack } = useCurrentTrack();
-    const tracks = useTypedSelector((state) => state.music.tracks.entities);
-    const track = useMemo(() => tracks[trackPlayerTrack?.backendId], [trackPlayerTrack?.backendId, tracks]);
+    const { track, albumTrack } = useCurrentTrack();
     const navigation = useNavigation();
 
     // We will be using isUserScrolling to prevent lyrics controller scroll lyrics view
@@ -83,12 +77,12 @@ export default function LyricsRenderer({ size = 'full' }: LyricsRendererProps) {
     const handleScrollBeginDrag = useCallback(() => isUserScrolling.current = true, []);
     const handleScrollEndDrag = useCallback(() => isUserScrolling.current = false, []);
 
-    if (!track) {
+    if (!track || !albumTrack) {
         return null;
     }
 
     // GUARD: If the track has no lyrics, close the modal
-    if (!track.HasLyrics || !track.Lyrics) {
+    if (!albumTrack.HasLyrics || !albumTrack.Lyrics) {
         navigation.goBack();
         return null;
     }
@@ -107,18 +101,18 @@ export default function LyricsRenderer({ size = 'full' }: LyricsRendererProps) {
             >
                 <LyricsProgress
                     start={0}
-                    end={track.Lyrics.Lyrics[0].Start - TIME_OFFSET}
+                    end={albumTrack.Lyrics.Lyrics[0].Start - TIME_OFFSET}
                     position={currentTime}
                     index={-1}
                     onActive={handleActive}
                     onLayout={handleLayoutChange}
                 />
-                {track.Lyrics.Lyrics.map((lyrics, i) => {
+                {albumTrack.Lyrics.Lyrics.map((lyrics, i) => {
                     const props: LyricsProgressProps = {
                         start: lyrics.Start - TIME_OFFSET,
-                        end: track.Lyrics!.Lyrics.length === i + 1
+                        end: albumTrack.Lyrics!.Lyrics.length === i + 1
                             ? track.RunTimeTicks
-                            : track.Lyrics!.Lyrics[i + 1]?.Start - TIME_OFFSET
+                            : albumTrack.Lyrics!.Lyrics[i + 1]?.Start - TIME_OFFSET
                         ,
                         position: currentTime,
                         onLayout: handleLayoutChange,

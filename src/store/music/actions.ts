@@ -1,14 +1,60 @@
-import { createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
-import { Album, AlbumTrack, Playlist } from './types';
-import { AsyncThunkAPI } from '..';
+import { AsyncThunkPayloadCreator, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
+import { Album, AlbumTrack, CodecMetadata, Lyrics, Playlist } from './types';
+import type { AsyncThunkAPI } from '..';
 import { retrieveAllAlbums, retrieveRecentAlbums, retrieveAlbumTracks, retrieveAlbum, retrieveSimilarAlbums } from '@/utility/JellyfinApi/album';
 import { retrieveAllPlaylists, retrievePlaylistTracks } from '@/utility/JellyfinApi/playlist';
 import { searchItem } from '@/utility/JellyfinApi/search';
+import { retrieveTrackLyrics } from '@/utility/JellyfinApi/lyrics';
+import { retrieveTrackCodecMetadata } from '@/utility/JellyfinApi/track';
 
 export const albumAdapter = createEntityAdapter<Album, string>({
     selectId: album => album.Id,
     sortComparer: (a, b) => a.Name.localeCompare(b.Name),
 });
+
+/**
+ * Fetch lyrics for a given track
+ */
+export const fetchLyricsByTrack = createAsyncThunk<Lyrics, string, AsyncThunkAPI>(
+    '/track/lyrics',
+    retrieveTrackLyrics,
+);
+
+/**
+ * Fetch codec metadata for a given track
+ */
+export const fetchCodecMetadataByTrack = createAsyncThunk<CodecMetadata, string, AsyncThunkAPI>(
+    '/track/codecMetadata',
+    retrieveTrackCodecMetadata,
+);
+
+/** A generic type for any action that retrieves tracks */
+type AlbumTrackPayloadCreator = AsyncThunkPayloadCreator<AlbumTrack[], string, AsyncThunkAPI>;
+
+/**
+ * This is a wrapper that postprocesses any tracks, so that we can also support
+ * lyrics, codec metadata and potential other applications.
+ */
+export const postProcessTracks = function(creator: AlbumTrackPayloadCreator): AlbumTrackPayloadCreator {
+    // Return a new payload creator
+    return async (args, thunkAPI) => {
+        // Retrieve the tracks using the original creator
+        const tracks = await creator(args, thunkAPI);
+
+        // GUARD: Check if we've retrieved any tracks
+        if (Array.isArray(tracks)) {
+            // If so, attempt to retrieve lyrics for the tracks that have them
+            tracks.filter((t) => t.HasLyrics)
+                .forEach((t) => thunkAPI.dispatch(fetchLyricsByTrack(t.Id)));
+
+            // Also, retrieve codec metadata
+            tracks.forEach((t) => thunkAPI.dispatch(fetchCodecMetadataByTrack(t.Id)));
+        }
+
+        return tracks;
+    };
+};
+
 
 /**
  * Fetch all albums available on the jellyfin server
@@ -36,7 +82,7 @@ export const trackAdapter = createEntityAdapter<AlbumTrack, string>({
  */
 export const fetchTracksByAlbum = createAsyncThunk<AlbumTrack[], string, AsyncThunkAPI>(
     '/tracks/byAlbum',
-    retrieveAlbumTracks,
+    postProcessTracks(retrieveAlbumTracks),
 );
 
 export const fetchAlbum = createAsyncThunk<Album, string, AsyncThunkAPI>(
@@ -100,5 +146,5 @@ export const fetchAllPlaylists = createAsyncThunk<Playlist[], undefined, AsyncTh
  */
 export const fetchTracksByPlaylist = createAsyncThunk<AlbumTrack[], string, AsyncThunkAPI>(
     '/tracks/byPlaylist',
-    retrievePlaylistTracks,
+    postProcessTracks(retrievePlaylistTracks),
 );

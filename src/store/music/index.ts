@@ -9,7 +9,9 @@ import {
     fetchAllPlaylists,
     fetchTracksByPlaylist,
     fetchAlbum,
-    fetchSimilarAlbums
+    fetchSimilarAlbums,
+    fetchCodecMetadataByTrack,
+    fetchLyricsByTrack
 } from './actions';
 import { createSlice } from '@reduxjs/toolkit';
 import { Album, AlbumTrack, Playlist } from './types';
@@ -162,6 +164,16 @@ const music = createSlice({
         
         // Reset any caches we have when a new server is set
         builder.addCase(setJellyfinCredentials, () => initialState);
+
+        /**
+         * Fetch track metadata
+         */
+        builder.addCase(fetchCodecMetadataByTrack.fulfilled, (state, { payload, meta }) => {
+            state.tracks.entities[meta.arg].Codec = payload;
+        });
+        builder.addCase(fetchLyricsByTrack.fulfilled, (state, { payload, meta }) => {
+            state.tracks.entities[meta.arg].Lyrics = payload;
+        });
     }
 });
 

@@ -1,5 +1,3 @@
-import {Lyrics} from '@/utility/JellyfinApi/lyrics.ts';
-
 export interface UserData {
     PlaybackPositionTicks: number;
     PlayCount: number;
@@ -72,6 +70,34 @@ export interface Album {
     PrimaryImageItemId?: string;
 }
 
+export interface CodecMetadata {
+    contentType?: string;
+    isDirectPlay: boolean;
+}
+
+export interface LyricMetadata {
+    Artist: string
+    Album: string
+    Title: string
+    Author: string
+    Length: number
+    By: string
+    Offset: number
+    Creator: string
+    Version: string
+    IsSynced: boolean
+}
+
+export interface LyricData {
+    Text: string
+    Start: number
+}
+
+export interface Lyrics {
+    Metadata: LyricMetadata;
+    Lyrics: LyricData[]
+}
+
 export interface AlbumTrack {
     Name: string;
     ServerId: string;
@@ -95,7 +121,8 @@ export interface AlbumTrack {
     LocationType: string;
     MediaType: string;
     HasLyrics: boolean;
-    Lyrics: Lyrics | null;
+    Lyrics?: Lyrics;
+    Codec?: CodecMetadata;
     MediaStreams: MediaStream[];
 }
 

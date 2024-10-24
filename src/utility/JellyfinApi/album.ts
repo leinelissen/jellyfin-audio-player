@@ -1,6 +1,5 @@
 import { Album, AlbumTrack } from '@/store/music/types';
 import { fetchApi } from './lib';
-import {retrieveAndInjectLyricsToTracks} from '@/utility/JellyfinApi/lyrics.ts';
 
 const albumOptions = {
     SortBy: 'AlbumArtist,SortName',
@@ -73,5 +72,5 @@ export async function retrieveAlbumTracks(ItemId: string) {
     const singleAlbumParams = new URLSearchParams(singleAlbumOptions).toString();
 
     return fetchApi<{ Items: AlbumTrack[] }>(({ user_id }) => `/Users/${user_id}/Items?${singleAlbumParams}`)
-        .then((data) => retrieveAndInjectLyricsToTracks(data.Items));
+        .then((d) => d.Items);
 }

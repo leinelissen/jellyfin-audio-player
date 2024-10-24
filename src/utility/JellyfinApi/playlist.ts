@@ -1,6 +1,5 @@
 import { AlbumTrack, Playlist } from '@/store/music/types';
 import { asyncFetchStore, fetchApi } from './lib';
-import {retrieveAndInjectLyricsToTracks} from '@/utility/JellyfinApi/lyrics.ts';
 
 const playlistOptions = {
     SortBy: 'SortName',
@@ -35,5 +34,5 @@ export async function retrievePlaylistTracks(ItemId: string) {
     const singlePlaylistParams = new URLSearchParams(singlePlaylistOptions).toString();
 
     return fetchApi<{ Items: AlbumTrack[] }>(`/Playlists/${ItemId}/Items?${singlePlaylistParams}`)
-        .then((d) => retrieveAndInjectLyricsToTracks(d.Items));
+        .then((d) => d.Items);
 }

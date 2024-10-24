@@ -52,18 +52,18 @@ export default function MediaInformation() {
             <WaveformIcon fill={styles.icon.color} height={16} width={16} />
             <Info>
                 <Label numberOfLines={1} overflow>
-                    {track.isDirectPlay ? t('direct-play') : t('transcoded')}
+                    {albumTrack.Codec?.isDirectPlay ? t('direct-play') : t('transcoded')}
                 </Label>
                 <Label numberOfLines={1}>
-                    {track.isDirectPlay
+                    {albumTrack.Codec?.isDirectPlay
                         ? mediaStream?.Codec.toUpperCase()
-                        : track.contentType?.replace('audio/', '').toUpperCase()
+                        : albumTrack.Codec?.contentType?.replace('audio/', '').toUpperCase()
                     }
                 </Label>
                 {mediaStream && (
                     <>
                         <Label numberOfLines={1}>
-                            {((track.isDirectPlay ? mediaStream.BitRate : track.bitRate) / 1000)
+                            {((albumTrack.Codec?.isDirectPlay ? mediaStream.BitRate : track.bitRate) / 1000)
                                 .toFixed(0)}
                             {t('kbps')}
                         </Label>

@@ -1,9 +1,7 @@
-import { AlbumTrack } from '@/store/music/types';
+import { AlbumTrack, CodecMetadata } from '@/store/music/types';
 import { Platform } from 'react-native';
 import { Track } from 'react-native-track-player';
-import { fetchApi, getImage } from './lib';
-import store from '@/store';
-import {retrieveAndInjectLyricsToTracks} from '@/utility/JellyfinApi/lyrics';
+import { asyncFetchStore, fetchApi, getImage } from './lib';
 
 const trackOptionsOsOverrides: Record<typeof Platform.OS, Record<string, string>> = {
     ios: {
@@ -30,7 +28,7 @@ const baseTrackOptions: Record<string, string> = {
  * Generate the track streaming url from the trackId
  */
 export function generateTrackUrl(trackId: string) {
-    const credentials = store.getState().settings.credentials;
+    const credentials = asyncFetchStore().getState().settings.credentials;
     const trackOptions = {
         ...baseTrackOptions,
         UserId: credentials?.user_id || '',
@@ -52,8 +50,6 @@ export async function generateTrack(track: AlbumTrack): Promise<Track> {
     // Also construct the URL for the stream
     const url = generateTrackUrl(track.Id);
 
-    const response = await fetch(url, { method: 'HEAD' });
-
     return {
         url,
         backendId: track.Id,
@@ -62,10 +58,6 @@ export async function generateTrack(track: AlbumTrack): Promise<Track> {
         album: track.Album,
         duration: track.RunTimeTicks,
         artwork: getImage(track.Id),
-        hasLyrics: track.HasLyrics,
-        lyrics: track.Lyrics,
-        contentType: response.headers.get('Content-Type') || undefined,
-        isDirectPlay: response.headers.has('Content-Length'),
         bitRate: baseTrackOptions.audioBitRate,
     };
 }
@@ -84,5 +76,15 @@ const trackParams = {
  */
 export async function retrieveAllTracks() {
     return fetchApi<{ Items: AlbumTrack[] }>(({ user_id }) => `/Users/${user_id}/Items?${trackParams}`)
-        .then((d) => retrieveAndInjectLyricsToTracks(d.Items));
+        .then((d) => d.Items);
+}
+
+export async function retrieveTrackCodecMetadata(trackId: string): Promise<CodecMetadata> {
+    const url = generateTrackUrl(trackId);
+    const response = await fetch(url, { method: 'HEAD' });
+
+    return {
+        contentType: response.headers.get('Content-Type') || undefined,
+        isDirectPlay: response.headers.has('Content-Length'),
+    };
 }
