@@ -23,7 +23,7 @@
     "user-id": "ID de usuario Jellyfin",
     "setting-cache": "Caché",
     "setting-cache-description": "Si has actualizado tu biblioteca, pero la aplicación conserva los recursos almacenados en caché, puedes borrar la caché de forma manual con este botón. Esto obligará a la aplicación a recuperar la biblioteca desde cero.",
-    "reset-cache": "Resetear Caché",
+    "reset-cache": "Restablecer caché",
     "recent-albums": "Álbumes recientes",
     "error-reporting-rationale": "Cuando habilita el informe de errores, cada vez que ocurre un error, se crea y envía automáticamente un informe a un servidor, junto con información útil de depuración, como dispositivos, versiones y el error específico.",
     "what-data-is-gathered": "¿Qué datos se recopilan?",
