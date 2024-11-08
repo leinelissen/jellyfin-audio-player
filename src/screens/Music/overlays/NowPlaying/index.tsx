@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { ActivityIndicator, Animated, Dimensions, Platform, Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styled, { css } from 'styled-components/native';
@@ -16,7 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { calculateProgressTranslation } from '@/components/Progresstrack';
 import { NavigationProp } from '@/screens/types';
 import { ShadowWrapper } from '@/components/Shadow';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const NOW_PLAYING_POPOVER_MARGIN = 6;
@@ -112,7 +112,13 @@ function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean })
     const { index, track } = useCurrentTrack();
     const { buffered, position } = useProgress();
     const defaultStyles = useDefaultStyles();
-    const tabBarHeight = useBottomTabBarHeight();
+
+    // The regular `useBottomTabBarHeight` hook will throw an error when it
+    // cannot find a height. Since we might use this component in places where
+    // it is unavailable, we'll just use the context directly, which will output
+    // `undefined` when it's not set.
+    const tabBarHeight = useContext(BottomTabBarHeightContext);
+
     const insets = useSafeAreaInsets();
     const previousBuffered = usePrevious(buffered);
     const previousPosition = usePrevious(position);
