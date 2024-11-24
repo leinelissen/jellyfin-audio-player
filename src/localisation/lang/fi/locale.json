@@ -4,5 +4,7 @@
     "queue": "Queue",
     "add-to-queue": "Lisää _jonoon",
     "clear-queue": "Tyhjennä jono",
-    "no-results": "Ei tuloksia."
+    "no-results": "Ei tuloksia.",
+    "play-next": "Seuraava peli",
+    "play-album": "Pelaa Album"
 }
