@@ -1,4 +1,8 @@
 {
     "albums": "Albumit",
-    "album": "Albumi"
+    "album": "Albumi",
+    "queue": "Queue",
+    "add-to-queue": "Lisää _jonoon",
+    "clear-queue": "Tyhjennä jono",
+    "no-results": "Ei tuloksia."
 }
