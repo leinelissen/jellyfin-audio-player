@@ -34,7 +34,7 @@
     "access-token": "Token de acesso do Jellyfin",
     "user-id": "ID de usuário do Jellyfin",
     "setting-cache": "Cache",
-    "setting-cache-description": "Se você tiver atualizado sua biblioteca, mas o aplicativo está segurando em ativos armazenados em cache, você pode limpar com força o cache usando este botão. Isso forçará o aplicativo a buscar a biblioteca do zero.",
+    "setting-cache-description": "Se você atualizou sua biblioteca do Jellyfin, mas o aplicativo continua usando os recursos em cache, você pode forçar a limpeza do cache usando este botão. Isso forçará o aplicativo a recuperar a biblioteca do zero.",
     "reset-cache": "Redefinir cache",
     "recent-albums": "Álbuns recentes",
     "error-reporting": "Relatório de erros",
