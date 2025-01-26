@@ -1,6 +1,6 @@
 import { useTypedSelector } from '@/store';
 import { AlbumTrack } from '@/store/music/types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import TrackPlayer, { Event, useTrackPlayerEvents, Track } from 'react-native-track-player';
 
 interface CurrentTrackResponse {
@@ -24,22 +24,33 @@ export default function useCurrentTrack(): CurrentTrackResponse {
         entities[track?.backendId]
     ), [track?.backendId, entities]);
 
-    // Retrieve the current track from the queue using the index
-    const retrieveCurrentTrack = useCallback(async () => {
-        const queue = await TrackPlayer.getQueue();
-        const currentTrackIndex = await TrackPlayer.getActiveTrackIndex();
-        if (currentTrackIndex !== undefined) {
-            setTrack(queue[currentTrackIndex]);
-            setIndex(currentTrackIndex);
-        } else {
-            setTrack(undefined);
-            setIndex(undefined);
-        }
-    }, [setTrack, setIndex]);
-
     // Then execute the function on component mount and track changes
-    useEffect(() => { retrieveCurrentTrack(); }, [retrieveCurrentTrack]);
-    useTrackPlayerEvents([ Event.PlaybackActiveTrackChanged, Event.PlaybackState ], retrieveCurrentTrack);
+    useEffect(() => { 
+        // Async function that retrieves the current track whenever the hook is
+        // first executed
+        async function getTrack() {
+            const queue = await TrackPlayer.getQueue();
+            const currentTrackIndex = await TrackPlayer.getActiveTrackIndex();
+            if (currentTrackIndex !== undefined) {
+                setTrack(queue[currentTrackIndex]);
+                setIndex(currentTrackIndex);
+            } else {
+                setTrack(undefined);
+                setIndex(undefined);
+            }
+        }
+
+        getTrack();
+    }, []);
+
+    // Listen for update events
+    useTrackPlayerEvents([ Event.PlaybackActiveTrackChanged, Event.PlaybackState ], (e) => {
+        // GUARD: Listen for active track changed events
+        if (e.type === Event.PlaybackActiveTrackChanged) {
+            setIndex(e.index);
+            setTrack(e.track);
+        }
+    });
 
     return { track, index, albumTrack };
 }
