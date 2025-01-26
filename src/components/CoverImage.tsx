@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Dimensions, ViewProps } from 'react-native';
 import { Canvas, Blur, Image as SkiaImage, useImage, Offset, Mask, RoundedRect, Shadow } from '@shopify/react-native-skia';
 import useDefaultStyles, { useUserOrSystemScheme } from './Colors';
@@ -13,7 +13,7 @@ const Container = styled.View<{ size: number }>`
     z-index: 0;
 `;
 
-const BlurContainer = styled(Canvas)<{ size: number, offset: number }>`
+const BlurContainer = styled(Canvas) <{ size: number, offset: number }>`
     position: absolute;
     left: -${(props) => props.offset}px;
     top: -${(props) => props.offset}px;
@@ -40,18 +40,19 @@ const emptyAlbumDark = require('@/assets/images/empty-album-dark.png');
  * to the corners.
  */
 function CoverImage({
-    blurRadius = 256, 
-    opacity = 0.85, 
-    margin = 112, 
-    radius = 12, 
+    blurRadius = 256,
+    opacity = 0.85,
+    margin = 112,
+    radius = 12,
     style,
-    src, 
+    src,
 }: Props) {
     const defaultStyles = useDefaultStyles();
     const colorScheme = useUserOrSystemScheme();
+    const [hasFailed, setFailed] = useState(false);
 
-    const image = useImage(src || null);
-    const fallback = useImage(colorScheme === 'light' ? emptyAlbumLight: emptyAlbumDark);
+    const image = useImage(src || null, () => setFailed(true));
+    const fallback = useImage(colorScheme === 'light' ? emptyAlbumLight : emptyAlbumDark);
     const { canvasSize, imageSize } = useMemo(() => {
         const imageSize = Screen.width - margin;
         const canvasSize = imageSize + blurRadius * 2;
@@ -68,14 +69,14 @@ function CoverImage({
                     <Shadow dx={0} dy={8} blur={16} color="#0000000d" />
                     <Shadow dx={0} dy={16} blur={32} color="#0000000d" />
                 </RoundedRect>
-                {image ? (
+                {src && (
                     <>
                         <SkiaImage
-                            image={image || fallback}
+                            image={image}
                             width={imageSize}
                             height={imageSize}
                             opacity={opacity}
-                            key={image ? 'image-blur' : 'fallback-blur'}
+                            key="image-blur"
                         >
                             <Offset x={blurRadius} y={blurRadius} />
                             <Blur blur={blurRadius / 2} />
@@ -89,14 +90,31 @@ function CoverImage({
                                     y={blurRadius} r={radius}
                                 />
                             }
-                            key={image ? 'image' : 'fallback'}
+                            key="image"
                         >
-                            <SkiaImage image={image || fallback} width={imageSize} height={imageSize}>
+                            <SkiaImage image={image} width={imageSize} height={imageSize}>
                                 <Offset x={blurRadius} y={blurRadius} />
                             </SkiaImage>
                         </Mask>
                     </>
-                ) : null}
+                )}
+                {(!src || hasFailed) && (
+                    <Mask
+                        mask={
+                            <RoundedRect
+                                width={imageSize}
+                                height={imageSize}
+                                x={blurRadius}
+                                y={blurRadius} r={radius}
+                            />
+                        }
+                        key="fallback"
+                    >
+                        <SkiaImage image={fallback} width={imageSize} height={imageSize}>
+                            <Offset x={blurRadius} y={blurRadius} />
+                        </SkiaImage>
+                    </Mask>
+                )}
             </BlurContainer>
         </Container>
     );
