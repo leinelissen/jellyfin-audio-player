@@ -50,7 +50,7 @@ function CoverImage({
     const defaultStyles = useDefaultStyles();
     const colorScheme = useUserOrSystemScheme();
 
-    const image = useImage(src || null, console.log);
+    const image = useImage(src || null);
     const fallback = useImage(colorScheme === 'light' ? emptyAlbumLight: emptyAlbumDark);
     const { canvasSize, imageSize } = useMemo(() => {
         const imageSize = Screen.width - margin;

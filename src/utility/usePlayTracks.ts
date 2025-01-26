@@ -65,6 +65,9 @@ export default function usePlayTracks() {
             if (download?.location) {
                 generatedTrack.url = 'file://' + download.location;
             }
+            if (download?.image) {
+                generatedTrack.artwork = 'file://' + download.image;
+            }
 
             return generatedTrack;
         }))).filter((t): t is Track => typeof t !== 'undefined');

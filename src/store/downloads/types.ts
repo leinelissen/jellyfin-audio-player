@@ -7,4 +7,5 @@ export interface DownloadEntity {
     location?: string;
     jobId?: number;
     error?: string;
+    image?: string;
 }

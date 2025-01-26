@@ -3,56 +3,61 @@ import { AppState } from '@/store';
 import { downloadFile, unlink, DocumentDirectoryPath, exists } from 'react-native-fs';
 import { DownloadEntity } from './types';
 import { generateTrackUrl } from '@/utility/JellyfinApi/track';
-import db from 'mime-db';
+
+import { getImage } from '@/utility/JellyfinApi/lib';
+import { getExtensionForUrl } from '@/utility/mimeType';
 
 export const downloadAdapter = createEntityAdapter<DownloadEntity>();
 
 export const queueTrackForDownload = createAction<string>('download/queue');
-export const initializeDownload = createAction<{ id: string, size?: number, jobId?: number, location: string }>('download/initialize');
+export const initializeDownload = createAction<{ id: string, size?: number, jobId?: number, location: string, image: string }>('download/initialize');
 export const progressDownload = createAction<{ id: string, progress: number, jobId?: number }>('download/progress');
-export const completeDownload = createAction<{ id: string, location: string, size?: number }>('download/complete');
+export const completeDownload = createAction<{ id: string, location: string, size?: number, image?: string }>('download/complete');
 export const failDownload = createAction<{ id: string }>('download/fail');
 
 export const downloadTrack = createAsyncThunk(
     '/downloads/track',
     async (id: string, { dispatch }) => {
         // Generate the URL we can use to download the file
-        const url = generateTrackUrl(id);
+        const audioUrl = generateTrackUrl(id);
+        const imageUrl = getImage(id);
 
         // Get the content-type from the URL by doing a HEAD-only request
-        const contentType = (await fetch(url, { method: 'HEAD' })).headers.get('Content-Type');
-        if (!contentType) {
-            throw new Error('Jellyfin did not return a Content-Type for a streaming URL.');
-        }
-
-        // Then convert the MIME-type to an extension
-        const extensions = db[contentType]?.extensions;
-        if (!extensions?.length) {
-            throw new Error(`Unsupported MIME-type ${contentType}`);
-        }
+        const [audioExt, imageExt] = await Promise.all([
+            getExtensionForUrl(audioUrl),
+            getExtensionForUrl(imageUrl)
+        ]);
 
         // Then generate the proper location
-        const location = `${DocumentDirectoryPath}/${id}.${extensions[0]}`;
+        const audioLocation = `${DocumentDirectoryPath}/${id}.${audioExt}`;
+        const imageLocation = `${DocumentDirectoryPath}/${id}.${imageExt}`;
 
-        // Actually kick off the download
-        const { promise } = await downloadFile({
-            fromUrl: url,
+        // Actually kick off the download 
+        const { promise: audioPromise } = downloadFile({
+            fromUrl: audioUrl,
             progressInterval: 250,
             background: true,
             begin: ({ jobId, contentLength }) => {
                 // Dispatch the initialization
-                dispatch(initializeDownload({ id, jobId, size: contentLength, location }));
+                dispatch(initializeDownload({ id, jobId, size: contentLength, location: audioLocation, image: imageLocation }));
             },
             progress: (result) => {
                 // Dispatch a progress update
                 dispatch(progressDownload({ id, progress: result.bytesWritten / result.contentLength }));
             },
-            toFile: location,
+            toFile: audioLocation,
+        });
+
+        const { promise: imagePromise } = downloadFile({
+            fromUrl: imageUrl,
+            toFile: imageLocation,
+            background: true,
         });
 
         // Await job completion
-        const result = await promise;
-        dispatch(completeDownload({ id, location, size: result.bytesWritten }));
+        const [audioResult, imageResult] = await Promise.all([audioPromise, imagePromise]);
+        const totalSize = audioResult.bytesWritten + imageResult.bytesWritten;
+        dispatch(completeDownload({ id, location: audioLocation, size: totalSize, image: imageLocation }));
     },
 );
 

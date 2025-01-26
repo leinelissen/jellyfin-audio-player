@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { DocumentDirectoryPath, readDir } from 'react-native-fs';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import { completeDownload, downloadTrack } from '@/store/downloads/actions';
+import { getMimeTypeForExtension } from '@/utility/mimeType';
 
 /**
  * The maximum number of concurrent downloads we allow to take place at once.
@@ -77,11 +78,17 @@ function DownloadManager () {
             // Loop through the mp3 files
             files.filter((file) => file.isFile())
                 .forEach((file) => {
-                    const [id] = file.name.split('.');
+                    const [id, extension] = file.name.split('.');
+                    const mimeType = getMimeTypeForExtension(extension);
+
+                    // GUARD: Only process audio mime types
+                    if (!mimeType || mimeType.startsWith('audio')) {
+                        return;
+                    }
 
                     // GUARD: If the id is already in the store, there's nothing
                     // left for us to do.
-                    if (ids.includes(id) && file.path === entities[id]?.location) {
+                    if (ids.includes(id)) {
                         return;
                     }
 
@@ -90,6 +97,7 @@ function DownloadManager () {
                         id,
                         location: file.path,
                         size: file.size,
+                        
                     }));
                 });
         }
