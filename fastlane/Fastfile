@@ -4,6 +4,11 @@ package = load_json(json_path: "package.json")
 
 platform :ios do
     before_all do
+        app_store_connect_api_key(
+            key_id: "Z98N7N8ZMW",
+            issuer_id: "f0fa1c89-6a9a-4144-bfba-529dfe05f09b",
+            key_filepath: "./certificates/AuthKey_Z98N7N8ZMW.p8"
+        )
         get_certificates(
             output_path: "certificates/"
         )
