@@ -11,7 +11,7 @@ import { LayoutChangeEvent } from 'react-native';
 import { Defs, LinearGradient, Rect, Stop, Svg } from 'react-native-svg';
 
 const Container = styled.TouchableOpacity`
-    border-radius: 8px;
+    border-radius: 12px;
     margin-top: 24px;
     margin-left: -16px;
     margin-right: -16px;
@@ -67,10 +67,10 @@ function InnerLyricsPreview() {
             onPress={handleShowLyrics}
             onLayout={handleLayoutChange}
         >
-            <Header style={defaultStyles.activeBackground}>
+            <Header style={defaultStyles.trackBackground}>
                 <HeaderInnerContainer>
-                    <LyricsIcon fill={defaultStyles.themeColor.color} />
-                    <Label style={defaultStyles.themeColor}>
+                    <LyricsIcon fill={defaultStyles.textHalfOpacity.color} />
+                    <Label style={defaultStyles.textHalfOpacity}>
                         {t('lyrics')}
                     </Label>
                 </HeaderInnerContainer>
@@ -88,7 +88,7 @@ function InnerLyricsPreview() {
                             <Stop
                                 offset="0"
                                 stopColor={defaultStyles.trackBackground.backgroundColor}
-                                stopOpacity={1}
+                                stopOpacity={0.9}
                             />
                             <Stop
                                 offset="0.75"
