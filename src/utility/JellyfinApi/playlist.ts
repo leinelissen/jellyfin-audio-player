@@ -8,8 +8,7 @@ const playlistOptions = {
     Recursive: 'true',
     Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated',
     ImageTypeLimit: '1',
-    EnableImageTypes: 'Primary,Backdrop,Banner,Thumb',
-    MediaTypes: 'Audio',
+    EnableImageTypes: 'Primary,Backdrop,Banner,Thumb'
 };
 
 /**
