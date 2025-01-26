@@ -31,6 +31,9 @@ interface Props {
     src: string;
 }
 
+const emptyAlbumLight = require('@/assets/images/empty-album-light.png');
+const emptyAlbumDark = require('@/assets/images/empty-album-dark.png');
+
 /**
  * This will take a cover image, and apply shadows and a really nice background
  * blur to the image in question. Additionally, we'll add some margin and radius
@@ -47,18 +50,13 @@ function CoverImage({
     const defaultStyles = useDefaultStyles();
     const colorScheme = useUserOrSystemScheme();
 
-    const image = useImage(src || null);
-    const fallback = useImage(colorScheme === 'light'
-        ? require('@/assets/images/empty-album-light.png')
-        : require('@/assets/images/empty-album-dark.png')
-    );
+    const image = useImage(src || null, console.log);
+    const fallback = useImage(colorScheme === 'light' ? emptyAlbumLight: emptyAlbumDark);
     const { canvasSize, imageSize } = useMemo(() => {
         const imageSize = Screen.width - margin;
         const canvasSize = imageSize + blurRadius * 2;
         return { imageSize, canvasSize };
     }, [blurRadius, margin]);
-
-    const skiaImage = useMemo(() => (image || fallback), [image, fallback]);
 
     return (
         <Container size={imageSize} style={style}>
@@ -70,14 +68,30 @@ function CoverImage({
                     <Shadow dx={0} dy={8} blur={16} color="#0000000d" />
                     <Shadow dx={0} dy={16} blur={32} color="#0000000d" />
                 </RoundedRect>
-                {skiaImage ? (
+                {image ? (
                     <>
-                        <SkiaImage image={skiaImage} width={imageSize} height={imageSize} opacity={opacity}>
+                        <SkiaImage
+                            image={image || fallback}
+                            width={imageSize}
+                            height={imageSize}
+                            opacity={opacity}
+                            key={image ? 'image-blur' : 'fallback-blur'}
+                        >
                             <Offset x={blurRadius} y={blurRadius} />
                             <Blur blur={blurRadius / 2} />
                         </SkiaImage>
-                        <Mask mask={<RoundedRect width={imageSize} height={imageSize} x={blurRadius} y={blurRadius} r={radius}  />}>
-                            <SkiaImage image={skiaImage} width={imageSize} height={imageSize}>
+                        <Mask
+                            mask={
+                                <RoundedRect
+                                    width={imageSize}
+                                    height={imageSize}
+                                    x={blurRadius}
+                                    y={blurRadius} r={radius}
+                                />
+                            }
+                            key={image ? 'image' : 'fallback'}
+                        >
+                            <SkiaImage image={image || fallback} width={imageSize} height={imageSize}>
                                 <Offset x={blurRadius} y={blurRadius} />
                             </SkiaImage>
                         </Mask>
