@@ -85,8 +85,8 @@ android {
         applicationId "nl.moeilijkedingen.jellyfinaudioplayer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 29
-        versionName "2.3.3"
+        versionCode 30
+        versionName "2.4.0"
     }
 
     signingConfigs {
