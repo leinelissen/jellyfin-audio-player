@@ -1,6 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistStore, persistReducer, PersistConfig, createMigrate, PersistState } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
@@ -9,10 +8,11 @@ import music, { initialState as musicInitialState } from './music';
 import downloads, { initialState as downloadsInitialState } from './downloads';
 import sleepTimer from './sleep-timer';
 import { ColorScheme } from './settings/types';
+import MigratedStorage from '@/utility/MigratedStorage';
 
 const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
     key: 'root',
-    storage: AsyncStorage,
+    storage: MigratedStorage,
     version: 2,
     stateReconciler: autoMergeLevel2,
     migrate: createMigrate({
@@ -80,7 +80,7 @@ const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
                     credentials,
                 },
             };
-        }
+        },
     })
 };
 
