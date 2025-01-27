@@ -1,3 +1,44 @@
+## [2.4.1](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.4.0...v2.4.1) (2025-01-27)
+
+
+
+# [2.4.0](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.3.3...v2.4.0) (2025-01-26)
+
+
+### Bug Fixes
+
+* accept any valid mime type for downloadable tracks ([2c42a89](https://github.com/leinelissen/jellyfin-audio-player/commit/2c42a897d9e77ba8f767896512b80c8c10a72e30))
+* align all album titles in track list view ([7cdd01e](https://github.com/leinelissen/jellyfin-audio-player/commit/7cdd01e71378fded86411b8dc79c9748c315be96)), closes [#172](https://github.com/leinelissen/jellyfin-audio-player/issues/172)
+* bump blur-view ([8bef5c6](https://github.com/leinelissen/jellyfin-audio-player/commit/8bef5c66e3242c1ad359eb3a96ef3177031cd22f))
+* clean up lyrics implementation ([2f1b9c1](https://github.com/leinelissen/jellyfin-audio-player/commit/2f1b9c180d205228768d0d82b13e9f6e51944928))
+* dark mode inconsistencies ([a64f52c](https://github.com/leinelissen/jellyfin-audio-player/commit/a64f52c4f913f92d8caeea74188d1260ff7c2ce5)), closes [#226](https://github.com/leinelissen/jellyfin-audio-player/issues/226) [#198](https://github.com/leinelissen/jellyfin-audio-player/issues/198)
+* don't attempt to parse playback reporting responses ([746c96d](https://github.com/leinelissen/jellyfin-audio-player/commit/746c96d45932f3a23122ada165acc49e8053da11))
+* ensure all cover images load properly ([b9e8a94](https://github.com/leinelissen/jellyfin-audio-player/commit/b9e8a94c7a4682076c05c4562b8996e47e84311f))
+* fine-tune default orderings ([38ce998](https://github.com/leinelissen/jellyfin-audio-player/commit/38ce9986e590392667fae7c8119aa1057e95cd23)), closes [#229](https://github.com/leinelissen/jellyfin-audio-player/issues/229)
+* further limit extraneous events from playback reporting ([c9f7f71](https://github.com/leinelissen/jellyfin-audio-player/commit/c9f7f71194105944f051e7329b88956e4c863976))
+* make progress bars initialise out of view ([0b13e69](https://github.com/leinelissen/jellyfin-audio-player/commit/0b13e69854a361a67bcc67baaf22c9364a53378f))
+* missing background on track pop-up menu ([f2cac91](https://github.com/leinelissen/jellyfin-audio-player/commit/f2cac91e2f08db7945a88e9ad29daa797ab96edd))
+* missing cover images in now playing view ([96a1180](https://github.com/leinelissen/jellyfin-audio-player/commit/96a11804ba390dc665282f1fc49e7f0fb710e642)), closes [#245](https://github.com/leinelissen/jellyfin-audio-player/issues/245) [#209](https://github.com/leinelissen/jellyfin-audio-player/issues/209)
+* missing image covers for emby ([01e25a8](https://github.com/leinelissen/jellyfin-audio-player/commit/01e25a89b1adcbacd7a58642d4d4ef8731480d8c))
+* more accurately return current track ([9462a3e](https://github.com/leinelissen/jellyfin-audio-player/commit/9462a3e294bffc46f25797688aefec2a43f7cccb))
+* prevent error on lyrics screen when tab height is unavailable ([b9a6c66](https://github.com/leinelissen/jellyfin-audio-player/commit/b9a6c66584b215e3ee86d1808864a04aa26065c9))
+* properly pre-insert queued tracks before played track ([3993401](https://github.com/leinelissen/jellyfin-audio-player/commit/399340127dd4026881397a269381aaca72c07751))
+* retrieve codec metadata and lyrics asynchronously ([77db5a5](https://github.com/leinelissen/jellyfin-audio-player/commit/77db5a51d2e2ba5ecd37439588dd83dcf2437b1c))
+* send last position for `Stopped` event ([68c8808](https://github.com/leinelissen/jellyfin-audio-player/commit/68c88081885bb3bda196dfe71b684e21e678787e))
+* show past lyrics in grey ([b03d449](https://github.com/leinelissen/jellyfin-audio-player/commit/b03d449a1bd5d16e16f15dbb215a75cfd2e0cc7c))
+* support audio/ogg in downloads ([1972f48](https://github.com/leinelissen/jellyfin-audio-player/commit/1972f489aaed4780c74733532e3597dbb54a5536))
+
+
+### Features
+
+* also store cover images for downloaded tracks ([6316814](https://github.com/leinelissen/jellyfin-audio-player/commit/6316814eba59ed2bd2c0fe1a23ed64bfe2f1bed3))
+* Emby support ([#234](https://github.com/leinelissen/jellyfin-audio-player/issues/234)) ([a6452f0](https://github.com/leinelissen/jellyfin-audio-player/commit/a6452f0a5e81b2f70ecdd7900138ef1a8ecb5554))
+* enable playlists for emby ([f90e9be](https://github.com/leinelissen/jellyfin-audio-player/commit/f90e9be3783363bd65b4c8b7c15964338b19dc38)), closes [#242](https://github.com/leinelissen/jellyfin-audio-player/issues/242)
+* Media stream info in now playing modal ([#233](https://github.com/leinelissen/jellyfin-audio-player/issues/233)) ([0d09c6f](https://github.com/leinelissen/jellyfin-audio-player/commit/0d09c6f0b8a5fc218af1182324a73cb667eccbce))
+* separate discs in album view when multiple are available ([ec4a2b6](https://github.com/leinelissen/jellyfin-audio-player/commit/ec4a2b6831fb8aa3c5e8f1fc658c235ced59cfd9)), closes [#179](https://github.com/leinelissen/jellyfin-audio-player/issues/179)
+
+
+
 ## [2.3.3](https://github.com/leinelissen/jellyfin-audio-player/compare/v2.3.2...v2.3.3) (2024-06-15)
 
 
