@@ -1,6 +1,6 @@
 {
   "name": "fintunes",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "main": "src/index.js",
   "private": true,
   "scripts": {

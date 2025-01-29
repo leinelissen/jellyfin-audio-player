@@ -37,7 +37,9 @@ platform :ios do
             workspace: "ios/Fintunes.xcworkspace",
             export_method: "app-store",
         )
-        upload_to_app_store
+        upload_to_app_store(
+            precheck_include_in_app_purchases: false
+        )
     end
         
     lane :beta do 
