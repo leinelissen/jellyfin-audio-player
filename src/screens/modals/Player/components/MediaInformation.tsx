@@ -22,13 +22,13 @@ const Info = styled.View`
     flex-shrink: 1;
 `;
 
-const Label = styled(Text)<{ overflow?: boolean }>`
+const Label = styled(Text)<{ $overflow?: boolean }>`
     opacity: 0.5;
     font-size: 13px;
 
-    ${(props) => props?.overflow && css`
+    ${(props) => props?.$overflow ? css`
         flex: 0 1 auto;
-    `}
+    `: null}
 `;
 
 /**
@@ -51,7 +51,7 @@ export default function MediaInformation() {
         <Container>
             <WaveformIcon fill={styles.icon.color} height={16} width={16} />
             <Info>
-                <Label numberOfLines={1} overflow>
+                <Label numberOfLines={1} $overflow>
                     {albumTrack.Codec?.isDirectPlay ? t('direct-play') : t('transcoded')}
                 </Label>
                 <Label numberOfLines={1}>

@@ -7,8 +7,8 @@ import TimerIcon from '@/assets/icons/timer.svg';
 import { setTimerDate } from '@/store/sleep-timer';
 import ticksToDuration from '@/utility/ticksToDuration';
 import useDefaultStyles from '@/components/Colors';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { t } from '@/localisation';
+import { TouchableOpacity } from 'react-native';
 
 const Container = styled.View`
     align-self: flex-start;

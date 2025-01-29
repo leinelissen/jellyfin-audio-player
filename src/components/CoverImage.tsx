@@ -59,8 +59,6 @@ function CoverImage({
         return { imageSize, canvasSize };
     }, [blurRadius, margin]);
 
-    console.log({ src });
-
     return (
         <Container size={imageSize} style={style}>
             <BlurContainer size={canvasSize} offset={blurRadius}>
