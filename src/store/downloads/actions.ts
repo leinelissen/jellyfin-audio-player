@@ -10,7 +10,7 @@ import { getExtensionForUrl } from '@/utility/mimeType';
 export const downloadAdapter = createEntityAdapter<DownloadEntity>();
 
 export const queueTrackForDownload = createAction<string>('download/queue');
-export const initializeDownload = createAction<{ id: string, size?: number, jobId?: number, location: string, image: string }>('download/initialize');
+export const initializeDownload = createAction<{ id: string, size?: number, jobId?: number, location: string, image?: string }>('download/initialize');
 export const progressDownload = createAction<{ id: string, progress: number, jobId?: number }>('download/progress');
 export const completeDownload = createAction<{ id: string, location: string, size?: number, image?: string }>('download/complete');
 export const failDownload = createAction<{ id: string }>('download/fail');
@@ -25,12 +25,13 @@ export const downloadTrack = createAsyncThunk(
         // Get the content-type from the URL by doing a HEAD-only request
         const [audioExt, imageExt] = await Promise.all([
             getExtensionForUrl(audioUrl),
-            getExtensionForUrl(imageUrl)
+            // Image files may be absent
+            getExtensionForUrl(imageUrl).catch(() => null)
         ]);
 
         // Then generate the proper location
         const audioLocation = `${DocumentDirectoryPath}/${id}.${audioExt}`;
-        const imageLocation = `${DocumentDirectoryPath}/${id}.${imageExt}`;
+        const imageLocation = imageExt ? `${DocumentDirectoryPath}/${id}.${imageExt}` : undefined;
 
         // Actually kick off the download 
         const { promise: audioPromise } = downloadFile({
@@ -48,24 +49,26 @@ export const downloadTrack = createAsyncThunk(
             toFile: audioLocation,
         });
 
-        const { promise: imagePromise } = downloadFile({
-            fromUrl: imageUrl,
-            toFile: imageLocation,
-            background: true,
-        });
+        const { promise: imagePromise } = imageExt && imageLocation
+            ? downloadFile({
+                fromUrl: imageUrl,
+                toFile: imageLocation,
+                background: true,
+            })
+            : { promise: Promise.resolve(null) };
 
         // Await job completion
         const [audioResult, imageResult] = await Promise.all([audioPromise, imagePromise]);
-        const totalSize = audioResult.bytesWritten + imageResult.bytesWritten;
+        const totalSize = audioResult.bytesWritten + (imageResult?.bytesWritten || 0);
         dispatch(completeDownload({ id, location: audioLocation, size: totalSize, image: imageLocation }));
     },
 );
 
 export const removeDownloadedTrack = createAsyncThunk(
     '/downloads/remove/track',
-    async(id: string, { getState }) => {
+    async (id: string, { getState }) => {
         // Retrieve the state
-        const { downloads: { entities }} = getState() as AppState;
+        const { downloads: { entities } } = getState() as AppState;
 
         // Attempt to retrieve the entity from the state
         const download = entities[id];

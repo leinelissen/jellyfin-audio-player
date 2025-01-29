@@ -1,8 +1,9 @@
-import db from 'mime-db';
+import mime from 'mime';
 
 const MIME_OVERRIDES: Record<string, string> = {
     'audio/mpeg': 'mp3',
-    'audio/ogg': '.ogg'
+    'audio/ogg': '.ogg',
+    'audio/flac': '.flac',
 };
 
 /**
@@ -11,6 +12,11 @@ const MIME_OVERRIDES: Record<string, string> = {
 export async function getExtensionForUrl(url: string) {
     const response = await fetch(url, { method: 'HEAD' });
     const contentType = response.headers.get('Content-Type');
+
+    // GUARD: Check that the request actually returned something
+    if (!response.ok) {
+        throw new Error('Failed to retrieve extension for URL: ' + response.statusText);
+    }
 
     // GUARD: Check that we received a content type
     if (!contentType) {
@@ -23,21 +29,20 @@ export async function getExtensionForUrl(url: string) {
     }
 
     // Alternatively, retrieve it from mime-db
-    const extensions = db[contentType]?.extensions;
-
+    const extension = mime.getExtension(contentType);
+    
     // GUARD: Check that we received an extension
-    if (!extensions?.length) {
+    if (!extension) {
+        console.error({ contentType, extension, url });
         throw new Error(`Unsupported MIME-type ${contentType}`);
     }
 
-    return extensions[0];
+    return extension;
 }
 
 /**
  * Find a mime type by its extension
  */
 export function getMimeTypeForExtension(extension: string) {
-    return Object.keys(db).find((type) => {
-        return db[type].extensions?.includes(extension);
-    });
+    return mime.getType(extension);
 }
