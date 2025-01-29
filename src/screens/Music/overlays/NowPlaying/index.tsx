@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { ActivityIndicator, Animated, Dimensions, Platform, Pressable, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import styled, { css } from 'styled-components/native';
 
 import PlayIcon from '@/assets/icons/play.svg';
@@ -18,6 +17,7 @@ import { NavigationProp } from '@/screens/types';
 import { ShadowWrapper } from '@/components/Shadow';
 import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AlbumImage from '../../stacks/components/AlbumImage';
 
 export const NOW_PLAYING_POPOVER_MARGIN = 6;
 export const NOW_PLAYING_POPOVER_WIDTH = Dimensions.get('screen').width - 2 * NOW_PLAYING_POPOVER_MARGIN;
@@ -62,7 +62,7 @@ const ShadowOverlay = styled.View`
     bottom: 0;
 `;
 
-const Cover = styled(FastImage)`
+const Cover = styled(AlbumImage)`
     height: 32px;
     width: 32px;
     border-radius: 4px;

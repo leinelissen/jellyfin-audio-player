@@ -11,11 +11,11 @@ import Button from '@/components/Button';
 import DownloadIcon from '@/components/DownloadIcon';
 import styled from 'styled-components/native';
 import { Text } from '@/components/Typography';
-import FastImage from 'react-native-fast-image';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { ShadowWrapper } from '@/components/Shadow';
 import { SafeFlatList } from '@/components/SafeNavigatorView';
 import { t } from '@/localisation';
+import BaseAlbumImage from '../Music/stacks/components/AlbumImage';
 
 const DownloadedTrack = styled.View`
     flex: 1 0 auto;
@@ -25,7 +25,7 @@ const DownloadedTrack = styled.View`
     margin: 0 20px;
 `;
 
-const AlbumImage = styled(FastImage)`
+const AlbumImage = styled(BaseAlbumImage)`
     height: 32px;
     width: 32px;
     border-radius: 4px;

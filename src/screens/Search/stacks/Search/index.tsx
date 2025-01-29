@@ -9,7 +9,6 @@ import { FlatList } from 'react-native-gesture-handler';
 import TouchableHandler from '@/components/TouchableHandler';
 import { useNavigation } from '@react-navigation/native';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
-import FastImage from 'react-native-fast-image';
 import { t } from '@/localisation';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import { searchAndFetchAlbums } from '@/store/music/actions';
@@ -22,6 +21,7 @@ import { ShadowWrapper } from '@/components/Shadow';
 import { useKeyboardHeight } from '@/utility/useKeyboardHeight';
 import { NavigationProp } from '@/screens/types';
 import { useNavigationOffsets } from '@/components/SafeNavigatorView';
+import BaseAlbumImage from '@/screens/Music/stacks/components/AlbumImage';
 // import MicrophoneIcon from '@/assets/icons/microphone.svg';
 // import AlbumIcon from '@/assets/icons/collection.svg';
 // import TrackIcon from '@/assets/icons/note.svg';
@@ -52,7 +52,7 @@ const Loading = styled.View`
     justify-content: center;
 `;
 
-const AlbumImage = styled(FastImage)`
+const AlbumImage = styled(BaseAlbumImage)`
     border-radius: 4px;
     width: 32px;
     height: 32px;
