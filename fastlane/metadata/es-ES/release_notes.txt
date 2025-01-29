@@ -1,1 +1,7 @@
-Esta es una revisión que permite acceder nuevamente a su servidor Jellyfin a través de HTTP. Utilice HTTPS si está disponible para usted.
+Fintunes ahora admite la visualización de letras para que puedas cantar tus canciones favoritas. Además, ahora puedes usar Fintunes como cliente para Emby. Las características menores de esta versión incluyen:
+
+• Se guardan las imágenes de portada para las pistas descargadas (vuelve a descargar tus pistas para asegurarte de que aparezcan)
+• Una pantalla que muestra información del códec de las pistas que estás reproduciendo
+• Muchas nuevas traducciones, como polaco, tamil, chino tradicional, finlandés e indonesio. ¡Gracias a todos los colaboradores de idiomas!
+
+La versión 2.4.2 corrige un error introducido en la versión 2.4.0 que impedía descargar pistas sin portada.

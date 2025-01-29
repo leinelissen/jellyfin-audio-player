@@ -1,1 +1,7 @@
-Dette er en hurtigreparasjon som gjør det mulig å få tilgang til Jellyfin-serveren din over HTTP igjen. Vennligst bruk HTTPS hvis det er tilgjengelig for deg.
+Fintunes støtter nå visning av sangtekster, slik at du kan synge med til favorittsangene dine! I tillegg kan du nå bruke Fintunes som en klient for Emby. Mindre funksjoner i denne utgivelsen inkluderer:
+
+• Coverbilder lagres for nedlastede spor (last ned sporene dine på nytt for å sikre at de vises)
+• En visning som viser kodekinformasjon for sporene du spiller av
+• Massevis av nye oversettelser, som polsk, tamil, tradisjonell kinesisk, finsk og indonesisk. Takk til alle språkbidragsytere!
+
+Versjon 2.4.2 inneholder en feilretting for en feil som ble introdusert i versjon 2.4.0, som forhindret nedlasting av spor uten cover.

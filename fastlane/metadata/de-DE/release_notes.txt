@@ -1,1 +1,7 @@
-Hierbei handelt es sich um einen Hotfix, der es wieder möglich macht, über HTTP auf Ihren Jellyfin-Server zuzugreifen. Bitte verwenden Sie HTTPS, sofern Ihnen dies zur Verfügung steht.
+Fintunes unterstützt jetzt die Anzeige von Liedtexten, sodass du deine Lieblingssongs mitsingen kannst! Außerdem kannst du Fintunes jetzt als Client für Emby nutzen. Kleinere Funktionen in dieser Version umfassen:
+
+• Coverbilder werden für heruntergeladene Titel gespeichert (lade deine Titel erneut herunter, um sicherzustellen, dass sie angezeigt werden)
+• Eine Anzeige, die Codec-Informationen für die aktuell abgespielten Titel zeigt
+• Viele neue Übersetzungen, darunter Polnisch, Tamil, Traditionelles Chinesisch, Finnisch und Indonesisch. Vielen Dank an alle Sprachbeiträger!
+
+Version 2.4.2 behebt einen Fehler aus Version 2.4.0, der das Herunterladen von Titeln ohne Cover verhinderte.

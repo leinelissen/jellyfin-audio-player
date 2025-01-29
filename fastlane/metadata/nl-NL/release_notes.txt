@@ -1,1 +1,7 @@
-Dit is een hotfix die het mogelijk maakt om weer via HTTP toegang te krijgen tot je Jellyfin-server. Gebruik alsjeblieft HTTPS als dat voor jou beschikbaar is.
+Fintunes ondersteunt nu het weergeven van songteksten, zodat je kunt meezingen met je favoriete nummers! Daarnaast kun je Fintunes nu gebruiken als een client voor Emby. Kleine functies in deze release zijn onder andere:
+
+• Coverafbeeldingen worden opgeslagen voor gedownloade nummers (download je nummers opnieuw om ervoor te zorgen dat ze verschijnen)
+• Een weergave die codec-informatie toont voor de nummers die je momenteel afspeelt
+• Veel nieuwe vertalingen, zoals Pools, Tamil, Traditioneel Chinees, Fins en Indonesisch. Bedankt aan alle taalbijdragers!
+
+Versie 2.4.2 lost een fout op die in versie 2.4.0 werd geïntroduceerd en die verhinderde dat nummers zonder cover konden worden gedownload.

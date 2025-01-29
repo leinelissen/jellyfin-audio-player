@@ -1,1 +1,7 @@
-Il s'agit d'un correctif qui permet d'accéder à nouveau à votre serveur Jellyfin via HTTP. Veuillez utiliser HTTPS si vous en avez la possibilité.
+Fintunes prend désormais en charge l’affichage des paroles, afin que vous puissiez chanter vos morceaux préférés ! De plus, vous pouvez maintenant utiliser Fintunes comme client pour Emby. Les fonctionnalités mineures de cette version incluent :
+
+• Les images de couverture sont enregistrées pour les morceaux téléchargés (retéléchargez vos morceaux pour vous assurer qu’elles apparaissent)
+• Un affichage indiquant les informations du codec des morceaux en cours de lecture
+• De nombreuses nouvelles traductions, notamment en polonais, tamoul, chinois traditionnel, finnois et indonésien. Merci à tous les contributeurs linguistiques !
+
+La version 2.4.2 corrige une erreur introduite avec la version 2.4.0 qui empêchait le téléchargement des morceaux sans pochette.

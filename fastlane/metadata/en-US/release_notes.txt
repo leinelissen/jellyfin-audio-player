@@ -1,1 +1,7 @@
-This is a hotfix that makes it possible to access your Jellyfin server over HTTP again. Do please use HTTPS if that's available to you.
+Fintunes now supports displaying lyrics so you can sign along to your favourite tunes! Also, you can now use Fintunes as a client for Emby. Minor features in this release include:
+
+• Cover images being saved for downloaded tracks (re-download your tracks to make sure they appear)
+• A display that shows codec information for your currently playing tracks
+• Loads of new translations, such as Polish, Tamil, Traditional Chinese, Finnish and Indonesian. Thanks to all language contributors!
+
+v2.4.2 contains a fix for an error introduced with v2.4.0 that prohibited downloading tracks without cover art.

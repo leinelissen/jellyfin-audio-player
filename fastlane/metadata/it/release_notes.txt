@@ -1,1 +1,7 @@
-Questo è un hotfix che rende possibile accedere nuovamente al tuo server Jellyfin tramite HTTP. Ti preghiamo di utilizzare HTTPS se è disponibile per te.
+Fintunes ora supporta la visualizzazione dei testi, così puoi cantare le tue canzoni preferite! Inoltre, ora puoi usare Fintunes come client per Emby. Le funzionalità minori di questa versione includono:
+
+• Le immagini di copertina vengono salvate per i brani scaricati (riscarica i brani per assicurarti che appaiano)
+• Un display che mostra le informazioni sul codec per i brani attualmente in riproduzione
+• Molte nuove traduzioni, come polacco, tamil, cinese tradizionale, finlandese e indonesiano. Grazie a tutti i contributori linguistici!
+
+La versione 2.4.2 corregge un errore introdotto con la versione 2.4.0 che impediva il download di brani senza copertina.
