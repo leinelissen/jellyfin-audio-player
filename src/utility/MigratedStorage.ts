@@ -21,10 +21,23 @@ async function ensureDirectoryExists() {
  */
 const MigratedStorage: Storage = {
     async getItem(key) {
+        // Calculate the path where the key should be stored
         const path = getFileByKey(key);
 
+        // By default, the key for the persistor is "persist:root", which
+        // contains a special character. We run the key through
+        // `encodeURIcomponent`, so we don't trigger any special character
+        // filename errors. However, on Android, react-native-fs doesn't resolve
+        // the paths properly and fails to find the encoded variant. Hence,
+        // we'll also "unencode" the variant and check for existence of any of
+        // the two files.
+        const storeFileExists = (await Promise.all([
+            exists(path), 
+            exists(decodeURIComponent(path))
+        ])).some((d) => d === true);
+        
         // GUARD: Check whether a store already exists on the filesystem
-        if (await exists(path)) {
+        if (storeFileExists) {
             // In which case, we'll read it from disk
             return readFile(path);
         } else {
