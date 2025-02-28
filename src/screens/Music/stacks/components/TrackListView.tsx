@@ -148,7 +148,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     // Setup callbacks
     const playEntity = useCallback(() => { playTracks(trackIds); }, [playTracks, trackIds]);
     const shuffleEntity = useCallback(() => { playTracks(trackIds, { shuffle: true }); }, [playTracks, trackIds]);
-    const selectTrack = useCallback(async (index: number) => {
+    const selectTrack = useCallback(async (trackIds: string[], index: number) => {
         await playTracks(trackIds, { playIndex: index });
     }, [playTracks, trackIds]);
     const longPressTrack = useCallback((index: number) => {
@@ -191,7 +191,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                                 <TouchableHandler
                                     key={trackId}
                                     id={i}
-                                    onPress={selectTrack}
+                                    onPress={() => selectTrack(groupTrackIds, i)}
                                     onLongPress={longPressTrack}
                                     testID={`play-track-${trackId}`}
                                 >
