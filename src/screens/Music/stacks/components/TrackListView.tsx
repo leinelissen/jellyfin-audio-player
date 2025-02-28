@@ -148,12 +148,15 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     // Setup callbacks
     const playEntity = useCallback(() => { playTracks(trackIds); }, [playTracks, trackIds]);
     const shuffleEntity = useCallback(() => { playTracks(trackIds, { shuffle: true }); }, [playTracks, trackIds]);
-    const selectTrack = useCallback(async (index: number) => {
-        await playTracks(trackIds, { playIndex: index });
+    const selectTrack = useCallback(async (trackId: string) => {
+        const index = trackIds.findIndex((id) => id === trackId);
+        if (index) {
+            await playTracks(trackIds, { playIndex: index });
+        }
     }, [playTracks, trackIds]);
-    const longPressTrack = useCallback((index: number) => {
-        navigation.navigate('TrackPopupMenu', { trackId: trackIds[index].toString() });
-    }, [navigation, trackIds]);
+    const longPressTrack = useCallback((trackId: string) => {
+        navigation.navigate('TrackPopupMenu', { trackId });
+    }, [navigation]);
     const downloadAllTracks = useCallback(() => {
         trackIds.forEach((trackId) => dispatch(queueTrackForDownload(trackId)));
     }, [dispatch, trackIds]);
@@ -190,7 +193,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                             {groupTrackIds.map((trackId, i) =>
                                 <TouchableHandler
                                     key={trackId}
-                                    id={i}
+                                    id={trackId}
                                     onPress={selectTrack}
                                     onLongPress={longPressTrack}
                                     testID={`play-track-${trackId}`}

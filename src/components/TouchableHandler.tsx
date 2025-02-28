@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useCallback } from 'react';
 import { Pressable, ViewStyle } from 'react-native';
 
-interface TouchableHandlerProps<T = number> {
+interface TouchableHandlerProps<T> {
     id: T;
     onPress: (id: T) => void;
     onLongPress?: (id: T) => void;
