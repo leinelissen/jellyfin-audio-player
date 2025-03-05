@@ -150,7 +150,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const shuffleEntity = useCallback(() => { playTracks(trackIds, { shuffle: true }); }, [playTracks, trackIds]);
     const selectTrack = useCallback(async (trackId: string) => {
         const index = trackIds.findIndex((id) => id === trackId);
-        if (index) {
+        if (index >= 0) {
             await playTracks(trackIds, { playIndex: index });
         }
     }, [playTracks, trackIds]);
