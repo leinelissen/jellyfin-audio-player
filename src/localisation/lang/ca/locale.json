@@ -74,11 +74,11 @@
     "sleep-timer": "Temporitzador son",
     "confirm-delete-all-tracks": "Estàs segur que vols eliminar totes les pistes descarregades actualment?",
     "delete": "Esborrar",
-    "cancel": "Cancel·la",
+    "cancel": "Cancel·lar",
     "disc": "Disc",
     "lyrics": "Lletra",
     "khz": "k Hz",
     "direct-play": "Joc directe",
-    "transcoded": "Transcodificat",
+    "transcoded": "Transcode",
     "kbps": "kbps"
 }
