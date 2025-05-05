@@ -1,10 +1,10 @@
 import { BlurView, BlurViewProps } from '@react-native-community/blur';
-import { THEME_COLOR } from '@/CONSTANTS';
 import React, { PropsWithChildren } from 'react';
 import { useContext } from 'react';
 import { ColorSchemeName, Platform, StyleSheet, View, useColorScheme } from 'react-native';
 import { useTypedSelector } from '@/store';
 import { ColorScheme } from '@/store/settings/types';
+import { useAccessibilitySetting } from 'react-native-accessibility-settings';
 
 const majorPlatformVersion = typeof Platform.Version === 'string' ? parseInt(Platform.Version, 10) : Platform.Version;
 
@@ -12,7 +12,7 @@ const majorPlatformVersion = typeof Platform.Version === 'string' ? parseInt(Pla
  * Function for generating both the dark and light stylesheets, so that they
  * don't have to be generate on every individual component render
  */
-function generateStyles(scheme: ColorSchemeName) {
+function generateStyles(scheme: ColorSchemeName, highContrast: boolean) {
     return StyleSheet.create({
         text: {
             color: scheme === 'dark' ? '#fff' : '#000',
@@ -20,12 +20,15 @@ function generateStyles(scheme: ColorSchemeName) {
             fontFamily: 'Inter',
         },
         textHalfOpacity: {
-            color: scheme === 'dark' ? '#ffffff88' : '#00000088',
+            color: highContrast
+                ? (scheme === 'dark' ? '#ffffffbb' : '#000000bb')
+                : (scheme === 'dark' ? '#ffffff88' : '#00000088'),
             fontSize: 14,
-            // fontFamily: 'Inter',
         },
         textQuarterOpacity: {
-            color: scheme === 'dark' ? '#ffffff44' : '#00000044',
+            color: highContrast
+                ? (scheme === 'dark' ? '#ffffff88' : '#00000088')
+                : (scheme === 'dark' ? '#ffffff44' : '#00000044'),
             fontSize: 14,
         },
         view: {
@@ -35,7 +38,9 @@ function generateStyles(scheme: ColorSchemeName) {
             borderColor: scheme === 'dark' ? '#262626' : '#ddd',
         },
         activeBackground: {
-            backgroundColor: `${THEME_COLOR}${scheme === 'dark' ? '26' : '16'}`,
+            backgroundColor: highContrast 
+                ? `#8b513c${scheme === 'dark' ? '26' : '10'}`
+                : `#FF3C00${scheme === 'dark' ? '26' : '16'}`,
         },
         imageBackground: {
             backgroundColor: scheme === 'dark' ? '#191919' : '#eee',
@@ -49,11 +54,16 @@ function generateStyles(scheme: ColorSchemeName) {
             backgroundColor: scheme === 'dark' ? '#000' : '#fff',
         },
         button: {
-            backgroundColor: scheme === 'dark' ? '#ffffff09' : '#00000009',
+            backgroundColor: highContrast
+                ? (scheme === 'dark' ? '#ffffff0f' : '#0000000f')
+                : (scheme === 'dark' ? '#ffffff09' : '#00000009'),
         },
         input: {
             backgroundColor: scheme === 'dark' ? '#191919' : '#f3f3f3',
             color: scheme === 'dark' ? '#fff' : '#000',
+        },
+        trackBackground: {
+            backgroundColor: scheme === 'dark' ? '#161616' : '#fff',
         },
         stackHeader: {
             color: scheme === 'dark' ? 'white' : 'black'
@@ -67,26 +77,58 @@ function generateStyles(scheme: ColorSchemeName) {
         filter: {
             backgroundColor: scheme === 'dark' ? '#191919' : '#f3f3f3',
         },
+        themeColor: {
+            color: highContrast 
+                ? scheme === 'dark' ? '#FF7A1C' : '#c93400'
+                : '#FF3C00',
+        },
+        themeColorHalfOpacity: {
+            color: highContrast 
+                ? scheme === 'dark' ? '#FF7A1Cbb' : '#c93400bb'
+                : '#FF3C0088',
+        },
+        themeColorQuarterOpacity: {
+            color: highContrast 
+                ? scheme === 'dark' ? '#FF7A1C88' : '#c9340088'
+                : '#FF3C0044',
+        },
+        themeBackground: {
+            backgroundColor: highContrast 
+                ? scheme === 'dark' ? '#FF7A1C' : '#c93400'
+                : '#FF3C00',
+        }
     });
 }
 
 // Prerender both stylesheets
-export const themes: Record<'dark' | 'light', ReturnType<typeof generateStyles>> = {
-    'dark': generateStyles('dark'),
-    'light': generateStyles('light'),
+export const themes: Record<'dark' | 'light' | 'dark-highcontrast' | 'light-highcontrast', ReturnType<typeof generateStyles>> = {
+    'dark': generateStyles('dark', false),
+    'light': generateStyles('light', false),
+    'dark-highcontrast': generateStyles('dark', true),
+    'light-highcontrast': generateStyles('light', true),
 };
 
 // Create context for supplying the theming information
 export const ColorSchemeContext = React.createContext(themes.dark);
 
 /**
+ * This hook returns the proper color scheme, taking into account potential user overrides.
+ */
+export function useUserOrSystemScheme() {
+    const systemScheme = useColorScheme();
+    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
+    return userScheme === ColorScheme.System ? systemScheme : userScheme;
+}
+
+/**
  * This provider contains the logic for settings the right theme on the ColorSchemeContext.
  */
 export function ColorSchemeProvider({ children }: PropsWithChildren<{}>) {
-    const systemScheme = useColorScheme();
-    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
-    const scheme = userScheme === ColorScheme.System ? systemScheme : userScheme;
-    const theme = themes[scheme || 'light'];
+    const highContrast = useAccessibilitySetting('darkerSystemColors');
+    const scheme = useUserOrSystemScheme();
+    const theme = highContrast
+        ? themes[`${scheme || 'light'}-highcontrast`]
+        : themes[scheme || 'light'];
 
     return (
         <ColorSchemeContext.Provider value={theme}>

@@ -1,0 +1,7 @@
+Fintunes obsługuje teraz wyświetlanie tekstów piosenek, dzięki czemu możesz śpiewać razem ze swoimi ulubionymi utworami! Dodatkowo możesz teraz używać Fintunes jako klienta dla Emby. Drobne zmiany w tej wersji obejmują:
+
+• Zapisywanie okładek dla pobranych utworów (ponownie pobierz utwory, aby upewnić się, że okładki się pojawią)
+• Wyświetlanie informacji o kodeku dla aktualnie odtwarzanych utworów
+• Wiele nowych tłumaczeń, takich jak polski, tamilski, tradycyjny chiński, fiński i indonezyjski. Dziękujemy wszystkim tłumaczom!
+
+Wersja 2.4.2 naprawia błąd wprowadzony w wersji 2.4.0, który uniemożliwiał pobieranie utworów bez okładki.

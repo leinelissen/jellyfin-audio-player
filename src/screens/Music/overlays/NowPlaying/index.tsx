@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { ActivityIndicator, Animated, Dimensions, Platform, Pressable, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import styled, { css } from 'styled-components/native';
 
 import PlayIcon from '@/assets/icons/play.svg';
@@ -14,13 +13,15 @@ import { Text } from '@/components/Typography';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { calculateProgressTranslation } from '@/components/Progresstrack';
-import { THEME_COLOR } from '@/CONSTANTS';
 import { NavigationProp } from '@/screens/types';
 import { ShadowWrapper } from '@/components/Shadow';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AlbumImage from '../../stacks/components/AlbumImage';
 
-const NOW_PLAYING_POPOVER_MARGIN = 6;
-const NOW_PLAYING_POPOVER_WIDTH = Dimensions.get('screen').width - 2 * NOW_PLAYING_POPOVER_MARGIN;
+export const NOW_PLAYING_POPOVER_MARGIN = 6;
+export const NOW_PLAYING_POPOVER_WIDTH = Dimensions.get('screen').width - 2 * NOW_PLAYING_POPOVER_MARGIN;
+export const NOW_PLAYING_POPOVER_HEIGHT = 58;
 
 const PopoverPosition = css`
     position: absolute;
@@ -35,6 +36,7 @@ const Container = styled.ScrollView`
 `;
 
 const InnerContainer = styled.TouchableOpacity`
+    height: ${NOW_PLAYING_POPOVER_HEIGHT}px;
     padding: 12px;
     overflow: hidden;
     flex: 1;
@@ -48,7 +50,6 @@ const ProgressTrack = styled(Animated.View)<{ stroke?: number; opacity?: number}
     left: 0;
     right: 0;
     height: ${(props) => props.stroke ? props.stroke + 'px' : '100%'};
-    background-color: ${THEME_COLOR};
     opacity: ${(props) => props.opacity || 1};
     border-radius: 99px;
 `;
@@ -61,7 +62,7 @@ const ShadowOverlay = styled.View`
     bottom: 0;
 `;
 
-const Cover = styled(FastImage)`
+const Cover = styled(AlbumImage)`
     height: 32px;
     width: 32px;
     border-radius: 4px;
@@ -78,7 +79,7 @@ const ActionButton = styled.Pressable`
 `;
 
 function SelectActionButton() {
-    const state = usePlaybackState();
+    const { state } = usePlaybackState();
     const defaultStyles = useDefaultStyles();
 
     switch(state) {
@@ -107,18 +108,25 @@ function SelectActionButton() {
     }
 }
 
-function NowPlaying({ offset = 0 }: { offset?: number }) {
+function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean }) {
     const { index, track } = useCurrentTrack();
     const { buffered, position } = useProgress();
     const defaultStyles = useDefaultStyles();
-    const tabBarHeight = useBottomTabBarHeight();
+
+    // The regular `useBottomTabBarHeight` hook will throw an error when it
+    // cannot find a height. Since we might use this component in places where
+    // it is unavailable, we'll just use the context directly, which will output
+    // `undefined` when it's not set.
+    const tabBarHeight = useContext(BottomTabBarHeightContext);
+
+    const insets = useSafeAreaInsets();
     const previousBuffered = usePrevious(buffered);
     const previousPosition = usePrevious(position);
 
     const navigation = useNavigation<NavigationProp>();
 
-    const bufferAnimation = useRef(new Animated.Value(0));
-    const progressAnimation = useRef(new Animated.Value(0));
+    const bufferAnimation = useRef(new Animated.Value(-1_000));
+    const progressAnimation = useRef(new Animated.Value(-1_000));
 
     const openNowPlayingModal = useCallback(() => {
         navigation.navigate('Player');
@@ -165,7 +173,14 @@ function NowPlaying({ offset = 0 }: { offset?: number }) {
     }
 
     return (
-        <Container style={{ bottom: tabBarHeight + NOW_PLAYING_POPOVER_MARGIN + offset }}>
+        <Container
+            style={{ 
+                bottom: (tabBarHeight || 0) 
+                    + (inset ? insets.bottom : 0)
+                    + NOW_PLAYING_POPOVER_MARGIN
+                    + offset 
+            }}
+        >
             {/** TODO: Fix shadow overflow on Android */}
             {Platform.OS === 'ios' ? (
                 <ShadowOverlay pointerEvents='none'>
@@ -191,12 +206,18 @@ function NowPlaying({ offset = 0 }: { offset?: number }) {
                         <SelectActionButton />
                     </ActionButton>
                     <ProgressTrack
-                        style={{ transform: [{ translateX: bufferAnimation.current }]}}
+                        style={[
+                            { transform: [{ translateX: bufferAnimation.current }]},
+                            defaultStyles.themeBackground,
+                        ]}
                         opacity={0.15}
                         stroke={4}
                     />
                     <ProgressTrack
-                        style={{ transform: [{ translateX: progressAnimation.current }]}}
+                        style={[
+                            { transform: [{ translateX: progressAnimation.current }]},
+                            defaultStyles.themeBackground,
+                        ]}
                         stroke={4}
                     />
                 </InnerContainer>

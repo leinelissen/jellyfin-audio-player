@@ -1,12 +1,13 @@
 import React from 'react';
 import TrackPlayer, { State, usePlaybackState } from 'react-native-track-player';
-import { TouchableOpacity, useColorScheme } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { useHasNextQueue, useHasPreviousQueue } from '@/utility/useQueue';
 import ForwardIcon from '@/assets/icons/forward-end.svg';
 import BackwardIcon from '@/assets/icons/backward-end.svg';
 import PlayIcon from '@/assets/icons/play.svg';
 import PauseIcon from '@/assets/icons/pause.svg';
+import { useUserOrSystemScheme } from '@/components/Colors';
 
 const BUTTON_SIZE = 40;
 
@@ -18,6 +19,7 @@ const previous = () => TrackPlayer.skipToPrevious();
 const Container = styled.View`
     align-items: center;
     margin-top: 40px;
+    margin-bottom: 52px;
 `;
 
 const Buttons = styled.View`
@@ -33,7 +35,7 @@ const Button = styled.View`
 `;
 
 export default function MediaControls() {
-    const scheme = useColorScheme();
+    const scheme = useUserOrSystemScheme();
     const fill = scheme === 'dark' ? '#ffffff' : '#000000';
 
     return (
@@ -72,7 +74,7 @@ export function NextButton({ fill }: { fill: string }) {
 }
 
 export function MainButton({ fill }: { fill: string }) {
-    const state = usePlaybackState();
+    const { state } = usePlaybackState();
 
     switch (state) {
         case State.Playing:

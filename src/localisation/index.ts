@@ -1,6 +1,8 @@
-import i18n from 'i18n-js';
-import { findBestAvailableLanguage } from 'react-native-localize';
+import { I18n } from 'i18n-js';
+import { findBestLanguageTag } from 'react-native-localize';
 import { LocaleKeys } from './types';
+
+const i18n = new I18n();
 
 // Lazy loaders for locale
 const localeGetters: Record<string, () => object> = {
@@ -20,7 +22,7 @@ const localeGetters: Record<string, () => object> = {
 };
 
 // Have RNLocalize pick the best locale from the languages on offer
-let locale = findBestAvailableLanguage(Object.keys(localeGetters));
+let locale = findBestLanguageTag(Object.keys(localeGetters));
 
 // Check if the locale is correctly picked
 if (!locale || !locale.languageTag) {
@@ -46,7 +48,7 @@ if (locale.languageTag !== 'en') {
 i18n.locale = locale.languageTag;
 
 // Fallback to the default language for missing translation strings
-i18n.fallbacks = true;
+i18n.enableFallback = true;
 
 /**
  * An i18n Typescript helper with autocomplete for the key argument

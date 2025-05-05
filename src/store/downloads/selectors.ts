@@ -1,4 +1,4 @@
-import { createSelector, EntityId } from '@reduxjs/toolkit';
+import { createSelector } from '@reduxjs/toolkit';
 import { intersection } from 'lodash';
 import { AppState } from '@/store';
 
@@ -8,7 +8,7 @@ export const selectDownloadedEntities = (state: AppState) => state.downloads.ent
 /**
  * Only retain the supplied trackIds that have successfully been downloaded
  */
-export const selectDownloadedTracks = (trackIds: EntityId[]) => (
+export const selectDownloadedTracks = (trackIds: string[]) => (
     createSelector(
         selectAllDownloads,
         ({ entities, ids }) => {

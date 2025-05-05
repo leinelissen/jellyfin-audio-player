@@ -13,7 +13,7 @@
 [![Latest GitHub release](https://img.shields.io/github/v/release/leinelissen/jellyfin-audio-player?label=latest%20release)](https://github.com/leinelissen/jellyfin-audio-player/releases/latest)
 [![Latest App Store release](https://img.shields.io/itunes/v/1527732194?label=app%20store)](https://apple.co/3MFYIJH)
 [![Latest Google Play release](https://img.shields.io/endpoint?url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dnl.moeilijkedingen.jellyfinaudioplayer%26l%3Dgoogle%2520play%26m%3D%24version)](https://play.google.com/store/apps/details?id=nl.moeilijkedingen.jellyfinaudioplayer)
-[![Join the TestFlight beta](https://img.shields.io/badge/TestFlight-beta-blue)](https://testflight.apple.com/join/cf2AMDpx)
+[![Join the TestFlight beta](https://img.shields.io/badge/TestFlight-beta-blue)](https://testflight.apple.com/join/TpHWMmfM)
 [![Latest F-Droid release](https://img.shields.io/f-droid/v/nl.moeilijkedingen.jellyfinaudioplayer)](https://f-droid.org/en/packages/nl.moeilijkedingen.jellyfinaudioplayer/)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/leinelissen/jellyfin-audio-player/fastlane.yml)
 [![MIT License](https://img.shields.io/github/license/leinelissen/jellyfin-audio-player)](./LICENSE.md)

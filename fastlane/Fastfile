@@ -4,6 +4,11 @@ package = load_json(json_path: "package.json")
 
 platform :ios do
     before_all do
+        app_store_connect_api_key(
+            key_id: "Z98N7N8ZMW",
+            issuer_id: "f0fa1c89-6a9a-4144-bfba-529dfe05f09b",
+            key_filepath: "./certificates/AuthKey_Z98N7N8ZMW.p8"
+        )
         get_certificates(
             output_path: "certificates/"
         )
@@ -13,7 +18,7 @@ platform :ios do
             fail_on_name_taken: false,
         )
         update_code_signing_settings(
-            use_automatic_signing: true,
+            use_automatic_signing: false,
             path: "ios/Fintunes.xcodeproj"
         )
         increment_version_number(
@@ -32,7 +37,9 @@ platform :ios do
             workspace: "ios/Fintunes.xcworkspace",
             export_method: "app-store",
         )
-        upload_to_app_store
+        upload_to_app_store(
+            precheck_include_in_app_purchases: false
+        )
     end
         
     lane :beta do 
@@ -135,6 +142,13 @@ platform :android do
     end
 
     lane :release do
+        android_set_version_name(
+            version_name: package["version"],
+            gradle_file: "android/app/build.gradle"
+        )
+        android_set_version_code(    
+            gradle_file: "android/app/build.gradle"
+        )
         gradle(
             task: "bundle",
             build_type: "Release",

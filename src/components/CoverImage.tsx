@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
-import { Dimensions, useColorScheme, ViewProps } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { Dimensions, ViewProps } from 'react-native';
 import { Canvas, Blur, Image as SkiaImage, useImage, Offset, Mask, RoundedRect, Shadow } from '@shopify/react-native-skia';
-import useDefaultStyles from './Colors';
+import useDefaultStyles, { useUserOrSystemScheme } from './Colors';
 import styled from 'styled-components/native';
 
 const Screen = Dimensions.get('screen');
@@ -13,7 +13,7 @@ const Container = styled.View<{ size: number }>`
     z-index: 0;
 `;
 
-const BlurContainer = styled(Canvas)<{ size: number, offset: number }>`
+const BlurContainer = styled(Canvas) <{ size: number, offset: number }>`
     position: absolute;
     left: -${(props) => props.offset}px;
     top: -${(props) => props.offset}px;
@@ -31,31 +31,33 @@ interface Props {
     src: string;
 }
 
+const emptyAlbumLight = require('@/assets/images/empty-album-light.png');
+const emptyAlbumDark = require('@/assets/images/empty-album-dark.png');
+
 /**
  * This will take a cover image, and apply shadows and a really nice background
  * blur to the image in question. Additionally, we'll add some margin and radius
  * to the corners.
  */
 function CoverImage({
-    blurRadius = 256, 
-    opacity = 0.85, 
-    margin = 112, 
-    radius = 12, 
+    blurRadius = 256,
+    opacity = 0.85,
+    margin = 112,
+    radius = 12,
     style,
-    src, 
+    src,
 }: Props) {
     const defaultStyles = useDefaultStyles();
-    const colorScheme = useColorScheme();
+    const colorScheme = useUserOrSystemScheme();
+    const [hasFailed, setFailed] = useState(false);
 
-    const image = useImage(src || null);
-    const fallback = useImage(colorScheme === 'light' ? require('@/assets/images/empty-album-light.png') : require('@/assets/images/empty-album-dark.png'));
+    const image = useImage(src || null, () => setFailed(true));
+    const fallback = useImage(colorScheme === 'light' ? emptyAlbumLight : emptyAlbumDark);
     const { canvasSize, imageSize } = useMemo(() => {
         const imageSize = Screen.width - margin;
         const canvasSize = imageSize + blurRadius * 2;
         return { imageSize, canvasSize };
     }, [blurRadius, margin]);
-
-    const skiaImage = useMemo(() => (image || fallback), [image, fallback]);
 
     return (
         <Container size={imageSize} style={style}>
@@ -67,19 +69,52 @@ function CoverImage({
                     <Shadow dx={0} dy={8} blur={16} color="#0000000d" />
                     <Shadow dx={0} dy={16} blur={32} color="#0000000d" />
                 </RoundedRect>
-                {skiaImage ? (
+                {src && (
                     <>
-                        <SkiaImage image={skiaImage} fit="fill" width={imageSize} height={imageSize} opacity={opacity}>
+                        <SkiaImage
+                            image={image}
+                            width={imageSize}
+                            height={imageSize}
+                            opacity={opacity}
+                            key="image-blur"
+                        >
                             <Offset x={blurRadius} y={blurRadius} />
                             <Blur blur={blurRadius / 2} />
                         </SkiaImage>
-                        <Mask mask={<RoundedRect width={imageSize} height={imageSize} x={blurRadius} y={blurRadius} r={radius}  />}>
-                            <SkiaImage image={skiaImage} fit="cover" width={imageSize} height={imageSize}>
+                        <Mask
+                            mask={
+                                <RoundedRect
+                                    width={imageSize}
+                                    height={imageSize}
+                                    x={blurRadius}
+                                    y={blurRadius} r={radius}
+                                />
+                            }
+                            key="image"
+                        >
+                            <SkiaImage image={image} fit="cover" width={imageSize} height={imageSize}>
                                 <Offset x={blurRadius} y={blurRadius} />
                             </SkiaImage>
                         </Mask>
                     </>
-                ) : null}
+                )}
+                {(!src || hasFailed) && (
+                    <Mask
+                        mask={
+                            <RoundedRect
+                                width={imageSize}
+                                height={imageSize}
+                                x={blurRadius}
+                                y={blurRadius} r={radius}
+                            />
+                        }
+                        key="fallback"
+                    >
+                        <SkiaImage image={fallback} width={imageSize} height={imageSize}>
+                            <Offset x={blurRadius} y={blurRadius} />
+                        </SkiaImage>
+                    </Mask>
+                )}
             </BlurContainer>
         </Container>
     );

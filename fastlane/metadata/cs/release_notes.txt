@@ -1,0 +1,7 @@
+Fintunes nyní podporuje zobrazování textů písní, takže si můžete zpívat své oblíbené skladby! Také nyní můžete používat Fintunes jako klienta pro Emby. Menší funkce v této verzi zahrnují:
+
+• Ukládání obalů alb pro stažené skladby (znovu si stáhněte skladby, aby se obaly zobrazily)
+• Displej zobrazující informace o kodeku právě přehrávaných skladeb
+• Spousta nových překladů, například polština, tamilština, tradiční čínština, finština a indonéština. Děkujeme všem překladatelům!
+
+Verze 2.4.2 opravuje chybu zavedenou ve verzi 2.4.0, která znemožňovala stahování skladeb bez obalu.

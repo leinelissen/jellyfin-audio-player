@@ -1,7 +1,7 @@
 import { useTypedSelector, AppState } from '@/store';
 import { parseISO } from 'date-fns';
 import { ALPHABET_LETTERS } from '@/CONSTANTS';
-import { createSelector, EntityId } from '@reduxjs/toolkit';
+import { createSelector } from '@reduxjs/toolkit';
 import { SectionListData } from 'react-native';
 import { ArtistItem } from './types';
 
@@ -15,8 +15,8 @@ export function useRecentAlbums(amount: number) {
     const sorted = [...albumIds].sort((a, b) => {
         const albumA = albums[a];
         const albumB = albums[b];
-        const dateA = albumA ? parseISO(albumA.DateCreated).getTime() : 0;
-        const dateB = albumB ? parseISO(albumB.DateCreated).getTime() : 0;
+        const dateA = albumA && albumA.DateCreated ? parseISO(albumA.DateCreated).getTime() : 0;
+        const dateB = albumB && albumB.DateCreated ? parseISO(albumB.DateCreated).getTime() : 0;
         return dateB - dateA;
     });
 
@@ -51,7 +51,7 @@ export const selectAlbumsByArtist = createSelector(
     albumsByArtist,
 );
 
-export type SectionedId = SectionListData<EntityId[]>;
+export type SectionedId = SectionListData<string[]>;
 
 /**
  * Splits a set of albums into a list that is split by alphabet letters
@@ -77,7 +77,7 @@ function splitAlbumsByAlphabet(state: AppState['music']['albums']): SectionedId[
 
         // GUARD: Check if the row is overflowing. If so, add a new row.
         if (section.data[row].length >= 2) {
-            (section.data as EntityId[][]).push([]);
+            (section.data as string[][]).push([]);
         }
     });
 
@@ -92,7 +92,7 @@ export const selectAlbumsByAlphabet = createSelector(
     splitAlbumsByAlphabet,
 );
 
-export type SectionArtistItem = ArtistItem & { albumIds: EntityId[] };
+export type SectionArtistItem = ArtistItem & { albumIds: string[] };
 
 /**
  * Retrieve all artists based on the available albums
@@ -107,7 +107,7 @@ export function artistsFromAlbums(state: AppState['music']['albums']) {
         album?.ArtistItems.forEach((artist) => {
             // GUARD: Check that an array already exists for this artist
             if (!(artist.Name in sum)) {
-                sum[artist.Name] = { albumIds: [] as EntityId[], ...artist };
+                sum[artist.Name] = { albumIds: [] as string[], ...artist };
             }
 
             // Add the album id to the artist in the object

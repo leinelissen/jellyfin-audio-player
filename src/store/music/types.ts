@@ -1,5 +1,3 @@
-import { Dictionary } from '@reduxjs/toolkit';
-
 export interface UserData {
     PlaybackPositionTicks: number;
     PlayCount: number;
@@ -7,6 +5,29 @@ export interface UserData {
     Played: boolean;
     Key: string;
 }
+
+export interface MediaStream {
+    Codec: string
+    TimeBase: string
+    VideoRange: string
+    VideoRangeType: string
+    AudioSpatialFormat: string
+    DisplayTitle: string
+    IsInterlaced: boolean
+    ChannelLayout: string
+    BitRate: number
+    Channels: number
+    SampleRate: number
+    IsDefault: boolean
+    IsForced: boolean
+    IsHearingImpaired: boolean
+    Type: string
+    Index: number
+    IsExternal: boolean
+    IsTextSubtitleStream: boolean
+    SupportsExternalStream: boolean
+    Level: number
+} 
 
 export interface ArtistItem {
     Name: string;
@@ -60,6 +81,36 @@ export interface Album {
     DateCreated: string;
     Overview?: string;
     Similar?: string[];
+    /** Emby potentially carries different ids for primary images */
+    PrimaryImageItemId?: string;
+}
+
+export interface CodecMetadata {
+    contentType?: string;
+    isDirectPlay: boolean;
+}
+
+export interface LyricMetadata {
+    Artist: string
+    Album: string
+    Title: string
+    Author: string
+    Length: number
+    By: string
+    Offset: number
+    Creator: string
+    Version: string
+    IsSynced: boolean
+}
+
+export interface LyricData {
+    Text: string
+    Start: number
+}
+
+export interface Lyrics {
+    Metadata: LyricMetadata;
+    Lyrics: LyricData[]
 }
 
 export interface AlbumTrack {
@@ -69,6 +120,7 @@ export interface AlbumTrack {
     RunTimeTicks: number;
     ProductionYear: number;
     IndexNumber: number;
+    ParentIndexNumber: number;
     IsFolder: boolean;
     Type: 'Audio';
     UserData: UserData;
@@ -83,12 +135,16 @@ export interface AlbumTrack {
     BackdropImageTags: any[];
     LocationType: string;
     MediaType: string;
+    HasLyrics: boolean;
+    Lyrics?: Lyrics;
+    Codec?: CodecMetadata;
+    MediaStreams: MediaStream[];
 }
 
 export interface State {
     albums: {
         ids: string[];
-        entities: Dictionary<Album>;
+        entities: Record<string, Album>;
         isLoading: boolean;
     }
 }
@@ -111,8 +167,4 @@ export interface Playlist {
     MediaType: string;
     Tracks?: string[];
     lastRefreshed?: number;
-}
-
-export interface SimilarAlbum {
-    Id: string;
 }

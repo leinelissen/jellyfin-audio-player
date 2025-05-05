@@ -2,14 +2,14 @@ import React, { useCallback, useEffect } from 'react';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import TrackListView from './components/TrackListView';
-import { fetchAlbum, fetchTracksByAlbum } from '@/store/music/actions';
+import { fetchAlbum, fetchSimilarAlbums, fetchTracksByAlbum } from '@/store/music/actions';
 import { differenceInDays } from 'date-fns';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import { t } from '@/localisation';
 import { NavigationProp, StackParams } from '@/screens/types';
 import { SubHeader, Text } from '@/components/Typography';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useGetImage } from '@/utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi/lib';
 import styled from 'styled-components';
 import { Dimensions, Pressable } from 'react-native';
 import AlbumImage from './components/AlbumImage';
@@ -33,7 +33,7 @@ function SimilarAlbum({ id }: { id: string }) {
     const handlePress = useCallback(() => {
         album && navigation.push('Album', { id, album });
     }, [id, album, navigation]);
-
+    
     return (
         <Pressable
             style={({ pressed }) => ({ 
@@ -43,7 +43,7 @@ function SimilarAlbum({ id }: { id: string }) {
             })}
             onPress={handlePress}
         >
-            <Cover key={id} source={{ uri: getImage(id) }} />
+            <Cover key={id} source={{ uri: getImage(album) }} />
             <Text numberOfLines={1} style={{ fontSize: 13, marginBottom: 2 }}>{album?.Name}</Text>
             <Text numberOfLines={1} style={{ opacity: 0.5, fontSize: 13 }}>{album?.Artists.join(', ')}</Text>
         </Pressable>
@@ -62,6 +62,7 @@ const Album: React.FC = () => {
     const refresh = useCallback(() => { 
         dispatch(fetchTracksByAlbum(id)); 
         dispatch(fetchAlbum(id));
+        dispatch(fetchSimilarAlbums(id));
     }, [id, dispatch]);
 
     // Auto-fetch the track data periodically
@@ -76,7 +77,7 @@ const Album: React.FC = () => {
             trackIds={albumTracks || []}
             title={album?.Name}
             artist={album?.AlbumArtist}
-            entityId={id}
+            entityId={album?.PrimaryImageItemId || album.Id}
             refresh={refresh}
             playButtonText={t('play-album')}
             shuffleButtonText={t('shuffle-album')}

@@ -1,9 +1,9 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
-import { THEME_COLOR } from '@/CONSTANTS';
 
 import SearchStack from './Search';
 import Music from './Music';
@@ -12,6 +12,7 @@ import Downloads from './Downloads';
 import Onboarding from './Onboarding';
 import TrackPopupMenu from './modals/TrackPopupMenu';
 import SetJellyfinServer from './modals/SetJellyfinServer';
+import ErrorReportingPopup from './modals/ErrorReportingPopup';
 
 import SearchIcon from '@/assets/icons/magnifying-glass.svg';
 import NotesIcon from '@/assets/icons/notes.svg';
@@ -20,11 +21,10 @@ import DownloadsIcon from '@/assets/icons/arrow-down-to-line.svg';
 import { useTypedSelector } from '@/store';
 import { t } from '@/localisation';
 import ErrorReportingAlert from '@/utility/ErrorReportingAlert';
-import ErrorReportingPopup from './modals/ErrorReportingPopup';
+import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import Player from './modals/Player';
-import { StyleSheet } from 'react-native';
-import { ColoredBlurView } from '@/components/Colors';
 import { StackParams } from './types';
+import Lyrics from './modals/Lyrics';
 
 const Stack = createNativeStackNavigator<StackParams>();
 const Tab = createBottomTabNavigator();
@@ -35,8 +35,9 @@ type Screens = {
 }
 
 function Screens() {
+    const styles = useDefaultStyles();
     const isOnboardingComplete = useTypedSelector(state => state.settings.isOnboardingComplete);
-    
+
     // GUARD: If onboarding has not been completed, we instead render the
     // onboarding component, so that the user can get setup in the app.
     if (!isOnboardingComplete) {
@@ -62,7 +63,7 @@ function Screens() {
                                 return null;
                         }
                     },
-                    tabBarActiveTintColor: THEME_COLOR,
+                    tabBarActiveTintColor: styles.themeColor.color,
                     tabBarInactiveTintColor: 'gray',
                     headerShown: false,
                     tabBarShowLabel: false,
@@ -91,12 +92,16 @@ export default function Routes() {
         <Stack.Navigator screenOptions={{
             presentation: 'modal',
             headerShown: false,
+            contentStyle: {
+                backgroundColor: 'transparent'
+            }
         }} id="MAIN">
             <Stack.Screen name="Screens" component={Screens} />
             <Stack.Screen name="SetJellyfinServer" component={SetJellyfinServer} />
             <Stack.Screen name="TrackPopupMenu" component={TrackPopupMenu} options={{ presentation: 'formSheet' }} />
             <Stack.Screen name="ErrorReporting" component={ErrorReportingPopup} />
             <Stack.Screen name="Player" component={Player} />
+            <Stack.Screen name="Lyrics" component={Lyrics} />
         </Stack.Navigator>
     );
 }

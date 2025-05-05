@@ -1,1 +1,7 @@
-Recién salido del horno, un nuevo lanzamiento de Fintunes. Este contiene algunas actualizaciones menores de la interfaz de usuario. Notará que la etiqueta en las barras inferiores desapareció y tenemos algunos efectos elegantes para las barras de navegación en la parte superior e inferior. Los álbumes ahora incluyen un texto de descripción si está disponible en el servidor, así como álbumes similares extraídos de su instancia de Jellyfin. Por último, la lista de canciones de una lista de reproducción ahora también incluye al artista.
+Fintunes ahora admite la visualización de letras para que puedas cantar tus canciones favoritas. Además, ahora puedes usar Fintunes como cliente para Emby. Las características menores de esta versión incluyen:
+
+• Se guardan las imágenes de portada para las pistas descargadas (vuelve a descargar tus pistas para asegurarte de que aparezcan)
+• Una pantalla que muestra información del códec de las pistas que estás reproduciendo
+• Muchas nuevas traducciones, como polaco, tamil, chino tradicional, finlandés e indonesio. ¡Gracias a todos los colaboradores de idiomas!
+
+La versión 2.4.2 corrige un error introducido en la versión 2.4.0 que impedía descargar pistas sin portada.

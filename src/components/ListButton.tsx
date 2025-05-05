@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 import { TouchableOpacityProps } from 'react-native';
 import ChevronRight from '@/assets/icons/chevron-right.svg';
 import styled from 'styled-components/native';
-import { THEME_COLOR } from '@/CONSTANTS';
 import useDefaultStyles from './Colors';
 
 const BUTTON_SIZE = 14;
@@ -17,7 +16,6 @@ const Container = styled.Pressable<{ active?: boolean }>`
 `;
 
 const Label = styled.Text<{ active?: boolean }>`
-    color: ${THEME_COLOR};
     font-size: 16px;
 `;
 
@@ -37,8 +35,14 @@ const ListButton: React.FC<TouchableOpacityProps> = ({ children, ...props }) => 
                 isPressed ? defaultStyles.activeBackground : undefined
             ]}
         >
-            <Label>{children}</Label>
-            <ChevronRight width={BUTTON_SIZE} height={BUTTON_SIZE} fill={THEME_COLOR} />
+            <Label style={defaultStyles.themeColor}>
+                {children}
+            </Label>
+            <ChevronRight
+                width={BUTTON_SIZE}
+                height={BUTTON_SIZE}
+                fill={defaultStyles.themeColor.color}
+            />
         </Container>
     );
 };

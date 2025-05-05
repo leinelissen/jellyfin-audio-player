@@ -1,0 +1,7 @@
+Fintunes har nu stöd för att visa låttexter så att du kan sjunga med i dina favoritlåtar! Dessutom kan du nu använda Fintunes som en klient för Emby. Mindre funktioner i denna version inkluderar:
+
+• Omslagsbilder sparas för nedladdade låtar (ladda ner låtarna igen för att säkerställa att omslagen visas)
+• En visning som visar codec-information för låtar du spelar upp
+• Massor av nya översättningar, såsom polska, tamilska, traditionell kinesiska, finska och indonesiska. Tack till alla språkbidragsgivare!
+
+Version 2.4.2 innehåller en fix för ett fel som introducerades i version 2.4.0, vilket förhindrade nedladdning av låtar utan omslagsbild.

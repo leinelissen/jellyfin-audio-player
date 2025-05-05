@@ -11,36 +11,40 @@ import {
     fetchAlbum,
     artistAdapter,
     fetchAllArtists,
-    fetchInstantMixByTrackId
+    fetchInstantMixByTrackId,
+    fetchSimilarAlbums,
+    fetchCodecMetadataByTrack,
+    fetchLyricsByTrack
 } from './actions';
-import { createSlice, Dictionary, EntityId } from '@reduxjs/toolkit';
+import { createSlice, EntityId } from '@reduxjs/toolkit';
 import { Album, AlbumTrack, Playlist, MusicArtist } from './types';
+
 import { setJellyfinCredentials } from '@/store/settings/actions';
 
 export interface State {
     albums: {
         isLoading: boolean;
-        entities: Dictionary<Album>;
-        ids: EntityId[];
-        lastRefreshed?: number;
+        entities: Record<string, Album>;
+        ids: string[];
+        lastRefreshed?: number,
     },
     tracks: {
         isLoading: boolean;
-        entities: Dictionary<AlbumTrack>;
-        ids: EntityId[];
-        byAlbum: Dictionary<EntityId[]>;
-        byPlaylist: Dictionary<EntityId[]>;
+        entities: Record<string, AlbumTrack>;
+        ids: string[];
+        byAlbum: Record<string, string[]>;
+        byPlaylist: Record<string, string[]>;
     },
     playlists: {
         isLoading: boolean;
-        entities: Dictionary<Playlist>;
-        ids: EntityId[];
+        entities: Record<string, Playlist>;
+        ids: string[];
         lastRefreshed?: number,
     },
     artists: {
         isLoading: boolean;
-        entities: Dictionary<MusicArtist>;
-        ids: EntityId[];
+        entities: Record<string, MusicArtist>;
+        ids: string[];
         lastRefreshed?: number;
     }
 }
@@ -92,7 +96,15 @@ const music = createSlice({
         });
         builder.addCase(fetchAlbum.pending, (state) => { state.albums.isLoading = true; });
         builder.addCase(fetchAlbum.rejected, (state) => { state.albums.isLoading = false; });
-        
+       
+        /** 
+         * Fetch similar albums
+         */
+        builder.addCase(fetchSimilarAlbums.fulfilled, (state, { payload, meta }) => {
+            albumAdapter.upsertMany(state.albums, payload);
+            state.albums.entities[meta.arg].Similar = payload.map((a) => a.Id);
+        });
+
         /**
          * Fetch most recent albums
          */
@@ -240,6 +252,16 @@ const music = createSlice({
         });
         builder.addCase(fetchAllArtists.pending, (state) => { state.artists.isLoading = true; });
         builder.addCase(fetchAllArtists.rejected, (state) => { state.artists.isLoading = false; });
+
+        /** 
+         * Fetch track metadata
+         */
+        builder.addCase(fetchCodecMetadataByTrack.fulfilled, (state, { payload, meta }) => {
+            state.tracks.entities[meta.arg].Codec = payload;
+        });
+        builder.addCase(fetchLyricsByTrack.fulfilled, (state, { payload, meta }) => {
+            state.tracks.entities[meta.arg].Lyrics = payload;
+        });
     }
 });
 

@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",
+  "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
@@ -8,7 +8,6 @@
       ],
     },
     "types": [
-      "@types/styled-components-react-native",
       "@types/node"
     ],
   },

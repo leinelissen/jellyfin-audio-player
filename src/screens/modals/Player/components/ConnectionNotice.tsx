@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNetInfo } from '@react-native-community/netinfo';
-import { THEME_COLOR } from '@/CONSTANTS';
 import styled from 'styled-components/native';
 import CloudSlash from '@/assets/icons/cloud-slash.svg';
 import { Text } from 'react-native';
@@ -23,8 +22,8 @@ function ConnectionNotice() {
     if (!isInternetReachable) {
         return (
             <Well style={defaultStyles.activeBackground}>
-                <CloudSlash width={24} height={24} fill={THEME_COLOR} />
-                <Text style={{ color: THEME_COLOR, marginLeft: 12 }}>
+                <CloudSlash width={24} height={24} fill={defaultStyles.themeColor.color} />
+                <Text style={[ defaultStyles.themeColor, { marginLeft: 12 }]}>
                     {t('you-are-offline-message')}
                 </Text>
             </Well>

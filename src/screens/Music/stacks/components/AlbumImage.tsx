@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import FastImage, { FastImageProps } from 'react-native-fast-image';
-import { Dimensions, useColorScheme } from 'react-native';
+import { Dimensions } from 'react-native';
+import { useUserOrSystemScheme } from '@/components/Colors';
 
 const Screen = Dimensions.get('screen');
 export const AlbumWidth = Screen.width / 2 - 24;
@@ -23,11 +24,17 @@ const Container = styled(FastImage)`
 
 function AlbumImage(props: FastImageProps) {
     const [hasError, setError] = useState(false);
-    const colorScheme = useColorScheme();
+    const colorScheme = useUserOrSystemScheme();
 
     if (!props.source || hasError) {
         return (
-            <Container {...props} source={colorScheme === 'light' ? require('@/assets/images/empty-album-light.png') : require('@/assets/images/empty-album-dark.png')}  />
+            <Container
+                {...props}
+                source={colorScheme === 'light'
+                    ? require('@/assets/images/empty-album-light.png')
+                    : require('@/assets/images/empty-album-dark.png')
+                }
+            />
         );
     }
 

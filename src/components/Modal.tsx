@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { PropsWithChildren, useCallback } from 'react';
 import styled, { css } from 'styled-components/native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import useDefaultStyles from './Colors';
 
-interface Props {
+interface Props extends PropsWithChildren {
     fullSize?: boolean;
 }
 

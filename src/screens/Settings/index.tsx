@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 import { t } from '@/localisation';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import { THEME_COLOR } from '@/CONSTANTS';
 import ListButton from '@/components/ListButton';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 
@@ -28,7 +27,7 @@ export function SettingsList() {
 
     return (
         <SafeScrollView>
-            <ListButton onPress={handleLibraryClick}>{t('jellyfin-library')}</ListButton>
+            <ListButton onPress={handleLibraryClick}>{t('library')}</ListButton>
             <ListButton onPress={handleCacheClick}>{t('setting-cache')}</ListButton>
             <ListButton onPress={handleSentryClick}>{t('error-reporting')}</ListButton>
             <ListButton onPress={handlePlaybackReportingClick}>{t('playback-reporting')}</ListButton>
@@ -45,13 +44,13 @@ export default function Settings() {
 
     return (
         <Stack.Navigator initialRouteName="SettingList" screenOptions={{
-            headerTintColor: THEME_COLOR,
+            headerTintColor: defaultStyles.themeColor.color,
             headerTitleStyle: defaultStyles.stackHeader,
             headerTransparent: true,
             headerBackground: () => <ColoredBlurView style={StyleSheet.absoluteFill} />,
         }}>
             <Stack.Screen name="SettingList" component={SettingsList} options={{ headerTitle: t('settings') }} />
-            <Stack.Screen name="Library" component={Library} options={{ headerTitle: t('jellyfin-library') }} />
+            <Stack.Screen name="Library" component={Library} options={{ headerTitle: t('library') }} />
             <Stack.Screen name="Cache" component={Cache} options={{ headerTitle: t('setting-cache') }} />
             <Stack.Screen name="Sentry" component={Sentry} options={{ headerTitle: t('error-reporting') }} />
             <Stack.Screen name="Playback Reporting" component={PlaybackReporting} options={{ headerTitle: t('playback-reporting')}} />

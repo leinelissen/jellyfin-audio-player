@@ -1,14 +1,21 @@
 import { useTypedSelector } from '@/store';
 import { useCallback } from 'react';
 import TrackPlayer, { Track } from 'react-native-track-player';
-import { generateTrack } from './JellyfinApi';
-import { EntityId } from '@reduxjs/toolkit';
 import { shuffle as shuffleArray } from 'lodash';
+import { generateTrack } from './JellyfinApi/track';
 
 interface PlayOptions {
     play: boolean;
     shuffle: boolean;
     method: 'add-to-end' | 'add-after-currently-playing' | 'replace';
+    /** 
+     * The index for the track that should start out playing. This ensures that
+     * no intermediate tracks are played (however briefly) while the queue skips
+     * to this index.
+     * 
+     * NOTE: This option is only available with the `replace` method. 
+     */
+    playIndex?: number;
 }
 
 const defaults: PlayOptions = {
@@ -22,12 +29,11 @@ const defaults: PlayOptions = {
  * supplied id.
  */
 export default function usePlayTracks() {
-    const credentials = useTypedSelector(state => state.settings.jellyfin);
     const tracks = useTypedSelector(state => state.music.tracks.entities);
     const downloads = useTypedSelector(state => state.downloads.entities);
 
     return useCallback(async function playTracks(
-        trackIds: EntityId[] | undefined,
+        trackIds: string[] | undefined,
         options: Partial<PlayOptions> = {},
     ): Promise<Track[] | undefined> {
         if (!trackIds) {
@@ -43,7 +49,7 @@ export default function usePlayTracks() {
         const queue = await TrackPlayer.getQueue();
 
         // Convert all trackIds to the relevant format for react-native-track-player
-        const generatedTracks = trackIds.map((trackId) => {
+        const generatedTracks = (await Promise.all(trackIds.map(async (trackId) => {
             const track = tracks[trackId];
 
             // GUARD: Check that the track actually exists in Redux
@@ -52,16 +58,19 @@ export default function usePlayTracks() {
             }
 
             // Retrieve the generated track from Jellyfin
-            const generatedTrack = generateTrack(track, credentials);
+            const generatedTrack = await generateTrack(track);
 
             // Check if a downloaded version exists, and if so rewrite the URL
             const download = downloads[trackId];
             if (download?.location) {
                 generatedTrack.url = 'file://' + download.location;
             }
+            if (download?.image) {
+                generatedTrack.artwork = 'file://' + download.image;
+            }
 
             return generatedTrack;
-        }).filter((t): t is Track => typeof t !== 'undefined');
+        }))).filter((t): t is Track => typeof t !== 'undefined');
 
         // Potentially shuffle all tracks
         const newTracks = shuffle ? shuffleArray(generatedTracks) : generatedTracks;
@@ -105,15 +114,33 @@ export default function usePlayTracks() {
                 break;
             }
             case 'replace': {
+                // Reset the queue first
                 await TrackPlayer.reset();
-                await TrackPlayer.add(newTracks);
 
-                if (play) {
-                    await TrackPlayer.play();
+                // GUARD: Check if we need to skip to a particular index
+                if (options.playIndex) {
+                    // If so, we'll split the tracks into tracks before the
+                    // index that should be played, and the queue of tracks that
+                    // will start playing
+                    const before = newTracks.slice(0, options.playIndex);
+                    const current = newTracks.slice(options.playIndex);
+
+                    // First, we'll add the current queue and (optionally) force
+                    // it to start playing.
+                    await TrackPlayer.add(current);
+                    if (play) await TrackPlayer.play();
+
+                    // Then, we'll insert the "previous" tracks after the queue
+                    // has started playing. This ensures that these tracks won't
+                    // trigger any events on the track player.
+                    await TrackPlayer.add(before, 0);
+                } else {
+                    await TrackPlayer.add(newTracks);
+                    if (play) await TrackPlayer.play();
                 }
 
                 break;
             }
         }
-    }, [credentials, downloads, tracks]);
+    }, [downloads, tracks]);
 }

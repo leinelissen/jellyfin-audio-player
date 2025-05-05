@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { useGetImage } from '@/utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { Text, SafeAreaView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from '@/store';
@@ -39,9 +39,15 @@ const NavigationHeader: React.FC = () => {
     
     return (
         <>
-            <ListButton onPress={handleAllAlbumsClick} testID="all-albums">{t('all-albums')}</ListButton>
-            <ListButton onPress={handleArtistsClick} testID="artists">{t('artists')}</ListButton>
-            <ListButton onPress={handlePlaylistsClick} testID="playlists">{t('playlists')}</ListButton>
+            <ListButton onPress={handleAllAlbumsClick} testID="all-albums">
+                {t('all-albums')}
+            </ListButton>
+            <ListButton onPress={handleArtistsClick} testID="artists">
+                {t('artists')}
+            </ListButton>
+            <ListButton onPress={handlePlaylistsClick} testID="playlists">
+                {t('playlists')}
+            </ListButton>
             <ListContainer>
                 <HeaderContainer>
                     <Header>{t('recent-albums')}</Header>
@@ -86,7 +92,7 @@ const RecentAlbums: React.FC = () => {
                     <TouchableHandler id={item} onPress={selectAlbum} testID={`select-album-${item}`}>
                         <AlbumItem>
                             <ShadowWrapper size="medium">
-                                <AlbumImage source={{ uri: getImage(item) }} style={defaultStyles.imageBackground} />
+                                <AlbumImage source={{ uri: getImage(albums[item]) }} style={defaultStyles.imageBackground} />
                             </ShadowWrapper>
                             <Text style={defaultStyles.text} numberOfLines={1}>{albums[item]?.Name}</Text>
                             <Text style={defaultStyles.textHalfOpacity} numberOfLines={1}>{albums[item]?.AlbumArtist}</Text>

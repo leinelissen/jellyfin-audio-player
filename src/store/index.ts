@@ -1,18 +1,18 @@
-import { configureStore, getDefaultMiddleware, combineReducers } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { persistStore, persistReducer, PersistConfig, createMigrate } from 'redux-persist';
+import { persistStore, persistReducer, PersistConfig, createMigrate, PersistState } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 import settings from './settings';
 import music, { initialState as musicInitialState } from './music';
 import downloads, { initialState as downloadsInitialState } from './downloads';
-import { PersistState } from 'redux-persist/es/types';
+import sleepTimer from './sleep-timer';
 import { ColorScheme } from './settings/types';
+import MigratedStorage from '@/utility/MigratedStorage';
 
 const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
     key: 'root',
-    storage: AsyncStorage,
+    storage: MigratedStorage,
     version: 2,
     stateReconciler: autoMergeLevel2,
     migrate: createMigrate({
@@ -55,6 +55,32 @@ const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
                 }
             };
         },
+        // @ts-expect-error migrations are poorly typed
+        4: (state: AppState) => {
+            return {
+                ...state,
+                sleepTimer: {
+                    date: null,
+                }
+            };
+        },
+        // @ts-expect-error migrations are poorly typed
+        5: (state: AppState) => {
+            // @ts-expect-error
+            const credentials = state.settings.jellyfin && { 
+                // @ts-expect-error
+                ...(state.settings.jellyfin as AppState['settings']['credentials']),
+                type: 'jellyfin',
+            };
+
+            return {
+                ...state,
+                settings: {
+                    ...state.settings,
+                    credentials,
+                },
+            };
+        },
     })
 };
 
@@ -62,28 +88,24 @@ const reducers = combineReducers({
     settings,
     music: music.reducer,
     downloads: downloads.reducer,
+    sleepTimer: sleepTimer.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);
 
-const middlewares = [];
-if (__DEV__) {
-    middlewares.push(require('redux-flipper').default());
-}
-
 const store = configureStore({
     reducer: persistedReducer,
-    middleware: getDefaultMiddleware({ serializableCheck: false, immutableCheck: false }).concat(
-        // logger,
-        ...middlewares,
+    middleware: (getDefaultMiddleware) => (
+        getDefaultMiddleware({ serializableCheck: false, immutableCheck: false })
     ),
 });
 
 export type AppState = ReturnType<typeof reducers> & { _persist: PersistState };
 export type AppDispatch = typeof store.dispatch;
 export type AsyncThunkAPI = { state: AppState, dispatch: AppDispatch };
+export type Store = typeof store;
 export const useTypedSelector: TypedUseSelectorHook<AppState> = useSelector;
-export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export const persistedStore = persistStore(store);
 

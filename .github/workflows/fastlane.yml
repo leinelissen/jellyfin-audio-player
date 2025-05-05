@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu' # See 'Supported distributions' for available options
+        java-version: '17'
     - name: Set outputs
       id: vars
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
@@ -25,9 +29,10 @@ jobs:
         SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
         SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         SENTRY_URL: ${{ secrets.SENTRY_URL }}
+        SENTRY_DISABLE_AUTO_UPLOAD: true
       run: bundle exec fastlane android build
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: jellyfin-audio-player-android-${{ steps.vars.outputs.sha_short }}.apk
         path: android/app/build/outputs/**/*.apk

@@ -1,1 +1,7 @@
-Fraîchement sorti du four, une nouvelle version de Fintunes. Celui-ci contient quelques mises à jour mineures de l'interface utilisateur. Vous remarquerez que l'étiquette sur les barres inférieures a disparu, et nous avons quelques effets fantaisistes pour les barres de navigation en haut et en bas. Les albums incluent désormais un texte de description s'il est disponible sur le serveur, ainsi que des albums similaires extraits de votre instance Jellyfin. Enfin, la liste des pistes d'une playlist inclut désormais également l'artiste.
+Fintunes prend désormais en charge l’affichage des paroles, afin que vous puissiez chanter vos morceaux préférés ! De plus, vous pouvez maintenant utiliser Fintunes comme client pour Emby. Les fonctionnalités mineures de cette version incluent :
+
+• Les images de couverture sont enregistrées pour les morceaux téléchargés (retéléchargez vos morceaux pour vous assurer qu’elles apparaissent)
+• Un affichage indiquant les informations du codec des morceaux en cours de lecture
+• De nombreuses nouvelles traductions, notamment en polonais, tamoul, chinois traditionnel, finnois et indonésien. Merci à tous les contributeurs linguistiques !
+
+La version 2.4.2 corrige une erreur introduite avec la version 2.4.0 qui empêchait le téléchargement des morceaux sans pochette.

@@ -3,14 +3,15 @@ import debounce from 'lodash/debounce';
 import Input from '@/components/Input';
 import { ActivityIndicator, Animated, SafeAreaView, View } from 'react-native';
 import styled from 'styled-components/native';
+
 import { AppState, useAppDispatch, useTypedSelector } from '@/store';
-import Fuse from 'fuse.js';
+import Fuse, { IFuseOptions } from 'fuse.js';
 import { Album, AlbumTrack, MusicArtist, Playlist } from '@/store/music/types';
+
 import { FlatList } from 'react-native-gesture-handler';
 import TouchableHandler from '@/components/TouchableHandler';
 import { useNavigation } from '@react-navigation/native';
-import { useGetImage } from '@/utility/JellyfinApi';
-import FastImage from 'react-native-fast-image';
+import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { t } from '@/localisation';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import { searchAndFetch } from '@/store/music/actions';
@@ -22,7 +23,7 @@ import { ShadowWrapper } from '@/components/Shadow';
 import { useKeyboardHeight } from '@/utility/useKeyboardHeight';
 import { NavigationProp } from '@/screens/types';
 import { useNavigationOffsets } from '@/components/SafeNavigatorView';
-import { Dictionary } from '@reduxjs/toolkit';
+import BaseAlbumImage from '@/screens/Music/stacks/components/AlbumImage';
 // import MicrophoneIcon from '@/assets/icons/microphone.svg';
 // import AlbumIcon from '@/assets/icons/collection.svg';
 // import TrackIcon from '@/assets/icons/note.svg';
@@ -53,7 +54,7 @@ const Loading = styled.View`
     justify-content: center;
 `;
 
-const SearchItemImage = styled(FastImage)`
+const SearchItemImage = styled(BaseAlbumImage)`
     border-radius: 4px;
     width: 32px;
     height: 32px;
@@ -74,7 +75,7 @@ const SearchResult = styled.View`
     height: 54px;
 `;
 
-const fuseOptions: Fuse.IFuseOptions<Album | AlbumTrack | MusicArtist | Playlist> = {
+const fuseOptions: IFuseOptions<Album | AlbumTrack | MusicArtist | Playlist> = {
     keys: [
         {
             name: 'Name',
@@ -94,8 +95,7 @@ const fuseOptions: Fuse.IFuseOptions<Album | AlbumTrack | MusicArtist | Playlist
         }
     ],
     threshold: 0.1,
-    includeScore: true,
-    fieldNormWeight: 1,
+    includeScore: true
 };
 
 type AudioResult = {
@@ -154,12 +154,12 @@ export default function Search() {
     const [isLoading, setLoading] = useState(false);
     const [fuseResults, setFuseResults] = useState<CombinedResults>([]);
 
-    const albumEntities: Dictionary<SearchItem> = useTypedSelector(albumSelector);
-    const tracksEntities: Dictionary<SearchItem> = useTypedSelector(tracksSelector);
-    const artistsEntities: Dictionary<SearchItem> = useTypedSelector(artistsSelector);
-    const playlistsEntities: Dictionary<SearchItem> = useTypedSelector(playlistsSelector);
+    const albumEntities: Record<string, Album> = useTypedSelector(albumSelector);
+    const tracksEntities: Record<string, AlbumTrack> = useTypedSelector(tracksSelector);
+    const artistsEntities: Record<string, MusicArtist> = useTypedSelector(artistsSelector);
+    const playlistsEntities: Record<string, Playlist> = useTypedSelector(playlistsSelector);
 
-    const searchItems = useRef<Dictionary<SearchItem>>();
+    const searchItems = useRef<Record<string, SearchItem>>();
     const fuse = useRef<Fuse<SearchItem>>();
 
     // Prepare helpers
@@ -290,6 +290,7 @@ export default function Search() {
                             placeholder={t('search') + '...'}
                             icon={<SearchIcon width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />}
                             testID="search-input"
+                            autoCorrect={false}
                         />
                         {isLoading && <Loading style={{ marginTop: -4 }}><ActivityIndicator /></Loading>}
                     </View>

@@ -1,1 +1,1 @@
-jellyfin, audio, joueur, diffusion, téléchargements, musique
+jellyfin, audio, lecteur, streaming, téléchargements, musique

@@ -58,7 +58,8 @@ module.exports = {
             {
                 ignoreProps: true
             }
-        ]
+        ],
+        'react/react-in-jsx-scope': 'off',
     },
     settings: {
         react: {

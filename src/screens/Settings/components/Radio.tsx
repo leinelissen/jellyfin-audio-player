@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 import CheckmarkIcon from '@/assets/icons/checkmark.svg';
 import { Text } from '@/components/Typography';
 import useDefaultStyles from '@/components/Colors';
-import { THEME_COLOR } from '@/CONSTANTS';
 import { Gap } from '@/components/Utility';
 import { View } from 'react-native';
 
@@ -52,9 +51,9 @@ export function RadioItem<T>({
                     }
                 ]}
             >
-                {checked ? <CheckmarkIcon fill={THEME_COLOR} height={14} width={14} /> : <Gap size={14} />}
+                {checked ? <CheckmarkIcon fill={defaultStyles.themeColor.color} height={14} width={14} /> : <Gap size={14} />}
                 <Gap size={8} />
-                <Text style={checked && { color: THEME_COLOR }}>{label}</Text>
+                <Text style={checked && defaultStyles.themeColor}>{label}</Text>
             </RadioItemContainer>
         </View>
     );

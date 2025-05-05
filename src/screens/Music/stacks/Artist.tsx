@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, ReactText, useState, useRef } from 'react';
-import { useGetImage } from '@/utility/JellyfinApi';
+
+import React, { useCallback, useEffect, ReactText, useState} from 'react';
+import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
@@ -8,7 +9,6 @@ import { fetchAllAlbums, fetchArtistOverview } from '@/store/music/actions';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import TouchableHandler from '@/components/TouchableHandler';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
-import { EntityId } from '@reduxjs/toolkit';
 import styled from 'styled-components/native';
 import useDefaultStyles from '@/components/Colors';
 import { Album } from '@/store/music/types';
@@ -82,14 +82,14 @@ const Artist: React.FC = () => {
     // Set callbacks
     const retrieveData = useCallback(() => dispatch(fetchAllAlbums()), [dispatch]);
     const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
-    const generateItem = useCallback(({ item }: { item: EntityId[] }) => {
+    const generateItem = useCallback(({ item }: { item: string[] }) => {
         return (
             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }} key={item.join('-')}>
                 {item.map((id) => (
                     <GeneratedAlbumItem
                         key={id}
                         id={id}
-                        imageUrl={getImage(id as string)}
+                        imageUrl={getImage(albums[id])}
                         name={albums[id]?.Name || ''}
                         artist={albums[id]?.AlbumArtist || ''}
                         onPress={selectAlbum}

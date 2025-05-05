@@ -1,0 +1,1 @@
+Un reproductor d'àudio en streaming per a Jellyfin, amb suport per a cerca i descàrregues.

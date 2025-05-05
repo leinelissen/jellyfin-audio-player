@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import useQueue from '@/utility/useQueue';
-import { View, StyleSheet, ListRenderItemInfo } from 'react-native';
+import { View, StyleSheet, ListRenderItemInfo, FlatList } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import useCurrentTrack from '@/utility/useCurrentTrack';
 import TouchableHandler from '@/components/TouchableHandler';
@@ -11,14 +11,13 @@ import { Text } from '@/components/Typography';
 import RepeatIcon from '@/assets/icons/repeat.svg';
 import RepeatSingleIcon from '@/assets/icons/repeat.1.svg';
 import Button from '@/components/Button';
-import { THEME_COLOR } from '@/CONSTANTS';
 import DownloadIcon from '@/components/DownloadIcon';
 import Divider from '@/components/Divider';
 import ticksToDuration from '@/utility/ticksToDuration';
 
 const ICON_SIZE = 16;
 
-const Container = styled.FlatList<Track>`
+const Container = styled(FlatList<Track>)`
 
 `;
 
@@ -27,7 +26,7 @@ const Header = styled.View`
     flex-direction: row;
     align-items: center;
     padding-bottom: 8px;
-    padding-top: 52px;
+    padding-top: 27px;
 `;
 
 const IconButton = styled.TouchableOpacity`
@@ -123,7 +122,7 @@ export default function Queue({ header }: Props) {
                             onPress={toggleTrackLoop}
                         >
                             <RepeatSingleIcon
-                                fill={repeatMode === RepeatMode.Track ? THEME_COLOR : defaultStyles.textHalfOpacity.color}
+                                fill={repeatMode === RepeatMode.Track ? defaultStyles.themeColor.color : defaultStyles.textHalfOpacity.color}
                                 width={ICON_SIZE}
                                 height={ICON_SIZE}
                             />
@@ -133,7 +132,7 @@ export default function Queue({ header }: Props) {
                             onPress={toggleQueueLoop}
                         >
                             <RepeatIcon
-                                fill={repeatMode === RepeatMode.Queue ? THEME_COLOR : defaultStyles.textHalfOpacity.color}
+                                fill={repeatMode === RepeatMode.Queue ? defaultStyles.themeColor.color : defaultStyles.textHalfOpacity.color}
                                 width={ICON_SIZE}
                                 height={ICON_SIZE}
                             />
@@ -154,14 +153,14 @@ export default function Queue({ header }: Props) {
                     >
                         <View style={{ flex: 1, marginRight: 16 }}>
                             <Text
-                                style={[currentIndex === index ? { color: THEME_COLOR, fontWeight: '500' } : styles.trackTitle, { marginBottom: 2 }]}
+                                style={[currentIndex === index ? { color: defaultStyles.themeColor.color, fontWeight: '500' } : styles.trackTitle, { marginBottom: 2 }]}
                                 numberOfLines={1}
                             >
                                 {track.title}
                             </Text>
                             {(track.artist || track.album) && (
                                 <TextHalfOpacity
-                                    style={currentIndex === index ? { color: THEME_COLOR, fontWeight: '400' } : undefined}
+                                    style={currentIndex === index ? { color: defaultStyles.themeColor.color, fontWeight: '400' } : undefined}
                                     numberOfLines={1}
                                 >
                                     {track.artist}{track.album && ' — ' + track.album}
@@ -170,13 +169,13 @@ export default function Queue({ header }: Props) {
                         </View>
                         <View style={{ marginLeft: 'auto', marginRight: 8 }}>
                             <TextHalfOpacity
-                                style={currentIndex === index ? { color: THEME_COLOR, fontWeight: '400' } : undefined}
+                                style={currentIndex === index ? { color: defaultStyles.themeColor.color, fontWeight: '400' } : undefined}
                             >
                                 {ticksToDuration(track.duration || 0)}
                             </TextHalfOpacity>
                         </View>
                         <View>
-                            <DownloadIcon trackId={track.backendId} fill={currentIndex === index ? THEME_COLOR + '80' : undefined} />
+                            <DownloadIcon trackId={track.backendId} fill={currentIndex === index ? defaultStyles.themeColor.color + '80' : undefined} />
                         </View>
                     </QueueItem>
                 </TouchableHandler>

@@ -1,8 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
-import TrackPlayer, { Event, Track, useTrackPlayerEvents } from 'react-native-track-player';
+import { useTypedSelector } from '@/store';
+import { AlbumTrack } from '@/store/music/types';
+import { useEffect, useMemo, useState } from 'react';
+import TrackPlayer, { Event, useTrackPlayerEvents, Track } from 'react-native-track-player';
 
 interface CurrentTrackResponse {
     track: Track | undefined;
+    albumTrack: AlbumTrack | undefined;
     index: number | undefined;
 }
 
@@ -13,22 +16,41 @@ export default function useCurrentTrack(): CurrentTrackResponse {
     const [track, setTrack] = useState<Track | undefined>();
     const [index, setIndex] = useState<number | undefined>();
 
-    // Retrieve the current track from the queue using the index
-    const retrieveCurrentTrack = useCallback(async () => {
-        const queue = await TrackPlayer.getQueue();
-        const currentTrackIndex = await TrackPlayer.getCurrentTrack();
-        if (currentTrackIndex !== null) {
-            setTrack(queue[currentTrackIndex]);
-            setIndex(currentTrackIndex);
-        } else {
-            setTrack(undefined);
-            setIndex(undefined);
-        }
-    }, [setTrack, setIndex]);
+    // Retrieve entities from the store
+    const entities = useTypedSelector((state) => state.music.tracks.entities);
+
+    // Attempt to extract the track from the store
+    const albumTrack = useMemo(() => (
+        entities[track?.backendId]
+    ), [track?.backendId, entities]);
 
     // Then execute the function on component mount and track changes
-    useEffect(() => { retrieveCurrentTrack(); }, [retrieveCurrentTrack]);
-    useTrackPlayerEvents([ Event.PlaybackTrackChanged, Event.PlaybackState ], retrieveCurrentTrack);
-    
-    return { track, index };
+    useEffect(() => { 
+        // Async function that retrieves the current track whenever the hook is
+        // first executed
+        async function getTrack() {
+            const queue = await TrackPlayer.getQueue();
+            const currentTrackIndex = await TrackPlayer.getActiveTrackIndex();
+            if (currentTrackIndex !== undefined) {
+                setTrack(queue[currentTrackIndex]);
+                setIndex(currentTrackIndex);
+            } else {
+                setTrack(undefined);
+                setIndex(undefined);
+            }
+        }
+
+        getTrack();
+    }, []);
+
+    // Listen for update events
+    useTrackPlayerEvents([ Event.PlaybackActiveTrackChanged, Event.PlaybackState ], (e) => {
+        // GUARD: Listen for active track changed events
+        if (e.type === Event.PlaybackActiveTrackChanged) {
+            setIndex(e.index);
+            setTrack(e.track);
+        }
+    });
+
+    return { track, index, albumTrack };
 }

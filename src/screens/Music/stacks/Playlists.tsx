@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, ReactText } from 'react';
-import { useGetImage } from '@/utility/JellyfinApi';
+import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { Text, View, FlatList, ListRenderItem, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
@@ -8,7 +8,6 @@ import { fetchAllPlaylists } from '@/store/music/actions';
 import { PLAYLIST_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import TouchableHandler from '@/components/TouchableHandler';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
-import { EntityId } from '@reduxjs/toolkit';
 import useDefaultStyles from '@/components/Colors';
 import { NavigationProp } from '@/screens/types';
 import { SafeFlatList, useNavigationOffsets } from '@/components/SafeNavigatorView';
@@ -46,9 +45,9 @@ const Playlists: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
-    const listRef = useRef<FlatList<EntityId>>(null);
+    const listRef = useRef<FlatList<string>>(null);
 
-    const getItemLayout = useCallback((data: EntityId[] | null | undefined, index: number): { offset: number, length: number, index: number } => {
+    const getItemLayout = useCallback((data: ArrayLike<string> | null | undefined, index: number): { offset: number, length: number, index: number } => {
         const length = 220;
         const offset = length * index;
         return { index, length, offset };
@@ -59,7 +58,7 @@ const Playlists: React.FC = () => {
     const selectAlbum = useCallback((id: string) => {
         navigation.navigate('Playlist', { id });
     }, [navigation]);
-    const generateItem: ListRenderItem<EntityId> = useCallback(({ item, index }) => {
+    const generateItem: ListRenderItem<string> = useCallback(({ item, index }) => {
         if (index % 2 === 1) {
             return <View key={item} />;
         }
@@ -71,14 +70,14 @@ const Playlists: React.FC = () => {
             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }} key={item}>
                 <GeneratedPlaylistItem
                     id={item}
-                    imageUrl={getImage(item as string)}
+                    imageUrl={getImage(entities[item])}
                     name={entities[item]?.Name || ''}
                     onPress={selectAlbum}
                 />
                 {nextItem && 
                     <GeneratedPlaylistItem
                         id={nextItemId}
-                        imageUrl={getImage(nextItemId as string)}
+                        imageUrl={getImage(nextItem)}
                         name={nextItem.Name || ''}
                         onPress={selectAlbum}
                     />

@@ -1,4 +1,3 @@
-import { THEME_COLOR } from '@/CONSTANTS';
 import styled from 'styled-components/native';
 import Animated from 'react-native-reanimated';
 
@@ -21,8 +20,8 @@ export function calculateProgressTranslation(
     const completion = position / reference;
 
     // GUARD: Check whether the calculated number is valid and not infinite
-    if (Number.isNaN(completion) || !Number.isFinite(completion)) {
-        return 0;
+    if (Number.isNaN(completion) || !Number.isFinite(completion) || !width) {
+        return -1_000;
     }
 
     const output = (1 - completion) * -1 * width;
@@ -30,6 +29,7 @@ export function calculateProgressTranslation(
     return output;
 }
 
+// Progress track did not show up on Lyrics screen if min height is not set
 export const ProgressTrackContainer = styled.View`
     overflow: hidden;
     height: 5px;
@@ -38,6 +38,7 @@ export const ProgressTrackContainer = styled.View`
     align-items: center;
     position: relative;
     border-radius: 6px;
+    min-height: 5px;
 `;
 
 export interface ProgressTrackProps {
@@ -51,7 +52,6 @@ const ProgressTrack = styled(Animated.View)<ProgressTrackProps>`
     left: 0;
     right: 0;
     height: ${(props) => props.stroke ? props.stroke + 'px' : '100%'};
-    background-color: ${THEME_COLOR};
     opacity: ${(props) => props.opacity || 1};
     border-radius: 99px;
 `;

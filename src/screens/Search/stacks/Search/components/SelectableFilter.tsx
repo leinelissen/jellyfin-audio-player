@@ -1,6 +1,5 @@
 import useDefaultStyles from '@/components/Colors';
 import { Text } from '@/components/Typography';
-import { THEME_COLOR } from '@/CONSTANTS';
 import React from 'react';
 import { SvgProps } from 'react-native-svg';
 import styled, { css } from 'styled-components/native';
@@ -21,7 +20,6 @@ const Label = styled(Text)<{ active?: boolean }>`
     ${(props) => props.active && css`
         opacity: 1;
         font-weight: 500;
-        color: ${THEME_COLOR};
     `}
 `;
 
@@ -46,8 +44,10 @@ function SelectableFilter({
             active={active}
             onPress={onPress}
         >
-            <Icon width={14} height={14} fill={active ? THEME_COLOR : defaultStyles.textHalfOpacity.color} />
-            <Label active={active}>{text}</Label>
+            <Icon width={14} height={14} fill={active ? defaultStyles.themeColor.color : defaultStyles.textHalfOpacity.color} />
+            <Label active={active} style={active && defaultStyles.themeColor}>
+                {text}
+            </Label>
         </Container>
     );
 }

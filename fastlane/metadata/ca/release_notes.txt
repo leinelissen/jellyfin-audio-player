@@ -1,0 +1,7 @@
+Fintunes ara admet la visualització de lletres perquè puguis cantar les teves cançons preferides! A més, ara pots utilitzar Fintunes com a client per a Emby. Les característiques menors d’aquesta versió inclouen:
+
+• Les imatges de portada es desen per a les pistes descarregades (torna a descarregar les teves pistes per assegurar-te que apareguin)
+• Una pantalla que mostra informació sobre el còdec de les pistes que s’estan reproduint
+• Moltes noves traduccions, com el polonès, tàmil, xinès tradicional, finès i indonesi. Gràcies a tots els col·laboradors lingüístics!
+
+La versió 2.4.2 corregeix un error introduït a la versió 2.4.0 que impedia descarregar pistes sense portada.
