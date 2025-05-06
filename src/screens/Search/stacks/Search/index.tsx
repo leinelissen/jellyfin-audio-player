@@ -350,12 +350,10 @@ export default function Search() {
                 renderItem={({ item: { id, type, name } }: { item: SearchResult }) => {
                     const searchItem = searchItems.current?.[id];
 
-                    // TODO: This needs improvement, because MusicArtist and Playlist need to be supported types
                     // GUARD: If the album cannot be found in the store, we
                     // cannot display it.
                     if (!searchItem) {
-                        console.log('No search item for: ', id, ' name ', name);
-                        // return null;
+                        return null;
                     }
 
                     return (
