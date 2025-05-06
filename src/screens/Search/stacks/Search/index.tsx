@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Input from '@/components/Input';
-import { ActivityIndicator, Animated, KeyboardAvoidingView, SafeAreaView, View } from 'react-native';
+import { ActivityIndicator, Animated, KeyboardAvoidingView, Platform, SafeAreaView, View } from 'react-native';
 import styled from 'styled-components/native';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import Fuse, { IFuseOptions } from 'fuse.js';
@@ -29,6 +29,10 @@ import BaseAlbumImage from '@/screens/Music/stacks/components/AlbumImage';
 // import LocalIcon from '@/assets/icons/internal-drive.svg';
 // import SelectableFilter from './components/SelectableFilter';
 
+const KEYBOARD_OFFSET = Platform.select({
+    ios: 0,
+    android: 72,
+});
 const SEARCH_INPUT_HEIGHT = 62;
 
 const Container = styled(View)`
@@ -264,7 +268,7 @@ export default function Search() {
 
     return (
         <SafeAreaView style={{ flex: 1, marginBottom: offsets.bottom }}>
-            <KeyboardAvoidingView behavior="height" style={{ flex: 1 }}>
+            <KeyboardAvoidingView behavior="height" style={{ flex: 1 }} keyboardVerticalOffset={KEYBOARD_OFFSET}>
                 <FlatList
                     keyboardShouldPersistTaps="handled"
                     style={{ flex: 2, }}

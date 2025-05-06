@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { debounce } from 'lodash';
 import { AppState } from '@/store';
@@ -49,19 +49,11 @@ type CredentialEventData = {
     type: 'jellyfin',
 } | undefined;
 
-class CredentialGenerator extends Component<Props> {
-    ref = createRef<WebView>();
+const CredentialGenerator: React.FC<Props> = ({ serverUrl, onCredentialsRetrieved }) => {
+    const webViewRef = useRef<WebView>(null);
 
-    handleStateChange = () => {
-        // Call a debounced version to check if the credentials are there
-        this.checkIfCredentialsAreThere();
-    };
-
-    checkIfCredentialsAreThere = debounce(() => {
-        // Inject some javascript to check if the credentials can be extracted
-        // from localstore. We simultaneously attempt to extract credentials for
-        // any back-end.
-        this.ref.current?.injectJavaScript(`
+    const checkIfCredentialsAreThere = useCallback(debounce(() => {
+        webViewRef.current?.injectJavaScript(`
             try { 
                 let credentials = JSON.parse(window.localStorage.getItem('jellyfin_credentials'));
                 let deviceId = window.localStorage.getItem('_deviceId2');
@@ -73,9 +65,9 @@ class CredentialGenerator extends Component<Props> {
                 window.ReactNativeWebView.postMessage(JSON.stringify({ credentials, deviceId, type: 'emby' })) 
             } catch(e) { }; true;
         `);
-    }, 500);
+    }, 500), []);
 
-    handleMessage = async (event: WebViewMessageEvent) => {
+    const handleMessage = useCallback(async (event: WebViewMessageEvent) => {
         // GUARD: Something must be returned for this thing to work
         if (!event.nativeEvent.data) {
             return;
@@ -83,6 +75,7 @@ class CredentialGenerator extends Component<Props> {
 
         // Parse the content
         const data = JSON.parse(event.nativeEvent.data) as CredentialEventData;
+    
         if (__DEV__) {
             console.log('Received credential event data: ', JSON.stringify(data));
         }
@@ -143,28 +136,25 @@ class CredentialGenerator extends Component<Props> {
         }
 
         // If a message is received, the credentials should be there
-        this.props.onCredentialsRetrieved({
+        onCredentialsRetrieved({
             uri: address,
             user_id: userId,
             access_token: accessToken,
             device_id: deviceId,
             type: data.type,
         });
-    };
+    }, [onCredentialsRetrieved]);
 
-    render() {
-        const { serverUrl } = this.props;
 
-        return (
-            <WebView
-                source={{ uri: serverUrl as string }}
-                onNavigationStateChange={this.handleStateChange}
-                onMessage={this.handleMessage}
-                ref={this.ref}
-                startInLoadingState={true}
-            />
-        );
-    }
-}
+    return (
+        <WebView
+            source={{ uri: serverUrl as string }}
+            onNavigationStateChange={checkIfCredentialsAreThere}
+            onMessage={handleMessage}
+            ref={webViewRef}
+            startInLoadingState={true}
+        />
+    );
+};
 
 export default CredentialGenerator;

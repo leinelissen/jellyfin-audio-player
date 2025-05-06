@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect } from 'react';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import TrackPlayer, { Capability } from 'react-native-track-player';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -11,6 +11,7 @@ import {
 } from '@react-navigation/native';
 import { ColorSchemeProvider, themes, useUserOrSystemScheme } from './Colors';
 import DownloadManager from './DownloadManager';
+import AppLoading from './AppLoading';
 
 const LightTheme = {
     ...DefaultTheme,
@@ -44,14 +45,14 @@ function ThemedNavigationContainer({ children }: PropsWithChildren<{}>) {
     );
 }
 
-// Track whether the player has already been setup, so that we don't
-// accidentally do it twice.
-let hasSetupPlayer = false;
+export default function App(): JSX.Element | null {
+    // Track whether the player has already been setup, so that we don't
+    // accidentally do it twice.
+    const [hasSetupPlayer, setHasSetupPlayer] = useState(false);
 
-export default function App(): JSX.Element {
     useEffect(() => {
         async function setupTrackPlayer() {
-            await TrackPlayer.setupPlayer();
+            await TrackPlayer.setupPlayer({ autoHandleInterruptions: true });
             await TrackPlayer.updateOptions({
                 capabilities: [
                     Capability.Play,
@@ -63,13 +64,18 @@ export default function App(): JSX.Element {
                 ],
                 progressUpdateEventInterval: 5,
             });
+            setHasSetupPlayer(true);
         }
 
         if (!hasSetupPlayer) {
             setupTrackPlayer();
-            hasSetupPlayer = true;
         }
-    }, []);
+    }, [hasSetupPlayer]);
+
+    // GUARD: Wait for setup of the player before showing the rest of the app
+    if (!hasSetupPlayer) {
+        return (<AppLoading />);
+    }
 
     return (
         <Provider store={store}>
