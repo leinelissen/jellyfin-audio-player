@@ -79,8 +79,6 @@ export const trackAdapter = createEntityAdapter<AlbumTrack, string>({
     sortComparer: (a, b) => a.IndexNumber - b.IndexNumber,
 });
 
-export const trackSelectors = trackAdapter.getSelectors((state) => state);
-
 /**
  * Retrieve all tracks from a particular album
  */
@@ -125,7 +123,7 @@ export const fetchTracksByPlaylist = createAsyncThunk<AlbumTrack[], string, Asyn
     postProcessTracks(retrievePlaylistTracks)
 );
 
-export const artistAdapter = createEntityAdapter<MusicArtist>({
+export const artistAdapter = createEntityAdapter<MusicArtist, string>({
     selectId: artist => artist.Id,
     sortComparer: (a, b) => a.Name.localeCompare(b.Name)
 });

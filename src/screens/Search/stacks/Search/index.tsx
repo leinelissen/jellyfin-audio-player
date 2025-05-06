@@ -101,34 +101,6 @@ const fuseOptions: IFuseOptions<Album | AlbumTrack | MusicArtist | Playlist> = {
     includeScore: true
 };
 
-type AudioResult = {
-    type: 'Audio';
-    id: string;
-    album: string;
-    name: string;
-};
-
-type AlbumResult = {
-    type: 'Album';
-    id: string;
-    album: undefined;
-    name: string;
-}
-
-type MusicArtistResult = {
-    type: 'MusicArtist';
-    id: string;
-    album: undefined;
-    name: string;
-}
-
-type PlaylistResult = {
-    type: 'Playlist';
-    id: string;
-    album: undefined;
-    name: string;
-}
-
 type SearchType = 'Audio' | 'MusicAlbum' | 'MusicArtist' | 'Playlist';
 
 interface SearchResult {
@@ -183,7 +155,7 @@ export default function Search() {
         ...tracksEntities,
         ...artistsEntities,
         ...playlistsEntities
-    }), [albumEntities, tracksEntities, artistsEntities, playlistsEntities, fetchJellyfinResults]);
+    }), [albumEntities, tracksEntities, artistsEntities, playlistsEntities]);
 
     /**
      * Since it is impractical to have a global fuse variable, we need to
@@ -194,7 +166,7 @@ export default function Search() {
      */
     const fuse = useMemo(
         () => new Fuse(Object.values(searchItems) as SearchItem[], fuseOptions),
-        [searchItems, fetchJellyfinResults]
+        [searchItems]
     );
 
     /**
@@ -264,7 +236,7 @@ export default function Search() {
                 navigation.navigate('Playlist', { id });
                 break;
         }
-    }, [navigation, albumEntities]);
+    }, [navigation, searchItems, albumEntities]);
 
     const SearchInput = React.useMemo(() => (
         <Animated.View>

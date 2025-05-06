@@ -43,9 +43,7 @@ const Playlist: React.FC = () => {
             shuffleButtonText={t('shuffle-playlist')}
             downloadButtonText={t('download-playlist')} 
             deleteButtonText={t('delete-playlist')}
-            saveMixPlaylistButtonText={t('save-mix-playlist')}
             itemDisplayStyle='playlist'
-            isMix={isMix}
         />
     );
 };
