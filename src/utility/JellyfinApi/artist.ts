@@ -17,10 +17,10 @@ const artistParams = new URLSearchParams(artistOptions).toString();
  * Retrieve all artists that are available on the Jellyfin server
  */
 export function retrieveAllArtists() {
-	return fetchApi<{ Items: MusicArtist[] }>(({ user_id }) => `/Users/${user_id}/Items?${artistParams}`)
-		.then(response => response.Items);
+    return fetchApi<{ Items: MusicArtist[] }>(({ user_id }) => `/Users/${user_id}/Items?${artistParams}`)
+        .then(response => response.Items);
 }
 
 export function retrieveArtistOverview(ItemId: string): Promise<string> {
-	return fetchApi<{ Overview: string }>(({ user_id }) => `/Users/${user_id}/Items/${ItemId}`).then(response => response.Overview);
+    return fetchApi<{ Overview: string }>(({ user_id }) => `/Users/${user_id}/Items/${ItemId}`).then(response => response.Overview);
 }
