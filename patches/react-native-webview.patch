@@ -1,0 +1,27 @@
+diff --git a/apple/RNCWebView.mm b/apple/RNCWebView.mm
+index f9d080e3dc6670a2c03208de5b95b1532d001d23..94522636587d71c4deefd1e09fd05e04c616d617 100644
+--- a/apple/RNCWebView.mm
++++ b/apple/RNCWebView.mm
+@@ -244,7 +244,7 @@ auto stringToOnLoadingFinishNavigationTypeEnum(std::string value) {
+                 webViewEventEmitter->onHttpError(data);
+             }
+         };
+-        self.contentView = _view;
++        [self addSubview:_view];
+     }
+     return self;
+ }
+@@ -488,6 +488,13 @@ auto stringToOnLoadingFinishNavigationTypeEnum(std::string value) {
+     [super updateProps:props oldProps:oldProps];
+ }
+ 
++-(void)layoutSubviews
++{
++  [super layoutSubviews];
++  _view.frame = self.bounds;
++}
++
++
+ - (void)handleCommand:(nonnull const NSString *)commandName args:(nonnull const NSArray *)args {
+     RCTRNCWebViewHandleCommand(self, commandName, args);
+ }

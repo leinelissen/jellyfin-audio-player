@@ -15,7 +15,7 @@ const Container = styled.Pressable<{ hasIcon?: boolean }>`
     
     ${Platform.select({
         ios: css`padding: 12px;`,
-        android: css`padding: 4px 12px;`,
+        android: css`padding: 12px;`,
     })}
 
     ${({ hasIcon }) => hasIcon && css`

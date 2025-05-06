@@ -157,21 +157,28 @@ export function DefaultStylesProvider(props: DefaultStylesProviderProps) {
     return props.children(defaultStyles);
 }
 
-export function ColoredBlurView(props: PropsWithChildren<BlurViewProps>) {
+export function ColoredBlurView({ children, style, ...props }: PropsWithChildren<BlurViewProps>) {
     const systemScheme = useColorScheme();
     const userScheme = useTypedSelector((state) => state.settings.colorScheme);
     const scheme = userScheme === ColorScheme.System ? systemScheme : userScheme;
 
     return Platform.OS === 'ios' ? (
-        <BlurView
-            {...props}
-            blurType={Platform.OS === 'ios' && majorPlatformVersion >= 13 
-                ? scheme === 'dark' ? 'materialDark' : 'materialLight'
-                : scheme === 'dark' ? 'extraDark' : 'xlight'
-            } />
+        <View style={[style, { overflow: 'hidden' }]}>
+            <BlurView
+                style={[ StyleSheet.absoluteFill, { overflow: 'hidden'} ]}
+                {...props}
+                blurType={Platform.OS === 'ios' && majorPlatformVersion >= 13 
+                    ? scheme === 'dark' ? 'materialDark' : 'materialLight'
+                    : scheme === 'dark' ? 'extraDark' : 'xlight'
+                }
+            />
+            {children}
+        </View>
     ) : (
-        <View {...props} style={[ props.style, {
+        <View {...props} style={[ style, {
             backgroundColor: scheme === 'light' ? '#f6f6f6fb' : '#333333fb',
-        } ]} />
+        } ]}>
+            {children}
+        </View>
     );
 }

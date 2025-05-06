@@ -77,5 +77,6 @@
     "delete": "Изтрий",
     "disc": "диск",
     "lyrics": "Текст на песен",
-    "kbps": "kbps"
+    "kbps": "kbps",
+    "transcoded": "Транскод"
 }

@@ -41,6 +41,7 @@ yarn-error.log
 
 *.keystore
 !debug.keystore
+.kotlin/
 
 # fastlane
 #
@@ -76,3 +77,4 @@ fastlane/play-store-credentials.json
 .metro-health-check*
 
 .xcode.env.local
+android/app/.cxx

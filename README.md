@@ -41,7 +41,7 @@ You will need to setup your Jellyfin account for the application to be able to p
 
 ## Building from source
 ### Prerequisites
-This project is built on React Native, and first of all requires [NodeJS](https://nodejs.org/en/) to be installed. After installing it and cloning this repository, don't forget ton run `npm install` on your command line, so that all Node dependencies are installed.
+This project is built on React Native, and first of all requires [NodeJS](https://nodejs.org/en/) and PNPM to be installed. After installing it and cloning this repository, don't forget ton run `pnpm install` on your command line, so that all Node dependencies are installed.
 
 #### iOS Prerequisites
 [XCode](https://developer.apple.com/download/) is required to build the iOS application. It also comes bundles with iOS simulators which make development exceedingly easy. This does mean that iOS development is limited to macs.
@@ -52,8 +52,8 @@ This project is built on React Native, and first of all requires [NodeJS](https:
 ### Development Build
 As soon as all prerequisites are covered, you can start development in either iOS or Android simulators by running the following
 ```
-npm run ios
-npm run android
+pnpm ios
+pnpm android
 ```
 
 ### Production Build

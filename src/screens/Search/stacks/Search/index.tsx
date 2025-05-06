@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import debounce from 'lodash/debounce';
 import Input from '@/components/Input';
-import { ActivityIndicator, Animated, SafeAreaView, View } from 'react-native';
+import { ActivityIndicator, Animated, KeyboardAvoidingView, Platform, SafeAreaView, View } from 'react-native';
 import styled from 'styled-components/native';
 
 import { AppState, useAppDispatch, useTypedSelector } from '@/store';
@@ -20,7 +20,6 @@ import DownloadIcon from '@/components/DownloadIcon';
 import ChevronRight from '@/assets/icons/chevron-right.svg';
 import SearchIcon from '@/assets/icons/magnifying-glass.svg';
 import { ShadowWrapper } from '@/components/Shadow';
-import { useKeyboardHeight } from '@/utility/useKeyboardHeight';
 import { NavigationProp } from '@/screens/types';
 import { useNavigationOffsets } from '@/components/SafeNavigatorView';
 import BaseAlbumImage from '@/screens/Music/stacks/components/AlbumImage';
@@ -32,6 +31,10 @@ import BaseAlbumImage from '@/screens/Music/stacks/components/AlbumImage';
 // import LocalIcon from '@/assets/icons/internal-drive.svg';
 // import SelectableFilter from './components/SelectableFilter';
 
+const KEYBOARD_OFFSET = Platform.select({
+    ios: 0,
+    android: 72,
+});
 const SEARCH_INPUT_HEIGHT = 62;
 
 const Container = styled(View)`
@@ -135,8 +138,6 @@ interface SearchResult {
     album?: string;
 }
 
-type CombinedResults = SearchResult[];
-
 type SearchItem = Album | AlbumTrack | MusicArtist | Playlist;
 
 const albumSelector = (state: AppState) => state.music.albums.entities;
@@ -149,22 +150,17 @@ export default function Search() {
     const offsets = useNavigationOffsets({ includeOverlay: false });
 
     // Prepare state for fuse and albums
-    const [fuseIsReady, setFuseReady] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setLoading] = useState(false);
-    const [fuseResults, setFuseResults] = useState<CombinedResults>([]);
+    const [fuseResults, setFuseResults] = useState<SearchResult[]>([]);
 
     const albumEntities: Record<string, Album> = useTypedSelector(albumSelector);
     const tracksEntities: Record<string, AlbumTrack> = useTypedSelector(tracksSelector);
     const artistsEntities: Record<string, MusicArtist> = useTypedSelector(artistsSelector);
     const playlistsEntities: Record<string, Playlist> = useTypedSelector(playlistsSelector);
 
-    const searchItems = useRef<Record<string, SearchItem>>();
-    const fuse = useRef<Fuse<SearchItem>>();
-
     // Prepare helpers
     const navigation = useNavigation<NavigationProp>();
-    const keyboardHeight = useKeyboardHeight();
     const getImage = useGetImage();
     const dispatch = useAppDispatch();
 
@@ -179,7 +175,15 @@ export default function Search() {
 
         // Loading is now complete
         setLoading(false);
-    }, 300), [dispatch]);
+    }, 150), [dispatch]);
+
+    
+    const searchItems = useMemo(() => ({
+        ...albumEntities,
+        ...tracksEntities,
+        ...artistsEntities,
+        ...playlistsEntities
+    }), [albumEntities, tracksEntities, artistsEntities, playlistsEntities, fetchJellyfinResults]);
 
     /**
      * Since it is impractical to have a global fuse variable, we need to
@@ -188,17 +192,10 @@ export default function Search() {
      * more intelligently by removing and adding the changed albums, but this is
      * an open todo.
      */
-    useEffect(() => {
-        searchItems.current = {
-            ...albumEntities,
-            ...tracksEntities,
-            ...artistsEntities,
-            ...playlistsEntities
-        };
-
-        fuse.current = new Fuse(Object.values(searchItems.current) as SearchItem[], fuseOptions);
-        setFuseReady(true);
-    }, [albumEntities, tracksEntities, artistsEntities, playlistsEntities, setFuseReady, fetchJellyfinResults]);
+    const fuse = useMemo(
+        () => new Fuse(Object.values(searchItems) as SearchItem[], fuseOptions),
+        [searchItems, fetchJellyfinResults]
+    );
 
     /**
      * Whenever the search term changes, we gather results from Fuse and assign
@@ -210,17 +207,11 @@ export default function Search() {
         }
 
         const retrieveResults = async () => {
-            // GUARD: In some extraordinary cases, Fuse might not be presented since
-            // it is assigned via refs. In this case, we can't handle any searching.
-            if (!fuse.current) {
-                return;
-            }
-
             const searchTermTrimmed = searchTerm.trim();
 
             // First set the immediate results from fuse
-            const fuseResults = fuse.current.search(searchTermTrimmed);
-            const results: CombinedResults = fuseResults
+            const fuseResults = fuse.search(searchTermTrimmed);
+            const results: SearchResult[] = fuseResults
                 .map(({ item }) => ({
                     id: item.Id,
                     type: item.Type as SearchType,
@@ -252,11 +243,11 @@ export default function Search() {
                 navigation.navigate('Playlist', { id, isMix: true });
                 break;
             case 'MusicAlbum':
-                navigation.navigate('Album', { id, album: searchItems.current?.[id] as Album });
+                navigation.navigate('Album', { id, album: searchItems?.[id] as Album });
                 break;
             case 'MusicArtist':
                 {
-                    const { Name, Id } = searchItems.current?.[id] as MusicArtist;
+                    const { Name, Id } = searchItems?.[id] as MusicArtist;
                     const albumIds = [];
 
                     for (const album of Object.values(albumEntities) as Album[]) {
@@ -276,10 +267,7 @@ export default function Search() {
     }, [navigation, albumEntities]);
 
     const SearchInput = React.useMemo(() => (
-        <Animated.View style={[
-            { position: 'absolute', bottom: offsets.bottom, right: 0, left: 0 },
-            { transform: [{ translateY: keyboardHeight }] },
-        ]}>
+        <Animated.View>
             <ColoredBlurView>
                 <Container style={[ defaultStyles.border ]}>
                     <View>
@@ -331,67 +319,63 @@ export default function Search() {
                 </ScrollView> */}
             </ColoredBlurView>
         </Animated.View>
-    ), [searchTerm, setSearchTerm, defaultStyles, isLoading, keyboardHeight, offsets]);
-
-    // GUARD: We cannot search for stuff unless Fuse is loaded with results.
-    // Therefore we delay rendering to when we are certain it's there.
-    if (!fuseIsReady) {
-        return null;
-    }
+    ), [searchTerm, setSearchTerm, defaultStyles, isLoading]);
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <FlatList
-                keyboardShouldPersistTaps="handled"
-                style={{ flex: 2, }}
-                contentContainerStyle={{ paddingTop: offsets.top, paddingBottom: offsets.bottom + SEARCH_INPUT_HEIGHT }}
-                scrollIndicatorInsets={{ top: offsets.top  / 2, bottom: offsets.bottom / 2 + 10 + SEARCH_INPUT_HEIGHT }}
-                data={fuseResults}
-                renderItem={({ item: { id, type, name } }: { item: SearchResult }) => {
-                    const searchItem = searchItems.current?.[id];
+        <SafeAreaView style={{ flex: 1, marginBottom: offsets.bottom }}>
+            <KeyboardAvoidingView behavior="height" style={{ flex: 1 }} keyboardVerticalOffset={KEYBOARD_OFFSET}>
+                <FlatList
+                    keyboardShouldPersistTaps="handled"
+                    style={{ flex: 2, }}
+                    contentContainerStyle={{ paddingTop: offsets.top, paddingBottom: SEARCH_INPUT_HEIGHT }}
+                    scrollIndicatorInsets={{ top: offsets.top  / 2, bottom: offsets.bottom / 2 + 10 + SEARCH_INPUT_HEIGHT }}
+                    data={fuseResults}
+                    renderItem={({ item: { id, type, name } }: { item: SearchResult }) => {
+                        const searchItem = searchItems?.[id];
 
-                    // GUARD: If the album cannot be found in the store, we
-                    // cannot display it.
-                    if (!searchItem) {
-                        return null;
-                    }
+                        // GUARD: If the album cannot be found in the store, we
+                        // cannot display it.
+                        if (!searchItem) {
+                            return null;
+                        }
 
-                    return (
-                        <TouchableHandler<{ id: string; type: SearchType; }> id={{ id, type }} onPress={selectItem} testID={`search-result-${id}`}>
-                            <SearchResult>
-                                <ShadowWrapper>
-                                    <SearchItemImage source={{ uri: getImage(id) }} style={defaultStyles.imageBackground} />
-                                </ShadowWrapper>
-                                <View style={{ flex: 1 }}>
-                                    <Text numberOfLines={1}>
-                                        {name}
-                                    </Text>
-                                    <HalfOpacity style={defaultStyles.text} numberOfLines={1}>
-                                        { type === 'MusicAlbum' ? `${t('album')} • ${(searchItem as Album)?.AlbumArtist}` : null }
-                                        { type === 'Audio' ? `${t('track')} • ${(searchItem as AlbumTrack)?.AlbumArtist} — ${searchItem?.Name}` : null }
-                                        { type === 'MusicArtist' ? `${t('artist')}` : null }
-                                        { type === 'Playlist' ? `${t('playlist')}` : null }
-                                    </HalfOpacity>
-                                </View>
-                                <View style={{ marginLeft: 16 }}>
-                                    <DownloadIcon trackId={id} />
-                                </View>
-                                <View style={{ marginLeft: 16 }}>
-                                    <ChevronRight width={14} height={14} fill={defaultStyles.textQuarterOpacity.color}  />
-                                </View>
-                            </SearchResult>
-                        </TouchableHandler>
-                    );
-                }}
-                keyExtractor={(item) => item.id}
-                extraData={[searchTerm, searchItems.current]}
-            />
-            {(searchTerm.length && !fuseResults.length && !isLoading) ? (
-                <FullSizeContainer>
-                    <Text style={{ textAlign: 'center', opacity: 0.5, fontSize: 18 }}>{t('no-results')}</Text> 
-                </FullSizeContainer>
-            ) : null}
-            {SearchInput}
+                        return (
+                            <TouchableHandler<{ id: string; type: SearchType; }> id={{ id, type }} onPress={selectItem} testID={`search-result-${id}`}>
+                                <SearchResult>
+                                    <ShadowWrapper>
+                                        <SearchItemImage source={{ uri: getImage(id) }} style={defaultStyles.imageBackground} />
+                                    </ShadowWrapper>
+                                    <View style={{ flex: 1 }}>
+                                        <Text numberOfLines={1}>
+                                            {name}
+                                        </Text>
+                                        <HalfOpacity style={defaultStyles.text} numberOfLines={1}>
+                                            { type === 'MusicAlbum' ? `${t('album')} • ${(searchItem as Album)?.AlbumArtist}` : null }
+                                            { type === 'Audio' ? `${t('track')} • ${(searchItem as AlbumTrack)?.AlbumArtist} — ${searchItem?.Name}` : null }
+                                            { type === 'MusicArtist' ? `${t('artist')}` : null }
+                                            { type === 'Playlist' ? `${t('playlist')}` : null }
+                                        </HalfOpacity>
+                                    </View>
+                                    <View style={{ marginLeft: 16 }}>
+                                        <DownloadIcon trackId={id} />
+                                    </View>
+                                    <View style={{ marginLeft: 16 }}>
+                                        <ChevronRight width={14} height={14} fill={defaultStyles.textQuarterOpacity.color}  />
+                                    </View>
+                                </SearchResult>
+                            </TouchableHandler>
+                        );
+                    }}
+                    keyExtractor={(item) => item.id}
+                    extraData={[searchTerm, searchItems]}
+                />
+                {(searchTerm.length && !fuseResults.length && !isLoading) ? (
+                    <FullSizeContainer>
+                        <Text style={{ textAlign: 'center', opacity: 0.5, fontSize: 18 }}>{t('no-results')}</Text> 
+                    </FullSizeContainer>
+                ) : null}
+                {SearchInput}
+            </KeyboardAvoidingView>
         </SafeAreaView>
     );
 }
