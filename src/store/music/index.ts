@@ -16,7 +16,7 @@ import {
     fetchCodecMetadataByTrack,
     fetchLyricsByTrack
 } from './actions';
-import { createSlice, EntityId } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { Album, AlbumTrack, Playlist, MusicArtist } from './types';
 
 import { setJellyfinCredentials } from '@/store/settings/actions';
@@ -143,25 +143,25 @@ const music = createSlice({
             state.tracks.isLoading = true;
         });
         builder.addCase(searchAndFetch.fulfilled, (state, { payload }) => {
-            const albums = payload.results.filter(item => 
+            const albums = payload.filter(item => 
                 item.Type === 'MusicAlbum' && !albumAdapter.getSelectors().selectById(state.albums, item.Id)
             ) as Album[];
             albumAdapter.upsertMany(state.albums, albums);
             state.albums.isLoading = false;
 
-            const artists = payload.results.filter(item => 
+            const artists = payload.filter(item => 
                 item.Type === 'MusicArtist' && !artistAdapter.getSelectors().selectById(state.artists, item.Id)
             ) as MusicArtist[];
             artistAdapter.upsertMany(state.artists, artists);
             state.artists.isLoading = false;
 
-            const tracks = payload.results.filter(item => 
+            const tracks = payload.filter(item => 
                 item.Type === 'Audio' && !trackAdapter.getSelectors().selectById(state.tracks, item.Id)
             ) as AlbumTrack[];
             trackAdapter.upsertMany(state.tracks, tracks);
             state.tracks.isLoading = false;
 
-            const playlists = payload.results.filter(item => 
+            const playlists = payload.filter(item => 
                 item.Type === 'Playlist' && !playlistAdapter.getSelectors().selectById(state.playlists, item.Id)
             ) as Playlist[];
             playlistAdapter.upsertMany(state.playlists, playlists);

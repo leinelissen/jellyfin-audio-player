@@ -8,10 +8,12 @@ const searchParams = {
     Recursive: 'true',
 };
 
+export type SearchResult = Album | AlbumTrack | MusicArtist | Playlist;
+
 /**
  * Remotely search the Jellyfin library for a particular search term
  */
-export async function searchItem(
+export function searchItem(
     term: string, limit = 24
 ) {
     const params = new URLSearchParams({
@@ -20,7 +22,5 @@ export async function searchItem(
         Limit: limit.toString(),
     }).toString();
 
-    const results = await fetchApi<{ Items: (Album | AlbumTrack | MusicArtist | Playlist)[]}>(({ user_id }) => `/Users/${user_id}/Items?${params}`);
-
-    return results.Items;
+    return fetchApi<{ Items: SearchResult[]}>(({ user_id }) => `/Users/${user_id}/Items?${params}`).then(result => result.Items);
 }

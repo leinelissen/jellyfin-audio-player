@@ -4,7 +4,7 @@ import type { AsyncThunkAPI } from '..';
 import { retrieveAllAlbums, retrieveRecentAlbums, retrieveAlbumTracks, retrieveAlbum, retrieveSimilarAlbums } from '@/utility/JellyfinApi/album';
 import { retrieveAllPlaylists, retrievePlaylistTracks, retrieveInstantMixByTrackId } from '@/utility/JellyfinApi/playlist';
 import { retrieveAllArtists, retrieveArtistOverview } from '@/utility/JellyfinApi/artist';
-import { searchItem } from '@/utility/JellyfinApi/search';
+import { searchItem, SearchResult } from '@/utility/JellyfinApi/search';
 import { retrieveTrackLyrics } from '@/utility/JellyfinApi/lyrics';
 import { retrieveTrackCodecMetadata } from '@/utility/JellyfinApi/track';
 
@@ -99,36 +99,9 @@ export const fetchSimilarAlbums = createAsyncThunk<Album[], string, AsyncThunkAP
     retrieveSimilarAlbums,
 );
 
-type SearchAndFetchResults = {
-    // albums: Album[];
-    results: (Album | AlbumTrack | MusicArtist | Playlist)[];
-};
-
-export const searchAndFetch = createAsyncThunk<
-SearchAndFetchResults,
-{ term: string, limit?: number },
-AsyncThunkAPI
->(
+export const searchAndFetch = createAsyncThunk<SearchResult[], { term: string, limit?: number }, AsyncThunkAPI>(
     '/search',
-    async ({ term, limit = 24 }, thunkAPI) => {
-        const state = thunkAPI.getState();
-        const results = await searchItem(term, limit);
-
-        const albums = await Promise.all(results.filter((item) => (
-            !state.music.albums.ids.includes(item.Type === 'MusicAlbum' ? item.Id : item.AlbumId)
-            && (item.Type === 'Audio' ? item.AlbumId : true)
-        )).map(async (item) => {
-            if (item.Type === 'MusicAlbum') {
-                return item;
-            }
-
-            return retrieveAlbum(item.AlbumId);
-        }));
-
-        return {
-            results
-        };
-    }
+    async ({ term, limit = 24 }) => searchItem(term, limit)
 );
 
 export const playlistAdapter = createEntityAdapter<Playlist, string>({
