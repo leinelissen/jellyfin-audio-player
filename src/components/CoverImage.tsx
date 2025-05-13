@@ -92,7 +92,7 @@ function CoverImage({
                             }
                             key="image"
                         >
-                            <SkiaImage image={image} width={imageSize} height={imageSize}>
+                            <SkiaImage image={image} fit="cover" width={imageSize} height={imageSize}>
                                 <Offset x={blurRadius} y={blurRadius} />
                             </SkiaImage>
                         </Mask>
