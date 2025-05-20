@@ -41,7 +41,7 @@
     "setting-cache-description": "Pokud jste aktualizovali svou knihovnu, ale aplikace zadržuje položky uložené v mezipaměti, můžete vynuceně vymazat mezipaměť pomocí tohoto tlačítka. To přinutí aplikaci načíst knihovnu od začátku.",
     "privacy-policy": "Zásady ochrany osobních údajů",
     "download-track": "Stáhnout skladbu",
-    "recent-albums": "Nejnovější alba",
+    "recent-albums": "Poslední alba",
     "retry-failed-downloads": "Opakovat neúspěšné stahování",
     "error-reporting-rationale": "Když povolíte hlášení chyb, pokaždé, když dojde k chybě, automaticky se vytvoří hlášení a odešle se na server spolu s užitečnými informacemi o ladění, jako jsou zařízení, verze a konkrétní chyba.",
     "now-playing": "Nyní hraje",
