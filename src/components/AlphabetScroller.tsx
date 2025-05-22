@@ -33,7 +33,7 @@ const Letter = styled.Text`
 `;
 
 interface Props {
-    onSelect: (index: number) => void;
+    onSelect: (selected: { index: number, letter: string }) => void;
 }
 
 /**
@@ -56,7 +56,7 @@ const AlphabetScroller: React.FC<Props> = ({ onSelect }) => {
 
         if (newIndex !== index) {
             setIndex(newIndex);
-            onSelect(newIndex);
+            onSelect({ index: newIndex, letter: ALPHABET_LETTERS[newIndex] });
         }
     }, [height, index, onSelect]);
 

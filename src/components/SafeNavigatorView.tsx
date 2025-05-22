@@ -3,6 +3,7 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import { FlatList, FlatListProps, ScrollView, ScrollViewProps, SectionList, SectionListProps } from 'react-native';
 import useCurrentTrack from '../utility/useCurrentTrack';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { FlashList, FlashListProps } from '@shopify/flash-list';
 
 declare module 'react' {
     function forwardRef<T, P = {}>(
@@ -26,7 +27,7 @@ export function SafeScrollView({
                 contentContainerStyle,
                 { paddingTop: top, paddingBottom: bottom },
             ]}
-            scrollIndicatorInsets={{ top: top  / 2, bottom: bottom / 2 + 5 }}
+            scrollIndicatorInsets={{ top: top / 2, bottom: bottom / 2 + 5 }}
             {...props}
         />
     );
@@ -48,7 +49,7 @@ function BareSafeSectionList<I, S>({
                 { paddingTop: top, paddingBottom: bottom },
                 contentContainerStyle,
             ]}
-            scrollIndicatorInsets={{ top: top  / 2, bottom: bottom / 2 + 5 }}
+            scrollIndicatorInsets={{ top: top / 2, bottom: bottom / 2 + 5 }}
             ref={ref}
             {...props}
         />
@@ -80,6 +81,30 @@ function BareSafeFlatList<I>({
 }
 
 export const SafeFlatList = forwardRef(BareSafeFlatList);
+
+/**
+ * A wrapper for ScrollView that takes any paddings, margins and insets into
+ * account that result from the bottom tabs, potential NowPlaying overlay and header.
+ */
+function BareSafeFlashList<I>({
+    contentContainerStyle,
+    ...props
+}: FlashListProps<I>, ref: ForwardedRef<FlashList<I>>) {
+    const { top, bottom } = useNavigationOffsets();
+
+    return (
+        <FlashList
+            contentContainerStyle={
+                { ...contentContainerStyle, paddingBottom: bottom }
+            }
+            scrollIndicatorInsets={{ top: top * 0.4, bottom: bottom * 0.55 }}
+            ref={ref}
+            {...props}
+        />
+    );
+}
+
+export const SafeFlashList = forwardRef(BareSafeFlashList);
 
 /**
  * A hook that returns the correct offset that should be applied to any Views
