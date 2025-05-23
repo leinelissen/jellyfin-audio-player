@@ -48,7 +48,7 @@ const SectionHeading = React.memo(function SectionHeading(props: {
 
 interface GeneratedAlbumItemProps {
     id: ReactText;
-    imageUrl: string;
+    imageUrl: string | null;
     name: string;
     artist: string;
     onPress: (id: string) => void;
@@ -66,7 +66,7 @@ const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: Generat
         <TouchableHandler id={id as string} onPress={onPress}>
             <AlbumItem>
                 <ShadowWrapper size="medium">
-                    <AlbumImage source={{ uri: imageUrl }} style={[defaultStyles.imageBackground]} />
+                    <AlbumImage source={imageUrl ? { uri: imageUrl } : undefined} style={[defaultStyles.imageBackground]} />
                 </ShadowWrapper>
                 <Text numberOfLines={1} style={defaultStyles.text}>{name}</Text>
                 <HalfOpacity style={defaultStyles.text} numberOfLines={1}>{artist}</HalfOpacity>
@@ -136,7 +136,7 @@ const Albums: React.FC = () => {
                     <GeneratedAlbumItem
                         key={i}
                         id={id}
-                        imageUrl={getImage(albums[id])}
+                        imageUrl={albums[id].ImageTags.Primary ? getImage(albums[id]) : null}
                         name={albums[id]?.Name || ''}
                         artist={albums[id]?.AlbumArtist || ''}
                         onPress={selectAlbum}

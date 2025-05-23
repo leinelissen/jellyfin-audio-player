@@ -100,6 +100,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const tracks = useTypedSelector((state) => state.music.tracks.entities);
     const isLoading = useTypedSelector((state) => state.music.tracks.isLoading);
     const downloadedTracks = useTypedSelector(selectDownloadedTracks(trackIds));
+    const entity = useTypedSelector((state) => itemDisplayStyle === 'album' ? state.music.albums.entities[entityId] : state.music.playlists.entities[entityId]);
     const totalDuration = useMemo(() => (
         trackIds.reduce<number>((sum, trackId) => (
             sum + (tracks[trackId]?.RunTimeTicks || 0)
@@ -173,7 +174,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
         >
             <View style={{ padding: 24, paddingTop: 32, paddingBottom: 32 }}>
                 <AlbumImageContainer>
-                    <CoverImage src={getImage(entityId)} />
+                    <CoverImage src={getImage(entity)} />
                 </AlbumImageContainer>
                 <Header>{title}</Header>
                 <SubHeader>{artist}</SubHeader>

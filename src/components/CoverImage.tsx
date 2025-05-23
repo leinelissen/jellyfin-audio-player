@@ -28,7 +28,7 @@ interface Props {
     margin?: number;
     radius?: number;
     style?: ViewProps['style'];
-    src: string;
+    src?: string;
 }
 
 const emptyAlbumLight = require('@/assets/images/empty-album-light.png');
@@ -59,6 +59,8 @@ function CoverImage({
         return { imageSize, canvasSize };
     }, [blurRadius, margin]);
 
+    console.log({ src, hasFailed });
+
     return (
         <Container size={imageSize} style={style}>
             <BlurContainer size={canvasSize} offset={blurRadius}>
@@ -69,7 +71,7 @@ function CoverImage({
                     <Shadow dx={0} dy={8} blur={16} color="#0000000d" />
                     <Shadow dx={0} dy={16} blur={32} color="#0000000d" />
                 </RoundedRect>
-                {src && (
+                {src ? (
                     <>
                         <SkiaImage
                             image={image}
@@ -97,8 +99,7 @@ function CoverImage({
                             </SkiaImage>
                         </Mask>
                     </>
-                )}
-                {(!src || hasFailed) && (
+                ) : (
                     <Mask
                         mask={
                             <RoundedRect

@@ -14,7 +14,7 @@ import { SafeFlatList, useNavigationOffsets } from '@/components/SafeNavigatorVi
 
 interface GeneratedAlbumItemProps {
     id: ReactText;
-    imageUrl: string;
+    imageUrl?: string | null;
     name: string;
     onPress: (id: string) => void;
 }
@@ -26,7 +26,7 @@ const GeneratedPlaylistItem = React.memo(function GeneratedPlaylistItem(props: G
     return (
         <TouchableHandler id={id as string} onPress={onPress}>
             <AlbumItem>
-                <AlbumImage source={{ uri: imageUrl }} style={defaultStyles.imageBackground} />
+                <AlbumImage source={{ uri: imageUrl || undefined }} style={defaultStyles.imageBackground} />
                 <Text numberOfLines={1} style={defaultStyles.text}>{name}</Text>
             </AlbumItem>
         </TouchableHandler>

@@ -19,6 +19,9 @@ importers:
 
   .:
     dependencies:
+      '@d11/react-native-fast-image':
+        specifier: ^8.9.2
+        version: 8.9.2(react-native@0.79.2(@babel/core@7.27.1)(@react-native-community/cli@18.0.0(typescript@5.8.3))(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       '@react-native-async-storage/async-storage':
         specifier: ^2.1.2
         version: 2.1.2(react-native@0.79.2(@babel/core@7.27.1)(@react-native-community/cli@18.0.0(typescript@5.8.3))(@types/react@18.3.20)(react@19.0.0))
@@ -91,9 +94,6 @@ importers:
       react-native-dotenv:
         specifier: ^3.4.11
         version: 3.4.11(@babel/runtime@7.27.1)
-      react-native-fast-image:
-        specifier: ^8.6.3
-        version: 8.6.3(react-native@0.79.2(@babel/core@7.27.1)(@react-native-community/cli@18.0.0(typescript@5.8.3))(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)
       react-native-fs:
         specifier: ^2.20.0
         version: 2.20.0(react-native@0.79.2(@babel/core@7.27.1)(@react-native-community/cli@18.0.0(typescript@5.8.3))(@types/react@18.3.20)(react@19.0.0))
@@ -793,6 +793,12 @@ packages:
   '@babel/types@7.27.1':
     resolution: {integrity: sha512-+EzkxvLNfiUeKMgy/3luqfsCWFRXLb7U6wNQTk60tovuckwB15B191tJWvpp4HjiQWdJkCxO3Wbvc6jlk3Xb2Q==}
     engines: {node: '>=6.9.0'}
+
+  '@d11/react-native-fast-image@8.9.2':
+    resolution: {integrity: sha512-7d0O5mA17SCbIAYq9D0WxDlS3HXf5v9vg9ltphDfP/3R57sBEf6/wby/sHkOmrQGwvgUlz2oSo5Ld8hgocLJeQ==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
 
   '@egjs/hammerjs@2.0.17':
     resolution: {integrity: sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==}
@@ -3840,12 +3846,6 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-fast-image@8.6.3:
-    resolution: {integrity: sha512-Sdw4ESidXCXOmQ9EcYguNY2swyoWmx53kym2zRsvi+VeFCHEdkO+WG1DK+6W81juot40bbfLNhkc63QnWtesNg==}
-    peerDependencies:
-      react: ^17 || ^18
-      react-native: '>=0.60.0'
-
   react-native-fs@2.20.0:
     resolution: {integrity: sha512-VkTBzs7fIDUiy/XajOSNk0XazFE9l+QlMAce7lGuebZcag5CnjszB+u4BdqzwaQOdcYb5wsJIsqq4kxInIRpJQ==}
     peerDependencies:
@@ -5443,6 +5443,11 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
+
+  '@d11/react-native-fast-image@8.9.2(react-native@0.79.2(@babel/core@7.27.1)(@react-native-community/cli@18.0.0(typescript@5.8.3))(@types/react@18.3.20)(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.2(@babel/core@7.27.1)(@react-native-community/cli@18.0.0(typescript@5.8.3))(@types/react@18.3.20)(react@19.0.0)
 
   '@egjs/hammerjs@2.0.17':
     dependencies:
@@ -9376,11 +9381,6 @@ snapshots:
       react: 19.0.0
       react-native: 0.79.2(@babel/core@7.27.1)(@react-native-community/cli@18.0.0(typescript@5.8.3))(@types/react@18.3.20)(react@19.0.0)
     optional: true
-
-  react-native-fast-image@8.6.3(react-native@0.79.2(@babel/core@7.27.1)(@react-native-community/cli@18.0.0(typescript@5.8.3))(@types/react@18.3.20)(react@19.0.0))(react@19.0.0):
-    dependencies:
-      react: 19.0.0
-      react-native: 0.79.2(@babel/core@7.27.1)(@react-native-community/cli@18.0.0(typescript@5.8.3))(@types/react@18.3.20)(react@19.0.0)
 
   react-native-fs@2.20.0(react-native@0.79.2(@babel/core@7.27.1)(@react-native-community/cli@18.0.0(typescript@5.8.3))(@types/react@18.3.20)(react@19.0.0)):
     dependencies:
