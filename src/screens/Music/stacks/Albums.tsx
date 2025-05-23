@@ -48,7 +48,7 @@ const SectionHeading = React.memo(function SectionHeading(props: {
 
 interface GeneratedAlbumItemProps {
     id: ReactText;
-    imageUrl: string | null;
+    imageUrl?: string | null;
     name: string;
     artist: string;
     onPress: (id: string) => void;
@@ -136,7 +136,7 @@ const Albums: React.FC = () => {
                     <GeneratedAlbumItem
                         key={i}
                         id={id}
-                        imageUrl={albums[id].ImageTags.Primary ? getImage(albums[id]) : null}
+                        imageUrl={getImage(albums[id])}
                         name={albums[id]?.Name || ''}
                         artist={albums[id]?.AlbumArtist || ''}
                         onPress={selectAlbum}

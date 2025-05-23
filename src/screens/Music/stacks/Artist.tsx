@@ -19,7 +19,7 @@ import { chunk } from 'lodash';
 
 interface GeneratedAlbumItemProps {
     id: ReactText;
-    imageUrl: string;
+    imageUrl: string | undefined;
     name: string;
     artist: string;
     onPress: (id: string) => void;

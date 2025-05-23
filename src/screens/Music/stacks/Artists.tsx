@@ -59,7 +59,7 @@ const SectionHeading = React.memo(function SectionHeading(props: { label: string
 
 interface GeneratedArtistItemProps {
     item: SectionArtistItem;
-    imageURL: string;
+    imageURL: string | undefined;
     onPress: (payload: SectionArtistItem) => void;
 }
 
