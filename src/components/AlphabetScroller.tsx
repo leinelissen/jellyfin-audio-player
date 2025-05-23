@@ -9,6 +9,7 @@ import {
     TapGestureHandlerGestureEvent 
 } from 'react-native-gesture-handler';
 import useDefaultStyles from './Colors';
+import { useNavigationOffsets } from './SafeNavigatorView';
 
 // interface LetterContainerProps {
 //     onPress: (letter: string) => void;
@@ -17,18 +18,16 @@ import useDefaultStyles from './Colors';
 
 const Container = styled.View`
     position: absolute;
-    right: 5px;
-    top: 0;
-    height: 100%;
+    right: 0;
     z-index: 10;
-    padding: 5px;
     margin: auto 0;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
 `;
 
-const Letter = styled.Text`
+const Letter = styled.Text<{ isSelected?: boolean }>`
     text-align: center;
-    padding: 1px 0;
+    padding: 1.5px 10px;
     font-size: 12px;
 `;
 
@@ -44,6 +43,7 @@ const AlphabetScroller: React.FC<Props> = ({ onSelect }) => {
     const styles = useDefaultStyles();
     const [ height, setHeight ] = useState(0);
     const [ index, setIndex ] = useState<number>();
+    const { top, bottom } = useNavigationOffsets();
 
     // Handler for setting the correct height for a single alphabet item
     const handleLayout = useCallback((event: LayoutChangeEvent) => {
@@ -52,7 +52,11 @@ const AlphabetScroller: React.FC<Props> = ({ onSelect }) => {
 
     // Handler for passing on a new index when it is tapped or swiped
     const handleGestureEvent = useCallback((event: PanGestureHandlerGestureEvent | TapGestureHandlerGestureEvent) => {
-        const newIndex = Math.floor(event.nativeEvent.y / height);
+        const { y } = event.nativeEvent;
+        const newIndex = Math.min(
+            Math.max(0, Math.floor(y / height)),
+            ALPHABET_LETTERS.length - 1
+        );
 
         if (newIndex !== index) {
             setIndex(newIndex);
@@ -61,7 +65,7 @@ const AlphabetScroller: React.FC<Props> = ({ onSelect }) => {
     }, [height, index, onSelect]);
 
     return (
-        <Container>
+        <Container style={{ top, bottom }}>
             <TapGestureHandler onHandlerStateChange={handleGestureEvent}>
                 <PanGestureHandler onGestureEvent={handleGestureEvent}>
                     <View>
@@ -70,7 +74,10 @@ const AlphabetScroller: React.FC<Props> = ({ onSelect }) => {
                                 key={l}
                                 onLayout={i === 0 ? handleLayout : undefined}
                             >
-                                <Letter style={styles.themeColor}>
+                                <Letter 
+                                    style={styles.themeColor}
+                                    isSelected={i === index}
+                                >
                                     {l}
                                 </Letter>
                             </View>
