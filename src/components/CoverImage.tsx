@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Dimensions, ViewProps } from 'react-native';
 import { Canvas, Blur, Image as SkiaImage, useImage, Offset, Mask, RoundedRect, Shadow } from '@shopify/react-native-skia';
 import useDefaultStyles, { useUserOrSystemScheme } from './Colors';
@@ -49,17 +49,14 @@ function CoverImage({
 }: Props) {
     const defaultStyles = useDefaultStyles();
     const colorScheme = useUserOrSystemScheme();
-    const [hasFailed, setFailed] = useState(false);
 
-    const image = useImage(src || null, () => setFailed(true));
+    const image = useImage(src || null);
     const fallback = useImage(colorScheme === 'light' ? emptyAlbumLight : emptyAlbumDark);
     const { canvasSize, imageSize } = useMemo(() => {
         const imageSize = Screen.width - margin;
         const canvasSize = imageSize + blurRadius * 2;
         return { imageSize, canvasSize };
     }, [blurRadius, margin]);
-
-    console.log({ src, hasFailed });
 
     return (
         <Container size={imageSize} style={style}>
