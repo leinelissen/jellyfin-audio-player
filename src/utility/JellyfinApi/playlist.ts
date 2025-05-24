@@ -35,3 +35,13 @@ export async function retrievePlaylistTracks(ItemId: string) {
     return fetchApi<{ Items: AlbumTrack[] }>(`/Playlists/${ItemId}/Items?${singlePlaylistParams}`)
         .then((d) => d.Items);
 }
+
+export async function retrieveInstantMixByTrackId(trackId: string, limit = 100) {
+    const credentials = asyncFetchStore().getState().settings.credentials;
+    const instantMixOptions = {
+        UserId: credentials?.user_id ?? '',
+        Limit: limit.toString()
+    };
+    const instantMixParams = new URLSearchParams(instantMixOptions).toString();
+    return fetchApi<{ Items: AlbumTrack[] }>(`/Items/${trackId}/InstantMix?${instantMixParams}`).then(response => response.Items);
+}
