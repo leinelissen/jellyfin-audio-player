@@ -12,6 +12,7 @@ import {
 import { ColorSchemeProvider, themes, useUserOrSystemScheme } from './Colors';
 import DownloadManager from './DownloadManager';
 import AppLoading from './AppLoading';
+import { captureException } from '@sentry/react-native';
 
 const LightTheme = {
     ...DefaultTheme,
@@ -52,7 +53,9 @@ export default function App(): JSX.Element | null {
 
     useEffect(() => {
         async function setupTrackPlayer() {
-            await TrackPlayer.setupPlayer({ autoHandleInterruptions: true });
+            await TrackPlayer.setupPlayer({ 
+                autoHandleInterruptions: true,
+            });
             await TrackPlayer.updateOptions({
                 capabilities: [
                     Capability.Play,
@@ -68,7 +71,12 @@ export default function App(): JSX.Element | null {
         }
 
         if (!hasSetupPlayer) {
-            setupTrackPlayer();
+            setupTrackPlayer()
+                .catch((e: unknown) => {
+                    console.error(e);
+                    captureException(e);
+                    setHasSetupPlayer(true);
+                });
         }
     }, [hasSetupPlayer]);
 
