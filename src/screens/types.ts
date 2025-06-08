@@ -9,7 +9,7 @@ export type StackParams = {
     Artists: undefined;
     Artist: SectionArtistItem;
     Playlists: undefined;
-    Playlist: { id: string };
+    Playlist: { id: string; isMix?: boolean; };
     RecentAlbums: undefined;
     Search: undefined;
     SetJellyfinServer: undefined;
