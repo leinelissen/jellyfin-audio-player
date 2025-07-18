@@ -6,7 +6,7 @@ import Queue from './components/Queue';
 import ConnectionNotice from './components/ConnectionNotice';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import StreamStatus from './components/StreamStatus';
-import {Platform} from 'react-native';
+import {Platform, View} from 'react-native';
 import BackButton from './components/Backbutton';
 import Timer from './components/Timer';
 import styled from 'styled-components/native';
@@ -23,9 +23,14 @@ export default function Player() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <ColoredBlurView>
-                {Platform.OS === 'android' && (<BackButton />)}
                 <Queue header={(
                     <>
+                        {Platform.OS === 'android' && (
+                            <>
+                                <BackButton /> 
+                                <View style={{ padding: 30 }}/>
+                            </>
+                        )}
                         <NowPlaying />
                         <ConnectionNotice />
                         <StreamStatus />

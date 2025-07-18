@@ -16,8 +16,13 @@ function BackButton() {
     }, [navigation]);
 
     return (
-        <Container>
-            <TouchableOpacity onPress={handlePress}>
+        <Container >
+            <TouchableOpacity onPress={handlePress} style={{
+                position: 'absolute',
+                left: -20,
+                top: 15,
+                zIndex: 1,
+            }}>
                 <XmarkIcon />
             </TouchableOpacity>
         </Container>

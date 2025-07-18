@@ -1,7 +1,7 @@
 import useDefaultStyles from '@/components/Colors';
 import React, { useCallback, useMemo } from 'react';
 import { Alert, FlatListProps, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import formatBytes from '@/utility/formatBytes';
 import TrashIcon from '@/assets/icons/trash.svg';
@@ -183,16 +183,18 @@ function Downloads() {
         );
     }
 
+    const insets = useSafeAreaInsets();
+    
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaProvider style={{paddingTop: insets.top}}>
             {ListHeaderComponent}
             <SafeFlatList
                 data={ids}
                 style={{ flex: 1, paddingTop: 12 }}
                 contentContainerStyle={{ flexGrow: 1 }}
                 renderItem={renderItem}
-            />
-        </SafeAreaView>
+                />
+        </SafeAreaProvider>
     );
 }
 

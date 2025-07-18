@@ -17,14 +17,12 @@ export default function PlaybackReporting() {
     }, [isEnabled, dispatch]);
 
     return (
-        <SafeScrollView>
-            <Container>
-                <Paragraph>{t('playback-reporting-description')}</Paragraph>
-                <SwitchContainer>
-                    <SwitchLabel>{t('playback-reporting')}</SwitchLabel>
-                    <Switch value={isEnabled} onValueChange={toggleSwitch} />
-                </SwitchContainer>
-            </Container>
-        </SafeScrollView>
+        <Container>
+            <Paragraph>{t('playback-reporting-description')}</Paragraph>
+            <SwitchContainer>
+                <SwitchLabel>{t('playback-reporting')}</SwitchLabel>
+                <Switch value={isEnabled} onValueChange={toggleSwitch} />
+            </SwitchContainer>
+        </Container>
     );
 }

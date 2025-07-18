@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
-import { Text, SafeAreaView, StyleSheet } from 'react-native';
+import { Text, StyleSheet, View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import { fetchRecentAlbums } from '@/store/music/actions';
@@ -18,10 +18,13 @@ import styled from 'styled-components/native';
 import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp } from '@/screens/types';
 import { SafeFlatList } from '@/components/SafeNavigatorView';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
     columnWrapper: {
-        paddingHorizontal: 16,
+        flex: 1,
+        justifyContent: "space-around",
+        paddingHorizontal: 10,
     }
 });
 
@@ -36,7 +39,7 @@ const NavigationHeader: React.FC = () => {
     const handleAllAlbumsClick = useCallback(() => { navigation.navigate('Albums'); }, [navigation]);
     const handlePlaylistsClick = useCallback(() => { navigation.navigate('Playlists'); }, [navigation]);
     const handleArtistsClick = useCallback(() => { navigation.navigate('Artists'); }, [navigation]);
-    
+
     return (
         <>
             <ListButton onPress={handleAllAlbumsClick} testID="all-albums">
@@ -65,7 +68,7 @@ const RecentAlbums: React.FC = () => {
     const { entities: albums } = useTypedSelector((state) => state.music.albums);
     const recentAlbums = useRecentAlbums(24);
     const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
-    
+
     // Initialise helpers
     const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
@@ -74,14 +77,20 @@ const RecentAlbums: React.FC = () => {
     // Set callbacks
     const retrieveData = useCallback(() => dispatch(fetchRecentAlbums()), [dispatch]);
     const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
-    
+
     // Retrieve data on mount
     useEffect(() => { retrieveData(); }, [retrieveData]);
-    
+
+    const insets = useSafeAreaInsets();
+
     return (
-        <SafeAreaView>
+        <View
+            style={{
+                paddingTop: insets.top,
+                paddingBottom: 1 * insets.bottom,
+            }}>
             <SafeFlatList
-                data={recentAlbums as string[]} 
+                data={recentAlbums as string[]}
                 refreshing={isLoading}
                 onRefresh={retrieveData}
                 numColumns={2}
@@ -100,7 +109,7 @@ const RecentAlbums: React.FC = () => {
                     </TouchableHandler>
                 )}
             />
-        </SafeAreaView>
+        </View>
     );
 };
 

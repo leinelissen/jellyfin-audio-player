@@ -21,6 +21,7 @@ import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp } from '@/screens/types';
 import { useNavigationOffsets } from '@/components/SafeNavigatorView';
 import BaseAlbumImage from '@/screens/Music/stacks/components/AlbumImage';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 // import MicrophoneIcon from '@/assets/icons/microphone.svg';
 // import AlbumIcon from '@/assets/icons/collection.svg';
 // import TrackIcon from '@/assets/icons/note.svg';
@@ -214,7 +215,7 @@ export default function Search() {
                         <Input
                             value={searchTerm}
                             onChangeText={setSearchTerm}
-                            style={[defaultStyles.view, { marginBottom: 12 }]}
+                            style={[defaultStyles.view, { marginBottom: 75 }]}
                             placeholder={t('search') + '...'}
                             icon={<SearchIcon width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />}
                             testID="search-input"
@@ -266,8 +267,10 @@ export default function Search() {
         ...jellyfinResults,
     ]), [fuseResults, jellyfinResults]);
 
+    const insets = useSafeAreaInsets();
+    
     return (
-        <SafeAreaView style={{ flex: 1, marginBottom: offsets.bottom }}>
+        <View style={{ flex: 1, paddingTop: insets.top, marginBottom: offsets.bottom }}>
             <KeyboardAvoidingView behavior="height" style={{ flex: 1 }} keyboardVerticalOffset={KEYBOARD_OFFSET}>
                 <FlatList
                     keyboardShouldPersistTaps="handled"
@@ -321,8 +324,8 @@ export default function Search() {
                         <Text style={{ textAlign: 'center', opacity: 0.5, fontSize: 18 }}>{t('no-results')}</Text> 
                     </FullSizeContainer>
                 ) : null}
-                {SearchInput}
             </KeyboardAvoidingView>
-        </SafeAreaView>
+            {SearchInput}
+        </View>
     );
 }
