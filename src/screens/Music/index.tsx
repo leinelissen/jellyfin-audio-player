@@ -10,6 +10,7 @@ import NowPlaying from './overlays/NowPlaying';
 import RecentAlbums from './stacks/RecentAlbums';
 import Albums from './stacks/Albums';
 import Album from './stacks/Album';
+import Singles from './stacks/Singles';
 import Playlists from './stacks/Playlists';
 import Playlist from './stacks/Playlist';
 import Artists from './stacks/Artists';
@@ -36,6 +37,7 @@ function MusicStack() {
                 <Stack.Screen name="Artist" component={Artist} options={({ route }) => ({ headerTitle: route.params.Name })} />
                 <Stack.Screen name="Playlists" component={Playlists} options={{ headerTitle: t('playlists') }} />
                 <Stack.Screen name="Playlist" component={Playlist} options={{ headerTitle: t('playlist') }} />
+                <Stack.Screen name="Singles" component={Singles} options={{ headerTitle: t('all-tracks') }} /> 
             </Stack.Navigator>
             <NowPlaying />
         </GestureHandlerRootView>

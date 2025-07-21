@@ -75,7 +75,9 @@ const trackParams = {
  * Retrieve all possible tracks that can be found in Jellyfin
  */
 export async function retrieveAllTracks() {
-    return fetchApi<{ Items: AlbumTrack[] }>(({ user_id }) => `/Users/${user_id}/Items?${trackParams}`)
+    const params = new URLSearchParams(trackParams).toString();
+
+    return fetchApi<{ Items: AlbumTrack[] }>(({ user_id }) => `/Users/${user_id}/Items?${params}`)
         .then((d) => d.Items);
 }
 

@@ -34,6 +34,7 @@ const HeaderContainer = styled.View`
 const NavigationHeader: React.FC = () => {
     const navigation = useNavigation<NavigationProp>();
     const handleAllAlbumsClick = useCallback(() => { navigation.navigate('Albums'); }, [navigation]);
+    const handleSinglesClick = useCallback(() => { navigation.navigate('Singles'); }, [navigation]);
     const handlePlaylistsClick = useCallback(() => { navigation.navigate('Playlists'); }, [navigation]);
     const handleArtistsClick = useCallback(() => { navigation.navigate('Artists'); }, [navigation]);
     
@@ -42,6 +43,7 @@ const NavigationHeader: React.FC = () => {
             <ListButton onPress={handleAllAlbumsClick} testID="all-albums">
                 {t('all-albums')}
             </ListButton>
+            <ListButton onPress={handleSinglesClick}>{t('all-tracks')}</ListButton>
             <ListButton onPress={handleArtistsClick} testID="artists">
                 {t('artists')}
             </ListButton>

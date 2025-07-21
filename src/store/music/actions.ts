@@ -5,7 +5,7 @@ import { retrieveAllAlbums, retrieveRecentAlbums, retrieveAlbumTracks, retrieveA
 import { retrieveAllPlaylists, retrievePlaylistTracks } from '@/utility/JellyfinApi/playlist';
 import { searchItem } from '@/utility/JellyfinApi/search';
 import { retrieveTrackLyrics } from '@/utility/JellyfinApi/lyrics';
-import { retrieveTrackCodecMetadata } from '@/utility/JellyfinApi/track';
+import { retrieveAllTracks, retrieveTrackCodecMetadata } from '@/utility/JellyfinApi/track';
 
 export const albumAdapter = createEntityAdapter<Album, string>({
     selectId: album => album.Id,
@@ -147,4 +147,15 @@ export const fetchAllPlaylists = createAsyncThunk<Playlist[], undefined, AsyncTh
 export const fetchTracksByPlaylist = createAsyncThunk<AlbumTrack[], string, AsyncThunkAPI>(
     '/tracks/byPlaylist',
     postProcessTracks(retrievePlaylistTracks),
+);
+
+
+/**
+ * Retrieve all tracks
+ */
+ export const fetchAllTracks = createAsyncThunk<AlbumTrack[], undefined, AsyncThunkAPI>(
+    '/tracks/all',
+    async (_empty) => {
+        return retrieveAllTracks() as Promise<AlbumTrack[]>;
+    }
 );
