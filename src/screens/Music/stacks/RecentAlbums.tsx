@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
-import { Text, StyleSheet, View, FlatList } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import { fetchRecentAlbums } from '@/store/music/actions';
@@ -22,9 +22,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
     columnWrapper: {
-        flex: 1,
-        justifyContent: "space-around",
-        paddingHorizontal: 10,
+        paddingHorizontal: 16,
     }
 });
 

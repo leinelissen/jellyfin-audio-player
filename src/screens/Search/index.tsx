@@ -8,15 +8,13 @@ import Album from '@/screens/Music/stacks/Album';
 import { StyleSheet } from 'react-native';
 import NowPlaying from '@/screens/Music/overlays/NowPlaying';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Stack = createStackNavigator<StackParams>();
 
 function SearchStack() {
     const defaultStyles = useDefaultStyles();
     const [isInitialRoute, setIsInitialRoute] = useState(true);
-
-    const insets = useSafeAreaInsets();
 
     return (
         <SafeAreaProvider>
@@ -39,7 +37,7 @@ function SearchStack() {
                     <Stack.Screen name="Search" component={Search} options={{ headerTitle: t('search'), headerShown: false }} />
                     <Stack.Screen name="Album" component={Album} options={{ headerTitle: t('album') }} />
                 </Stack.Navigator>
-                <NowPlaying />
+                <NowPlaying offset={isInitialRoute ? 64 : 0} />
             </GestureHandlerRootView>
         </SafeAreaProvider>
     );

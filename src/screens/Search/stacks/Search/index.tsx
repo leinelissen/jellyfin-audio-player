@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Input from '@/components/Input';
-import { ActivityIndicator, Animated, KeyboardAvoidingView, Platform, SafeAreaView, View } from 'react-native';
+import { ActivityIndicator, Animated, KeyboardAvoidingView, Platform, View } from 'react-native';
 import styled from 'styled-components/native';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import Fuse, { IFuseOptions } from 'fuse.js';
@@ -32,7 +32,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const KEYBOARD_OFFSET = Platform.select({
     ios: 0,
-    android: 72,
+    // Android 15+ has edge-to-edge support, changing the keyboard offset to 0
+    android: Number.parseInt(Platform.Version as string) >= 35 ? 0 : 72,
 });
 const SEARCH_INPUT_HEIGHT = 62;
 
@@ -215,7 +216,7 @@ export default function Search() {
                         <Input
                             value={searchTerm}
                             onChangeText={setSearchTerm}
-                            style={[defaultStyles.view, { marginBottom: 75 }]}
+                            style={[defaultStyles.view, { marginBottom: 12 }]}
                             placeholder={t('search') + '...'}
                             icon={<SearchIcon width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />}
                             testID="search-input"
@@ -324,8 +325,8 @@ export default function Search() {
                         <Text style={{ textAlign: 'center', opacity: 0.5, fontSize: 18 }}>{t('no-results')}</Text> 
                     </FullSizeContainer>
                 ) : null}
+                {SearchInput}
             </KeyboardAvoidingView>
-            {SearchInput}
         </View>
     );
 }
