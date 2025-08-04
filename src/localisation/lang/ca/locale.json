@@ -13,7 +13,7 @@
     "download-track": "Descarregar Cançó",
     "download-album": "Descarrega l'Àlbum",
     "download-playlist": "Descarrega la Llista de Reproducció",
-    "no-downloads": "Encara no has descarregat cap cançó",
+    "no-downloads": "Encara no heu baixat cap pista",
     "delete-track": "Suprimeix la Cançó",
     "delete-all-tracks": "Suprimeix Totes les Cançons",
     "delete-album": "Suprimeix l'Àlbum",
@@ -79,6 +79,6 @@
     "lyrics": "Lletra",
     "khz": "k Hz",
     "direct-play": "Joc directe",
-    "transcoded": "Transcode",
+    "transcoded": "Transcodificat",
     "kbps": "kbps"
 }
