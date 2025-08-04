@@ -6,7 +6,7 @@ import Queue from './components/Queue';
 import ConnectionNotice from './components/ConnectionNotice';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import StreamStatus from './components/StreamStatus';
-import {Platform, View} from 'react-native';
+import { Platform } from 'react-native';
 import BackButton from './components/Backbutton';
 import Timer from './components/Timer';
 import styled from 'styled-components/native';
@@ -26,10 +26,7 @@ export default function Player() {
                 <Queue header={(
                     <>
                         {Platform.OS === 'android' && (
-                            <>
-                                <BackButton /> 
-                                <View style={{ padding: 30 }}/>
-                            </>
+                            <BackButton />
                         )}
                         <NowPlaying />
                         <ConnectionNotice />
