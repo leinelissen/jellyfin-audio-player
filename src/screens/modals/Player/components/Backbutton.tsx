@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import XmarkIcon from '@/assets/icons/xmark.svg';
-import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
-const Container = styled.View`
-    padding: 6px 12px;
+const Container = styled.TouchableOpacity`
+    padding: 12px 0px;
+    z-index: 2;
 `;
 
 function BackButton() {
@@ -16,10 +16,8 @@ function BackButton() {
     }, [navigation]);
 
     return (
-        <Container>
-            <TouchableOpacity onPress={handlePress}>
-                <XmarkIcon />
-            </TouchableOpacity>
+        <Container onPress={handlePress}>
+            <XmarkIcon />
         </Container>
     );
 }

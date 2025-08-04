@@ -182,7 +182,7 @@ function Downloads() {
             </View>
         );
     }
-
+    
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {ListHeaderComponent}

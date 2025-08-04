@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Input from '@/components/Input';
-import { ActivityIndicator, Animated, KeyboardAvoidingView, Platform, SafeAreaView, View } from 'react-native';
+import { ActivityIndicator, Animated, KeyboardAvoidingView, Platform, View } from 'react-native';
 import styled from 'styled-components/native';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import Fuse, { IFuseOptions } from 'fuse.js';
@@ -21,6 +21,7 @@ import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp } from '@/screens/types';
 import { useNavigationOffsets } from '@/components/SafeNavigatorView';
 import BaseAlbumImage from '@/screens/Music/stacks/components/AlbumImage';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 // import MicrophoneIcon from '@/assets/icons/microphone.svg';
 // import AlbumIcon from '@/assets/icons/collection.svg';
 // import TrackIcon from '@/assets/icons/note.svg';
@@ -31,7 +32,8 @@ import BaseAlbumImage from '@/screens/Music/stacks/components/AlbumImage';
 
 const KEYBOARD_OFFSET = Platform.select({
     ios: 0,
-    android: 72,
+    // Android 15+ has edge-to-edge support, changing the keyboard offset to 0
+    android: Number.parseInt(Platform.Version as string) >= 35 ? 0 : 72,
 });
 const SEARCH_INPUT_HEIGHT = 62;
 
@@ -266,8 +268,10 @@ export default function Search() {
         ...jellyfinResults,
     ]), [fuseResults, jellyfinResults]);
 
+    const insets = useSafeAreaInsets();
+    
     return (
-        <SafeAreaView style={{ flex: 1, marginBottom: offsets.bottom }}>
+        <View style={{ flex: 1, paddingTop: insets.top, marginBottom: offsets.bottom }}>
             <KeyboardAvoidingView behavior="height" style={{ flex: 1 }} keyboardVerticalOffset={KEYBOARD_OFFSET}>
                 <FlatList
                     keyboardShouldPersistTaps="handled"
@@ -323,6 +327,6 @@ export default function Search() {
                 ) : null}
                 {SearchInput}
             </KeyboardAvoidingView>
-        </SafeAreaView>
+        </View>
     );
 }
