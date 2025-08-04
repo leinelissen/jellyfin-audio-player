@@ -391,9 +391,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 118;
+				CURRENT_PROJECT_VERSION = 124;
 				DEVELOPMENT_TEAM = HD2D35G9Y4;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HD2D35G9Y4;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -414,6 +416,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.moeilijkedingen.jellyfinaudioplayer;
 				PRODUCT_NAME = Fintunes;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "nl.moeilijkedingen.jellyfinaudioplayer AppStore 1754345870";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -429,7 +432,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 118;
+				CURRENT_PROJECT_VERSION = 124;
 				DEVELOPMENT_TEAM = HD2D35G9Y4;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = HD2D35G9Y4;
 				INFOPLIST_FILE = Fintunes/Info.plist;
@@ -448,7 +451,7 @@
 				PRODUCT_NAME = Fintunes;
 				PROVISIONING_PROFILE = "915c5213-22f6-4f9d-8065-2a06300f9bfb";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "nl.moeilijkedingen.jellyfinaudioplayer AppStore";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "nl.moeilijkedingen.jellyfinaudioplayer AppStore 1754345870";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -609,7 +612,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 118;
+				CURRENT_PROJECT_VERSION = 124;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = HD2D35G9Y4;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -644,7 +647,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 118;
+				CURRENT_PROJECT_VERSION = 124;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = HD2D35G9Y4;
 				GCC_C_LANGUAGE_STANDARD = gnu11;

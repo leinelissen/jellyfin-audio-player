@@ -4,4 +4,4 @@ O desempenho para grandes coleções de álbuns foi significativamente aprimorad
 
 Também corrigimos um problema que estava causando o corte da parte superior do aplicativo no Android 15 e versões mais recentes. O aplicativo agora deve ser exibido corretamente nos dispositivos Android mais recentes.
 
-Obrigado por usar o Fintunes! 
+Obrigado por usar o Fintunes!

@@ -4,4 +4,4 @@ Prestandan för stora albumsamlingar har förbättrats betydligt, vilket gör su
 
 Vi har också åtgärdat ett problem som orsakade att den övre delen av appen blev avskuren på Android 15 och nyare versioner. Appen bör nu visas korrekt på de senaste Android-enheterna.
 
-Tack för att du använder Fintunes! 
+Tack för att du använder Fintunes!

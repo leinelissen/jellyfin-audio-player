@@ -4,4 +4,4 @@ El rendiment per a grans col·leccions d'àlbums ha estat significativament mill
 
 També hem solucionat un problema que feia que la part superior de l'aplicació es tallés en Android 15 i versions més recents. L'aplicació ara hauria de mostrar-se correctament en els dispositius Android més recents.
 
-Gràcies per usar Fintunes! 
+Gràcies per usar Fintunes!

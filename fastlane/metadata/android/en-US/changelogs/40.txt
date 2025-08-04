@@ -4,4 +4,4 @@ Performance for large album collections has been significantly enhanced, making 
 
 We've also fixed an issue that was causing the top part of the app to be cut off on Android 15 and newer versions. The app should now display properly on the latest Android devices.
 
-Thanks for using Fintunes! 
+Thanks for using Fintunes!
