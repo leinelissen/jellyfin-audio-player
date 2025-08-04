@@ -2,7 +2,6 @@ import { Paragraph } from '@/components/Typography';
 import React, { useCallback } from 'react';
 import { Switch } from 'react-native-gesture-handler';
 import { t } from '@/localisation';
-import { SafeScrollView } from '@/components/SafeNavigatorView';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import { setEnablePlaybackReporting } from '@/store/settings/actions';
 import Container from '../components/Container';

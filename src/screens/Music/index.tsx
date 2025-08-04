@@ -20,7 +20,7 @@ const Stack = createStackNavigator<StackParams>();
 
 function MusicStack() {
     const defaultStyles = useDefaultStyles();
-    const scheme = useUserOrSystemScheme()
+    const scheme = useUserOrSystemScheme();
 
     return (
         <SafeAreaProvider>
