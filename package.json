@@ -50,7 +50,7 @@
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
-    "styled-components": "^6.1.17"
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
     "@babel/core": "^7.27.1",

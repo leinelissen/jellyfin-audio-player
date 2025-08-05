@@ -1,6 +1,5 @@
 onlyBuiltDependencies:
   - '@sentry/cli'
 patchedDependencies:
-  styled-components: patches/styled-components.patch
   react-native-webview: patches/react-native-webview.patch
   '@weights-ai/react-native-track-player': patches/@weights-ai__react-native-track-player.patch

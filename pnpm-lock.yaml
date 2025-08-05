@@ -11,9 +11,6 @@ patchedDependencies:
   react-native-webview:
     hash: 2bf2ed0feba988e3f2d2ebc497218220b351ab5157dc5fedf7085f8525cacb65
     path: patches/react-native-webview.patch
-  styled-components:
-    hash: 1cf1dc73aeb4646d4f23b44d99b14d61a1b622d44dfcc5ccd946b82d79954c32
-    path: patches/styled-components.patch
 
 importers:
 
@@ -137,8 +134,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0(react@19.0.0)(redux@5.0.1)
       styled-components:
-        specifier: ^6.1.17
-        version: 6.1.17(patch_hash=1cf1dc73aeb4646d4f23b44d99b14d61a1b622d44dfcc5ccd946b82d79954c32)(react-dom@19.1.0(react@19.0.0))(react@19.0.0)
+        specifier: ^6.1.19
+        version: 6.1.19(react-dom@19.1.0(react@19.0.0))(react@19.0.0)
     devDependencies:
       '@babel/core':
         specifier: ^7.27.1
@@ -4293,8 +4290,8 @@ packages:
   structured-headers@0.4.1:
     resolution: {integrity: sha512-0MP/Cxx5SzeeZ10p/bZI0S6MpgD+yxAhi1BOQ34jgnMXsCq3j1t6tQnZu+KdlL7dvJTLT3g9xN8tl10TqgFMcg==}
 
-  styled-components@6.1.17:
-    resolution: {integrity: sha512-97D7DwWanI7nN24v0D4SvbfjLE9656umNSJZkBkDIWL37aZqG/wRQ+Y9pWtXyBIM/NSfcBzHLErEsqHmJNSVUg==}
+  styled-components@6.1.19:
+    resolution: {integrity: sha512-1v/e3Dl1BknC37cXMhwGomhO8AkYmN41CqyX9xhUDxry1ns3BFQy2lLDRQXJRdVVWB9OHemv/53xaStimvWyuA==}
     engines: {node: '>= 16'}
     peerDependencies:
       react: '>= 16.8.0'
@@ -9853,7 +9850,7 @@ snapshots:
   structured-headers@0.4.1:
     optional: true
 
-  styled-components@6.1.17(patch_hash=1cf1dc73aeb4646d4f23b44d99b14d61a1b622d44dfcc5ccd946b82d79954c32)(react-dom@19.1.0(react@19.0.0))(react@19.0.0):
+  styled-components@6.1.19(react-dom@19.1.0(react@19.0.0))(react@19.0.0):
     dependencies:
       '@emotion/is-prop-valid': 1.2.2
       '@emotion/unitless': 0.8.1
