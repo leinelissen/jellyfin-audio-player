@@ -2,6 +2,4 @@ Jsme rádi, že vám můžeme přinést několik užitečných vylepšení v té
 
 Výkon pro velké kolekce alb byl výrazně vylepšen, což činí procházení vaší hudební knihovny plynulejším a více responzivním.
 
-Také jsme opravili problém, který způsoboval, že horní část aplikace byla ořezána na Androidu 15 a novějších verzích. Aplikace by se nyní měla správně zobrazovat na nejnovějších Android zařízeních.
-
 Děkujeme za používání Fintunes! 

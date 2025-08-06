@@ -2,6 +2,4 @@
 
 El rendimiento para grandes colecciones de álbumes ha sido significativamente mejorado, haciendo que la navegación por tu biblioteca musical sea más fluida y responsiva.
 
-También hemos solucionado un problema que causaba que la parte superior de la aplicación se cortara en Android 15 y versiones más recientes. La aplicación ahora debería mostrarse correctamente en los dispositivos Android más recientes.
-
 ¡Gracias por usar Fintunes! 
