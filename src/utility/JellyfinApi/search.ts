@@ -6,6 +6,9 @@ const searchParams = {
     SortBy: 'SearchScore,Album,SortName',
     SortOrder: 'Ascending',
     Recursive: 'true',
+    Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated,Overview',
+    ImageTypeLimit: '1',
+    EnableImageTypes: 'Primary,Backdrop,Banner,Thumb'
 };
 
 export type SearchResult = Album | AlbumTrack | MusicArtist | Playlist;
@@ -22,5 +25,6 @@ export function searchItem(
         Limit: limit.toString(),
     }).toString();
 
-    return fetchApi<{ Items: SearchResult[]}>(({ user_id }) => `/Users/${user_id}/Items?${params}`).then(result => result.Items);
+    return fetchApi<{ Items: SearchResult[]}>(({ user_id }) => `/Users/${user_id}/Items?${params}`)
+        .then(result => result.Items);
 }

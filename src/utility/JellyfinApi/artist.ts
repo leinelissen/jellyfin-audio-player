@@ -6,7 +6,7 @@ const artistOptions = {
     SortOrder: 'Ascending',
     IncludeItemTypes: 'MusicArtist',
     Recursive: 'true',
-    Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated',
+    Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated,Overview',
     ImageTypeLimit: '1',
     EnableImageTypes: 'Primary,Backdrop,Banner,Thumb',
 };
@@ -19,8 +19,4 @@ const artistParams = new URLSearchParams(artistOptions).toString();
 export function retrieveAllArtists() {
     return fetchApi<{ Items: MusicArtist[] }>(({ user_id }) => `/Users/${user_id}/Items?${artistParams}`)
         .then(response => response.Items);
-}
-
-export function retrieveArtistOverview(ItemId: string): Promise<string> {
-    return fetchApi<{ Overview: string }>(({ user_id }) => `/Users/${user_id}/Items/${ItemId}`).then(response => response.Overview);
 }

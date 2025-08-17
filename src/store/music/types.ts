@@ -52,6 +52,7 @@ export interface MusicArtist {
     BackdropImageTags: any[];
     ImageBlurHashes: any;
     LocationType: string;
+    Overview: string;
 }
 
 export interface ImageTags {

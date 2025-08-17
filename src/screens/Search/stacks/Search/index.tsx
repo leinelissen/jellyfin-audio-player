@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { t } from '@/localisation';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
-import { searchAndFetch } from '@/store/music/actions';
+import { fetchInstantMixByTrackId, searchAndFetch } from '@/store/music/actions';
 import { Text } from '@/components/Typography';
 import DownloadIcon from '@/components/DownloadIcon';
 import ChevronRight from '@/assets/icons/chevron-right.svg';
@@ -23,6 +23,7 @@ import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp } from '@/screens/types';
 import { useNavigationOffsets } from '@/components/SafeNavigatorView';
 import BaseAlbumImage from '@/screens/Music/stacks/components/AlbumImage';
+import usePlayTracks from '@/utility/usePlayTracks';
 // import MicrophoneIcon from '@/assets/icons/microphone.svg';
 // import AlbumIcon from '@/assets/icons/collection.svg';
 // import TrackIcon from '@/assets/icons/note.svg';
@@ -120,6 +121,7 @@ const playlistsSelector = (state: AppState) => state.music.playlists.entities;
 export default function Search() {
     const defaultStyles = useDefaultStyles();
     const offsets = useNavigationOffsets({ includeOverlay: false });
+    const playTracks = usePlayTracks();
 
     // Prepare state for fuse and albums
     const [searchTerm, setSearchTerm] = useState('');
@@ -209,26 +211,36 @@ export default function Search() {
     }, [searchTerm, setFuseResults, setLoading, fuse, fetchJellyfinResults, albumEntities, tracksEntities, artistsEntities, playlistsEntities]);
 
     // Handlers
-    const selectItem = useCallback(({ id, type }: { id: string; type: SearchType; }) => {
+    const selectItem = useCallback(async ({ id, type }: { id: string; type: SearchType; }) => {
         switch (type) {
-            case 'Audio':
-                navigation.navigate('Playlist', { id, isMix: true });
+            case 'Audio': {
+                playTracks([id], { play: true });
+                const { payload: similarSongs } = (await dispatch(fetchInstantMixByTrackId(id)) as { payload: AlbumTrack[]; });
+
+                // Remove the first from the list, because it is the same as the currently selected song.
+                similarSongs.shift();
+                playTracks(similarSongs.map(item => item.Id), { play: false, method: 'add-to-end' });
                 break;
+            }
             case 'MusicAlbum':
                 navigation.navigate('Album', { id, album: searchItems?.[id] as Album });
                 break;
             case 'MusicArtist':
                 {
-                    const { Name, Id } = searchItems?.[id] as MusicArtist;
-                    const albumIds = [];
+                    // const { Id } = searchItems?.[id] as MusicArtist;
+                    // const albumIds = [];
 
-                    for (const album of Object.values(albumEntities) as Album[]) {
-                        if (album.ArtistItems.find(item => item.Id === Id)) {
-                            albumIds.push(album.Id);
-                        }
-                    }
+                    // for (const album of Object.values(albumEntities) as Album[]) {
+                    //     if (album.ArtistItems.find(item => item.Id === Id)) {
+                    //         albumIds.push(album.Id);
+                    //     }
+                    // }
 
-                    navigation.navigate('Artist', { Name, Id, albumIds });
+                    // Name, 
+
+                    const { Name: name } = searchItems[id];
+
+                    navigation.navigate('Artist', { id, name });
                 
                 }
                 break;
@@ -328,9 +340,12 @@ export default function Search() {
                                             { type === 'Playlist' ? `${t('playlist')}` : null }
                                         </HalfOpacity>
                                     </View>
-                                    <View style={{ marginLeft: 16 }}>
-                                        <DownloadIcon trackId={id} />
-                                    </View>
+                                    { type === 'Audio' ?
+                                        <View style={{ marginLeft: 16 }}>
+                                            <DownloadIcon trackId={id} />
+                                        </View>
+                                        : null
+                                    }
                                     <View style={{ marginLeft: 16 }}>
                                         <ChevronRight width={14} height={14} fill={defaultStyles.textQuarterOpacity.color}  />
                                     </View>

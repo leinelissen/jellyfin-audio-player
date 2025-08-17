@@ -204,38 +204,12 @@ const music = createSlice({
         
         builder.addCase(fetchInstantMixByTrackId.pending, state => { state.tracks.isLoading = true; });
         builder.addCase(fetchInstantMixByTrackId.rejected, state => { state.tracks.isLoading = false; });
-        builder.addCase(fetchInstantMixByTrackId.fulfilled, (state, { payload, meta }) => {
+        builder.addCase(fetchInstantMixByTrackId.fulfilled, (state, { payload }) => {
             const tracks = payload.filter(item => 
                 !trackAdapter.getSelectors().selectById(state.tracks, item.Id)
             ) as AlbumTrack[];
             trackAdapter.upsertMany(state.tracks, tracks);
-            
-            state.tracks.byPlaylist[meta.arg] = payload.map(d => d.Id);
-            playlistAdapter.setOne(state.playlists, {
-                Name: '',
-                ServerId: '',
-                Id: meta.arg,
-                Type: 'Playlist',
-                CanDelete: false,
-                SortName: '',
-                RunTimeTicks: 0,
-                IsFolder: true,
-                UserData: {
-                    PlaybackPositionTicks: 0,
-                    PlayCount: 0,
-                    IsFavorite: false,
-                    Played: false,
-                    Key: ''
-                },
-                ImageTags: {
-                    Primary: ''
-                },
-                PrimaryImageAspectRatio: 1,
-                BackdropImageTags: [],
-                LocationType: '',
-                MediaType: 'Audio',
-                lastRefreshed: new Date().getTime()
-            });
+
             state.tracks.isLoading = false;
         });
 
@@ -252,7 +226,7 @@ const music = createSlice({
         });
         builder.addCase(fetchAllArtists.pending, (state) => { state.artists.isLoading = true; });
         builder.addCase(fetchAllArtists.rejected, (state) => { state.artists.isLoading = false; });
-
+        
         /** 
          * Fetch track metadata
          */

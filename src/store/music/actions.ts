@@ -3,7 +3,7 @@ import { Album, AlbumTrack, CodecMetadata, Lyrics, Playlist, MusicArtist } from 
 import type { AsyncThunkAPI } from '..';
 import { retrieveAllAlbums, retrieveRecentAlbums, retrieveAlbumTracks, retrieveAlbum, retrieveSimilarAlbums } from '@/utility/JellyfinApi/album';
 import { retrieveAllPlaylists, retrievePlaylistTracks, retrieveInstantMixByTrackId } from '@/utility/JellyfinApi/playlist';
-import { retrieveAllArtists, retrieveArtistOverview } from '@/utility/JellyfinApi/artist';
+import { retrieveAllArtists } from '@/utility/JellyfinApi/artist';
 import { searchItem, SearchResult } from '@/utility/JellyfinApi/search';
 import { retrieveTrackLyrics } from '@/utility/JellyfinApi/lyrics';
 import { retrieveTrackCodecMetadata } from '@/utility/JellyfinApi/track';
@@ -139,9 +139,4 @@ export const fetchAllArtists = createAsyncThunk<MusicArtist[], undefined, AsyncT
 export const fetchInstantMixByTrackId = createAsyncThunk<AlbumTrack[], string, AsyncThunkAPI>(
     '/instantMix/byTrackId',
     (trackId: string) => retrieveInstantMixByTrackId(trackId)
-);
-
-export const fetchArtistOverview = createAsyncThunk<string, string, AsyncThunkAPI>(
-    '/overview/byId',
-    retrieveArtistOverview
 );

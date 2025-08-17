@@ -5,6 +5,8 @@ import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 import { StackParams } from '@/screens/types';
 import Search from './stacks/Search';
 import Album from '@/screens/Music/stacks/Album';
+import Artist from '@/screens/Music/stacks/Artist';
+import Playlist from '@/screens/Music/stacks/Playlist';
 import { StyleSheet } from 'react-native';
 import NowPlaying from '@/screens/Music/overlays/NowPlaying';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -34,6 +36,8 @@ function SearchStack() {
             >
                 <Stack.Screen name="Search" component={Search} options={{ headerTitle: t('search'), headerShown: false }} />
                 <Stack.Screen name="Album" component={Album} options={{ headerTitle: t('album') }} />
+                <Stack.Screen name="Artist" component={Artist} options={({ route }) => ({ headerTitle: route.params.name })} />
+                <Stack.Screen name="Playlist" component={Playlist} options={{ headerTitle: t('playlist') }} />
             </Stack.Navigator>
             <NowPlaying offset={isInitialRoute ? 64 : 0} />
         </GestureHandlerRootView>

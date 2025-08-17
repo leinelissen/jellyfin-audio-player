@@ -1,5 +1,4 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import { SectionArtistItem } from '@/store/music/selectors';
 import { Album } from '@/store/music/types';
 
 export type StackParams = {
@@ -7,9 +6,9 @@ export type StackParams = {
     Albums: undefined;
     Album: { id: string, album: Album };
     Artists: undefined;
-    Artist: SectionArtistItem;
+    Artist: { id: string; name: string };
     Playlists: undefined;
-    Playlist: { id: string; isMix?: boolean; };
+    Playlist: { id: string; };
     RecentAlbums: undefined;
     Search: undefined;
     SetJellyfinServer: undefined;
