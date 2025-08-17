@@ -131,9 +131,9 @@ export default function Search() {
     const [fuseResults, setFuseResults] = useState<SearchResult[]>([]);
 
     const albumEntities: Record<string, Album> = useTypedSelector(albumSelector);
-    const tracksEntities: Record<string, AlbumTrack> = useTypedSelector(tracksSelector);
-    const artistsEntities: Record<string, MusicArtist> = useTypedSelector(artistsSelector);
-    const playlistsEntities: Record<string, Playlist> = useTypedSelector(playlistsSelector);
+    const trackEntities: Record<string, AlbumTrack> = useTypedSelector(tracksSelector);
+    const artistEntities: Record<string, MusicArtist> = useTypedSelector(artistsSelector);
+    const playlistEntities: Record<string, Playlist> = useTypedSelector(playlistsSelector);
 
     // Prepare helpers
     const navigation = useNavigation<NavigationProp>();
@@ -156,10 +156,10 @@ export default function Search() {
     
     const searchItems = useMemo(() => ({
         ...albumEntities,
-        ...tracksEntities,
-        ...artistsEntities,
-        ...playlistsEntities
-    }), [albumEntities, tracksEntities, artistsEntities, playlistsEntities]);
+        ...trackEntities,
+        ...artistEntities,
+        ...playlistEntities
+    }), [albumEntities, trackEntities, artistEntities, playlistEntities]);
 
     /**
      * Since it is impractical to have a global fuse variable, we need to
@@ -210,7 +210,7 @@ export default function Search() {
         };
 
         retrieveResults();
-    }, [searchTerm, setFuseResults, setLoading, fuse, fetchJellyfinResults, albumEntities, tracksEntities, artistsEntities, playlistsEntities]);
+    }, [searchTerm, setFuseResults, setLoading, fuse, fetchJellyfinResults, albumEntities, trackEntities, artistEntities, playlistEntities]);
 
     // Handlers
     const selectItem = useCallback(async ({ id, type }: { id: string; type: SearchType; }) => {
