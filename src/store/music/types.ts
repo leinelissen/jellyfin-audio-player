@@ -39,6 +39,22 @@ export interface AlbumArtist {
     Id: string;
 }
 
+export interface MusicArtist {
+    Name: string;
+    ServerId: string;
+    Id: string;
+    ChannelId: string;
+    RunTimeTicks: number;
+    IsFolder: boolean;
+    UserData: UserData;
+    Type: 'MusicArtist';
+    ImageTags: ImageTags;
+    BackdropImageTags: any[];
+    ImageBlurHashes: any;
+    LocationType: string;
+    Overview: string;
+}
+
 export interface ImageTags {
     Primary: string;
 }
@@ -143,7 +159,7 @@ export interface Playlist {
     ChannelId?: any;
     RunTimeTicks: number;
     IsFolder: boolean;
-    Type: string;
+    Type: 'Playlist';
     UserData: UserData;
     PrimaryImageAspectRatio: number;
     ImageTags: ImageTags;

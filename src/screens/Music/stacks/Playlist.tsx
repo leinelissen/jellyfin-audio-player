@@ -8,7 +8,7 @@ import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import { t } from '@/localisation';
 import { StackParams } from '@/screens/types';
 
-type Route = RouteProp<StackParams, 'Album'>;
+type Route = RouteProp<StackParams, 'Playlist'>;
 
 const Playlist: React.FC = () => {
     const { params: { id } } = useRoute<Route>();
@@ -19,7 +19,10 @@ const Playlist: React.FC = () => {
     const playlistTracks = useTypedSelector((state) => state.music.tracks.byPlaylist[id]);
 
     // Define a function for refreshing this entity
-    const refresh = useCallback(() => dispatch(fetchTracksByPlaylist(id)), [dispatch, id]);
+    const refresh = useCallback(
+        () => dispatch(fetchTracksByPlaylist(id)),
+        [dispatch, id]
+    );
 
     // Auto-fetch the track data periodically
     useEffect(() => {

@@ -4,17 +4,21 @@ import {
     fetchTracksByAlbum,
     trackAdapter,
     fetchRecentAlbums,
-    searchAndFetchAlbums,
+    searchAndFetch,
     playlistAdapter,
     fetchAllPlaylists,
     fetchTracksByPlaylist,
     fetchAlbum,
+    artistAdapter,
+    fetchAllArtists,
+    fetchInstantMixByTrackId,
     fetchSimilarAlbums,
     fetchCodecMetadataByTrack,
     fetchLyricsByTrack
 } from './actions';
 import { createSlice } from '@reduxjs/toolkit';
-import { Album, AlbumTrack, Playlist } from './types';
+import { Album, AlbumTrack, Playlist, MusicArtist } from './types';
+
 import { setJellyfinCredentials } from '@/store/settings/actions';
 
 export interface State {
@@ -36,6 +40,12 @@ export interface State {
         entities: Record<string, Playlist>;
         ids: string[];
         lastRefreshed?: number,
+    },
+    artists: {
+        isLoading: boolean;
+        entities: Record<string, MusicArtist>;
+        ids: string[];
+        lastRefreshed?: number;
     }
 }
 
@@ -53,6 +63,10 @@ export const initialState: State = {
     playlists: {
         ...playlistAdapter.getInitialState(),
         isLoading: false,
+    },
+    artists: {
+        ...artistAdapter.getInitialState(),
+        isLoading: false
     }
 };
 
@@ -122,10 +136,36 @@ const music = createSlice({
         builder.addCase(fetchTracksByAlbum.pending, (state) => { state.tracks.isLoading = true; });
         builder.addCase(fetchTracksByAlbum.rejected, (state) => { state.tracks.isLoading = false; });
         
-        builder.addCase(searchAndFetchAlbums.pending, (state) => { state.albums.isLoading = true; });
-        builder.addCase(searchAndFetchAlbums.fulfilled, (state, { payload }) => {
-            albumAdapter.upsertMany(state.albums, payload.albums);
+        builder.addCase(searchAndFetch.pending, (state) => { 
+            state.albums.isLoading = true;
+            state.artists.isLoading = true;
+            state.playlists.isLoading = true;
+            state.tracks.isLoading = true;
+        });
+        builder.addCase(searchAndFetch.fulfilled, (state, { payload }) => {
+            const albums = payload.filter(item => 
+                item.Type === 'MusicAlbum' && !albumAdapter.getSelectors().selectById(state.albums, item.Id)
+            ) as Album[];
+            albumAdapter.upsertMany(state.albums, albums);
             state.albums.isLoading = false;
+
+            const artists = payload.filter(item => 
+                item.Type === 'MusicArtist' && !artistAdapter.getSelectors().selectById(state.artists, item.Id)
+            ) as MusicArtist[];
+            artistAdapter.upsertMany(state.artists, artists);
+            state.artists.isLoading = false;
+
+            const tracks = payload.filter(item => 
+                item.Type === 'Audio' && !trackAdapter.getSelectors().selectById(state.tracks, item.Id)
+            ) as AlbumTrack[];
+            trackAdapter.upsertMany(state.tracks, tracks);
+            state.tracks.isLoading = false;
+
+            const playlists = payload.filter(item => 
+                item.Type === 'Playlist' && !playlistAdapter.getSelectors().selectById(state.playlists, item.Id)
+            ) as Playlist[];
+            playlistAdapter.upsertMany(state.playlists, playlists);
+            state.playlists.isLoading = false;
         });
 
         /**
@@ -162,10 +202,32 @@ const music = createSlice({
         builder.addCase(fetchTracksByPlaylist.pending, (state) => { state.tracks.isLoading = true; });
         builder.addCase(fetchTracksByPlaylist.rejected, (state) => { state.tracks.isLoading = false; });
         
+        builder.addCase(fetchInstantMixByTrackId.pending, state => { state.tracks.isLoading = true; });
+        builder.addCase(fetchInstantMixByTrackId.rejected, state => { state.tracks.isLoading = false; });
+        builder.addCase(fetchInstantMixByTrackId.fulfilled, (state, { payload }) => {
+            const tracks = payload.filter(item => 
+                !trackAdapter.getSelectors().selectById(state.tracks, item.Id)
+            ) as AlbumTrack[];
+            trackAdapter.upsertMany(state.tracks, tracks);
+
+            state.tracks.isLoading = false;
+        });
+
         // Reset any caches we have when a new server is set
         builder.addCase(setJellyfinCredentials, () => initialState);
 
         /**
+         * Fetch All artists
+         */
+        builder.addCase(fetchAllArtists.fulfilled, (state, { payload }) => {
+            artistAdapter.setAll(state.artists, payload);
+            state.artists.isLoading = false;
+            state.artists.lastRefreshed = new Date().getTime();
+        });
+        builder.addCase(fetchAllArtists.pending, (state) => { state.artists.isLoading = true; });
+        builder.addCase(fetchAllArtists.rejected, (state) => { state.artists.isLoading = false; });
+        
+        /** 
          * Fetch track metadata
          */
         builder.addCase(fetchCodecMetadataByTrack.fulfilled, (state, { payload, meta }) => {
