@@ -33,10 +33,12 @@ const NumberBar = styled.View`
     justify-content: space-between;
     width: 100%;
     padding: 8px 0;
+    gap: 16px;
 `;
 
 const Number = styled(ReText)`
     font-size: 13px;
+    flex: 1;
 `;
 
 const DragHandle = styled(Reanimated.View)`
@@ -51,7 +53,7 @@ const DragHandle = styled(Reanimated.View)`
 
 function ProgressBar() {
     const styles = useDefaultStyles();
-    const { position, buffered } = useProgress();
+    const { position, buffered } = useProgress(990);
     const { track } = useCurrentTrack();
 
     const width = useSharedValue(0);
@@ -205,8 +207,8 @@ function ProgressBar() {
                     ]} 
                 />
                 <NumberBar style={{ flex: 1 }}>
-                    <Number text={timePassed} style={timePassedStyles} />
-                    <Number text={timeRemaining} style={timeRemainingStyles} />
+                    <Number text={timePassed} style={[timePassedStyles]} />
+                    <Number text={timeRemaining} style={[timeRemainingStyles, { textAlign: 'right' }]} />
                 </NumberBar>
             </Container>
         </GestureDetector>

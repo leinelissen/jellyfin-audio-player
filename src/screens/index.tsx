@@ -98,7 +98,7 @@ export default function Routes() {
         }} id="MAIN">
             <Stack.Screen name="Screens" component={Screens} />
             <Stack.Screen name="SetJellyfinServer" component={SetJellyfinServer} />
-            <Stack.Screen name="TrackPopupMenu" component={TrackPopupMenu} options={{ presentation: 'formSheet' }} />
+            <Stack.Screen name="TrackPopupMenu" component={TrackPopupMenu} options={{ presentation: 'formSheet', sheetCornerRadius: 10, sheetAllowedDetents: [0.85, 1.0]}} />
             <Stack.Screen name="ErrorReporting" component={ErrorReportingPopup} />
             <Stack.Screen name="Player" component={Player} />
             <Stack.Screen name="Lyrics" component={Lyrics} />

@@ -17,16 +17,17 @@ export const failDownload = createAction<{ id: string }>('download/fail');
 
 export const downloadTrack = createAsyncThunk(
     '/downloads/track',
-    async (id: string, { dispatch }) => {
+    async (id: string, { dispatch, getState }) => {
         // Generate the URL we can use to download the file
+        const entity = (getState() as AppState).music.tracks.entities[id];
         const audioUrl = generateTrackUrl(id);
-        const imageUrl = getImage(id);
+        const imageUrl = getImage(entity);
 
         // Get the content-type from the URL by doing a HEAD-only request
         const [audioExt, imageExt] = await Promise.all([
             getExtensionForUrl(audioUrl),
             // Image files may be absent
-            getExtensionForUrl(imageUrl).catch(() => null)
+            imageUrl ? getExtensionForUrl(imageUrl).catch(() => null) : null
         ]);
 
         // Then generate the proper location
@@ -51,7 +52,7 @@ export const downloadTrack = createAsyncThunk(
 
         const { promise: imagePromise } = imageExt && imageLocation
             ? downloadFile({
-                fromUrl: imageUrl,
+                fromUrl: imageUrl!,
                 toFile: imageLocation,
                 background: true,
             })

@@ -1,1 +1,5 @@
-Cette version corrige un problème où Fintunes ne pouvait lire que le premier disque d'un album multi-disques. De plus, grâce à nos incroyables contributeurs linguistiques, Fintunes est maintenant disponible en tamoul. En outre, 12 langues ont été mises à jour. Profitez de cette nouvelle version de Fintunes et rejoignez notre serveur Discord ! 
+Nous sommes heureux de vous apporter quelques améliorations utiles dans cette mise à jour !
+
+Les performances pour les grandes collections d'albums ont été considérablement améliorées, rendant la navigation dans votre bibliothèque musicale plus fluide et plus réactive.
+
+Merci d'utiliser Fintunes ! 

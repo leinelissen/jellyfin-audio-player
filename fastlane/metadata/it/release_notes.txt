@@ -1,1 +1,5 @@
-Questa versione risolve un problema in cui Fintunes poteva riprodurre solo il primo disco in un album multi-disco. Inoltre, grazie ai nostri fantastici collaboratori linguistici, Fintunes è ora disponibile in tamil. Inoltre, sono state aggiornate 12 lingue. Goditi questa nuova versione di Fintunes e unisciti al nostro server Discord! 
+Siamo lieti di offrirti alcuni miglioramenti utili in questo aggiornamento!
+
+Le prestazioni per grandi collezioni di album sono state significativamente migliorate, rendendo la navigazione nella tua libreria musicale più fluida e reattiva.
+
+Grazie per aver usato Fintunes! 

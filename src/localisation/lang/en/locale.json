@@ -49,7 +49,7 @@
     "download-track": "Download Track",
     "download-album": "Download Album",
     "download-playlist": "Download Playlist",
-    "no-downloads": "You have not yet downloaded any tracks",
+    "no-downloads": "You have not downloaded any tracks yet",
     "delete-track": "Delete Track",
     "delete-all-tracks": "Delete All Tracks",
     "confirm-delete-all-tracks": "Are you sure you want to delete all currently downloaded tracks?",

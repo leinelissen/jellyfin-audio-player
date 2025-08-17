@@ -1,6 +1,6 @@
 {
   "name": "fintunes",
-  "version": "2.4.5",
+  "version": "2.4.6",
   "main": "src/index.js",
   "private": true,
   "scripts": {
@@ -8,10 +8,10 @@
     "ios": "react-native run-ios --scheme \"Fintunes\"",
     "start": "react-native start",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx  && tsc --noEmit",
-    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'",
-    "postinstall": "patch-package"
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
+    "@d11/react-native-fast-image": "^8.9.2",
     "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-native-community/blur": "^4.4.1",
     "@react-native-community/datetimepicker": "^8.3.0",
@@ -22,6 +22,7 @@
     "@react-navigation/native-stack": "^6.11.0",
     "@react-navigation/stack": "^6.4.1",
     "@reduxjs/toolkit": "^2.7.0",
+    "@shopify/flash-list": "^1.8.0",
     "@shopify/react-native-skia": "2.0.0-next.3",
     "date-fns": "^3.6.0",
     "events": "^3.3.0",
@@ -35,7 +36,6 @@
     "react-native-accessibility-settings": "^0.1.2",
     "react-native-collapsible": "^1.6.2",
     "react-native-dotenv": "^3.4.11",
-    "react-native-fast-image": "^8.6.3",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.25.0",
     "react-native-localize": "^3.4.1",
@@ -50,7 +50,7 @@
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
-    "styled-components": "^6.1.17"
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
     "@babel/core": "^7.27.1",
@@ -72,7 +72,6 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^4.6.2",
     "metro-react-native-babel-transformer": "^0.77.0",
-    "patch-package": "^8.0.0",
     "react-native-svg-transformer": "^1.5.1",
     "tslib": "^2.8.1",
     "typescript": "^5.8.3"

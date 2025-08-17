@@ -1,0 +1,7 @@
+Ens alegra oferir-te algunes millores útils en aquesta actualització!
+
+El rendiment per a grans col·leccions d'àlbums ha estat significativament millorat, fent que la navegació per la teva biblioteca musical sigui més fluida i responsiva.
+
+També hem solucionat un problema que feia que la part superior de l'aplicació es tallés en Android 15 i versions més recents. L'aplicació ara hauria de mostrar-se correctament en els dispositius Android més recents.
+
+Gràcies per usar Fintunes!

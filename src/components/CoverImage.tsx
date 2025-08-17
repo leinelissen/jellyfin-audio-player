@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Dimensions, ViewProps } from 'react-native';
 import { Canvas, Blur, Image as SkiaImage, useImage, Offset, Mask, RoundedRect, Shadow } from '@shopify/react-native-skia';
 import useDefaultStyles, { useUserOrSystemScheme } from './Colors';
@@ -28,7 +28,7 @@ interface Props {
     margin?: number;
     radius?: number;
     style?: ViewProps['style'];
-    src: string;
+    src?: string;
 }
 
 const emptyAlbumLight = require('@/assets/images/empty-album-light.png');
@@ -49,9 +49,8 @@ function CoverImage({
 }: Props) {
     const defaultStyles = useDefaultStyles();
     const colorScheme = useUserOrSystemScheme();
-    const [hasFailed, setFailed] = useState(false);
 
-    const image = useImage(src || null, () => setFailed(true));
+    const image = useImage(src || null);
     const fallback = useImage(colorScheme === 'light' ? emptyAlbumLight : emptyAlbumDark);
     const { canvasSize, imageSize } = useMemo(() => {
         const imageSize = Screen.width - margin;
@@ -69,7 +68,7 @@ function CoverImage({
                     <Shadow dx={0} dy={8} blur={16} color="#0000000d" />
                     <Shadow dx={0} dy={16} blur={32} color="#0000000d" />
                 </RoundedRect>
-                {src && (
+                {src ? (
                     <>
                         <SkiaImage
                             image={image}
@@ -97,8 +96,7 @@ function CoverImage({
                             </SkiaImage>
                         </Mask>
                     </>
-                )}
-                {(!src || hasFailed) && (
+                ) : (
                     <Mask
                         mask={
                             <RoundedRect

@@ -1,0 +1,7 @@
+Améliorations utiles dans cette mise à jour !
+
+Les performances pour les grandes collections d'albums ont été considérablement améliorées, rendant la navigation plus fluide.
+
+Nous avons également corrigé un problème qui causait la coupure de la partie supérieure de l'application sur Android 15+.
+
+Merci d'utiliser Fintunes !

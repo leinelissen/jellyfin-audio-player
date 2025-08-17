@@ -46,7 +46,7 @@ export async function fetchApi<T>(
     path: PathOrCredentialInserter,
     providedConfig?: RequestInit,
     parseResponse = true
-) { 
+) {
     // Retrieve the latest credentials from the Redux store
     const credentials = asyncFetchStore().getState().settings.credentials;
 
@@ -67,11 +67,11 @@ export async function fetchApi<T>(
             ...generateConfig(credentials).headers,
         }
     };
-    
+
     // Actually perform the request
     const response = await fetch(url, config);
 
-    if (__DEV__) { 
+    if (__DEV__) {
         console.log(`%c[HTTP] → [${response.status}] ${url}`, 'font-weight:bold;');
         console.log('\t', config);
     }
@@ -96,24 +96,55 @@ export async function fetchApi<T>(
     if (parseResponse) {
         // Parse body as JSON
         const data = await response.json() as Promise<T>;
-    
+
         return data;
     }
 
     return null;
 }
 
+function formatImageUri(ItemId: string | number, baseUri: string): string {
+    return encodeURI(`${baseUri}/Items/${ItemId}/Images/Primary?format=jpeg`);
+}
+
 /**
  * Retrieve an image URL for a given ItemId
  */
-export function getImage(ItemId: string | number, credentials?: AppState['settings']['credentials']): string {
+export function getImage(item: string | number | Album | AlbumTrack | Playlist | ArtistItem | null, credentials?: AppState['settings']['credentials']): string | undefined {
     // Either accept provided credentials, or retrieve them directly from the store
-    const { uri: serverUri } = credentials 
-        ?? asyncFetchStore().getState().settings.credentials ?? {};
-    
-    // Generate the uri and return
-    const uri = encodeURI(`${serverUri}/Items/${ItemId}/Images/Primary?format=jpeg`);
-    return uri;
+    const state = asyncFetchStore().getState();
+    const { uri: serverUri } = credentials ?? state.settings.credentials ?? {};
+
+    if (!item || !serverUri) {
+        return undefined;
+    }
+
+    // Get the item ID
+    const itemId = typeof item === 'string' || typeof item === 'number' 
+        ? item 
+        : 'PrimaryImageItemId' in item 
+            ? item.PrimaryImageItemId || item.Id 
+            : item.Id;
+
+    // Check if we have a downloaded image for this item
+    const downloadEntity = state.downloads.entities[itemId];
+    if (downloadEntity?.image) {
+        return downloadEntity.image;
+    }
+
+    // If no downloaded image, fall back to server URL
+    if (typeof item === 'string' || typeof item === 'number') {
+        if (__DEV__) {
+            console.warn('useGetImage: supplied item is string or number. Please submit an item object instead.', { item });
+        }
+        return formatImageUri(item, serverUri);
+    } else if ('PrimaryImageItemId' in item) {
+        return formatImageUri(item.PrimaryImageItemId || item.Id, serverUri);
+    } else if ('ImageTags' in item && item.ImageTags.Primary) {
+        return formatImageUri(item.Id, serverUri);
+    }
+
+    return undefined;
 }
 
 /**
@@ -122,18 +153,7 @@ export function getImage(ItemId: string | number, credentials?: AppState['settin
 export function useGetImage() {
     const credentials = useTypedSelector((state) => state.settings.credentials);
 
-    return (item: string | number | Album | AlbumTrack | Playlist | ArtistItem | null) => {
-        if (!item) {
-            return '';
-        // GUARD: If the item's just the id, we'll pass it on directly.
-        } else if (typeof item === 'string' || typeof item === 'number') {
-            return getImage(item, credentials);
-        // GUARD: If the item has an `PrimaryImageItemId` (for Emby servers),
-        // we'll attemp to return that
-        } else if ('PrimaryImageItemId' in item) {
-            return getImage(item.PrimaryImageItemId || item.Id, credentials);
-        } else {
-            return getImage(item.Id);
-        }
+    return (item: Parameters<typeof getImage>[0]) => {
+        return getImage(item, credentials);
     };
 }

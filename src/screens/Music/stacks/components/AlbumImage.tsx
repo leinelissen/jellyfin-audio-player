@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
-import FastImage, { FastImageProps } from 'react-native-fast-image';
+import FastImage, { FastImageProps, Source } from '@d11/react-native-fast-image';
 import { Dimensions } from 'react-native';
 import { useUserOrSystemScheme } from '@/components/Colors';
 
@@ -22,24 +22,29 @@ const Container = styled(FastImage)`
     margin-bottom: 5px;
 `;
 
-function AlbumImage(props: FastImageProps) {
-    const [hasError, setError] = useState(false);
-    const colorScheme = useUserOrSystemScheme();
+export interface AlbumImageProps extends FastImageProps {
+    source: number | Omit<Source, 'uri'> & {
+        uri?: string;
+    };
+}
 
-    if (!props.source || hasError) {
-        return (
-            <Container
-                {...props}
-                source={colorScheme === 'light'
-                    ? require('@/assets/images/empty-album-light.png')
-                    : require('@/assets/images/empty-album-dark.png')
-                }
-            />
-        );
+const defaultImageDark = require('@/assets/images/empty-album-dark.png');
+const defaultImageLight = require('@/assets/images/empty-album-light.png');
+
+function AlbumImage(props: FastImageProps) {
+    const colorScheme = useUserOrSystemScheme();
+    const defaultImage = colorScheme === 'light' ? defaultImageLight : defaultImageDark;
+
+    // If no source is provided, use the default image as the main source
+    if (!props.source || (typeof props.source === 'object' && 'uri' in props.source && !props.source.uri)) {
+        return <Container {...props} source={defaultImage} />;
     }
 
     return (
-        <Container {...props} onError={() => setError(true)} />
+        <Container
+            {...props}
+            defaultSource={defaultImage}
+        />
     );
 }
 

@@ -75,7 +75,7 @@ function TrackPopupMenu() {
     }, [trackId, dispatch, closeModal]);
 
     return (
-        <ColoredBlurView>
+        <ColoredBlurView style={{flex: 1}}>
             <Container>
                 <Artwork src={getImage(track)} />
                 <Header>{track?.Name}</Header>

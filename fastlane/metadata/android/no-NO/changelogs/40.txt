@@ -1,0 +1,7 @@
+Vi er glade for å bringe deg noen nyttige forbedringer i denne oppdateringen!
+
+Ytelsen for store albumsamlinger har blitt betydelig forbedret, noe som gjør surfing gjennom musikk-biblioteket ditt jevnere og mer responsivt.
+
+Vi har også fikset et problem som forårsaket at den øverste delen av appen ble kuttet av på Android 15 og nyere versjoner. Appen bør nå vises riktig på de nyeste Android-enhetene.
+
+Takk for at du bruker Fintunes!

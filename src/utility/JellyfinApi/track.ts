@@ -57,7 +57,7 @@ export async function generateTrack(track: AlbumTrack): Promise<Track> {
         artist: track.Artists.join(', '),
         album: track.Album,
         duration: track.RunTimeTicks,
-        artwork: getImage(track.Id),
+        artwork: getImage(track),
         bitRate: baseTrackOptions.audioBitRate,
     };
 }

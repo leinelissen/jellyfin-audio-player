@@ -1,1 +1,5 @@
-Deze versie lost een probleem op waarbij Fintunes alleen de eerste schijf van een album met meerdere schijven kon afspelen. Bovendien is Fintunes dankzij onze geweldige taalbijdragers nu beschikbaar in het Tamil. Daarnaast zijn er 12 talen bijgewerkt. Geniet van deze nieuwe versie van Fintunes en overweeg om lid te worden van onze Discord-server! 
+We zijn blij je enkele nuttige verbeteringen te kunnen brengen in deze update!
+
+De prestaties voor grote albumcollecties zijn aanzienlijk verbeterd, waardoor het browsen door je muziekbibliotheek soepeler en responsiever wordt.
+
+Bedankt voor het gebruik van Fintunes! 

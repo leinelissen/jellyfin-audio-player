@@ -1,1 +1,5 @@
-Aquesta versió soluciona un problema on Fintunes només podia reproduir el primer disc en un àlbum de múltiples discs. A més, gràcies als nostres increïbles col·laboradors lingüístics, Fintunes ara està disponible en tàmil. A més, s'han actualitzat 12 idiomes. Gaudeix d'aquesta nova versió de Fintunes i considera unir-te al nostre servidor Discord! 
+Ens alegra oferir-te algunes millores útils en aquesta actualització!
+
+El rendiment per a grans col·leccions d'àlbums ha estat significativament millorat, fent que la navegació per la teva biblioteca musical sigui més fluida i responsiva.
+
+Gràcies per usar Fintunes! 
