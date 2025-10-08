@@ -1,0 +1,7 @@
+Örömmel hoztunk el neked néhány hasznos fejlesztést ebben a frissítésben!
+
+A nagy albumgyűjtemények kezelése mostantól sokkal gyorsabb és gördülékenyebb, így a zenei könyvtár böngészése még simábban működik. 
+
+Javítottunk egy hibát is, ami miatt az alkalmazás felső része levágódott Android 15-ön és újabb verziókon. Mostantól a Fintunes helyesen jelenik meg a legújabb Android eszközökön is. 
+
+Köszönjük, hogy a Fintunes-t használod!
