@@ -90,7 +90,7 @@ export default function usePlayTracks() {
             }
             case 'add-after-currently-playing': {
                 // Try and locate the current track
-                const currentTrackIndex = await TrackPlayer.getCurrentTrack();
+                const currentTrackIndex = await TrackPlayer.getActiveTrackIndex();
 
                 if (currentTrackIndex === null) {
                     break;
