@@ -1,0 +1,7 @@
+Dengan senang hati kami mempersembahkan beberapa peningkatan bermanfaat dalam pembaruan ini!
+
+Performa untuk koleksi album besar telah ditingkatkan secara signifikan, membuat penelusuran pustaka musik Anda lebih lancar dan responsif.
+
+Kami juga telah memperbaiki masalah yang menyebabkan bagian atas aplikasi terpotong di Android 15 dan versi yang lebih baru. Aplikasi sekarang seharusnya ditampilkan dengan benar di perangkat Android terbaru.
+
+Terima kasih telah menggunakan Fintunes!
