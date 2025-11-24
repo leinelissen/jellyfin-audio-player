@@ -66,7 +66,7 @@
     "color-scheme": "カラースキーム",
     "artists": "アーティスト",
     "downloads": "ダウンロード",
-    "no-downloads": "まだダウンロードされていないトラック",
+    "no-downloads": "まだ何もダウンロードしていません",
     "streaming": "ストリーミング",
     "local-playback": "ローカル再生",
     "color-scheme-system": "システム",
