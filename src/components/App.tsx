@@ -13,6 +13,7 @@ import { ColorSchemeProvider, themes, useUserOrSystemScheme } from './Colors';
 import DownloadManager from './DownloadManager';
 import AppLoading from './AppLoading';
 import { captureException } from '@sentry/react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const LightTheme = {
     ...DefaultTheme,
@@ -88,12 +89,14 @@ export default function App(): JSX.Element | null {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistedStore}>
-                <ColorSchemeProvider>
-                    <ThemedNavigationContainer>
-                        <Routes />
-                        <DownloadManager />
-                    </ThemedNavigationContainer>
-                </ColorSchemeProvider>
+                <SafeAreaProvider>
+                    <ColorSchemeProvider>
+                        <ThemedNavigationContainer>
+                            <Routes />
+                            <DownloadManager />
+                        </ThemedNavigationContainer>
+                    </ColorSchemeProvider>
+                </SafeAreaProvider>
             </PersistGate>
         </Provider>
     );
