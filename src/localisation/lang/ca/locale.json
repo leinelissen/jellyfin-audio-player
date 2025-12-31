@@ -26,7 +26,7 @@
     "streaming": "Transmissió",
     "total-duration": "Durada total",
     "similar-albums": "Àlbums similars",
-    "playback-reporting-description": "Amb Playback Reporting, tots els vostres esdeveniments de reproducció es retransmeten al vostre servidor. Aquest lloc web utilitza galetes per millorar la vostra experiència. Podeu desactivar-lo si ho voleu. Accepto Més informació.",
+    "playback-reporting-description": "Amb Playback Reporting, tots els esdeveniments de reproducció s’envien de nou al teu servidor. Això et permet fer el seguiment de les cançons que escoltes més sovint, especialment amb connectors com ListenBrainz o LastFM.",
     "color-scheme": "Aspecte",
     "color-scheme-description": "Per defecte, Fintunes farà servir l'aspecte del vostre sistema operatiu. Tanmateix, podeu optar per anul·lar-ho i així assegurar-vos que Fintunes estigui sempre en mode fosc o en mode clar.",
     "color-scheme-system": "Sistema",
