@@ -69,7 +69,7 @@
     "artists": "艺术家",
     "color-scheme-dark": "深色模式",
     "playback-reporting-description": "使用播放报告，您的所有播放事件都会被转发回您的服务器。这让您可以跟踪您最常听的歌曲，特别是使用 ListenBrainz 或 LastFM 等插件时。",
-    "color-scheme-light": "灯光模式",
+    "color-scheme-light": "浅色模式",
     "privacy-policy": "隐私政策",
     "sleep-timer": "睡眠定时器",
     "confirm-delete-all-tracks": "您确定要删除所有当前下载的曲目吗？",
