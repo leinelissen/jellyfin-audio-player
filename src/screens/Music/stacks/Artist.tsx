@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, ReactText } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -18,7 +18,7 @@ import { SafeFlatList } from '@/components/SafeNavigatorView';
 import { chunk } from 'lodash';
 
 interface GeneratedAlbumItemProps {
-    id: ReactText;
+    id: string | number;
     imageUrl: string | undefined;
     name: string;
     artist: string;

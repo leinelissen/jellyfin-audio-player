@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-    header?: JSX.Element;
+    header?: React.JSX.Element;
 }
 
 export default function Queue({ header }: Props) {
