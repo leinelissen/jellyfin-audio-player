@@ -6727,9 +6727,7 @@ snapshots:
       metro-runtime: 0.82.2
     transitivePeerDependencies:
       - '@babel/core'
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   '@react-native/normalize-colors@0.79.2': {}
 
@@ -8098,7 +8096,7 @@ snapshots:
 
   dotenv-expand@11.0.7:
     dependencies:
-      dotenv: 16.5.0
+      dotenv: 16.4.7
     optional: true
 
   dotenv@16.4.7:
