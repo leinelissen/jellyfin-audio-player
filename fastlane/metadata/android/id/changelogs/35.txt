@@ -1,0 +1,1 @@
+Versi ini memperbaiki masalah yang menyebabkan Fintunes hanya dapat memutar disk pertama dalam album multi-disk. Berkat kontributor bahasa kami yang luar biasa, Fintunes kini tersedia dalam bahasa Tamil. Selain itu, ada 12 bahasa yang telah diperbarui. Nikmati versi baru Fintunes ini dan pertimbangkan untuk bergabung dengan server Discord kami!
