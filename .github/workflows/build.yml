@@ -1,7 +1,7 @@
-name: Fastlane
- 
+name: Build
+
 on: [push, pull_request]
- 
+
 jobs:
   build-android:
     runs-on: ubuntu-latest
@@ -34,3 +34,32 @@ jobs:
       with:
         name: jellyfin-audio-player-android-${{ steps.vars.outputs.sha_short }}.apk
         path: android/app/build/outputs/**/*.apk
+
+  build-ios:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set outputs
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+    - name: Install fastlane
+      run: bundle install -j 6
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    - name: Install Node dependencies
+      run: npm install
+    - name: Install CocoaPods dependencies
+      run: cd ios && pod install
+    - name: Build iOS app
+      env:
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+        SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        SENTRY_URL: ${{ secrets.SENTRY_URL }}
+        SENTRY_DISABLE_AUTO_UPLOAD: true
+      run: bundle exec fastlane ios ci_build
