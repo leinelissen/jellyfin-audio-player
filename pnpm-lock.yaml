@@ -3303,6 +3303,7 @@ packages:
   metro-react-native-babel-preset@0.77.0:
     resolution: {integrity: sha512-HPPD+bTxADtoE4y/4t1txgTQ1LVR6imOBy7RMHUsqMVTbekoi8Ph5YI9vKX2VMPtVWeFt0w9YnCSLPa76GcXsA==}
     engines: {node: '>=18'}
+    deprecated: Use @react-native/babel-preset instead
     peerDependencies:
       '@babel/core': '*'
 
@@ -6154,7 +6155,9 @@ snapshots:
       metro-runtime: 0.82.2
     transitivePeerDependencies:
       - '@babel/core'
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
   '@react-native/normalize-colors@0.79.2': {}
 
@@ -7469,7 +7472,7 @@ snapshots:
 
   dotenv-expand@11.0.7:
     dependencies:
-      dotenv: 16.5.0
+      dotenv: 16.4.7
     optional: true
 
   dotenv@16.4.7:
