@@ -41,7 +41,7 @@ function SearchStack() {
                     <Stack.Screen name="Artist" component={Artist} options={({ route }) => ({ headerTitle: route.params.name })} />
                     <Stack.Screen name="Playlist" component={Playlist} options={{ headerTitle: t('playlist') }} />
                 </Stack.Navigator>
-                <NowPlaying offset={isInitialRoute ? 64 : 0} />
+                <NowPlaying offset={isInitialRoute ? 104 : 0} />
             </GestureHandlerRootView>
         </SafeAreaProvider>
     );

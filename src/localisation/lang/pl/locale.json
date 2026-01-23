@@ -16,6 +16,8 @@
     "albums": "Albumy",
     "all-albums": "Wszystkie albumy",
     "search": "Szukaj",
+    "recent-searches": "Ostatnie wyszukiwania",
+    "clear-history": "Wyczyść historię",
     "music": "Muzyka",
     "now-playing": "Teraz gra",
     "onboarding-cta": "Aby się rozpocząć, potrzebuje serwera Jellyfin (lub Emby). Click the button below to enter your server address and login to it.",

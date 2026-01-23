@@ -37,7 +37,7 @@ export const downloadTrack = createAsyncThunk(
         // Actually kick off the download 
         const { promise: audioPromise } = downloadFile({
             fromUrl: audioUrl,
-            progressInterval: 250,
+            progressInterval: 1000,
             background: true,
             begin: ({ jobId, contentLength }) => {
                 // Dispatch the initialization

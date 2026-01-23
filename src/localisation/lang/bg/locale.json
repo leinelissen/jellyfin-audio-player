@@ -51,6 +51,8 @@
     "music": "Музика",
     "disable": "Изключи",
     "search": "Търси",
+    "recent-searches": "Скорошни търсения",
+    "clear-history": "Изчисти историята",
     "download-playlist": "Изтегли списък",
     "library": "Jellyfin Библиотека",
     "enable-error-reporting": "Желаете ли да пуснете докладването на грешки?",

@@ -11,6 +11,8 @@
     "albums": "Albumi",
     "all-albums": "Vsi albumi",
     "search": "Iskanje",
+    "recent-searches": "Nedavna iskanja",
+    "clear-history": "Počisti zgodovino",
     "music": "Glasba",
     "now-playing": "Zdaj igra",
     "set-server": "Nastavite strežnik Jellyfin",
