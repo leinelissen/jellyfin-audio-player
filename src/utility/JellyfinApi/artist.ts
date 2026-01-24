@@ -4,7 +4,6 @@ import { fetchApi } from './lib';
 const artistOptions = {
     SortBy: 'SortName',
     SortOrder: 'Ascending',
-    IncludeItemTypes: 'MusicArtist',
     Recursive: 'true',
     Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated,Overview',
     ImageTypeLimit: '1',
@@ -17,6 +16,6 @@ const artistParams = new URLSearchParams(artistOptions).toString();
  * Retrieve all artists that are available on the Jellyfin server
  */
 export function retrieveAllArtists() {
-    return fetchApi<{ Items: MusicArtist[] }>(({ user_id }) => `/Users/${user_id}/Items?${artistParams}`)
+    return fetchApi<{ Items: MusicArtist[] }>(() => `/Artists/AlbumArtists?${artistParams}`)
         .then(response => response.Items);
 }

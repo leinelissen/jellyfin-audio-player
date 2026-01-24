@@ -13,6 +13,7 @@ import { useGetImage } from '@/utility/JellyfinApi/lib';
 import styled from 'styled-components';
 import { Dimensions, Pressable } from 'react-native';
 import AlbumImage from './components/AlbumImage';
+import useDefaultStyles from '@/components/Colors';
 
 type Route = RouteProp<StackParams, 'Album'>;
 
@@ -53,6 +54,7 @@ function SimilarAlbum({ id }: { id: string }) {
 const Album: React.FC = () => {
     const { params: { id } } = useRoute<Route>();
     const dispatch = useAppDispatch();
+    const defaultStyles = useDefaultStyles();
 
     // Retrieve the album data from the store
     const album = useTypedSelector((state) => state.music.albums.entities[id]);
@@ -85,7 +87,7 @@ const Album: React.FC = () => {
             deleteButtonText={t('delete-album')}
         >
             {album?.Overview ? (
-                <Text style={{ opacity: 0.5, lineHeight: 20, fontSize: 12, paddingBottom: 24 }}>{album?.Overview}</Text>
+                <Text style={[defaultStyles.textSmall, { paddingBottom: 24 }]}>{album?.Overview}</Text>
             ) : null}
             {album?.Similar?.length ? (
                 <>

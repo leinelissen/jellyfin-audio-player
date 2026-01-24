@@ -19,6 +19,12 @@ function generateStyles(scheme: ColorSchemeName, highContrast: boolean) {
             fontSize: 14,
             fontFamily: 'Inter',
         },
+        textSmall: {
+            color: scheme === 'dark' ? '#fff' : '#000',
+            fontSize: 12,
+            lineHeight: 20,
+            opacity: 0.5,
+        },
         textHalfOpacity: {
             color: highContrast
                 ? (scheme === 'dark' ? '#ffffffbb' : '#000000bb')
