@@ -2,7 +2,7 @@ import { Album, AlbumTrack, MusicArtist, Playlist } from '@/store/music/types';
 import { fetchApi } from './lib';
 
 const searchParams = {
-    IncludeItemTypes: 'Audio,MusicAlbum,AlbumArtist,Playlist',
+    IncludeItemTypes: 'Audio,MusicAlbum,Playlist',
     SortBy: 'SearchScore,Album,SortName',
     SortOrder: 'Ascending',
     Recursive: 'true',
