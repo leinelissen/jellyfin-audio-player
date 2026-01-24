@@ -2,6 +2,9 @@ name: Build
 
 on: [push, pull_request]
 
+env:
+  FASTLANE_SKIP_UPDATE_CHECK: true
+
 jobs:
   build-android:
     runs-on: ubuntu-latest
@@ -16,10 +19,14 @@ jobs:
       run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
     - name: Install fastlane
       run: bundle install -j 6
     - name: Install Node dependencies
-      run: npm install
+      run: pnpm i
     - name: Generate APK
       env:
         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -49,9 +56,9 @@ jobs:
     - name: Set up Node
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '22'
     - name: Install Node dependencies
-      run: npm install
+      run: pnpm i
     - name: Install CocoaPods dependencies
       run: cd ios && pod install
     - name: Build iOS app
