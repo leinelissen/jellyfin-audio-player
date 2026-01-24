@@ -5,8 +5,6 @@ import { View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import { differenceInDays } from 'date-fns';
-
-import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import { fetchAllAlbums } from '@/store/music/actions';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
