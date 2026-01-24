@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, ReactText } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { Text, View, FlatList, ListRenderItem, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -13,7 +13,7 @@ import { NavigationProp } from '@/screens/types';
 import { SafeFlatList, useNavigationOffsets } from '@/components/SafeNavigatorView';
 
 interface GeneratedAlbumItemProps {
-    id: ReactText;
+    id: string | number;
     imageUrl?: string | null;
     name: string;
     onPress: (id: string) => void;

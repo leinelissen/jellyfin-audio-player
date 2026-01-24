@@ -19,6 +19,8 @@ const localeGetters: Record<string, () => object> = {
     sv: () => require('./lang/sv/locale.json'),
     uk: () => require('./lang/uk/locale.json'),
     zh: () => require('./lang/zh/locale.json'),
+    'zh-Hant': () => require('./lang/zh_Hant/locale.json'),
+    'zh-TW': () => require('./lang/zh_Hant/locale.json'),
 };
 
 // Have RNLocalize pick the best locale from the languages on offer

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, ReactText, useMemo } from 'react';
+import React, { useCallback, useEffect, useRef, useMemo } from 'react';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -47,7 +47,7 @@ const SectionHeading = React.memo(function SectionHeading(props: {
 });
 
 interface GeneratedAlbumItemProps {
-    id: ReactText;
+    id: string | number;
     imageUrl?: string | null;
     name: string;
     artist: string;

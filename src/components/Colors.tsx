@@ -151,7 +151,7 @@ export default function useDefaultStyles() {
 }
 
 interface DefaultStylesProviderProps {
-    children: (defaultStyles: ReturnType<typeof useDefaultStyles>) => JSX.Element;
+    children: (defaultStyles: ReturnType<typeof useDefaultStyles>) => React.JSX.Element;
 }
 
 /**

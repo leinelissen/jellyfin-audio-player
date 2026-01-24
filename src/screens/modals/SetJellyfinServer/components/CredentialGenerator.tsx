@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useMemo } from 'react';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { debounce } from 'lodash';
 import { AppState } from '@/store';
@@ -52,7 +52,7 @@ type CredentialEventData = {
 const CredentialGenerator: React.FC<Props> = ({ serverUrl, onCredentialsRetrieved }) => {
     const webViewRef = useRef<WebView>(null);
 
-    const checkIfCredentialsAreThere = useCallback(debounce(() => {
+    const checkIfCredentialsAreThere = useMemo(() => debounce(() => {
         webViewRef.current?.injectJavaScript(`
             try { 
                 let credentials = JSON.parse(window.localStorage.getItem('jellyfin_credentials'));
