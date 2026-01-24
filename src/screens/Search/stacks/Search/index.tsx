@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { t } from '@/localisation';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
-import { fetchInstantMixByTrackId, searchAndFetch } from '@/store/music/actions';
+import { searchAndFetch } from '@/store/music/actions';
 import { Text } from '@/components/Typography';
 import DownloadIcon from '@/components/DownloadIcon';
 import ChevronRight from '@/assets/icons/chevron-right.svg';
@@ -35,6 +35,7 @@ import TrashIcon from '@/assets/icons/trash.svg';
 import XMarkIcon from '@/assets/icons/xmark.svg';
 import SelectableFilter from './components/SelectableFilter';
 import Button from '@/components/Button';
+import { retrieveInstantMixByTrackId } from '@/utility/JellyfinApi/playlist';
 
 const KEYBOARD_OFFSET = Platform.select({
     ios: 0,
@@ -314,18 +315,16 @@ export default function Search() {
 
     const selectItem = useCallback(async ({ id, type }: { id: string; type: SearchType; }) => {
         // Save search query immediately when user selects a result
-        if (searchTerm.trim()) {
-            dispatch(addSearchQuery({
-                query: searchTerm.trim(),
-                filters: Array.from(activeFilters),
-                localPlaybackOnly,
-            }));
-        }
+        dispatch(addSearchQuery({
+            query: searchTerm.trim(),
+            filters: Array.from(activeFilters),
+            localPlaybackOnly,
+        }));
 
         switch (type) {
             case 'Audio': {
                 playTracks([id], { play: true });
-                const { payload: similarSongs } = (await dispatch(fetchInstantMixByTrackId(id)) as { payload: AlbumTrack[]; });
+                const similarSongs = await retrieveInstantMixByTrackId(id);
 
                 // Remove the first from the list, because it is the same as the currently selected song.
                 similarSongs.shift();
