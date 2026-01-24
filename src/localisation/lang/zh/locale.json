@@ -69,6 +69,7 @@
     "color-scheme": "配色方案",
     "color-scheme-system": "系统",
     "artists": "艺术家",
+    "artist": "艺术家",
     "color-scheme-dark": "深色模式",
     "playback-reporting-description": "使用播放报告，您的所有播放事件都会被转发回您的服务器。这让您可以跟踪您最常听的歌曲，特别是使用 ListenBrainz 或 LastFM 等插件时。",
     "color-scheme-light": "灯光模式",

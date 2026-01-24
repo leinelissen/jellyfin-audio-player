@@ -67,6 +67,7 @@
     "delete-album": "アルバムを削除",
     "color-scheme": "カラースキーム",
     "artists": "アーティスト",
+    "artist": "アーティスト",
     "downloads": "ダウンロード",
     "no-downloads": "まだダウンロードされていないトラック",
     "streaming": "ストリーミング",
