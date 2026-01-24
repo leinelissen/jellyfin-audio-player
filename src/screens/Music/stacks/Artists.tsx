@@ -181,7 +181,7 @@ const Artists: React.FC = () => {
                 renderItem={renderItem}
                 stickyHeaderIndices={stickyHeaderIndices}
                 estimatedItemSize={ArtistHeight}
-                getItemType={(item: any) => typeof item === 'string' ? 'sectionHeader' : 'row'}
+                getItemType={(item) => typeof item === 'string' ? 'sectionHeader' : 'row'}
             />
         </>
     );
