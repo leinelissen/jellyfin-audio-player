@@ -1,21 +1,25 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { chunk } from 'lodash';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import styled from 'styled-components/native';
 import { differenceInDays } from 'date-fns';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import { fetchAllAlbums } from '@/store/music/actions';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import TouchableHandler from '@/components/TouchableHandler';
-import AlbumImage, { AlbumItem } from './components/AlbumImage';
-import styled from 'styled-components/native';
 import useDefaultStyles from '@/components/Colors';
 import { Album } from '@/store/music/types';
-import { Text } from '@/components/Typography';
+import { SubHeader, Text } from '@/components/Typography';
 import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp, StackParams } from '@/screens/types';
 import { SafeFlatList } from '@/components/SafeNavigatorView';
-import { chunk } from 'lodash';
+import CoverImage from '@/components/CoverImage';
+import CollapsibleText from '@/components/CollapsibleText';
+import { t } from '@/localisation';
+
+import AlbumImage, { AlbumItem } from './components/AlbumImage';
 
 interface GeneratedAlbumItemProps {
     id: string | number;
@@ -27,6 +31,12 @@ interface GeneratedAlbumItemProps {
 
 const HalfOpacity = styled.Text`
     opacity: 0.5;
+`;
+
+const ArtistImageContainer = styled.View`
+    margin: 24px;
+    flex: 1;
+    align-items: center;
 `;
 
 const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: GeneratedAlbumItemProps) {
@@ -46,20 +56,34 @@ const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: Generat
     );
 });
 
-const Artist: React.FC = () => {
+
+export default function Artist() {
+    const { params } = useRoute<RouteProp<StackParams, 'Artist'>>();
+
     // Retrieve data from store
-    const { entities: albums } = useTypedSelector((state) => state.music.albums);
+    const { ids: allAlbumIds, entities: albums } = useTypedSelector((state) => state.music.albums);
     const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
     const lastRefreshed = useTypedSelector((state) => state.music.albums.lastRefreshed);
-    
+    const artist = useTypedSelector((state) => state.music.artists.entities[params.id]);
+
+    const albumIds = useMemo(() => {
+        return allAlbumIds.filter(id => {
+            const album = albums[id];
+            return album?.ArtistItems?.find(item => item.Id === params.id);
+        });
+    }, [allAlbumIds, albums, params.id]);
+
+    // console.log(artist);
+
     // Initialise helpers
     const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
-    const { params } = useRoute<RouteProp<StackParams, 'Artist'>>();
     const getImage = useGetImage();
 
     // Set callbacks
-    const retrieveData = useCallback(() => dispatch(fetchAllAlbums()), [dispatch]);
+    const retrieveData = useCallback(() => {
+        dispatch(fetchAllAlbums());
+    }, [dispatch]);
     const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
     const generateItem = useCallback(({ item }: { item: string[] }) => {
         return (
@@ -85,16 +109,22 @@ const Artist: React.FC = () => {
             retrieveData(); 
         }
     });
-    
+
     return (
         <SafeFlatList
-            data={chunk(params.albumIds, 2)}
+            ListHeaderComponent={
+                <View style={{ padding: 24, paddingTop: 0, paddingBottom: 8 }}>
+                    <ArtistImageContainer>
+                        <CoverImage src={getImage(artist)} margin={48} height={200} />
+                    </ArtistImageContainer>
+                    {artist?.Overview ? <CollapsibleText text={artist.Overview} /> : null}
+                    <SubHeader>{t('albums')}</SubHeader>
+                </View>
+            }
+            data={chunk(albumIds, 2)}
             refreshing={isLoading}
             onRefresh={retrieveData}
             renderItem={generateItem}
         />
     );
-};
-
-
-export default Artist;
+}

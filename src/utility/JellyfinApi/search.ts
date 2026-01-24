@@ -1,17 +1,22 @@
-import { Album, AlbumTrack } from '@/store/music/types';
+import { Album, AlbumTrack, MusicArtist, Playlist } from '@/store/music/types';
 import { fetchApi } from './lib';
 
 const searchParams = {
-    IncludeItemTypes: 'Audio,MusicAlbum',
+    IncludeItemTypes: 'Audio,MusicAlbum,Playlist',
     SortBy: 'SearchScore,Album,SortName',
     SortOrder: 'Ascending',
     Recursive: 'true',
+    Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated,Overview',
+    ImageTypeLimit: '1',
+    EnableImageTypes: 'Primary,Backdrop,Banner,Thumb'
 };
+
+export type SearchResult = Album | AlbumTrack | MusicArtist | Playlist;
 
 /**
  * Remotely search the Jellyfin library for a particular search term
  */
-export async function searchItem(
+export function searchItem(
     term: string, limit = 24
 ) {
     const params = new URLSearchParams({
@@ -20,11 +25,6 @@ export async function searchItem(
         Limit: limit.toString(),
     }).toString();
 
-    const results = await fetchApi<{ Items: (Album | AlbumTrack)[]}>(({ user_id }) => `/Users/${user_id}/Items?${params}`);
-
-    return results!.Items
-        .filter((item) => (
-            // GUARD: Ensure that we're either dealing with an album or a track from an album.
-            item.Type === 'MusicAlbum' || (item.Type === 'Audio' && item.AlbumId)
-        ));
+    return fetchApi<{ Items: SearchResult[]}>(({ user_id }) => `/Users/${user_id}/Items?${params}`)
+        .then(result => result.Items);
 }

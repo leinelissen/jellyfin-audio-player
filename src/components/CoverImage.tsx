@@ -6,9 +6,9 @@ import styled from 'styled-components/native';
 
 const Screen = Dimensions.get('screen');
 
-const Container = styled.View<{ size: number }>`
-    width: ${(props) => props.size}px;
-    height: ${(props) => props.size}px;
+const Container = styled.View<{ width: number, height: number }>`
+    width: ${(props) => props.width}px;
+    height: ${(props) => props.height}px;
     position: relative;
     z-index: 0;
 `;
@@ -29,6 +29,7 @@ interface Props {
     radius?: number;
     style?: ViewProps['style'];
     src?: string;
+    height?: number;
 }
 
 const emptyAlbumLight = require('@/assets/images/empty-album-light.png');
@@ -44,6 +45,7 @@ function CoverImage({
     opacity = 0.85,
     margin = 112,
     radius = 12,
+    height = undefined,
     style,
     src,
 }: Props) {
@@ -59,9 +61,9 @@ function CoverImage({
     }, [blurRadius, margin]);
 
     return (
-        <Container size={imageSize} style={style}>
+        <Container width={imageSize} height={height || imageSize} style={style}>
             <BlurContainer size={canvasSize} offset={blurRadius}>
-                <RoundedRect x={blurRadius} y={blurRadius} width={imageSize} height={imageSize} color={defaultStyles.imageBackground.backgroundColor} r={12}>
+                <RoundedRect x={blurRadius} y={blurRadius} width={imageSize} height={height || imageSize} color={defaultStyles.imageBackground.backgroundColor} r={12}>
                     <Shadow dx={0} dy={1} blur={2} color="#0000000d" />
                     <Shadow dx={0} dy={2} blur={4} color="#0000000d" />
                     <Shadow dx={0} dy={4} blur={8} color="#0000000d" />
@@ -73,9 +75,10 @@ function CoverImage({
                         <SkiaImage
                             image={image}
                             width={imageSize}
-                            height={imageSize}
+                            height={height || imageSize}
                             opacity={opacity}
                             key="image-blur"
+                            fit="cover"
                         >
                             <Offset x={blurRadius} y={blurRadius} />
                             <Blur blur={blurRadius / 2} />
@@ -84,14 +87,14 @@ function CoverImage({
                             mask={
                                 <RoundedRect
                                     width={imageSize}
-                                    height={imageSize}
+                                    height={height || imageSize}
                                     x={blurRadius}
                                     y={blurRadius} r={radius}
                                 />
                             }
                             key="image"
                         >
-                            <SkiaImage image={image} width={imageSize} height={imageSize}>
+                            <SkiaImage image={image} fit="cover" width={imageSize} height={height || imageSize}>
                                 <Offset x={blurRadius} y={blurRadius} />
                             </SkiaImage>
                         </Mask>
@@ -101,14 +104,14 @@ function CoverImage({
                         mask={
                             <RoundedRect
                                 width={imageSize}
-                                height={imageSize}
+                                height={height || imageSize}
                                 x={blurRadius}
                                 y={blurRadius} r={radius}
                             />
                         }
                         key="fallback"
                     >
-                        <SkiaImage image={fallback} width={imageSize} height={imageSize}>
+                        <SkiaImage image={fallback} width={imageSize} height={height || imageSize} fit="cover">
                             <Offset x={blurRadius} y={blurRadius} />
                         </SkiaImage>
                     </Mask>

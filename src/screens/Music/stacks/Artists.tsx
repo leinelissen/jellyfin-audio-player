@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
 import { useAppDispatch, useTypedSelector } from '@/store';
-import { fetchAllAlbums } from '@/store/music/actions';
+import { fetchAllArtists } from '@/store/music/actions';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import AlbumImage from './components/AlbumImage';
 import { SectionArtistItem, selectArtists } from '@/store/music/selectors';
@@ -60,7 +60,7 @@ const SectionHeading = React.memo(function SectionHeading(props: { label: string
 interface GeneratedArtistItemProps {
     item: SectionArtistItem;
     imageURL: string | undefined;
-    onPress: (payload: SectionArtistItem) => void;
+    onPress: (payload: { id: string; name: string; }) => void;
 }
 
 const GeneratedArtistItem = React.memo(function GeneratedArtistItem(props: GeneratedArtistItemProps) {
@@ -68,7 +68,7 @@ const GeneratedArtistItem = React.memo(function GeneratedArtistItem(props: Gener
     const { item, imageURL, onPress } = props;
 
     const handlePress = useCallback(() => {
-        onPress(item);
+        onPress({ id: item.Id, name: item.Name });
     }, [item, onPress]);
 
     return (
@@ -101,8 +101,8 @@ const GeneratedArtistItem = React.memo(function GeneratedArtistItem(props: Gener
 
 const Artists: React.FC = () => {
     // Retrieve data from store
-    const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
-    const lastRefreshed = useTypedSelector((state) => state.music.albums.lastRefreshed);
+    const isLoading = useTypedSelector((state) => state.music.artists.isLoading);
+    const lastRefreshed = useTypedSelector((state) => state.music.artists.lastRefreshed);
     const sections = useTypedSelector(selectArtists);
     
     // Initialise helpers
@@ -134,8 +134,8 @@ const Artists: React.FC = () => {
     }, [flatData]);
     
     // Set callbacks
-    const retrieveData = useCallback(() => dispatch(fetchAllAlbums()), [dispatch]);
-    const selectArtist = useCallback((payload: SectionArtistItem) => (
+    const retrieveData = useCallback(() => dispatch(fetchAllArtists()), [dispatch]);
+    const selectArtist = useCallback((payload: { id: string; name: string; }) => (
         navigation.navigate('Artist', payload)
     ), [navigation]);
     const selectLetter = useCallback(({ letter }: { letter: string, index: number }) => { 
