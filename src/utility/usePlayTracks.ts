@@ -95,18 +95,16 @@ export default function usePlayTracks() {
             }
             case 'add-after-currently-playing': {
                 // Try and locate the current track
-                const currentTrackIndex = await TrackPlayer.getCurrentTrack();
+                const currentTrackIndex = await TrackPlayer.getActiveTrackIndex();
 
-                if (currentTrackIndex === null) {
+                if (currentTrackIndex === undefined) {
                     break;
                 }
                 
-                // Since the argument is the id to insert the track BEFORE, we need
-                // to get the current track + 1
-                const targetTrack = currentTrackIndex >= 0 && queue.length > 1
-                    ? queue[currentTrackIndex + 1].id
-                    : undefined;
-                
+                // TrackPlayer.add wants the index of the track to insert in front of,
+                // or just one more
+                const targetTrack = currentTrackIndex + 1;
+
                 // Depending on whether this track exists, we either add it there,
                 // or at the end of the queue.
                 await TrackPlayer.add(newTracks, targetTrack);
