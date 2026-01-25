@@ -46,7 +46,6 @@ export default function usePlayTracks() {
             shuffle,
             method,
         } = Object.assign({}, defaults, options);
-        const queue = await TrackPlayer.getQueue();
 
         // Convert all trackIds to the relevant format for react-native-track-player
         const generatedTracks = (await Promise.all(trackIds.map(async (trackId) => {
