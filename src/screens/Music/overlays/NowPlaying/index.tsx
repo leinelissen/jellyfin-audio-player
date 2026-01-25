@@ -1,27 +1,26 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
-import { ActivityIndicator, Animated, Dimensions, Platform, Pressable, View } from 'react-native';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { ActivityIndicator, Animated, Dimensions, Platform, Pressable } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
 import PlayIcon from '@/assets/icons/play.svg';
 import PauseIcon from '@/assets/icons/pause.svg';
 import useCurrentTrack from '@/utility/useCurrentTrack';
 import TrackPlayer, { State, usePlaybackState, useProgress } from 'react-native-track-player';
-import { Shadow } from 'react-native-shadow-2';
 import usePrevious from '@/utility/usePrevious';
 import { Text } from '@/components/Typography';
 
-import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
+import useDefaultStyles from '@/components/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { calculateProgressTranslation } from '@/components/Progresstrack';
 import { NavigationProp } from '@/screens/types';
 import { ShadowWrapper } from '@/components/Shadow';
-import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AlbumImage from '../../stacks/components/AlbumImage';
+import { LiquidGlassView } from '@sbaiahmed1/react-native-blur';
 
-export const NOW_PLAYING_POPOVER_MARGIN = 6;
+export const NOW_PLAYING_POPOVER_MARGIN = 22;
 export const NOW_PLAYING_POPOVER_WIDTH = Dimensions.get('screen').width - 2 * NOW_PLAYING_POPOVER_MARGIN;
-export const NOW_PLAYING_POPOVER_HEIGHT = 58;
+export const NOW_PLAYING_POPOVER_HEIGHT = 62;
 
 const PopoverPosition = css`
     position: absolute;
@@ -37,7 +36,7 @@ const Container = styled.ScrollView`
 
 const InnerContainer = styled.TouchableOpacity`
     height: ${NOW_PLAYING_POPOVER_HEIGHT}px;
-    padding: 12px;
+    padding: 12px 18px;
     overflow: hidden;
     flex: 1;
     flex-direction: row;
@@ -52,14 +51,6 @@ const ProgressTrack = styled(Animated.View)<{ stroke?: number; opacity?: number}
     height: ${(props) => props.stroke ? props.stroke + 'px' : '100%'};
     opacity: ${(props) => props.opacity || 1};
     border-radius: 99px;
-`;
-
-const ShadowOverlay = styled.View`
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
 `;
 
 const Cover = styled(AlbumImage)`
@@ -112,12 +103,6 @@ function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean })
     const { index, track } = useCurrentTrack();
     const { buffered, position } = useProgress();
     const defaultStyles = useDefaultStyles();
-
-    // The regular `useBottomTabBarHeight` hook will throw an error when it
-    // cannot find a height. Since we might use this component in places where
-    // it is unavailable, we'll just use the context directly, which will output
-    // `undefined` when it's not set.
-    const tabBarHeight = useContext(BottomTabBarHeightContext);
 
     const insets = useSafeAreaInsets();
     const previousBuffered = usePrevious(buffered);
@@ -172,24 +157,31 @@ function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean })
         return null;
     }
 
+    console.log(defaultStyles.view.backgroundColor);
+
     return (
         <Container
-            style={{ 
-                bottom: (tabBarHeight || 0) 
+            style={[{ 
+                bottom: (Platform.OS === 'android' ? 104 : 83)
                     + (inset ? insets.bottom : 0)
-                    + NOW_PLAYING_POPOVER_MARGIN
+                    + 12
                     + offset 
-            }}
+            }]}
         >
-            {/** TODO: Fix shadow overflow on Android */}
-            {Platform.OS === 'ios' ? (
-                <ShadowOverlay pointerEvents='none'>
-                    <Shadow distance={30} style={{ alignSelf: 'stretch', flexBasis: '100%' }} startColor="#00000017">
-                        <View style={{ flex: 1, borderRadius: 8 }} />
-                    </Shadow>
-                </ShadowOverlay>
-            ) : null}
-            <ColoredBlurView style={{ borderRadius: 8 }}>
+            <Animated.View style={ Platform.OS === 'android' && {
+                borderRadius: 100,
+                borderWidth: 1,
+                borderColor: defaultStyles.border.borderColor,
+            }}>
+                <LiquidGlassView
+                    glassType="clear"
+                    glassOpacity={0.75}
+                    glassTintColor={defaultStyles.view.backgroundColor}
+                    isInteractive
+                    style={{ 
+                        borderRadius: 100,
+                    }}
+                >
                 <InnerContainer onPress={openNowPlayingModal} activeOpacity={0.5} testID="open-player-modal">
                     <ShadowWrapper size="small">
                         <Cover source={{ uri: (track.artwork || '') as string }} style={defaultStyles.imageBackground} />
@@ -221,7 +213,8 @@ function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean })
                         stroke={4}
                     />
                 </InnerContainer>
-            </ColoredBlurView>
+            </LiquidGlassView>
+            </Animated.View>
         </Container>
     );
 }

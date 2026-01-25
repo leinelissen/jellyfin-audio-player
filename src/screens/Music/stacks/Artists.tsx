@@ -15,7 +15,7 @@ import { Text } from '@/components/Typography';
 import { NavigationProp } from '@/screens/types';
 import { SafeFlashList, useNavigationOffsets } from '@/components/SafeNavigatorView';
 import { Gap } from '@/components/Utility';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
 
 const SectionContainer = styled.View`
     justify-content: center;
@@ -109,7 +109,7 @@ const Artists: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
-    const listRef = useRef<FlashList<any>>(null);
+    const listRef = useRef<FlashListRef<string | SectionArtistItem>>(null);
 
     // Convert sections to flat array format for FlashList
     const flatData = useMemo(() => {
@@ -180,7 +180,6 @@ const Artists: React.FC = () => {
                 ref={listRef}
                 renderItem={renderItem}
                 stickyHeaderIndices={stickyHeaderIndices}
-                estimatedItemSize={ArtistHeight}
                 getItemType={(item) => typeof item === 'string' ? 'sectionHeader' : 'row'}
             />
         </>

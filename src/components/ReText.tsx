@@ -1,7 +1,7 @@
 import React from 'react';
 import type { TextProps as RNTextProps } from 'react-native';
 import { StyleSheet, TextInput } from 'react-native';
-import Animated, { useAnimatedProps } from 'react-native-reanimated';
+import Animated, { useAnimatedProps, SharedValue, AnimatedProps } from 'react-native-reanimated';
 import useDefaultStyles from './Colors';
 
 const styles = StyleSheet.create({
@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
 Animated.addWhitelistedNativeProps({ text: true });
 
 interface TextProps {
-    text: Animated.SharedValue<string>;
-    style?: Animated.AnimateProps<RNTextProps>['style'];
+    text: SharedValue<string>;
+    style?: AnimatedProps<RNTextProps>['style'];
 }
 
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);

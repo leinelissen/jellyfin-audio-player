@@ -7,7 +7,7 @@ import { useAppDispatch, useTypedSelector } from '@/store';
 import { fetchAllAlbums } from '@/store/music/actions';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import TouchableHandler from '@/components/TouchableHandler';
-import AlbumImage, { AlbumHeight, AlbumItem } from './components/AlbumImage';
+import AlbumImage, { AlbumItem } from './components/AlbumImage';
 import { selectAlbumsByAlphabet } from '@/store/music/selectors';
 import AlphabetScroller from '@/components/AlphabetScroller';
 import styled from 'styled-components/native';
@@ -17,7 +17,7 @@ import { Text } from '@/components/Typography';
 import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp } from '@/screens/types';
 import { SafeFlashList, useNavigationOffsets } from '@/components/SafeNavigatorView';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
 
 const SectionContainer = styled.View`
     justify-content: center;
@@ -86,7 +86,7 @@ const Albums: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
-    const listRef = useRef<FlashList<any>>(null);
+    const listRef = useRef<FlashListRef<string | string[]>>(null);
 
     // Convert sections to flat array format for FlashList
     const flatData = useMemo(() => {
@@ -163,7 +163,6 @@ const Albums: React.FC = () => {
                 ref={listRef}
                 renderItem={renderItem}
                 stickyHeaderIndices={stickyHeaderIndices}
-                estimatedItemSize={AlbumHeight}
                 getItemType={(item) => typeof item === 'string' ? 'sectionHeader' : 'row'}
             />
         </>

@@ -14,9 +14,9 @@ import TouchableHandler from '@/components/TouchableHandler';
 import { useNavigation } from '@react-navigation/native';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { t } from '@/localisation';
-import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
+import useDefaultStyles from '@/components/Colors';
 import { searchAndFetch } from '@/store/music/actions';
-import { Text } from '@/components/Typography';
+import { SubHeader, Text } from '@/components/Typography';
 import DownloadIcon from '@/components/DownloadIcon';
 import ChevronRight from '@/assets/icons/chevron-right.svg';
 import SearchIcon from '@/assets/icons/magnifying-glass.svg';
@@ -43,6 +43,11 @@ const KEYBOARD_OFFSET = Platform.select({
     android: Number.parseInt(Platform.Version as string) >= 35 ? 0 : 72,
 });
 const SEARCH_INPUT_HEIGHT = 104;
+
+const SEARCH_INPUT_OFFSET = Platform.select({
+    ios: 100,
+    android: 110,
+});
 
 const Container = styled(View)`
     padding: 4px 24px 0 24px;
@@ -201,7 +206,7 @@ export default function Search() {
         }));
     }, 10_000), [dispatch]);
 
-    
+
     const searchItems = useMemo(() => ({
         ...albumEntities,
         ...trackEntities,
@@ -242,25 +247,25 @@ export default function Search() {
                     album: (item as AlbumTrack)?.Album,
                     name: item.Name,
                 }));
-            
+
             // Apply active filters (no filters active = all active)
             if (activeFilters.size > 0) {
                 results = results.filter(result => activeFilters.has(result.type));
             }
-            
+
             // Apply local playback filter
             if (localPlaybackOnly) {
                 results = results.filter(result => {
                     const item = searchItems[result.id];
                     if (!item) return false;
-                    
+
                     switch (result.type) {
                         case 'Audio':
                             // For tracks, check if downloaded
                             return downloadEntities[result.id]?.isComplete === true;
                         case 'MusicAlbum':
                             // For albums, check if any tracks are downloaded
-                            return (item as Album).Tracks?.some(trackId => 
+                            return (item as Album).Tracks?.some(trackId =>
                                 downloadEntities[trackId]?.isComplete === true
                             ) ?? false;
                         case 'MusicArtist':
@@ -270,7 +275,7 @@ export default function Search() {
                                 .some(track => downloadEntities[track.Id]?.isComplete === true);
                         case 'Playlist':
                             // For playlists, check if any tracks are downloaded
-                            return (item as Playlist).Tracks?.some(trackId => 
+                            return (item as Playlist).Tracks?.some(trackId =>
                                 downloadEntities[trackId]?.isComplete === true
                             ) ?? false;
                         default:
@@ -278,14 +283,14 @@ export default function Search() {
                     }
                 });
             }
-            
+
             // Assign the preliminary results
             setFuseResults(results);
             setLoading(true);
-            
+
             // Save search query to history after 10 seconds (debounced)
             saveSearchToHistory(searchTermTrimmed, Array.from(activeFilters), localPlaybackOnly);
-            
+
             try {
                 // Wrap the call in a try/catch block so that we catch any
                 // network issues in search and just use local search if the
@@ -362,62 +367,60 @@ export default function Search() {
     }, [dispatch]);
 
     const SearchInput = React.useMemo(() => (
-        <Animated.View>
-            <ColoredBlurView>
-                <Container style={[ defaultStyles.border ]}>
-                    <View>
-                        <Input
-                            value={searchTerm}
-                            onChangeText={setSearchTerm}
-                            style={[defaultStyles.view, { marginBottom: 12 }]}
-                            placeholder={t('search') + '...'}
-                            icon={<SearchIcon width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />}
-                            testID="search-input"
-                            autoCorrect={false}
-                        />
-                        {searchTerm.length > 0 && !isLoading ? (
-                            <ClearButton onPress={handleClearSearch} style={{ marginTop: -4 }}>
-                                <XMarkIcon width={16} height={16} fill={defaultStyles.textHalfOpacity.color} />
-                            </ClearButton>
-                        ) : null}
-                        {isLoading ? <Loading style={{ marginTop: -4 }}><ActivityIndicator /></Loading> : null}
-                    </View>
-                </Container>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    <View style={{ paddingHorizontal: 32, paddingBottom: 12, flex: 1, flexDirection: 'row' }}>
-                        <SelectableFilter
-                            text="Artists"
-                            icon={MicrophoneIcon}
-                            active={activeFilters.has('MusicArtist')}
-                            onPress={() => toggleFilter('MusicArtist')}
-                        />
-                        <SelectableFilter
-                            text="Albums"
-                            icon={AlbumIcon}
-                            active={activeFilters.has('MusicAlbum')}
-                            onPress={() => toggleFilter('MusicAlbum')}
-                        />
-                        <SelectableFilter
-                            text="Tracks"
-                            icon={TrackIcon}
-                            active={activeFilters.has('Audio')}
-                            onPress={() => toggleFilter('Audio')}
-                        />
-                        <SelectableFilter
-                            text="Playlist"
-                            icon={PlaylistIcon}
-                            active={activeFilters.has('Playlist')}
-                            onPress={() => toggleFilter('Playlist')}
-                        />
-                        <SelectableFilter
-                            text="Local Playback"
-                            icon={LocalIcon}
-                            active={localPlaybackOnly}
-                            onPress={() => setLocalPlaybackOnly(prev => !prev)}
-                        />
-                    </View>
-                </ScrollView>
-            </ColoredBlurView>
+        <Animated.View style={{ paddingBottom: SEARCH_INPUT_OFFSET }}>
+            <Container style={[defaultStyles.border]}>
+                <View>
+                    <Input
+                        value={searchTerm}
+                        onChangeText={setSearchTerm}
+                        style={[defaultStyles.view, { marginBottom: 12 }]}
+                        placeholder={t('search') + '...'}
+                        icon={<SearchIcon width={14} height={14} fill={defaultStyles.textHalfOpacity.color} />}
+                        testID="search-input"
+                        autoCorrect={false}
+                    />
+                    {searchTerm.length > 0 && !isLoading ? (
+                        <ClearButton onPress={handleClearSearch} style={{ marginTop: -4 }}>
+                            <XMarkIcon width={16} height={16} fill={defaultStyles.textHalfOpacity.color} />
+                        </ClearButton>
+                    ) : null}
+                    {isLoading ? <Loading style={{ marginTop: -4 }}><ActivityIndicator /></Loading> : null}
+                </View>
+            </Container>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={{ paddingHorizontal: 32, paddingBottom: 12, flex: 1, flexDirection: 'row' }}>
+                    <SelectableFilter
+                        text="Artists"
+                        icon={MicrophoneIcon}
+                        active={activeFilters.has('MusicArtist')}
+                        onPress={() => toggleFilter('MusicArtist')}
+                    />
+                    <SelectableFilter
+                        text="Albums"
+                        icon={AlbumIcon}
+                        active={activeFilters.has('MusicAlbum')}
+                        onPress={() => toggleFilter('MusicAlbum')}
+                    />
+                    <SelectableFilter
+                        text="Tracks"
+                        icon={TrackIcon}
+                        active={activeFilters.has('Audio')}
+                        onPress={() => toggleFilter('Audio')}
+                    />
+                    <SelectableFilter
+                        text="Playlist"
+                        icon={PlaylistIcon}
+                        active={activeFilters.has('Playlist')}
+                        onPress={() => toggleFilter('Playlist')}
+                    />
+                    <SelectableFilter
+                        text="Local Playback"
+                        icon={LocalIcon}
+                        active={localPlaybackOnly}
+                        onPress={() => setLocalPlaybackOnly(prev => !prev)}
+                    />
+                </View>
+            </ScrollView>
         </Animated.View>
     ), [searchTerm, setSearchTerm, defaultStyles, isLoading, activeFilters, toggleFilter, localPlaybackOnly, handleClearSearch]);
 
@@ -431,7 +434,7 @@ export default function Search() {
                         keyboardShouldPersistTaps="handled"
                         style={{ flex: 2, }}
                         contentContainerStyle={{ paddingTop: offsets.top, paddingBottom: SEARCH_INPUT_HEIGHT }}
-                        scrollIndicatorInsets={{ top: offsets.top  / 2, bottom: offsets.bottom / 2 + 10 + SEARCH_INPUT_HEIGHT }}
+                        scrollIndicatorInsets={{ top: offsets.top / 2, bottom: offsets.bottom / 2 + 10 + SEARCH_INPUT_HEIGHT }}
                         data={fuseResults}
                         renderItem={({ item: { id, type, name } }: { item: SearchResult }) => {
                             const searchItem = searchItems?.[id];
@@ -453,7 +456,7 @@ export default function Search() {
                                                 {name}
                                             </Text>
                                             <HalfOpacity style={defaultStyles.text} numberOfLines={1}>
-                                                { type === 'MusicAlbum' ? 
+                                                {type === 'MusicAlbum' ?
                                                     <>
                                                         <AlbumIcon width={12} height={12} fill={defaultStyles.textHalfOpacity.color} />
                                                         {' '}
@@ -461,9 +464,9 @@ export default function Search() {
                                                         {' • '}
                                                         {(searchItem as Album)?.AlbumArtist}
                                                     </>
-                                                    : null 
+                                                    : null
                                                 }
-                                                { type === 'Audio' ? 
+                                                {type === 'Audio' ?
                                                     <>
                                                         <TrackIcon width={12} height={12} fill={defaultStyles.textHalfOpacity.color} />
                                                         {' '}
@@ -475,7 +478,7 @@ export default function Search() {
                                                     </>
                                                     : null
                                                 }
-                                                { type === 'MusicArtist' ? 
+                                                {type === 'MusicArtist' ?
                                                     <>
                                                         <MicrophoneIcon width={12} height={12} fill={defaultStyles.textHalfOpacity.color} />
                                                         {' '}
@@ -483,7 +486,7 @@ export default function Search() {
                                                     </>
                                                     : null
                                                 }
-                                                { type === 'Playlist' ? 
+                                                {type === 'Playlist' ?
                                                     <>
                                                         <PlaylistIcon width={12} height={12} fill={defaultStyles.textHalfOpacity.color} />
                                                         {' '}
@@ -493,14 +496,14 @@ export default function Search() {
                                                 }
                                             </HalfOpacity>
                                         </View>
-                                        { type === 'Audio' ?
+                                        {type === 'Audio' ?
                                             <View style={{ marginLeft: 16 }}>
                                                 <DownloadIcon trackId={id} />
                                             </View>
                                             : null
                                         }
                                         <View style={{ marginLeft: 16 }}>
-                                            <ChevronRight width={14} height={14} fill={defaultStyles.textQuarterOpacity.color}  />
+                                            <ChevronRight width={14} height={14} fill={defaultStyles.textQuarterOpacity.color} />
                                         </View>
                                     </SearchResult>
                                 </TouchableHandler>
@@ -510,14 +513,12 @@ export default function Search() {
                         extraData={[searchTerm, searchItems, activeFilters]}
                     />
                 ) : searchHistory.length > 0 ? (
-                    <ScrollView 
-                        style={{ flex: 1 }} 
+                    <ScrollView
+                        style={{ flex: 1 }}
                         contentContainerStyle={{ paddingTop: offsets.top, paddingBottom: SEARCH_INPUT_HEIGHT }}
                     >
                         <View style={{ paddingTop: 20, paddingBottom: 10, paddingHorizontal: 32 }}>
-                            <Text style={{ ...defaultStyles.text, fontSize: 18, letterSpacing: -0.25 }}>
-                                {t('recent-searches')}
-                            </Text>
+                            <SubHeader>{t('recent-searches')}</SubHeader>
                         </View>
                         {searchHistory.map((item, index) => (
                             <TouchableHandler
@@ -527,9 +528,9 @@ export default function Search() {
                             >
                                 <HistoryItem>
                                     <HistoryIconWrapper>
-                                        <SearchIcon 
-                                            width={18} 
-                                            height={18} 
+                                        <SearchIcon
+                                            width={18}
+                                            height={18}
                                             fill={defaultStyles.textHalfOpacity.color}
                                         />
                                     </HistoryIconWrapper>
@@ -559,10 +560,12 @@ export default function Search() {
                             <Button title={t('clear-history')} icon={TrashIcon} onPress={handleClearHistory} />
                         </View>
                     </ScrollView>
-                ) : null}
+                ) : (
+                    <View style={{ flex: 1 }} />
+                )}
                 {(searchTerm.length && !fuseResults.length && !isLoading) ? (
                     <FullSizeContainer>
-                        <Text style={{ textAlign: 'center', opacity: 0.5, fontSize: 18 }}>{t('no-results')}</Text> 
+                        <Text style={{ textAlign: 'center', opacity: 0.5, fontSize: 18 }}>{t('no-results')}</Text>
                     </FullSizeContainer>
                 ) : null}
                 {SearchInput}

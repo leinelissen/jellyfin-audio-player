@@ -8,8 +8,9 @@ import { t } from '@/localisation';
 import Button from '@/components/Button';
 import { Header, Text as BaseText } from '@/components/Typography';
 import { ShadowWrapper } from '@/components/Shadow';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const Container = styled.SafeAreaView`
+const Container = styled(SafeAreaView)`
     flex: 1;
     justify-content: center;
 `;
