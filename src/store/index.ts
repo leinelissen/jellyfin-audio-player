@@ -7,6 +7,7 @@ import settings from './settings';
 import music, { initialState as musicInitialState } from './music';
 import downloads, { initialState as downloadsInitialState } from './downloads';
 import sleepTimer from './sleep-timer';
+import search from './search';
 import { ColorScheme } from './settings/types';
 import MigratedStorage from '@/utility/MigratedStorage';
 
@@ -55,15 +56,14 @@ const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
                 }
             };
         },
-        // @ts-expect-error migrations are poorly typed
-        4: (state: AppState) => {
-            return {
-                ...state,
-                sleepTimer: {
-                    date: null,
-                }
-            };
-        },
+        // 4: (state: AppState) => {
+        //     return {
+        //         ...state,
+        //         sleepTimer: {
+        //             date: null,
+        //         }
+        //     };
+        // },
         // @ts-expect-error migrations are poorly typed
         5: (state: AppState) => {
             // @ts-expect-error
@@ -89,6 +89,7 @@ const reducers = combineReducers({
     music: music.reducer,
     downloads: downloads.reducer,
     sleepTimer: sleepTimer.reducer,
+    search: search.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

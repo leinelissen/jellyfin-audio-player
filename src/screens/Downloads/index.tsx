@@ -187,8 +187,9 @@ function Downloads() {
         <SafeAreaView style={{ flex: 1 }}>
             {ListHeaderComponent}
             <SafeFlatList
+                top={false}
                 data={ids}
-                style={{ flex: 1, paddingTop: 12 }}
+                style={{ flex: 1 }}
                 contentContainerStyle={{ flexGrow: 1 }}
                 renderItem={renderItem}
             />

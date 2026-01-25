@@ -75,15 +75,20 @@ export default function usePlayTracks() {
         // Potentially shuffle all tracks
         const newTracks = shuffle ? shuffleArray(generatedTracks) : generatedTracks;
 
+        console.log('[usePlayTracks] Generated tracks:', newTracks.length, 'tracks');
+        console.log('[usePlayTracks] First track URL:', newTracks[0]?.url);
+
         // Then, we'll need to check where to add the track
         switch(method) {
             case 'add-to-end': {
                 await TrackPlayer.add(newTracks);
+                console.log('[usePlayTracks] Added tracks to end, queue size:', (await TrackPlayer.getQueue()).length);
 
                 // Then we'll skip to it and play it
                 if (play) {
                     await TrackPlayer.skip((await TrackPlayer.getQueue()).length - newTracks.length);
                     await TrackPlayer.play();
+                    console.log('[usePlayTracks] Playback started');
                 }
 
                 break;
@@ -102,14 +107,13 @@ export default function usePlayTracks() {
 
                 // Depending on whether this track exists, we either add it there,
                 // or at the end of the queue.
-                if( targetTrack >= queue.length ) {
-                    await TrackPlayer.add(newTracks);
-                } else {
-                    await TrackPlayer.add(newTracks, currentTrackIndex + 1);
-                }
+                await TrackPlayer.add(newTracks, targetTrack);
+                console.log('[usePlayTracks] Added tracks after current');
+    
                 if (play) {
                     await TrackPlayer.skip(currentTrackIndex + 1);
                     await TrackPlayer.play();
+                    console.log('[usePlayTracks] Playback started');
                 }
 
                 break;
@@ -117,6 +121,7 @@ export default function usePlayTracks() {
             case 'replace': {
                 // Reset the queue first
                 await TrackPlayer.reset();
+                console.log('[usePlayTracks] Queue reset');
 
                 // GUARD: Check if we need to skip to a particular index
                 if (options.playIndex) {
@@ -129,7 +134,11 @@ export default function usePlayTracks() {
                     // First, we'll add the current queue and (optionally) force
                     // it to start playing.
                     await TrackPlayer.add(current);
-                    if (play) await TrackPlayer.play();
+                    console.log('[usePlayTracks] Added current tracks, starting at index:', options.playIndex);
+                    if (play) {
+                        await TrackPlayer.play();
+                        console.log('[usePlayTracks] Playback started');
+                    }
 
                     // Then, we'll insert the "previous" tracks after the queue
                     // has started playing. This ensures that these tracks won't
@@ -137,7 +146,12 @@ export default function usePlayTracks() {
                     await TrackPlayer.add(before, 0);
                 } else {
                     await TrackPlayer.add(newTracks);
-                    if (play) await TrackPlayer.play();
+                    console.log('[usePlayTracks] Added all tracks, queue size:', (await TrackPlayer.getQueue()).length);
+                    if (play) {
+                        await TrackPlayer.play();
+                        const state = await TrackPlayer.getPlaybackState();
+                        console.log('[usePlayTracks] Playback started, state:', state);
+                    }
                 }
 
                 break;

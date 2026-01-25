@@ -26,7 +26,7 @@ function TouchableHandler<T>({
     onLongPress,
     children,
     testID,
-}: PropsWithChildren<TouchableHandlerProps<T>>): JSX.Element {
+}: PropsWithChildren<TouchableHandlerProps<T>>): React.JSX.Element {
     const handlePress = useCallback(() => {
         return onPress(id);
     }, [id, onPress]);

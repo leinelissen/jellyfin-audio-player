@@ -1,4 +1,4 @@
-import { BlurView, BlurViewProps } from '@react-native-community/blur';
+import { BlurView, BlurViewProps } from '@sbaiahmed1/react-native-blur';
 import React, { PropsWithChildren } from 'react';
 import { useContext } from 'react';
 import { ColorSchemeName, Platform, StyleSheet, View, useColorScheme } from 'react-native';
@@ -19,6 +19,12 @@ function generateStyles(scheme: ColorSchemeName, highContrast: boolean) {
             fontSize: 14,
             fontFamily: 'Inter',
         },
+        textSmall: {
+            color: scheme === 'dark' ? '#fff' : '#000',
+            fontSize: 12,
+            lineHeight: 20,
+            opacity: 0.5,
+        },
         textHalfOpacity: {
             color: highContrast
                 ? (scheme === 'dark' ? '#ffffffbb' : '#000000bb')
@@ -32,7 +38,7 @@ function generateStyles(scheme: ColorSchemeName, highContrast: boolean) {
             fontSize: 14,
         },
         view: {
-            backgroundColor: scheme === 'dark' ? '#111' : '#fff',
+            backgroundColor: scheme === 'dark' ? '#111111' : '#ffffff',
         },
         border: {
             borderColor: scheme === 'dark' ? '#262626' : '#ddd',
@@ -126,9 +132,10 @@ export function useUserOrSystemScheme() {
 export function ColorSchemeProvider({ children }: PropsWithChildren<{}>) {
     const highContrast = useAccessibilitySetting('darkerSystemColors');
     const scheme = useUserOrSystemScheme();
+    const normalizedScheme = (scheme === 'dark' ? 'dark' : 'light') as 'light' | 'dark';
     const theme = highContrast
-        ? themes[`${scheme || 'light'}-highcontrast`]
-        : themes[scheme || 'light'];
+        ? themes[`${normalizedScheme}-highcontrast` as keyof typeof themes]
+        : themes[normalizedScheme];
 
     return (
         <ColorSchemeContext.Provider value={theme}>
@@ -145,7 +152,7 @@ export default function useDefaultStyles() {
 }
 
 interface DefaultStylesProviderProps {
-    children: (defaultStyles: ReturnType<typeof useDefaultStyles>) => JSX.Element;
+    children: (defaultStyles: ReturnType<typeof useDefaultStyles>) => React.JSX.Element;
 }
 
 /**
@@ -168,7 +175,7 @@ export function ColoredBlurView({ children, style, ...props }: PropsWithChildren
                 style={[ StyleSheet.absoluteFill, { overflow: 'hidden'} ]}
                 {...props}
                 blurType={Platform.OS === 'ios' && majorPlatformVersion >= 13 
-                    ? scheme === 'dark' ? 'materialDark' : 'materialLight'
+                    ? scheme === 'dark' ? 'systemMaterialDark' : 'systemMaterialLight'
                     : scheme === 'dark' ? 'extraDark' : 'xlight'
                 }
             />

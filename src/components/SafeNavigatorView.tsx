@@ -1,15 +1,9 @@
-import React, { ForwardedRef, Ref, forwardRef } from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { FlatList, FlatListProps, ScrollView, ScrollViewProps, SectionList, SectionListProps } from 'react-native';
 import useCurrentTrack from '../utility/useCurrentTrack';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { FlashList, FlashListProps } from '@shopify/flash-list';
-
-declare module 'react' {
-    function forwardRef<T, P = {}>(
-        render: (props: P, ref: React.Ref<T>) => React.ReactElement | null
-    ): (props: P & React.RefAttributes<T>) => React.ReactElement | null;
-}
+import { FlashList, FlashListProps, FlashListRef } from '@shopify/flash-list';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 /**
  * A wrapper for ScrollView that takes any paddings, margins and insets into
@@ -55,7 +49,14 @@ function BareSafeSectionList<I, S>({
         />
     );
 }
-export const SafeSectionList = forwardRef(BareSafeSectionList);
+export const SafeSectionList = forwardRef(BareSafeSectionList) as <I, S>(
+    props: SectionListProps<I, S> & { ref?: ForwardedRef<SectionList<I, S>> }
+) => React.ReactElement;
+
+export interface SafeFlatListProps<I> extends FlatListProps<I> {
+    top?: boolean;
+    bottom?: boolean;
+}
 
 /**
  * A wrapper for ScrollView that takes any paddings, margins and insets into
@@ -63,24 +64,28 @@ export const SafeSectionList = forwardRef(BareSafeSectionList);
  */
 function BareSafeFlatList<I>({
     contentContainerStyle,
+    top = true,
+    bottom = true,
     ...props
-}: FlatListProps<I>, ref: ForwardedRef<FlatList<I>>) {
-    const { top, bottom } = useNavigationOffsets();
+}: SafeFlatListProps<I>, ref: ForwardedRef<FlatList<I>>) {
+    const offsets = useNavigationOffsets();
 
     return (
         <FlatList
             contentContainerStyle={[
-                { paddingTop: top, paddingBottom: bottom },
+                { paddingTop: top ? offsets.top : 0, paddingBottom: bottom ? offsets.bottom : 0 },
                 contentContainerStyle,
             ]}
-            scrollIndicatorInsets={{ top, bottom }}
+            scrollIndicatorInsets={{ top: top ? offsets.top : 0, bottom: bottom ? offsets.bottom : 0 }}
             ref={ref}
             {...props}
         />
     );
 }
 
-export const SafeFlatList = forwardRef(BareSafeFlatList);
+export const SafeFlatList = forwardRef(BareSafeFlatList) as <I>(
+    props: SafeFlatListProps<I> & { ref?: ForwardedRef<FlatList<I>> }
+) => React.ReactElement;
 
 /**
  * A wrapper for ScrollView that takes any paddings, margins and insets into
@@ -89,7 +94,7 @@ export const SafeFlatList = forwardRef(BareSafeFlatList);
 function BareSafeFlashList<I>({
     contentContainerStyle,
     ...props
-}: FlashListProps<I>, ref: ForwardedRef<FlashList<I>>) {
+}: FlashListProps<I>, ref: ForwardedRef<FlashListRef<I>>) {
     const { top, bottom } = useNavigationOffsets();
 
     return (
@@ -104,7 +109,9 @@ function BareSafeFlashList<I>({
     );
 }
 
-export const SafeFlashList = forwardRef(BareSafeFlashList);
+export const SafeFlashList = forwardRef(BareSafeFlashList) as <I>(
+    props: FlashListProps<I> & { ref?: ForwardedRef<FlashListRef<I>> }
+) => React.ReactElement;
 
 /**
  * A hook that returns the correct offset that should be applied to any Views
@@ -113,11 +120,12 @@ export const SafeFlashList = forwardRef(BareSafeFlashList);
  */
 export function useNavigationOffsets({ includeOverlay = true } = {} as { includeOverlay?: boolean }) {
     const headerHeight = useHeaderHeight();
-    const bottomBarHeight = useBottomTabBarHeight();
+    const bottomBarHeight = 60;
     const { track } = useCurrentTrack();
+    const insets = useSafeAreaInsets();
 
     return {
-        top: headerHeight,
+        top: headerHeight || insets.top,
         bottom: (track && includeOverlay ? 68 : 0) + bottomBarHeight || 0,
     };
 }

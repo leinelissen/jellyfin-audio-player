@@ -1,0 +1,1 @@
+Egy zenelejátszó Jellyfinhez, ami támogatja a streamelést, a keresést és a letöltést.

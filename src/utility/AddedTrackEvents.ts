@@ -1,6 +1,6 @@
 import TrackPlayer, { AddTrack } from 'react-native-track-player';
 import { useEffect } from 'react';
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
 
 const eventName = 'track-added';
 const addedTrackEmitter = new EventEmitter();

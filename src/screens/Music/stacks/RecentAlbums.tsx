@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import { fetchRecentAlbums } from '@/store/music/actions';
@@ -18,7 +18,6 @@ import styled from 'styled-components/native';
 import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp } from '@/screens/types';
 import { SafeFlatList } from '@/components/SafeNavigatorView';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
     columnWrapper: {
@@ -79,35 +78,27 @@ const RecentAlbums: React.FC = () => {
     // Retrieve data on mount
     useEffect(() => { retrieveData(); }, [retrieveData]);
 
-    const insets = useSafeAreaInsets();
-
     return (
-        <View
-            style={{
-                paddingTop: insets.top,
-                paddingBottom: 1 * insets.bottom,
-            }}>
-            <SafeFlatList
-                data={recentAlbums as string[]}
-                refreshing={isLoading}
-                onRefresh={retrieveData}
-                numColumns={2}
-                keyExtractor={d => d}
-                columnWrapperStyle={styles.columnWrapper}
-                ListHeaderComponent={NavigationHeader}
-                renderItem={({ item }) => (
-                    <TouchableHandler id={item} onPress={selectAlbum} testID={`select-album-${item}`}>
-                        <AlbumItem>
-                            <ShadowWrapper size="medium">
-                                <AlbumImage source={{ uri: getImage(albums[item]) }} style={defaultStyles.imageBackground} />
-                            </ShadowWrapper>
-                            <Text style={defaultStyles.text} numberOfLines={1}>{albums[item]?.Name}</Text>
-                            <Text style={defaultStyles.textHalfOpacity} numberOfLines={1}>{albums[item]?.AlbumArtist}</Text>
-                        </AlbumItem>
-                    </TouchableHandler>
-                )}
-            />
-        </View>
+        <SafeFlatList
+            data={recentAlbums}
+            refreshing={isLoading}
+            onRefresh={retrieveData}
+            numColumns={2}
+            keyExtractor={d => d}
+            columnWrapperStyle={styles.columnWrapper}
+            ListHeaderComponent={NavigationHeader}
+            renderItem={({ item }) => (
+                <TouchableHandler id={item} onPress={selectAlbum} testID={`select-album-${item}`}>
+                    <AlbumItem>
+                        <ShadowWrapper size="medium">
+                            <AlbumImage source={{ uri: getImage(albums[item]) }} style={defaultStyles.imageBackground} />
+                        </ShadowWrapper>
+                        <Text style={defaultStyles.text} numberOfLines={1}>{albums[item]?.Name}</Text>
+                        <Text style={defaultStyles.textHalfOpacity} numberOfLines={1}>{albums[item]?.AlbumArtist}</Text>
+                    </AlbumItem>
+                </TouchableHandler>
+            )}
+        />
     );
 };
 

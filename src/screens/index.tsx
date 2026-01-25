@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { createBottomTabNavigator, BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { Platform } from 'react-native';
+import { createNativeBottomTabNavigator, NativeBottomTabNavigationProp } from '@react-navigation/bottom-tabs/unstable';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
@@ -14,20 +14,16 @@ import TrackPopupMenu from './modals/TrackPopupMenu';
 import SetJellyfinServer from './modals/SetJellyfinServer';
 import ErrorReportingPopup from './modals/ErrorReportingPopup';
 
-import SearchIcon from '@/assets/icons/magnifying-glass.svg';
-import NotesIcon from '@/assets/icons/notes.svg';
-import GearIcon from '@/assets/icons/gear.svg';
-import DownloadsIcon from '@/assets/icons/arrow-down-to-line.svg';
 import { useTypedSelector } from '@/store';
 import { t } from '@/localisation';
 import ErrorReportingAlert from '@/utility/ErrorReportingAlert';
-import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
+import useDefaultStyles from '@/components/Colors';
 import Player from './modals/Player';
 import { StackParams } from './types';
 import Lyrics from './modals/Lyrics';
 
 const Stack = createNativeStackNavigator<StackParams>();
-const Tab = createBottomTabNavigator();
+const Tab = createNativeBottomTabNavigator();
 
 type Screens = {
     Music: undefined;
@@ -48,35 +44,85 @@ function Screens() {
         <>
             <ErrorReportingAlert />
             <Tab.Navigator
-                screenOptions={({ route }) => ({
-                    tabBarIcon: function TabBarIcon({ color, size }) {
-                        switch (route.name) {
-                            case 'SearchTab':
-                                return <SearchIcon fill={color} height={size - 4} width={size - 4} />;
-                            case 'MusicTab':
-                                return <NotesIcon fill={color} height={size} width={size} />;
-                            case 'Settings':
-                                return <GearIcon fill={color} height={size - 1} width={size - 1} />;
-                            case 'Downloads':
-                                return <DownloadsIcon fill={color} height={size - 6} width={size - 6} />;
-                            default:
-                                return null;
-                        }
-                    },
+                screenOptions={{
                     tabBarActiveTintColor: styles.themeColor.color,
-                    tabBarInactiveTintColor: 'gray',
+                    tabBarInactiveTintColor: styles.textHalfOpacity.color,
                     headerShown: false,
-                    tabBarShowLabel: false,
-                    tabBarStyle: { position: 'absolute' },
-                    tabBarBackground: () => (
-                        <ColoredBlurView style={StyleSheet.absoluteFill} />
-                    )
-                })}
+                    tabBarStyle: {
+                        backgroundColor: styles.view.backgroundColor,
+                    },
+                }}
             >
-                <Tab.Screen name="MusicTab" component={Music} options={{ tabBarLabel: t('music'), tabBarTestID: 'music-tab' }} />
-                <Tab.Screen name="SearchTab" component={SearchStack} options={{ tabBarLabel: t('search'), tabBarTestID: 'search-tab' }} />
-                <Tab.Screen name="Downloads" component={Downloads} options={{ tabBarLabel: t('downloads'), tabBarTestID: 'downloads-tab'}} />
-                <Tab.Screen name="Settings" component={Settings} options={{ tabBarLabel: t('settings'), tabBarTestID: 'settings-tab' }} />
+                <Tab.Screen
+                    name="MusicTab"
+                    component={Music}
+                    options={{
+                        tabBarLabel: t('music'), 
+                        tabBarIcon: Platform.select({
+                            ios: {
+                                type: 'sfSymbol',
+                                name: 'music.note',
+                            },
+                            android: {
+                                type: 'drawableResource',
+                                name: 'ic_tab_music',
+                            }
+                        }),
+                    }}
+                />
+                <Tab.Screen
+                    name="SearchTab"
+                    component={SearchStack}
+                    options={{
+                        tabBarLabel: t('search'), 
+                        ...Platform.select({
+                            ios: {
+                                tabBarSystemItem: 'search',
+                            },
+                            android: {
+                                tabBarIcon: {
+                                    type: 'drawableResource',
+                                    name: 'ic_tab_search',
+                                }
+                            }
+                        }),
+                    }}
+                />
+                <Tab.Screen
+                    name="Downloads"
+                    component={Downloads}
+                    options={{
+                        tabBarLabel: t('downloads'), 
+                        ...Platform.select({
+                            ios: {
+                                tabBarSystemItem: 'downloads',
+                            },
+                            android: {
+                                tabBarIcon: {
+                                    type: 'drawableResource',
+                                    name: 'ic_tab_downloads',
+                                }
+                            }
+                        }),
+                    }}
+                />
+                <Tab.Screen
+                    name="Settings"
+                    component={Settings}
+                    options={{
+                        tabBarLabel: t('settings'), 
+                        tabBarIcon: Platform.select({
+                            ios: {
+                                type: 'sfSymbol',
+                                name: 'gearshape',
+                            },
+                            android: {
+                                type: 'drawableResource',
+                                name: 'ic_tab_settings',
+                            }
+                        }),
+                    }}
+                />
             </Tab.Navigator>
         </>
     );
@@ -108,5 +154,5 @@ export default function Routes() {
 
 export type NavigationProp = CompositeNavigationProp<
 StackNavigationProp<Routes>,
-BottomTabNavigationProp<Screens>
+NativeBottomTabNavigationProp<Screens>
 >;

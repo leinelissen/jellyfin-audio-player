@@ -46,7 +46,7 @@ function ThemedNavigationContainer({ children }: PropsWithChildren<{}>) {
     );
 }
 
-export default function App(): JSX.Element | null {
+export default function App(): React.JSX.Element | null {
     // Track whether the player has already been setup, so that we don't
     // accidentally do it twice.
     const [hasSetupPlayer, setHasSetupPlayer] = useState(false);

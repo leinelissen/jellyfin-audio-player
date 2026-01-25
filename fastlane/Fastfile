@@ -3,7 +3,12 @@ default_platform(:ios)
 package = load_json(json_path: "package.json")
 
 platform :ios do
-    before_all do
+    before_all do |lane, options|
+        # Skip signing setup for CI builds
+        if lane == :ci_build
+            next
+        end
+        
         app_store_connect_api_key(
             key_id: "Z98N7N8ZMW",
             issuer_id: "f0fa1c89-6a9a-4144-bfba-529dfe05f09b",
@@ -60,8 +65,24 @@ platform :ios do
             export_method: "app-store",
         )
     end
+
+    lane :ci_build do
+        build_app(
+            scheme: "Fintunes",
+            output_directory: "build",
+            workspace: "ios/Fintunes.xcworkspace",
+            skip_codesigning: true,
+            skip_archive: true,
+            skip_package_ipa: true
+        )
+    end
     
-    after_all do
+    after_all do |lane, options|
+        # Skip Sentry uploads for CI builds
+        if lane == :ci_build
+            next
+        end
+        
         build_number = get_build_number(
             xcodeproj: "ios/Fintunes.xcodeproj",
         )

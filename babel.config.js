@@ -24,7 +24,7 @@ module.exports = {
         [
             'module:react-native-dotenv'
         ],
-        'react-native-reanimated/plugin',
-        '@babel/plugin-proposal-numeric-separator'
+        '@babel/plugin-proposal-numeric-separator',
+        'react-native-worklets/plugin',
     ]
 };
