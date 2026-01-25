@@ -124,7 +124,9 @@ export function getImage(item: string | number | Album | AlbumTrack | Playlist |
         ? item 
         : 'PrimaryImageItemId' in item 
             ? item.PrimaryImageItemId || item.Id 
-            : item.Id;
+            : 'AlbumId' in item 
+                ? item.AlbumId || item.Id 
+                : item.Id;
 
     // Check if we have a downloaded image for this item
     const downloadEntity = state.downloads.entities[itemId];
@@ -140,6 +142,8 @@ export function getImage(item: string | number | Album | AlbumTrack | Playlist |
         return formatImageUri(item, serverUri);
     } else if ('PrimaryImageItemId' in item) {
         return formatImageUri(item.PrimaryImageItemId || item.Id, serverUri);
+    } else if ('AlbumId' in item) {
+        return formatImageUri(item.AlbumId || item.Id, serverUri);
     } else if ('ImageTags' in item && item.ImageTags.Primary) {
         return formatImageUri(item.Id, serverUri);
     }
