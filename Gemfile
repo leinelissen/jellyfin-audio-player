@@ -19,8 +19,12 @@ gem 'logger'
 gem 'benchmark'
 gem 'mutex_m'
 gem 'abbrev'
+gem 'nkf'
+gem 'base64'
+gem 'rexml'
+gem 'ostruct'
 
-gem "fastlane", "~> 2.153"
+gem "fastlane", "~> 2.231"
 
 plugins_path = File.join(File.dirname(__FILE__), 'fastlane', 'Pluginfile')
 eval_gemfile(plugins_path) if File.exist?(plugins_path)
