@@ -80,5 +80,6 @@
     "where-is-data-stored": "Hol van tárolva a gyűjtött adat?",
     "where-is-data-stored-description": "A Sentry rendszert saját szervereken futtatjuk, a mi saját infrastruktúránkon. A szerverekhez, adatbázisokhoz és naplófájlokhoz csak mi férünk hozzá, legkevésbé a Sentry munkatársai. Az infrastruktúra az Európai Unióban van futtatva.",
     "enable-error-reporting": "Engedélyezni szeretnéd a hibajelentést?",
-    "enable-error-reporting-description": "Segít nekünk fejleszteni az alkalmazásélményt a hibák és összeomlások jelentésével."
+    "enable-error-reporting-description": "Segít nekünk fejleszteni az alkalmazásélményt a hibák és összeomlások jelentésével.",
+    "recent-searches": "Legutóbbi keresések"
 }
