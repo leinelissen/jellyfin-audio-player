@@ -6,6 +6,7 @@ const i18n = new I18n();
 
 // Lazy loaders for locale
 const localeGetters: Record<string, () => object> = {
+    bg: () => require('./lang/bg/locale.json'),
     de: () => require('./lang/de/locale.json'),
     en: () => require('./lang/en/locale.json'),
     es: () => require('./lang/es/locale.json'),
