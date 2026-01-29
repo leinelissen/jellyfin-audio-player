@@ -122,7 +122,7 @@ const CredentialGenerator: React.FC<Props> = ({ serverUrl, onCredentialsRetrieve
         // good
         const response = await fetch(`${address}/Users/${userId}`, {
             headers: {
-                'X-Emby-Authorization': `MediaBrowser Client="", Device="", DeviceId="", Version="", Token="${accessToken}"`
+                'Authorization': `MediaBrowser Client="", Device="", DeviceId="", Version="", Token="${accessToken}"`
             }
         });
 

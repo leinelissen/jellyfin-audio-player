@@ -20,11 +20,22 @@ const deviceMap: Record<typeof Platform['OS'], string> = {
  * Jellyfin server.
  */
 function generateConfig(credentials: Credentials): RequestInit {
-    return {
-        headers: {
-            'X-Emby-Authorization': `MediaBrowser Client="Fintunes", Device="${deviceMap[Platform.OS]}", DeviceId="${credentials?.device_id}", Version="${version}", Token="${credentials?.access_token}"`
-        }
-    };
+    switch (credentials?.type) {
+        case 'jellyfin':
+            return {
+                headers: {
+                    'Authorization': `MediaBrowser Client="Fintunes", Device="${deviceMap[Platform.OS]}", DeviceId="${credentials?.device_id}", Version="${version}", Token="${credentials?.access_token}"`
+                }
+            };
+        case 'emby':
+            return {
+                headers: {
+                    'X-Emby-Authorization': `MediaBrowser Client="Fintunes", Device="${deviceMap[Platform.OS]}", DeviceId="${credentials?.device_id}", Version="${version}", Token="${credentials?.access_token}"`
+                }
+            };
+        default:
+            return {};
+    }
 }
 
 /**
