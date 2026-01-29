@@ -5,7 +5,7 @@ import { LocaleKeys } from './types';
 const i18n = new I18n();
 
 // Lazy loaders for locale
-const localeGetters: Record<string, () => object> = {
+export const localeGetters: Record<string, () => object> = {
     bg: () => require('./lang/bg/locale.json'),
     ca: () => require('./lang/ca/locale.json'),
     cs: () => require('./lang/cs/locale.json'),
