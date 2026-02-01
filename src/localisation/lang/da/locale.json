@@ -83,5 +83,11 @@
     "direct-play": "Direkte spil",
     "transcoded": "Transcode",
     "kbps": "kbps",
-    "khz": "kHz"
+    "khz": "kHz",
+    "browse": "Gennemse",
+    "play": "Afspil",
+    "shuffle": "Bland",
+    "tracks": "numre",
+    "unknown-artist": "Ukendt kunstner",
+    "unknown-track": "Ukendt nummer"
 }

@@ -83,5 +83,11 @@
     "privacy-policy": "Kebijakan Privasi",
     "sleep-timer": "Pengatur waktu tidur",
     "delete": "Menghapus",
-    "cancel": "Membatalkan"
+    "cancel": "Membatalkan",
+    "browse": "Jelajahi",
+    "play": "Mainkan",
+    "shuffle": "Acak",
+    "tracks": "lagu",
+    "unknown-artist": "Artis Tidak Dikenal",
+    "unknown-track": "Lagu Tidak Dikenal"
 }

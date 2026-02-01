@@ -83,5 +83,11 @@
     "direct-play": "ダイレクトプレイ",
     "transcoded": "トランスコード",
     "khz": "kHz",
-    "kbps": "kbps"
+    "kbps": "kbps",
+    "browse": "ブラウズ",
+    "play": "再生",
+    "shuffle": "シャッフル",
+    "tracks": "トラック",
+    "unknown-artist": "不明なアーティスト",
+    "unknown-track": "不明なトラック"
 }

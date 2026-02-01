@@ -1,0 +1,87 @@
+diff --git a/ios/extensions/CarPlayTemplateExtensions.swift b/ios/extensions/CarPlayTemplateExtensions.swift
+index e15d37c34acc692ead9a39e962242e46e3aea525..73ac36aeee867dca7e8c8a6bbe9f79cc254a5e30 100644
+--- a/ios/extensions/CarPlayTemplateExtensions.swift
++++ b/ios/extensions/CarPlayTemplateExtensions.swift
+@@ -18,8 +18,8 @@ extension CPTemplate {
+         self.init()
+         initTemplate(template: self, id: id)
+     }
+-    @objc var id: String {
+-        return (self.userInfo as? [String: Any])?["id"] as! String
++    @objc var id: String? {
++        return (self.userInfo as? [String: Any])?["id"] as? String
+     }
+ }
+ 
+diff --git a/ios/scenes/AutoPlayInterfaceController.swift b/ios/scenes/AutoPlayInterfaceController.swift
+index 5008b1ed3790e2d2798317aaeb4df3e65378dbce..a76a3e12c2362403ec094b4175c3a27366fe4563 100644
+--- a/ios/scenes/AutoPlayInterfaceController.swift
++++ b/ios/scenes/AutoPlayInterfaceController.swift
+@@ -90,7 +90,9 @@ class AutoPlayInterfaceController: NSObject, CPInterfaceControllerDelegate {
+         var templateIds: [String] = []
+ 
+         templates.forEach { template in
+-            let templateId = template.id
++            guard let templateId = template.id else {
++                return
++            }
+ 
+             if templateId == rootTemplateId {
+                 return
+@@ -122,7 +124,7 @@ class AutoPlayInterfaceController: NSObject, CPInterfaceControllerDelegate {
+                 })
+         else { return [] }
+ 
+-        var templateIds: [String] = interfaceController.templates.map {
++        var templateIds: [String] = interfaceController.templates.compactMap {
+             template in template.id
+         }
+ 
+@@ -173,7 +175,10 @@ class AutoPlayInterfaceController: NSObject, CPInterfaceControllerDelegate {
+         _ aTemplate: CPTemplate,
+         animated: Bool
+     ) {
+-        let templateId = aTemplate.id
++        guard let templateId = aTemplate.id else {
++            // System template without ID (e.g., CPNowPlayingTemplate)
++            return
++        }
+ 
+         try? RootModule.withAutoPlayTemplate(templateId: templateId) {
+             (template: AutoPlayTemplate) in
+@@ -187,7 +192,10 @@ class AutoPlayInterfaceController: NSObject, CPInterfaceControllerDelegate {
+         _ aTemplate: CPTemplate,
+         animated: Bool
+     ) {
+-        let templateId = aTemplate.id
++        guard let templateId = aTemplate.id else {
++            // System template without ID (e.g., CPNowPlayingTemplate)
++            return
++        }
+ 
+         if rootTemplateId == templateId {
+             // this makes sure we purge outdated CPSearchTemplate since that one can be popped on with a CarPlay native button we can not intercept
+@@ -210,7 +218,10 @@ class AutoPlayInterfaceController: NSObject, CPInterfaceControllerDelegate {
+         _ aTemplate: CPTemplate,
+         animated: Bool
+     ) {
+-        let templateId = aTemplate.id
++        guard let templateId = aTemplate.id else {
++            // System template without ID (e.g., CPNowPlayingTemplate)
++            return
++        }
+ 
+         try? RootModule.withAutoPlayTemplate(
+             templateId: templateId,
+@@ -228,7 +239,10 @@ class AutoPlayInterfaceController: NSObject, CPInterfaceControllerDelegate {
+         _ aTemplate: CPTemplate,
+         animated: Bool
+     ) {
+-        let templateId = aTemplate.id
++        guard let templateId = aTemplate.id else {
++            // System template without ID (e.g., CPNowPlayingTemplate)
++            return
++        }
+ 
+         try? RootModule.withAutoPlayTemplate(
+             templateId: templateId,

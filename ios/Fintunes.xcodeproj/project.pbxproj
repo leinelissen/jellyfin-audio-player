@@ -14,8 +14,19 @@
 		AB393FCA2857CC8400773469 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB393FC92857CC8400773469 /* SnapshotHelper.swift */; };
 		AB4A8DFE2857C8DA005A1ED0 /* FintunesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4A8DFD2857C8DA005A1ED0 /* FintunesUITests.swift */; };
 		AB7AA5F92DC8E5D600578CAC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7AA5F82DC8E5D600578CAC /* AppDelegate.swift */; };
+		AB8793212F2CE3000093DF3D /* PhoneSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB87931F2F2CE3000093DF3D /* PhoneSceneDelegate.swift */; };
 		FA01635F2599C28FC19F2EC3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3896494129CBC30258D9BB1C /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AB87931D2F2CE1530093DF3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
+			remoteInfo = Fintunes;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		13B07F961A680F5B00A75B9A /* Fintunes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fintunes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,6 +42,8 @@
 		AB4A8DFB2857C8DA005A1ED0 /* FintunesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FintunesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB4A8DFD2857C8DA005A1ED0 /* FintunesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FintunesUITests.swift; sourceTree = "<group>"; };
 		AB7AA5F82DC8E5D600578CAC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		AB87931F2F2CE3000093DF3D /* PhoneSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSceneDelegate.swift; sourceTree = "<group>"; };
+		AB8793222F2D399F0093DF3D /* Fintunes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Fintunes.entitlements; path = Fintunes/Fintunes.entitlements; sourceTree = "<group>"; };
 		E22EC545298DA9F9017776C0 /* libPods-Fintunes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Fintunes.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -58,6 +71,8 @@
 		13B07FAE1A68108700A75B9A /* Fintunes */ = {
 			isa = PBXGroup;
 			children = (
+				AB8793222F2D399F0093DF3D /* Fintunes.entitlements */,
+				AB87931F2F2CE3000093DF3D /* PhoneSceneDelegate.swift */,
 				AB7AA5F82DC8E5D600578CAC /* AppDelegate.swift */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -309,6 +324,7 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNSVG/RNSVGFilters.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ReactNativeAutoPlay/ReactNativeAutoPlay.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Sentry/Sentry.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
@@ -321,6 +337,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNSVGFilters.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAutoPlay.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Sentry.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
@@ -338,6 +355,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB8793212F2CE3000093DF3D /* PhoneSceneDelegate.swift in Sources */,
 				AB7AA5F92DC8E5D600578CAC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,6 +375,7 @@
 		AB4A8E022857C8DA005A1ED0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* Fintunes */;
+			targetProxy = AB87931D2F2CE1530093DF3D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -379,6 +398,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Fintunes/Fintunes.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -405,7 +425,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.moeilijkedingen.jellyfinaudioplayer;
 				PRODUCT_NAME = Fintunes;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "nl.moeilijkedingen.jellyfinaudioplayer AppStore 1754345870";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "nl.moeilijkedingen.jellyfinaudioplayer AppStore 17";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -418,6 +438,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Fintunes/Fintunes.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -440,7 +461,7 @@
 				PRODUCT_NAME = Fintunes;
 				PROVISIONING_PROFILE = "915c5213-22f6-4f9d-8065-2a06300f9bfb";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "nl.moeilijkedingen.jellyfinaudioplayer AppStore 1754345870";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "nl.moeilijkedingen.jellyfinaudioplayer AppStore 17";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

@@ -83,5 +83,11 @@
     "transcoded": "Getranscodeerd",
     "khz": "kHz",
     "kbps": "kbps",
-    "lyrics": "Songtekst"
+    "lyrics": "Songtekst",
+    "browse": "Bladeren",
+    "play": "Afspelen",
+    "shuffle": "Willekeurig",
+    "tracks": "nummers",
+    "unknown-artist": "Onbekende artiest",
+    "unknown-track": "Onbekend nummer"
 }

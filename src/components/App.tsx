@@ -13,6 +13,7 @@ import { ColorSchemeProvider, themes, useUserOrSystemScheme } from './Colors';
 import DownloadManager from './DownloadManager';
 import AppLoading from './AppLoading';
 import { captureException } from '@sentry/react-native';
+import { initializeAutoPlay } from '@/screens/carplay/register';
 
 const LightTheme = {
     ...DefaultTheme,
@@ -44,6 +45,26 @@ function ThemedNavigationContainer({ children }: PropsWithChildren<{}>) {
             {children}
         </NavigationContainer>
     );
+}
+
+/**
+ * Component that handles AutoPlay integration
+ * Must be inside the Provider to access the store
+ */
+function AutoPlayIntegration() {
+    useEffect(() => {
+        console.log('[App] AutoPlay integration mounted');
+        
+        // Initialize the store reference for AutoPlay
+        initializeAutoPlay(store);
+        console.log('[App] AutoPlay store initialized');
+
+        return () => {
+            console.log('[App] AutoPlay integration unmounting');
+        };
+    }, []);
+
+    return null;
 }
 
 export default function App(): React.JSX.Element | null {
@@ -92,6 +113,7 @@ export default function App(): React.JSX.Element | null {
                     <ThemedNavigationContainer>
                         <Routes />
                         <DownloadManager />
+                        <AutoPlayIntegration />
                     </ThemedNavigationContainer>
                 </ColorSchemeProvider>
             </PersistGate>

@@ -83,5 +83,11 @@
     "similar-albums": "Samanlaisia albumeja",
     "playback-reporting": "Toiston raportointi",
     "playback-reporting-description": "Toiston raportoinnin avulla kaikki toistotapahtumat palautetaan palvelimellesi. Näin voit seurata eniten kuunneltuja kappaleita, esimerkiksi pluginien, kuten ListenBrainz tai LastFM, avulla.",
-    "color-scheme-description": "Fintunes noudattaa oletuksena käyttöjärjestelmän ulkoasua. Voit kuitenkin ohittaa tämän varmistaaksesi, että Fintunes on aina tummassa tai vaaleassa tilassa."
+    "color-scheme-description": "Fintunes noudattaa oletuksena käyttöjärjestelmän ulkoasua. Voit kuitenkin ohittaa tämän varmistaaksesi, että Fintunes on aina tummassa tai vaaleassa tilassa.",
+    "browse": "Selaa",
+    "play": "Toista",
+    "shuffle": "Sekoita",
+    "tracks": "kappaletta",
+    "unknown-artist": "Tuntematon artisti",
+    "unknown-track": "Tuntematon kappale"
 }
