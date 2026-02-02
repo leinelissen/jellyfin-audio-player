@@ -165,10 +165,13 @@ export async function createAlbumDetailTemplate(store: Store, album: Album): Pro
         detailedText: { text: track.Artists?.join(', ') || t('unknown-artist') },
         onPress: async () => {
             try {
+                // Get fresh state when action is triggered
+                const freshState = store.getState();
+                const freshTrackIds = freshState.music.tracks.byAlbum[album.Id] || [];
                 await playTracks(
-                    trackIds,
-                    state.music.tracks.entities,
-                    state.downloads.entities,
+                    freshTrackIds,
+                    freshState.music.tracks.entities,
+                    freshState.downloads.entities,
                     { playIndex: index }
                 );
             } catch (error) {
@@ -183,10 +186,13 @@ export async function createAlbumDetailTemplate(store: Store, album: Album): Pro
         onPress: async () => {
             console.log('[AlbumsList] Play album:', album.Name);
             try {
+                // Get fresh state when action is triggered
+                const freshState = store.getState();
+                const freshTrackIds = freshState.music.tracks.byAlbum[album.Id] || [];
                 await playTracks(
-                    trackIds,
-                    state.music.tracks.entities,
-                    state.downloads.entities
+                    freshTrackIds,
+                    freshState.music.tracks.entities,
+                    freshState.downloads.entities
                 );
             } catch (error) {
                 console.error('[AlbumsList] Error playing album:', error);
@@ -200,10 +206,13 @@ export async function createAlbumDetailTemplate(store: Store, album: Album): Pro
         onPress: async () => {
             console.log('[AlbumsList] Shuffle album:', album.Name);
             try {
+                // Get fresh state when action is triggered
+                const freshState = store.getState();
+                const freshTrackIds = freshState.music.tracks.byAlbum[album.Id] || [];
                 await playTracks(
-                    trackIds,
-                    state.music.tracks.entities,
-                    state.downloads.entities,
+                    freshTrackIds,
+                    freshState.music.tracks.entities,
+                    freshState.downloads.entities,
                     { shuffle: true }
                 );
             } catch (error) {

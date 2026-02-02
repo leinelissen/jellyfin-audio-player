@@ -82,10 +82,13 @@ async function createPlaylistDetailTemplate(store: Store, playlist: Playlist): P
         detailedText: { text: track.Artists?.join(', ') || t('unknown-artist') },
         onPress: async () => {
             try {
+                // Get fresh state when action is triggered
+                const freshState = store.getState();
+                const freshTrackIds = freshState.music.tracks.byPlaylist[playlist.Id] || [];
                 await playTracks(
-                    trackIds,
-                    state.music.tracks.entities,
-                    state.downloads.entities,
+                    freshTrackIds,
+                    freshState.music.tracks.entities,
+                    freshState.downloads.entities,
                     { playIndex: index }
                 );
             } catch (error) {
@@ -100,10 +103,13 @@ async function createPlaylistDetailTemplate(store: Store, playlist: Playlist): P
         onPress: async () => {
             console.log('[PlaylistsList] Play playlist:', playlist.Name);
             try {
+                // Get fresh state when action is triggered
+                const freshState = store.getState();
+                const freshTrackIds = freshState.music.tracks.byPlaylist[playlist.Id] || [];
                 await playTracks(
-                    trackIds,
-                    state.music.tracks.entities,
-                    state.downloads.entities
+                    freshTrackIds,
+                    freshState.music.tracks.entities,
+                    freshState.downloads.entities
                 );
             } catch (error) {
                 console.error('[PlaylistsList] Error playing playlist:', error);
@@ -117,10 +123,13 @@ async function createPlaylistDetailTemplate(store: Store, playlist: Playlist): P
         onPress: async () => {
             console.log('[PlaylistsList] Shuffle playlist:', playlist.Name);
             try {
+                // Get fresh state when action is triggered
+                const freshState = store.getState();
+                const freshTrackIds = freshState.music.tracks.byPlaylist[playlist.Id] || [];
                 await playTracks(
-                    trackIds,
-                    state.music.tracks.entities,
-                    state.downloads.entities,
+                    freshTrackIds,
+                    freshState.music.tracks.entities,
+                    freshState.downloads.entities,
                     { shuffle: true }
                 );
             } catch (error) {

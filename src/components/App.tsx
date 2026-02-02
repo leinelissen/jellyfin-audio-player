@@ -61,6 +61,7 @@ function AutoPlayIntegration() {
 
         return () => {
             console.log('[App] AutoPlay integration unmounting');
+            // Cleanup is handled by registerAutoPlay which manages its own listeners
         };
     }, []);
 
