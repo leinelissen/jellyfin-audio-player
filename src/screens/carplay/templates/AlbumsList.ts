@@ -1,4 +1,4 @@
-import { ListTemplate, HybridAutoPlay } from '@iternio/react-native-auto-play';
+import { ListTemplate, HybridAutoPlay, type ImageButton } from '@iternio/react-native-auto-play';
 import type { Album } from '@/store/music/types';
 import { t } from '@/localisation';
 import { fetchTracksByAlbum } from '@/store/music/actions';
@@ -190,9 +190,9 @@ export async function createAlbumDetailTemplate(album: Album): Promise<ListTempl
         },
     }));
 
-    const playAction = {
-        type: 'text' as const,
-        title: t('play'),
+    const playAction: ImageButton<ListTemplate> = {
+        type: 'image',
+        image: { type: 'glyph', name: 'play_arrow', fontScale: 0.8 },
         onPress: async () => {
             console.log('[AlbumsList] Play album:', album.Name);
             try {
@@ -207,9 +207,9 @@ export async function createAlbumDetailTemplate(album: Album): Promise<ListTempl
         },
     };
 
-    const shuffleAction = {
-        type: 'text' as const,
-        title: t('shuffle'),
+    const shuffleAction: ImageButton<ListTemplate> = {
+        type: 'image',
+        image: { type: 'glyph', name: 'shuffle', fontScale: 0.8 },
         onPress: async () => {
             console.log('[AlbumsList] Shuffle album:', album.Name);
             try {

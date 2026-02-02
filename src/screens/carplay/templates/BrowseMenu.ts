@@ -20,6 +20,7 @@ export function createBrowseMenu(): ListTemplate {
                 {
                     type: 'default',
                     title: { text: t('recent-albums') },
+                    image: { type: 'glyph', name: 'album', fontScale: 0.6 },
                     onPress: async () => {
                         console.log('[BrowseMenu] Recent Albums selected');
                         try {
@@ -34,6 +35,7 @@ export function createBrowseMenu(): ListTemplate {
                 {
                     type: 'default',
                     title: { text: t('all-albums') },
+                    image: { type: 'glyph', name: 'album', fontScale: 0.6 },
                     onPress: async () => {
                         console.log('[BrowseMenu] All Albums selected');
                         try {
@@ -48,6 +50,7 @@ export function createBrowseMenu(): ListTemplate {
                 {
                     type: 'default',
                     title: { text: t('playlists') },
+                    image: { type: 'glyph', name: 'queue', fontScale: 0.6 },
                     onPress: async () => {
                         console.log('[BrowseMenu] Playlists selected');
                         try {
@@ -62,6 +65,7 @@ export function createBrowseMenu(): ListTemplate {
                 {
                     type: 'default',
                     title: { text: t('artists') },
+                    image: { type: 'glyph', name: 'artist', fontScale: 0.6 },
                     onPress: async () => {
                         console.log('[BrowseMenu] Artists selected');
                         try {

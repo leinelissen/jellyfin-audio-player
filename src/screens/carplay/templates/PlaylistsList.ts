@@ -1,4 +1,4 @@
-import { ListTemplate, HybridAutoPlay } from '@iternio/react-native-auto-play';
+import { ListTemplate, HybridAutoPlay, type ImageButton } from '@iternio/react-native-auto-play';
 import type { Playlist } from '@/store/music/types';
 import { t } from '@/localisation';
 import { fetchTracksByPlaylist } from '@/store/music/actions';
@@ -102,9 +102,9 @@ async function createPlaylistDetailTemplate(playlist: Playlist): Promise<ListTem
         },
     }));
 
-    const playAction = {
-        type: 'text' as const,
-        title: t('play'),
+    const playAction: ImageButton<ListTemplate> = {
+        type: 'image',
+        image: { type: 'glyph', name: 'play_arrow', fontScale: 0.8 },
         onPress: async () => {
             console.log('[PlaylistsList] Play playlist:', playlist.Name);
             try {
@@ -119,9 +119,9 @@ async function createPlaylistDetailTemplate(playlist: Playlist): Promise<ListTem
         },
     };
 
-    const shuffleAction = {
-        type: 'text' as const,
-        title: t('shuffle'),
+    const shuffleAction: ImageButton<ListTemplate> = {
+        type: 'image',
+        image: { type: 'glyph', name: 'shuffle', fontScale: 0.8 },
         onPress: async () => {
             console.log('[PlaylistsList] Shuffle playlist:', playlist.Name);
             try {
