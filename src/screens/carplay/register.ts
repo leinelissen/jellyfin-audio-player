@@ -5,8 +5,8 @@ import reduxStore from '@/store';
 
 let store: Store | null = null;
 let isConnected = false;
-let connectListener: any = null;
-let disconnectListener: any = null;
+let connectListenerCleanup: (() => void) | null = null;
+let disconnectListenerCleanup: (() => void) | null = null;
 
 export function initializeAutoPlay(appStore: Store): void {
     store = appStore;
@@ -43,29 +43,28 @@ export function registerAutoPlay(): void {
     };
 
     // Remove existing listeners if any
-    if (connectListener) {
-        HybridAutoPlay.removeListener('didConnect', connectListener);
+    if (connectListenerCleanup) {
+        connectListenerCleanup();
+        connectListenerCleanup = null;
     }
-    if (disconnectListener) {
-        HybridAutoPlay.removeListener('didDisconnect', disconnectListener);
+    if (disconnectListenerCleanup) {
+        disconnectListenerCleanup();
+        disconnectListenerCleanup = null;
     }
 
-    // Store references to listeners for cleanup
-    connectListener = onConnect;
-    disconnectListener = onDisconnect;
-
-    HybridAutoPlay.addListener('didConnect', onConnect);
-    HybridAutoPlay.addListener('didDisconnect', onDisconnect);
+    // Add listeners and store cleanup callbacks
+    connectListenerCleanup = HybridAutoPlay.addListener('didConnect', onConnect);
+    disconnectListenerCleanup = HybridAutoPlay.addListener('didDisconnect', onDisconnect);
 }
 
 export function unregisterAutoPlay(): void {
-    if (connectListener) {
-        HybridAutoPlay.removeListener('didConnect', connectListener);
-        connectListener = null;
+    if (connectListenerCleanup) {
+        connectListenerCleanup();
+        connectListenerCleanup = null;
     }
-    if (disconnectListener) {
-        HybridAutoPlay.removeListener('didDisconnect', disconnectListener);
-        disconnectListener = null;
+    if (disconnectListenerCleanup) {
+        disconnectListenerCleanup();
+        disconnectListenerCleanup = null;
     }
     isConnected = false;
     console.log('[AutoPlay] Unregistered listeners');
