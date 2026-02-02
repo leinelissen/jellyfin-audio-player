@@ -32,14 +32,19 @@ export function createRecentAlbumsTemplate(store: Store): ListTemplate {
             detailedText: { text: album.AlbumArtist || t('unknown-artist') },
             onPress: async () => {
                 console.log('[AlbumsList] Album selected:', album.Name);
-                const detailTemplate = await createAlbumDetailTemplate(store, album);
-                detailTemplate.push();
+                try {
+                    const detailTemplate = await createAlbumDetailTemplate(store, album);
+                    await detailTemplate.push();
+                    console.log('[AlbumsList] Album detail pushed');
+                } catch (error) {
+                    console.error('[AlbumsList] Error pushing album detail:', error);
+                }
             },
         }));
 
     return new ListTemplate({
         title: { text: t('recent-albums') },
-        sections: items.length > 0 ? [{ type: 'default', title: '', items }] : undefined,
+        sections: items.length > 0 ? { type: 'default', items } : undefined,
         headerActions: {
             android: {
                 startHeaderAction: {
@@ -105,8 +110,13 @@ export function createAllAlbumsTemplate(store: Store): ListTemplate {
                 detailedText: { text: album.AlbumArtist || t('unknown-artist') },
                 onPress: async () => {
                     console.log('[AlbumsList] Album selected:', album.Name);
-                    const detailTemplate = await createAlbumDetailTemplate(store, album);
-                    detailTemplate.push();
+                    try {
+                        const detailTemplate = await createAlbumDetailTemplate(store, album);
+                        await detailTemplate.push();
+                        console.log('[AlbumsList] Album detail pushed');
+                    } catch (error) {
+                        console.error('[AlbumsList] Error pushing album detail:', error);
+                    }
                 },
             })),
         }));
@@ -224,13 +234,10 @@ export async function createAlbumDetailTemplate(store: Store, album: Album): Pro
 
     return new ListTemplate({
         title: { text: album.Name },
-        sections: [
-            {
-                type: 'default',
-                title: '',
-                items,
-            },
-        ],
+        sections: {
+            type: 'default',
+            items,
+        },
         headerActions: {
             android: {
                 startHeaderAction: {

@@ -42,10 +42,15 @@ export function createArtistsTemplate(store: Store): ListTemplate {
             items: sectionArtists.map(artist => ({
                 type: 'default' as const,
                 title: { text: artist.Name },
-                onPress: () => {
+                onPress: async () => {
                     console.log('[ArtistsList] Artist selected:', artist.Name);
-                    const detailTemplate = createArtistDetailTemplate(store, artist);
-                    detailTemplate.push();
+                    try {
+                        const detailTemplate = createArtistDetailTemplate(store, artist);
+                        await detailTemplate.push();
+                        console.log('[ArtistsList] Artist detail pushed');
+                    } catch (error) {
+                        console.error('[ArtistsList] Error pushing artist detail:', error);
+                    }
                 },
             })),
         }));
@@ -89,7 +94,8 @@ function createArtistDetailTemplate(store: Store, artist: MusicArtist): ListTemp
             console.log('[ArtistsList] Album selected:', album.Name);
             try {
                 const detailTemplate = await createAlbumDetailTemplate(store, album);
-                detailTemplate.push();
+                await detailTemplate.push();
+                console.log('[ArtistsList] Album detail pushed');
             } catch (error) {
                 console.error('[ArtistsList] Error opening album:', error);
             }
@@ -120,7 +126,7 @@ function createArtistDetailTemplate(store: Store, artist: MusicArtist): ListTemp
 
     return new ListTemplate({
         title: { text: artist.Name },
-        sections: [{ type: 'default', title: '', items }],
+        sections: { type: 'default', items },
         headerActions: {
             android: {
                 startHeaderAction: {

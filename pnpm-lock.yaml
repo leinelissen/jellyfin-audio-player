@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   '@iternio/react-native-auto-play':
-    hash: cd2f07c74f8259e9d96190655b749783e0498d26c917d4ef7bc7c1f30c4b86e9
+    hash: 2ab8be0081e20edc9203f48ede10d78ffcdb6eb30798e0d0b92d8d29b19777fc
     path: patches/@iternio__react-native-auto-play.patch
   react-native-track-player:
     hash: e7b3a1d9dfe94a2a6a4067d693dff8c4d67147057264361b27db20fd497ef184
@@ -24,7 +24,7 @@ importers:
         version: 8.13.0(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3)
       '@iternio/react-native-auto-play':
         specifier: 0.2.0-alpha.14
-        version: 0.2.0-alpha.14(patch_hash=cd2f07c74f8259e9d96190655b749783e0498d26c917d4ef7bc7c1f30c4b86e9)(react-native-nitro-modules@0.33.2(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3))(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3)
+        version: 0.2.0-alpha.14(patch_hash=2ab8be0081e20edc9203f48ede10d78ffcdb6eb30798e0d0b92d8d29b19777fc)(react-native-nitro-modules@0.33.2(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3))(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3)
       '@react-native-async-storage/async-storage':
         specifier: ^2.2.0
         version: 2.2.0(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))
@@ -6764,7 +6764,7 @@ snapshots:
 
   '@istanbuljs/schema@0.1.3': {}
 
-  '@iternio/react-native-auto-play@0.2.0-alpha.14(patch_hash=cd2f07c74f8259e9d96190655b749783e0498d26c917d4ef7bc7c1f30c4b86e9)(react-native-nitro-modules@0.33.2(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3))(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3)':
+  '@iternio/react-native-auto-play@0.2.0-alpha.14(patch_hash=2ab8be0081e20edc9203f48ede10d78ffcdb6eb30798e0d0b92d8d29b19777fc)(react-native-nitro-modules@0.33.2(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3))(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3)':
     dependencies:
       react: 19.2.3
       react-native: 0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3)

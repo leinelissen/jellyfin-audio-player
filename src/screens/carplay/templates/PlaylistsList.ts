@@ -27,15 +27,20 @@ export function createPlaylistsTemplate(store: Store): ListTemplate {
             detailedText: { text: `${trackCount} ${trackCount !== 1 ? t('tracks') : t('track')}` },
             onPress: async () => {
                 console.log('[PlaylistsList] Playlist selected:', playlist.Name);
-                const detailTemplate = await createPlaylistDetailTemplate(store, playlist);
-                detailTemplate.push();
+                try {
+                    const detailTemplate = await createPlaylistDetailTemplate(store, playlist);
+                    await detailTemplate.push();
+                    console.log('[PlaylistsList] Playlist detail pushed');
+                } catch (error) {
+                    console.error('[PlaylistsList] Error pushing playlist detail:', error);
+                }
             },
         };
     });
 
     return new ListTemplate({
         title: { text: t('playlists') },
-        sections: items.length > 0 ? [{ type: 'default', title: '', items }] : undefined,
+        sections: items.length > 0 ? { type: 'default', items } : undefined,
         headerActions: {
             android: {
                 startHeaderAction: {
@@ -146,7 +151,7 @@ async function createPlaylistDetailTemplate(store: Store, playlist: Playlist): P
 
     return new ListTemplate({
         title: { text: playlist.Name },
-        sections: [{ type: 'default', title: '', items }],
+        sections: { type: 'default', items },
         headerActions: {
             android: {
                 startHeaderAction: {
