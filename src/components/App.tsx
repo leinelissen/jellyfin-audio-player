@@ -59,9 +59,10 @@ function AutoPlayIntegration() {
         initializeAutoPlay(store);
         console.log('[App] AutoPlay store initialized');
 
+        // Note: Event listeners are registered once in index.js via registerAutoPlay()
+        // and cleaned up within registerAutoPlay itself if re-registered
         return () => {
             console.log('[App] AutoPlay integration unmounting');
-            // Cleanup is handled by registerAutoPlay which manages its own listeners
         };
     }, []);
 
