@@ -1,12 +1,16 @@
 import { ListTemplate, HybridAutoPlay } from '@iternio/react-native-auto-play';
-import type { Store } from '@/store';
 import type { Album } from '@/store/music/types';
 import { t } from '@/localisation';
 import { fetchTracksByAlbum } from '@/store/music/actions';
 import { ALPHABET_LETTERS } from '@/CONSTANTS';
 import { playTracks } from '@/utility/usePlayTracks';
+import store from '@/store';
 
-export function createRecentAlbumsTemplate(store: Store): ListTemplate {
+/**
+ * Creates a list template showing the 24 most recently added albums,
+ * sorted by creation date in descending order.
+ */
+export function createRecentAlbumsTemplate(): ListTemplate {
     console.log('[AlbumsList] Creating Recent Albums template...');
     
     const state = store.getState();
@@ -33,7 +37,7 @@ export function createRecentAlbumsTemplate(store: Store): ListTemplate {
             onPress: async () => {
                 console.log('[AlbumsList] Album selected:', album.Name);
                 try {
-                    const detailTemplate = await createAlbumDetailTemplate(store, album);
+                    const detailTemplate = await createAlbumDetailTemplate(album);
                     await detailTemplate.push();
                     console.log('[AlbumsList] Album detail pushed');
                 } catch (error) {
@@ -62,7 +66,11 @@ export function createRecentAlbumsTemplate(store: Store): ListTemplate {
     });
 }
 
-export function createAllAlbumsTemplate(store: Store): ListTemplate {
+/**
+ * Creates a list template showing all albums grouped by alphabetical
+ * sections, sorted by artist name then album name.
+ */
+export function createAllAlbumsTemplate(): ListTemplate {
     console.log('[AlbumsList] Creating All Albums template...');
     
     const state = store.getState();
@@ -111,7 +119,7 @@ export function createAllAlbumsTemplate(store: Store): ListTemplate {
                 onPress: async () => {
                     console.log('[AlbumsList] Album selected:', album.Name);
                     try {
-                        const detailTemplate = await createAlbumDetailTemplate(store, album);
+                        const detailTemplate = await createAlbumDetailTemplate(album);
                         await detailTemplate.push();
                         console.log('[AlbumsList] Album detail pushed');
                     } catch (error) {
@@ -141,7 +149,12 @@ export function createAllAlbumsTemplate(store: Store): ListTemplate {
     });
 }
 
-export async function createAlbumDetailTemplate(store: Store, album: Album): Promise<ListTemplate> {
+/**
+ * Creates a detail template for a specific album showing its tracks
+ * with play and shuffle actions. Fetches tracks from the API if they're
+ * not already in the store.
+ */
+export async function createAlbumDetailTemplate(album: Album): Promise<ListTemplate> {
     let state = store.getState();
     let trackIds = state.music.tracks.byAlbum[album.Id] || [];
     

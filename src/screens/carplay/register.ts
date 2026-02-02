@@ -1,41 +1,28 @@
 import { HybridAutoPlay } from '@iternio/react-native-auto-play';
-import type { Store } from '@/store';
 import { createBrowseMenu } from './templates/BrowseMenu';
-import reduxStore from '@/store';
 
-let store: Store | null = null;
-
-export function initializeAutoPlay(appStore: Store): void {
-    store = appStore;
-}
-
+/**
+ * Registers CarPlay AutoPlay listeners and sets up the root browse menu
+ * template when the device is connected to a CarPlay-enabled vehicle.
+ */
 export function registerAutoPlay(): void {
-    const onConnect = async () => {
+    // Listen for CarPlay connection events
+    HybridAutoPlay.addListener('didConnect', async () => {
         console.log('[AutoPlay] Connected');
-        
-        // GUARD: Store must be initialized
-        if (!store) {
-            console.error('[AutoPlay] Store not initialized');
-            store = reduxStore;
-        }
-
-        // Wait longer for the screen manager to be ready
-        // The screen needs to be pushed to the stack before screenManager is available
-        await new Promise(resolve => setTimeout(resolve, 500));
 
         try {
-            const browseTemplate = createBrowseMenu(store);
+            // Set up and display the browse menu as the root template
+            const browseTemplate = createBrowseMenu();
             await browseTemplate.setRootTemplate();
+            
             console.log('[AutoPlay] Root template set successfully');
         } catch (error) {
             console.error('[AutoPlay] Error setting up templates:', error);
         }
-    };
+    });
 
-    const onDisconnect = () => {
+    // Listen for CarPlay disconnection events
+    HybridAutoPlay.addListener('didDisconnect', () => {
         console.log('[AutoPlay] Disconnected');
-    };
-
-    HybridAutoPlay.addListener('didConnect', onConnect);
-    HybridAutoPlay.addListener('didDisconnect', onDisconnect);
+    });
 }

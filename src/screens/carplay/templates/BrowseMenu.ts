@@ -1,5 +1,4 @@
 import { ListTemplate } from '@iternio/react-native-auto-play';
-import type { Store } from '@/store';
 import { t } from '@/localisation';
 import { 
     createRecentAlbumsTemplate,
@@ -8,7 +7,11 @@ import {
 import { createPlaylistsTemplate } from './PlaylistsList';
 import { createArtistsTemplate } from './ArtistsList';
 
-export function createBrowseMenu(store: Store): ListTemplate {
+/**
+ * Creates the main CarPlay browse menu with navigation to recent albums,
+ * all albums, playlists, and artists.
+ */
+export function createBrowseMenu(): ListTemplate {
     return new ListTemplate({
         title: { text: t('browse') },
         sections: {
@@ -20,7 +23,7 @@ export function createBrowseMenu(store: Store): ListTemplate {
                     onPress: async () => {
                         console.log('[BrowseMenu] Recent Albums selected');
                         try {
-                            const template = createRecentAlbumsTemplate(store);
+                            const template = createRecentAlbumsTemplate();
                             await template.push();
                             console.log('[BrowseMenu] Recent Albums template pushed');
                         } catch (error) {
@@ -34,7 +37,7 @@ export function createBrowseMenu(store: Store): ListTemplate {
                     onPress: async () => {
                         console.log('[BrowseMenu] All Albums selected');
                         try {
-                            const template = createAllAlbumsTemplate(store);
+                            const template = createAllAlbumsTemplate();
                             await template.push();
                             console.log('[BrowseMenu] All Albums template pushed');
                         } catch (error) {
@@ -48,7 +51,7 @@ export function createBrowseMenu(store: Store): ListTemplate {
                     onPress: async () => {
                         console.log('[BrowseMenu] Playlists selected');
                         try {
-                            const template = createPlaylistsTemplate(store);
+                            const template = createPlaylistsTemplate();
                             await template.push();
                             console.log('[BrowseMenu] Playlists template pushed');
                         } catch (error) {
@@ -62,7 +65,7 @@ export function createBrowseMenu(store: Store): ListTemplate {
                     onPress: async () => {
                         console.log('[BrowseMenu] Artists selected');
                         try {
-                            const template = createArtistsTemplate(store);
+                            const template = createArtistsTemplate();
                             await template.push();
                             console.log('[BrowseMenu] Artists template pushed');
                         } catch (error) {

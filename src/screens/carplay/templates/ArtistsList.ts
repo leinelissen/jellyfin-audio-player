@@ -1,11 +1,15 @@
 import { ListTemplate, HybridAutoPlay } from '@iternio/react-native-auto-play';
-import type { Store } from '@/store';
 import type { MusicArtist } from '@/store/music/types';
 import { t } from '@/localisation';
 import { createAlbumDetailTemplate } from './AlbumsList';
 import { ALPHABET_LETTERS } from '@/CONSTANTS';
+import store from '@/store';
 
-export function createArtistsTemplate(store: Store): ListTemplate {
+/**
+ * Creates a list template showing all artists grouped by alphabetical
+ * sections, sorted alphabetically by name.
+ */
+export function createArtistsTemplate(): ListTemplate {
     console.log('[ArtistsList] Creating Artists template...');
     
     const state = store.getState();
@@ -45,7 +49,7 @@ export function createArtistsTemplate(store: Store): ListTemplate {
                 onPress: async () => {
                     console.log('[ArtistsList] Artist selected:', artist.Name);
                     try {
-                        const detailTemplate = createArtistDetailTemplate(store, artist);
+                        const detailTemplate = createArtistDetailTemplate(artist);
                         await detailTemplate.push();
                         console.log('[ArtistsList] Artist detail pushed');
                     } catch (error) {
@@ -75,7 +79,11 @@ export function createArtistsTemplate(store: Store): ListTemplate {
     });
 }
 
-function createArtistDetailTemplate(store: Store, artist: MusicArtist): ListTemplate {
+/**
+ * Creates a detail template for a specific artist showing all their
+ * albums.
+ */
+function createArtistDetailTemplate(artist: MusicArtist): ListTemplate {
     const state = store.getState();
     
     // Find albums by this artist
@@ -93,7 +101,7 @@ function createArtistDetailTemplate(store: Store, artist: MusicArtist): ListTemp
         onPress: async () => {
             console.log('[ArtistsList] Album selected:', album.Name);
             try {
-                const detailTemplate = await createAlbumDetailTemplate(store, album);
+                const detailTemplate = await createAlbumDetailTemplate(album);
                 await detailTemplate.push();
                 console.log('[ArtistsList] Album detail pushed');
             } catch (error) {

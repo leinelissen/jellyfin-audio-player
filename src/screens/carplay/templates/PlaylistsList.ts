@@ -1,11 +1,14 @@
 import { ListTemplate, HybridAutoPlay } from '@iternio/react-native-auto-play';
-import type { Store } from '@/store';
 import type { Playlist } from '@/store/music/types';
 import { t } from '@/localisation';
 import { fetchTracksByPlaylist } from '@/store/music/actions';
 import { playTracks } from '@/utility/usePlayTracks';
+import store from '@/store';
 
-export function createPlaylistsTemplate(store: Store): ListTemplate {
+/**
+ * Creates a list template showing all user playlists with track counts.
+ */
+export function createPlaylistsTemplate(): ListTemplate {
     console.log('[PlaylistsList] Creating Playlists template...');
     
     const state = store.getState();
@@ -28,7 +31,7 @@ export function createPlaylistsTemplate(store: Store): ListTemplate {
             onPress: async () => {
                 console.log('[PlaylistsList] Playlist selected:', playlist.Name);
                 try {
-                    const detailTemplate = await createPlaylistDetailTemplate(store, playlist);
+                    const detailTemplate = await createPlaylistDetailTemplate(playlist);
                     await detailTemplate.push();
                     console.log('[PlaylistsList] Playlist detail pushed');
                 } catch (error) {
@@ -58,7 +61,12 @@ export function createPlaylistsTemplate(store: Store): ListTemplate {
     });
 }
 
-async function createPlaylistDetailTemplate(store: Store, playlist: Playlist): Promise<ListTemplate> {
+/**
+ * Creates a detail template for a specific playlist showing its tracks
+ * with play and shuffle actions. Fetches tracks from the API if they're
+ * not already in the store.
+ */
+async function createPlaylistDetailTemplate(playlist: Playlist): Promise<ListTemplate> {
     let state = store.getState();
     let trackIds = state.music.tracks.byPlaylist[playlist.Id] || [];
     
