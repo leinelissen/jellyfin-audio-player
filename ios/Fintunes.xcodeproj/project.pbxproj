@@ -13,8 +13,8 @@
 		4C04FC6E055249ABB204D3BC /* Inter-VariableFont_slnt,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B4A0465FF364579B28CF5D7 /* Inter-VariableFont_slnt,wght.ttf */; };
 		AB393FCA2857CC8400773469 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB393FC92857CC8400773469 /* SnapshotHelper.swift */; };
 		AB4A8DFE2857C8DA005A1ED0 /* FintunesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4A8DFD2857C8DA005A1ED0 /* FintunesUITests.swift */; };
-		AB7AA5F92DC8E5D600578CAC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7AA5F82DC8E5D600578CAC /* AppDelegate.swift */; };
-		AB8793212F2CE3000093DF3D /* PhoneSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB87931F2F2CE3000093DF3D /* PhoneSceneDelegate.swift */; };
+		ABD245FC2F3605DE00135530 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABD245FB2F3605DE00135530 /* AppDelegate.swift */; };
+		ABD245FE2F3605F500135530 /* PhoneSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABD245FD2F3605F500135530 /* PhoneSceneDelegate.swift */; };
 		FA01635F2599C28FC19F2EC3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3896494129CBC30258D9BB1C /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -41,9 +41,10 @@
 		AB393FC92857CC8400773469 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		AB4A8DFB2857C8DA005A1ED0 /* FintunesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FintunesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB4A8DFD2857C8DA005A1ED0 /* FintunesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FintunesUITests.swift; sourceTree = "<group>"; };
-		AB7AA5F82DC8E5D600578CAC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AB87931F2F2CE3000093DF3D /* PhoneSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSceneDelegate.swift; sourceTree = "<group>"; };
+		AB78871B2F35FDA400C6CF3D /* Fintunes-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fintunes-Bridging-Header.h"; sourceTree = "<group>"; };
 		AB8793222F2D399F0093DF3D /* Fintunes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Fintunes.entitlements; path = Fintunes/Fintunes.entitlements; sourceTree = "<group>"; };
+		ABD245FB2F3605DE00135530 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Fintunes/AppDelegate.swift; sourceTree = "<group>"; };
+		ABD245FD2F3605F500135530 /* PhoneSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSceneDelegate.swift; sourceTree = "<group>"; };
 		E22EC545298DA9F9017776C0 /* libPods-Fintunes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Fintunes.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -71,13 +72,14 @@
 		13B07FAE1A68108700A75B9A /* Fintunes */ = {
 			isa = PBXGroup;
 			children = (
+				ABD245FD2F3605F500135530 /* PhoneSceneDelegate.swift */,
+				ABD245FB2F3605DE00135530 /* AppDelegate.swift */,
 				AB8793222F2D399F0093DF3D /* Fintunes.entitlements */,
-				AB87931F2F2CE3000093DF3D /* PhoneSceneDelegate.swift */,
-				AB7AA5F82DC8E5D600578CAC /* AppDelegate.swift */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				3896494129CBC30258D9BB1C /* PrivacyInfo.xcprivacy */,
+				AB78871B2F35FDA400C6CF3D /* Fintunes-Bridging-Header.h */,
 			);
 			name = Fintunes;
 			sourceTree = "<group>";
@@ -204,7 +206,7 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = HD2D35G9Y4;
-						LastSwiftMigration = 1210;
+						LastSwiftMigration = 2620;
 						ProvisioningStyle = Manual;
 					};
 					AB4A8DFA2857C8DA005A1ED0 = {
@@ -355,8 +357,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB8793212F2CE3000093DF3D /* PhoneSceneDelegate.swift in Sources */,
-				AB7AA5F92DC8E5D600578CAC /* AppDelegate.swift in Sources */,
+				ABD245FE2F3605F500135530 /* PhoneSceneDelegate.swift in Sources */,
+				ABD245FC2F3605DE00135530 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +428,7 @@
 				PRODUCT_NAME = Fintunes;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "nl.moeilijkedingen.jellyfinaudioplayer AppStore 17";
+				SWIFT_OBJC_BRIDGING_HEADER = "Fintunes-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -462,6 +465,7 @@
 				PROVISIONING_PROFILE = "915c5213-22f6-4f9d-8065-2a06300f9bfb";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "nl.moeilijkedingen.jellyfinaudioplayer AppStore 17";
+				SWIFT_OBJC_BRIDGING_HEADER = "Fintunes-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

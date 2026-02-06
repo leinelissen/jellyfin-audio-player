@@ -31,6 +31,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     return true
   }
+
+  @objc func getRootViewForAutoplay(
+    moduleName: String,
+    initialProperties: [String: Any]?
+  ) -> UIView? {
+    if RCTIsNewArchEnabled() {
+      if let factory = reactNativeFactory?.rootViewFactory as? RCTRootViewFactory {
+         return factory.view(
+          withModuleName: moduleName,
+          initialProperties: initialProperties,
+          launchOptions: nil
+        )
+      }
+      
+      return reactNativeFactory?.rootViewFactory.view(
+        withModuleName: moduleName,
+        initialProperties: initialProperties
+      )
+    }
+
+    if let rootView = window?.rootViewController?.view as? RCTRootView {
+      return RCTRootView(
+        bridge: rootView.bridge,
+        moduleName: moduleName,
+        initialProperties: initialProperties
+      )
+    }
+
+    return nil
+  }
 }
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
