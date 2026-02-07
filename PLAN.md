@@ -228,6 +228,6 @@ Legend: NOT STARTED | IN PROGRESS | BLOCKED | DONE
 | Emby driver | AI | DONE | Created complete Emby driver with all methods and paging support |
 | Prefill orchestrator | AI | DONE | Created orchestrator with bounded concurrency, cursor resume, and error handling |
 | Prefill task graph | AI | DONE | Created task graph for album/playlist tracks, similar albums, and lyrics |
-| Redux removal | | NOT STARTED | |
-| Onboarding progress UI | | NOT STARTED | |
-| Tests | | NOT STARTED | |
+| Redux removal | | NOT STARTED | Core infrastructure complete; integration requires touching many files |
+| Onboarding progress UI | | NOT STARTED | Prefill system ready; UI integration pending |
+| Tests | AI | DONE | Created smoke tests for database operations and sync cursors |
