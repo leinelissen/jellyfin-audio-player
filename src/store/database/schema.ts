@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, index } from 'drizzle-orm/op-sqlite';
+import { sqliteTable, text, integer, index, primaryKey } from 'drizzle-orm/op-sqlite';
 
 // Artists table
 export const artists = sqliteTable(
@@ -116,6 +116,9 @@ export const playlist_tracks = sqliteTable(
       .$defaultFn(() => new Date()),
   },
   (table) => ({
+    // Composite primary key ensures each position in a playlist is unique
+    // Allows the same track multiple times at different positions
+    pk: primaryKey({ columns: [table.playlist_id, table.position] }),
     playlistIdIdx: index('playlist_tracks_playlist_id_idx').on(
       table.playlist_id
     ),
