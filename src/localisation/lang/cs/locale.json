@@ -83,5 +83,11 @@
     "direct-play": "Přímé přehrávání",
     "transcoded": "Překódované",
     "khz": "kHz",
-    "kbps": "kbps"
+    "kbps": "kbps",
+    "browse": "Procházet",
+    "play": "Přehrát",
+    "shuffle": "Zamíchat",
+    "tracks": "skladeb",
+    "unknown-artist": "Neznámý interpret",
+    "unknown-track": "Neznámá skladba"
 }

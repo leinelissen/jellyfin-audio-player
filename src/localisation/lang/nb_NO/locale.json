@@ -82,5 +82,11 @@
     "lyrics": "Sangtekster",
     "khz": "kHz",
     "kbps": "kbps",
-    "transcoded": "Transkodet"
+    "transcoded": "Transkodet",
+    "browse": "Bla gjennom",
+    "play": "Spill",
+    "shuffle": "Stokk",
+    "tracks": "spor",
+    "unknown-artist": "Ukjent artist",
+    "unknown-track": "Ukjent spor"
 }

@@ -83,5 +83,11 @@
     "why-use-tracking": "為什麼要使用跟蹤？",
     "why-use-tracking-description": "跟蹤透過報告奇怪的邊緣案例和疏忽來幫助加快此應用程式的開發。 這有助於使應用程式更加穩定和強大，從而改善每個人的應用程式體驗。",
     "what-data-is-gathered": "收集了哪些資料？",
-    "enable-error-reporting-description": "這透過向我們傳送崩潰和錯誤報告來幫助改善應用程式體驗。"
+    "enable-error-reporting-description": "這透過向我們傳送崩潰和錯誤報告來幫助改善應用程式體驗。",
+    "browse": "瀏覽",
+    "play": "播放",
+    "shuffle": "隨機播放",
+    "tracks": "曲目",
+    "unknown-artist": "未知藝術家",
+    "unknown-track": "未知曲目"
 }

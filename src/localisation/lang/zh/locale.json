@@ -83,5 +83,11 @@
     "direct-play": "直接播放",
     "transcoded": "转码",
     "khz": "kHz",
-    "kbps": "kbps"
+    "kbps": "kbps",
+    "browse": "浏览",
+    "play": "播放",
+    "shuffle": "随机播放",
+    "tracks": "曲目",
+    "unknown-artist": "未知艺术家",
+    "unknown-track": "未知曲目"
 }

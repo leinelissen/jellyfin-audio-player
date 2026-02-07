@@ -166,6 +166,7 @@ export interface Playlist {
     BackdropImageTags: any[];
     LocationType: string;
     MediaType: string;
+    ChildCount?: number;
     Tracks?: string[];
     lastRefreshed?: number;
 }

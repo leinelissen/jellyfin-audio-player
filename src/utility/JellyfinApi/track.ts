@@ -1,7 +1,7 @@
 import { AlbumTrack, CodecMetadata } from '@/store/music/types';
 import { Platform } from 'react-native';
 import { Track } from 'react-native-track-player';
-import { asyncFetchStore, fetchApi, getImage } from './lib';
+import { asyncFetchStore, fetchApi, getImage, generateConfig } from './lib';
 
 const trackOptionsOsOverrides: Record<typeof Platform.OS, Record<string, string>> = {
     ios: {
@@ -49,6 +49,11 @@ export function generateTrackUrl(trackId: string) {
 export async function generateTrack(track: AlbumTrack): Promise<Track> {
     // Also construct the URL for the stream
     const url = generateTrackUrl(track.Id);
+    
+    // Get credentials and generate authentication headers
+    const credentials = asyncFetchStore().getState().settings.credentials;
+    const config = generateConfig(credentials);
+    const headers = config.headers;
 
     return {
         url,
@@ -58,6 +63,7 @@ export async function generateTrack(track: AlbumTrack): Promise<Track> {
         album: track.Album,
         duration: track.RunTimeTicks,
         artwork: getImage(track),
+        headers,
         bitRate: baseTrackOptions.audioBitRate,
     };
 }

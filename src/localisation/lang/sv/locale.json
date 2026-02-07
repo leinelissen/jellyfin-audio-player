@@ -83,5 +83,11 @@
     "direct-play": "Direkt spel",
     "transcoded": "Transkodning",
     "khz": "kHz",
-    "kbps": "kb/s"
+    "kbps": "kb/s",
+    "browse": "Bläddra",
+    "play": "Spela",
+    "shuffle": "Blanda",
+    "tracks": "spår",
+    "unknown-artist": "Okänd artist",
+    "unknown-track": "Okänt spår"
 }

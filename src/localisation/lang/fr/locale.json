@@ -83,5 +83,11 @@
     "direct-play": "Lecture directe",
     "transcoded": "Converti",
     "khz": "kHz",
-    "kbps": "kbps"
+    "kbps": "kbps",
+    "browse": "Parcourir",
+    "play": "Lire",
+    "shuffle": "Aléatoire",
+    "tracks": "pistes",
+    "unknown-artist": "Artiste inconnu",
+    "unknown-track": "Piste inconnue"
 }

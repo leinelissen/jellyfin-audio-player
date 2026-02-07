@@ -83,5 +83,11 @@
     "direct-play": "Reprodução Direta",
     "transcoded": "Transcodificado",
     "khz": "kHz",
-    "retry-failed-downloads": "Tentar Transferir Novamente"
+    "retry-failed-downloads": "Tentar Transferir Novamente",
+    "browse": "Explorar",
+    "play": "Reproduzir",
+    "shuffle": "Aleatório",
+    "tracks": "faixas",
+    "unknown-artist": "Artista Desconhecido",
+    "unknown-track": "Faixa Desconhecida"
 }

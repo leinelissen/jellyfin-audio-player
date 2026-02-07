@@ -83,5 +83,11 @@
     "kbps": "kbps",
     "transcoded": "Транскодиран",
     "khz": "kHz",
-    "direct-play": "Direct play"
+    "direct-play": "Direct play",
+    "browse": "Преглед",
+    "play": "Възпроизвеждане",
+    "shuffle": "Разбъркай",
+    "tracks": "песни",
+    "unknown-artist": "Неизвестен изпълнител",
+    "unknown-track": "Неизвестна песен"
 }

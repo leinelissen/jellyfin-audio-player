@@ -83,5 +83,11 @@
     "direct-play": "Direkte Wiedergabe",
     "transcoded": "Transkodiert",
     "khz": "kHz",
-    "kbps": "kbps"
+    "kbps": "kbps",
+    "browse": "Durchsuchen",
+    "play": "Abspielen",
+    "shuffle": "Zufällig",
+    "tracks": "Titel",
+    "unknown-artist": "Unbekannter Künstler",
+    "unknown-track": "Unbekannter Titel"
 }

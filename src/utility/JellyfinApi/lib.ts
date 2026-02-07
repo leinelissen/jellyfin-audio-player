@@ -19,7 +19,7 @@ const deviceMap: Record<typeof Platform['OS'], string> = {
  * from the Redux store to a HTTP Header that authenticates the user against the
  * Jellyfin server.
  */
-function generateConfig(credentials: Credentials): RequestInit {
+export function generateConfig(credentials: Credentials): RequestInit {
     switch (credentials?.type) {
         case 'jellyfin':
             return {

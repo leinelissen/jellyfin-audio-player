@@ -83,5 +83,11 @@
     "direct-play": "Dyrektywa",
     "transcoded": "Transcode",
     "khz": "kHz",
-    "kbps": "kbps"
+    "kbps": "kbps",
+    "browse": "Przeglądaj",
+    "play": "Odtwórz",
+    "shuffle": "Losowo",
+    "tracks": "utworów",
+    "unknown-artist": "Nieznany artysta",
+    "unknown-track": "Nieznany utwór"
 }

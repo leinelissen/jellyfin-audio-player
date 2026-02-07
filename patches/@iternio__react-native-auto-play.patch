@@ -1,0 +1,114 @@
+diff --git a/android/src/main/java/com/margelo/nitro/swe/iternio/reactnativeautoplay/AndroidAutoScreen.kt b/android/src/main/java/com/margelo/nitro/swe/iternio/reactnativeautoplay/AndroidAutoScreen.kt
+index 19eb2de81576c4c9df9f0353f9dc7aef3f5fd1b5..8b9db9044e40c405fb8d166829eebe8391357150 100644
+--- a/android/src/main/java/com/margelo/nitro/swe/iternio/reactnativeautoplay/AndroidAutoScreen.kt
++++ b/android/src/main/java/com/margelo/nitro/swe/iternio/reactnativeautoplay/AndroidAutoScreen.kt
+@@ -124,7 +124,14 @@ class AndroidAutoScreen(
+         }
+ 
+         fun getScreenManager(): ScreenManager? {
+-            return screens[AndroidAutoSession.ROOT_SESSION]?.screenManager
++            // First try to get the ROOT_SESSION screen
++            val rootScreen = screens[AndroidAutoSession.ROOT_SESSION]
++            if (rootScreen != null) {
++                return rootScreen.screenManager
++            }
++            // If ROOT_SESSION doesn't exist, get any screen's screenManager
++            // (after setRootTemplate, the root might be under a different key)
++            return screens.values.firstOrNull()?.screenManager
+         }
+ 
+         fun invalidateScreens() {
+diff --git a/ios/extensions/CarPlayTemplateExtensions.swift b/ios/extensions/CarPlayTemplateExtensions.swift
+index e15d37c34acc692ead9a39e962242e46e3aea525..73ac36aeee867dca7e8c8a6bbe9f79cc254a5e30 100644
+--- a/ios/extensions/CarPlayTemplateExtensions.swift
++++ b/ios/extensions/CarPlayTemplateExtensions.swift
+@@ -18,8 +18,8 @@ extension CPTemplate {
+         self.init()
+         initTemplate(template: self, id: id)
+     }
+-    @objc var id: String {
+-        return (self.userInfo as? [String: Any])?["id"] as! String
++    @objc var id: String? {
++        return (self.userInfo as? [String: Any])?["id"] as? String
+     }
+ }
+ 
+diff --git a/ios/scenes/AutoPlayInterfaceController.swift b/ios/scenes/AutoPlayInterfaceController.swift
+index 5008b1ed3790e2d2798317aaeb4df3e65378dbce..927288c8a13bcdbc370cb48c3868c7aa57d89e33 100644
+--- a/ios/scenes/AutoPlayInterfaceController.swift
++++ b/ios/scenes/AutoPlayInterfaceController.swift
+@@ -90,7 +90,9 @@ class AutoPlayInterfaceController: NSObject, CPInterfaceControllerDelegate {
+         var templateIds: [String] = []
+ 
+         templates.forEach { template in
+-            let templateId = template.id
++            guard let templateId = template.id else {
++                return
++            }
+ 
+             if templateId == rootTemplateId {
+                 return
+@@ -117,12 +119,12 @@ class AutoPlayInterfaceController: NSObject, CPInterfaceControllerDelegate {
+     {
+         guard
+             let template = interfaceController.templates.first(
+-                where: {
+-                    templateId == $0.id
++                where: { template in
++                    template.id == templateId
+                 })
+         else { return [] }
+ 
+-        var templateIds: [String] = interfaceController.templates.map {
++        var templateIds: [String] = interfaceController.templates.compactMap {
+             template in template.id
+         }
+ 
+@@ -173,7 +175,10 @@ class AutoPlayInterfaceController: NSObject, CPInterfaceControllerDelegate {
+         _ aTemplate: CPTemplate,
+         animated: Bool
+     ) {
+-        let templateId = aTemplate.id
++        guard let templateId = aTemplate.id else {
++            // System template without ID (e.g., CPNowPlayingTemplate)
++            return
++        }
+ 
+         try? RootModule.withAutoPlayTemplate(templateId: templateId) {
+             (template: AutoPlayTemplate) in
+@@ -187,7 +192,10 @@ class AutoPlayInterfaceController: NSObject, CPInterfaceControllerDelegate {
+         _ aTemplate: CPTemplate,
+         animated: Bool
+     ) {
+-        let templateId = aTemplate.id
++        guard let templateId = aTemplate.id else {
++            // System template without ID (e.g., CPNowPlayingTemplate)
++            return
++        }
+ 
+         if rootTemplateId == templateId {
+             // this makes sure we purge outdated CPSearchTemplate since that one can be popped on with a CarPlay native button we can not intercept
+@@ -210,7 +218,10 @@ class AutoPlayInterfaceController: NSObject, CPInterfaceControllerDelegate {
+         _ aTemplate: CPTemplate,
+         animated: Bool
+     ) {
+-        let templateId = aTemplate.id
++        guard let templateId = aTemplate.id else {
++            // System template without ID (e.g., CPNowPlayingTemplate)
++            return
++        }
+ 
+         try? RootModule.withAutoPlayTemplate(
+             templateId: templateId,
+@@ -228,7 +239,10 @@ class AutoPlayInterfaceController: NSObject, CPInterfaceControllerDelegate {
+         _ aTemplate: CPTemplate,
+         animated: Bool
+     ) {
+-        let templateId = aTemplate.id
++        guard let templateId = aTemplate.id else {
++            // System template without ID (e.g., CPNowPlayingTemplate)
++            return
++        }
+ 
+         try? RootModule.withAutoPlayTemplate(
+             templateId: templateId,

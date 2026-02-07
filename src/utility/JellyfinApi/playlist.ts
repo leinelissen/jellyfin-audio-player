@@ -6,7 +6,7 @@ const playlistOptions = {
     SortOrder: 'Ascending',
     IncludeItemTypes: 'Playlist',
     Recursive: 'true',
-    Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated',
+    Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated,ChildCount',
     ImageTypeLimit: '1',
     EnableImageTypes: 'Primary,Backdrop,Banner,Thumb'
 };
