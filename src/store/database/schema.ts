@@ -15,7 +15,6 @@ export const artists = sqliteTable(
       .$defaultFn(() => new Date()),
   },
   (table) => ({
-    jellyfinIdIdx: index('artists_jellyfin_id_idx').on(table.jellyfin_id),
     nameIdx: index('artists_name_idx').on(table.name),
   })
 );
@@ -41,7 +40,6 @@ export const albums = sqliteTable(
       .$defaultFn(() => new Date()),
   },
   (table) => ({
-    jellyfinIdIdx: index('albums_jellyfin_id_idx').on(table.jellyfin_id),
     artistIdIdx: index('albums_artist_id_idx').on(table.artist_id),
     nameIdx: index('albums_name_idx').on(table.name),
     yearIdx: index('albums_year_idx').on(table.year),
@@ -72,7 +70,6 @@ export const tracks = sqliteTable(
       .$defaultFn(() => new Date()),
   },
   (table) => ({
-    jellyfinIdIdx: index('tracks_jellyfin_id_idx').on(table.jellyfin_id),
     albumIdIdx: index('tracks_album_id_idx').on(table.album_id),
     artistIdIdx: index('tracks_artist_id_idx').on(table.artist_id),
     nameIdx: index('tracks_name_idx').on(table.name),
@@ -95,7 +92,6 @@ export const playlists = sqliteTable(
       .$defaultFn(() => new Date()),
   },
   (table) => ({
-    jellyfinIdIdx: index('playlists_jellyfin_id_idx').on(table.jellyfin_id),
     nameIdx: index('playlists_name_idx').on(table.name),
   })
 );
