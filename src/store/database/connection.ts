@@ -56,18 +56,26 @@ const initializeDatabase = async () => {
 
 // Initialize database and export
 let dbInstance: ReturnType<typeof drizzle<typeof schema>> | null = null;
+let initializationPromise: Promise<ReturnType<typeof drizzle<typeof schema>>> | null = null;
 
 export const getDatabase = async () => {
-  if (!dbInstance) {
-    dbInstance = await initializeDatabase();
+  if (dbInstance) {
+    return dbInstance;
   }
+  
+  // Prevent race condition by reusing the same initialization promise
+  if (!initializationPromise) {
+    initializationPromise = initializeDatabase();
+  }
+  
+  dbInstance = await initializationPromise;
   return dbInstance;
 };
 
 // Export for synchronous access after initialization
 // Note: This will be undefined until getDatabase() completes
 // Consumers should use getDatabase() for guaranteed initialization
-export let db: ReturnType<typeof drizzle<typeof schema>> | undefined = undefined;
+export let db: ReturnType<typeof drizzle<typeof schema>> | undefined;
 
 // Initialize immediately
 getDatabase()
