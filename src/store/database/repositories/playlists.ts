@@ -1,4 +1,4 @@
-import { eq, like, desc, asc, and, sql } from 'drizzle-orm';
+import { eq, like, desc, asc, and } from 'drizzle-orm';
 import { getDatabase } from '../connection';
 import { playlists, Playlist, NewPlaylist, playlist_tracks, PlaylistTrack, NewPlaylistTrack, tracks, Track } from '../schema';
 
