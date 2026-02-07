@@ -226,8 +226,8 @@ Legend: NOT STARTED | IN PROGRESS | BLOCKED | DONE
 | Driver interfaces + types | AI | DONE | Created types.ts with Source, Driver interface, and all entity types |
 | Jellyfin driver | AI | DONE | Created complete Jellyfin driver with all methods and paging support |
 | Emby driver | AI | DONE | Created complete Emby driver with all methods and paging support |
-| Prefill orchestrator | | NOT STARTED | |
-| Prefill task graph | | NOT STARTED | |
+| Prefill orchestrator | AI | DONE | Created orchestrator with bounded concurrency, cursor resume, and error handling |
+| Prefill task graph | AI | DONE | Created task graph for album/playlist tracks, similar albums, and lyrics |
 | Redux removal | | NOT STARTED | |
 | Onboarding progress UI | | NOT STARTED | |
 | Tests | | NOT STARTED | |
