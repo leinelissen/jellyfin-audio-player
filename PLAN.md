@@ -220,10 +220,10 @@ Legend: NOT STARTED | IN PROGRESS | BLOCKED | DONE
 
 | Area | Owner | Status | Notes |
 | --- | --- | --- | --- |
-| Schema + migrations | | NOT STARTED | |
-| SQLite access layer | | NOT STARTED | |
-| Live queries shim | | NOT STARTED | |
-| Driver interfaces + types | | NOT STARTED | |
+| Schema + migrations | AI | DONE | Created schema.ts with all tables and indexes per spec |
+| SQLite access layer | AI | DONE | Created client.ts with DB init, migrations, and query helpers |
+| Live queries shim | AI | DONE | Created live-queries.ts with reactive query support |
+| Driver interfaces + types | AI | DONE | Created types.ts with Source, Driver interface, and all entity types |
 | Jellyfin driver | | NOT STARTED | |
 | Emby driver | | NOT STARTED | |
 | Prefill orchestrator | | NOT STARTED | |
