@@ -65,7 +65,9 @@ export const getDatabase = async () => {
 };
 
 // Export for synchronous access after initialization
-export let db: ReturnType<typeof drizzle<typeof schema>>;
+// Note: This will be undefined until getDatabase() completes
+// Consumers should use getDatabase() for guaranteed initialization
+export let db: ReturnType<typeof drizzle<typeof schema>> | undefined = undefined;
 
 // Initialize immediately
 getDatabase()
