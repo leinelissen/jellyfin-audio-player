@@ -25,7 +25,7 @@ PODS:
   - libwebp/sharpyuv (1.3.2)
   - libwebp/webp (1.3.2):
     - libwebp/sharpyuv
-  - NitroModules (0.33.2):
+  - NitroModules (0.33.7):
     - boost
     - DoubleConversion
     - fast_float
@@ -1968,8 +1968,34 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-netinfo (11.4.1):
+  - react-native-netinfo (11.5.2):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - react-native-safe-area-context (5.6.2):
     - boost
     - DoubleConversion
@@ -2675,7 +2701,7 @@ PODS:
     - React-perflogger (= 0.83.1)
     - React-utils (= 0.83.1)
     - SocketRocket
-  - ReactNativeAutoPlay (0.2.0-alpha.14):
+  - ReactNativeAutoPlay (0.2.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -2973,7 +2999,7 @@ PODS:
     - RNWorklets
     - SocketRocket
     - Yoga
-  - RNScreens (4.20.0):
+  - RNScreens (4.22.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3000,10 +3026,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNScreens/common (= 4.20.0)
+    - RNScreens/common (= 4.22.0)
     - SocketRocket
     - Yoga
-  - RNScreens/common (4.20.0):
+  - RNScreens/common (4.22.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3062,7 +3088,7 @@ PODS:
     - Sentry/HybridSDK (= 8.58.0)
     - SocketRocket
     - Yoga
-  - RNSVG (15.15.1):
+  - RNSVG (15.15.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -3088,10 +3114,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNSVG/common (= 15.15.1)
+    - RNSVG/common (= 15.15.2)
     - SocketRocket
     - Yoga
-  - RNSVG/common (15.15.1):
+  - RNSVG/common (15.15.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -3550,7 +3576,7 @@ SPEC CHECKSUMS:
   libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
   libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
-  NitroModules: 11bba9d065af151eae51e38a6425e04c3b223ff3
+  NitroModules: e8ec707a245a85cf1eb4289f91a9372f9590a897
   RCT-Folly: 846fda9475e61ec7bcbf8a3fe81edfcaeb090669
   RCTDeprecation: a41bbdd9af30bf2e5715796b313e44ec43eefff1
   RCTRequired: 7be34aabb0b77c3cefe644528df0fa0afad4e4d0
@@ -3589,7 +3615,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 7b72a669e94662359dad4f42b5af005eb24b4e83
   React-microtasksnativemodule: cdc02da075f2857803ed63f24f5f72fc40e094c0
   react-native-accessibility-settings: 8803c0bd7e1724269bf0ac5064be51773c05df9f
-  react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
+  react-native-netinfo: 57447b5a45c98808f8eae292cf641f3d91d13830
   react-native-safe-area-context: c00143b4823773bba23f2f19f85663ae89ceb460
   react-native-skia: b60d0b9d9aea330baef956b7f015d0af2b42076d
   react-native-track-player: dd56f9948e03756a217c75e0a61aa04aab65b5a1
@@ -3627,7 +3653,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 0eb286cc274abb059ee601b862ebddac2e681d01
   ReactCodegen: 3d48510bcef445f6403c0004047d4d9cbb915435
   ReactCommon: ac934cb340aee91282ecd6f273a26d24d4c55cae
-  ReactNativeAutoPlay: aebb314dc80e54f333c6d010ab703c9d7404a813
+  ReactNativeAutoPlay: c7130c09e5c07962d26fcee8dfa53ebc78a40eb4
   ReactNativeBlur: 500e90ffcc66e89a3a27a6f3a50a7b765ac1f145
   RNCAsyncStorage: 29f0230e1a25f36c20b05f65e2eb8958d6526e82
   RNDateTimePicker: 97a86d7c8b51f2d51f694a9dddfe5996dfd9a407
@@ -3636,9 +3662,9 @@ SPEC CHECKSUMS:
   RNGestureHandler: cd4be101cfa17ea6bbd438710caa02e286a84381
   RNLocalize: 23e6689ec46c6cba49eb8cde959e30e49160a35b
   RNReanimated: 292cd58688552a22b3fc1cefcfbc49b336dfed68
-  RNScreens: 714e10b6b554f7dc7ad9f78dcf36dc8e3fc73415
+  RNScreens: c77cc7a5d1fbc23f0725b54e96eec81118453382
   RNSentry: a4c81a5c5bcd58d765126726432348e60cd7183d
-  RNSVG: ba3c3bc3cf413f32d1a7012274fe503c6fc1eadd
+  RNSVG: a4ea97e14b7a2221d85091a6b3128f807445a7ec
   RNWorklets: 01efdd402d236a13651ea5ea5437ca85a44e7afa
   SDWebImage: e9c98383c7572d713c1a0d7dd2783b10599b9838
   SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
@@ -3651,4 +3677,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 6a682416f7f6211f886377fb2fc779f7cc934826
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
