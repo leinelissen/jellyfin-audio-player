@@ -224,8 +224,8 @@ Legend: NOT STARTED | IN PROGRESS | BLOCKED | DONE
 | SQLite access layer | AI | DONE | Created client.ts with DB init, migrations, and query helpers |
 | Live queries shim | AI | DONE | Created live-queries.ts with reactive query support |
 | Driver interfaces + types | AI | DONE | Created types.ts with Source, Driver interface, and all entity types |
-| Jellyfin driver | | NOT STARTED | |
-| Emby driver | | NOT STARTED | |
+| Jellyfin driver | AI | DONE | Created complete Jellyfin driver with all methods and paging support |
+| Emby driver | AI | DONE | Created complete Emby driver with all methods and paging support |
 | Prefill orchestrator | | NOT STARTED | |
 | Prefill task graph | | NOT STARTED | |
 | Redux removal | | NOT STARTED | |
