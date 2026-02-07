@@ -83,5 +83,9 @@ getDatabase()
     db = instance;
   })
   .catch((error) => {
-    console.error('[Database] Fatal initialization error:', error);
+    console.error(
+      '[Database] Fatal initialization error: Database failed to initialize. ' +
+      'Please restart the application or check storage permissions.',
+      error
+    );
   });
