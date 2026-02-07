@@ -120,12 +120,6 @@ export const playlist_tracks = sqliteTable(
       table.playlist_id
     ),
     trackIdIdx: index('playlist_tracks_track_id_idx').on(table.track_id),
-    positionIdx: index('playlist_tracks_position_idx').on(table.position),
-    // Composite index for efficient queries
-    playlistTrackIdx: index('playlist_tracks_playlist_track_idx').on(
-      table.playlist_id,
-      table.track_id
-    ),
   })
 );
 
