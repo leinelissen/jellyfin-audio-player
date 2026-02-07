@@ -7,6 +7,7 @@ import { liveQueryManager, QueryFn } from './live-query';
 
 /**
  * Generic hook for live queries with automatic re-rendering
+ * Note: queryFn must be memoized (e.g., with useCallback) by the caller
  */
 export function useLiveQuery<T>(
   queryFn: QueryFn<T>,
@@ -34,7 +35,9 @@ export function useLiveQuery<T>(
     return () => {
       unsubscribe();
     };
-  }, [queryKey, queryFn, trigger]);
+    // queryFn is intentionally excluded - caller must memoize it
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryKey, trigger]);
 
   // Get current state
   const state = liveQueryManager.getQueryState<T>(queryKey);

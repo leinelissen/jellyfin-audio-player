@@ -15,14 +15,15 @@ import {
   invalidateQueries,
   useLiveQuery,
   getDatabase,
+  albums,
 } from '@/store/database';
-import type { Album, Artist, Track, Playlist } from '@/store/database';
+import type { Album } from '@/store/database';
 
 /**
  * Example 1: Basic usage with useAlbums
  */
 export function AlbumsListExample() {
-  const { data: albums, isLoading, error, refetch } = useAlbums();
+  const { data: albumsList, isLoading, error, refetch } = useAlbums();
 
   if (isLoading) {
     return <ActivityIndicator size="large" />;
@@ -40,7 +41,7 @@ export function AlbumsListExample() {
   return (
     <View>
       <FlatList
-        data={albums || []}
+        data={albumsList || []}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View>
@@ -86,7 +87,7 @@ export function RecentAlbumsExample() {
     const db = await getDatabase();
     // Custom query - get most recent 20 albums
     const result = await db.query.albums.findMany({
-      orderBy: (albums, { desc }) => [desc(albums.created_at)],
+      orderBy: (albumsTable, { desc }) => [desc(albumsTable.created_at)],
       limit: 20,
     });
     return result;
@@ -162,18 +163,18 @@ export function AddAlbumExample() {
  * Example 5: Multiple queries in one component
  */
 export function LibraryStatsExample() {
-  const { data: albums } = useAlbums();
-  const { data: artists } = useArtists();
-  const { data: tracks } = useTracks();
-  const { data: playlists } = usePlaylists();
+  const { data: albumsList } = useAlbums();
+  const { data: artistsList } = useArtists();
+  const { data: tracksList } = useTracks();
+  const { data: playlistsList } = usePlaylists();
 
   return (
     <View>
       <Text>Library Statistics</Text>
-      <Text>Albums: {albums?.length || 0}</Text>
-      <Text>Artists: {artists?.length || 0}</Text>
-      <Text>Tracks: {tracks?.length || 0}</Text>
-      <Text>Playlists: {playlists?.length || 0}</Text>
+      <Text>Albums: {albumsList?.length || 0}</Text>
+      <Text>Artists: {artistsList?.length || 0}</Text>
+      <Text>Tracks: {tracksList?.length || 0}</Text>
+      <Text>Playlists: {playlistsList?.length || 0}</Text>
     </View>
   );
 }
@@ -187,7 +188,7 @@ export function ArtistWithAlbumsExample({ artistId }: { artistId: number }) {
     
     // Get artist with their albums
     const artist = await db.query.artists.findFirst({
-      where: (artists, { eq }) => eq(artists.id, artistId),
+      where: (artistsTable, { eq }) => eq(artistsTable.id, artistId),
       with: {
         albums: true,
       },

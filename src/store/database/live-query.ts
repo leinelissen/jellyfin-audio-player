@@ -9,6 +9,7 @@ interface QueryEntry<T = any> {
   data: T | null;
   error: Error | null;
   isLoading: boolean;
+  hasExecuted: boolean; // Track if query has run at least once
   listeners: Set<() => void>;
 }
 
@@ -39,6 +40,7 @@ class LiveQueryManager {
         data: null,
         error: null,
         isLoading: false,
+        hasExecuted: false,
         listeners: new Set(),
       };
       this.queries.set(key, entry);
@@ -47,8 +49,8 @@ class LiveQueryManager {
     // Add listener
     entry.listeners.add(listener);
 
-    // Execute query if not already running
-    if (!entry.isLoading && entry.data === null && entry.error === null) {
+    // Execute query if not already executed or running
+    if (!entry.isLoading && !entry.hasExecuted) {
       this.executeQuery(key);
     }
 
@@ -79,9 +81,11 @@ class LiveQueryManager {
       const data = await entry.queryFn();
       entry.data = data;
       entry.error = null;
+      entry.hasExecuted = true;
     } catch (error) {
       entry.error = error as Error;
       entry.data = null;
+      entry.hasExecuted = true;
       console.error(`[LiveQuery] Query error for key "${key}":`, error);
     } finally {
       entry.isLoading = false;
@@ -143,7 +147,7 @@ class LiveQueryManager {
       const entry = this.queries.get(key);
       
       // If query is already cached and not loading, return cached data
-      if (entry && entry.data !== null && !entry.isLoading) {
+      if (entry && entry.hasExecuted && !entry.isLoading) {
         return entry.data as T;
       }
 
@@ -154,6 +158,7 @@ class LiveQueryManager {
         data: null,
         error: null,
         isLoading: true,
+        hasExecuted: false,
         listeners: new Set(),
       };
       
@@ -163,10 +168,12 @@ class LiveQueryManager {
         const data = await queryFn();
         tempEntry.data = data;
         tempEntry.isLoading = false;
+        tempEntry.hasExecuted = true;
         return data;
       } catch (error) {
         tempEntry.error = error as Error;
         tempEntry.isLoading = false;
+        tempEntry.hasExecuted = true;
         throw error;
       }
     };
