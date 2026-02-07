@@ -157,8 +157,6 @@ function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean })
         return null;
     }
 
-    console.log(defaultStyles.view.backgroundColor);
-
     return (
         <Container
             style={[{ 

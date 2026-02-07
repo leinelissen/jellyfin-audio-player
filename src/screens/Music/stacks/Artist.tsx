@@ -73,8 +73,6 @@ export default function Artist() {
         });
     }, [allAlbumIds, albums, params.id]);
 
-    // console.log(artist);
-
     // Initialise helpers
     const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
