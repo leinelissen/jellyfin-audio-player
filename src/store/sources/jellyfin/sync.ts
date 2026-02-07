@@ -393,12 +393,13 @@ async function transformAlbum(
   }
 
   if (!artist) {
-    // Create unknown artist
+    // Create unknown artist with unique ID
+    const uniqueSuffix = Date.now().toString(36);
     [artist] = await db
       .insert(artists)
       .values({
         name: artistName,
-        jellyfin_id: `unknown-${artistName.toLowerCase().replace(/\s+/g, '-')}`,
+        jellyfin_id: `unknown-${artistName.toLowerCase().replace(/\s+/g, '-')}-${uniqueSuffix}`,
       })
       .returning();
   }

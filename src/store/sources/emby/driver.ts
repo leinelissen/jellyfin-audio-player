@@ -58,7 +58,7 @@ async function withRetry<T>(
   throw new Error(errorMessage);
 }
 
-function buildQueryString(params?: EmbyPaginationParams): string {
+function buildPaginationParams(params?: EmbyPaginationParams): string {
   if (!params) return '';
 
   const queryParams: string[] = [];
@@ -71,7 +71,7 @@ function buildQueryString(params?: EmbyPaginationParams): string {
     queryParams.push(`Limit=${params.limit}`);
   }
 
-  return queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+  return queryParams.length > 0 ? `&${queryParams.join('&')}` : '';
 }
 
 export async function fetchAlbums(
@@ -80,9 +80,9 @@ export async function fetchAlbums(
 ): Promise<EmbyAlbumsResponse> {
   return withRetry(
     () => {
-      const queryString = buildQueryString(params);
+      const paginationParams = buildPaginationParams(params);
       return fetchApi<EmbyAlbumsResponse>(
-        `/Users/${userId}/Items${queryString}&IncludeItemTypes=MusicAlbum&Recursive=true&Fields=ProductionYear&SortBy=SortName&SortOrder=Ascending`
+        `/Users/${userId}/Items?IncludeItemTypes=MusicAlbum&Recursive=true&Fields=ProductionYear&SortBy=SortName&SortOrder=Ascending${paginationParams}`
       );
     },
     'fetchAlbums'
@@ -95,9 +95,9 @@ export async function fetchArtists(
 ): Promise<EmbyArtistsResponse> {
   return withRetry(
     () => {
-      const queryString = buildQueryString(params);
+      const paginationParams = buildPaginationParams(params);
       return fetchApi<EmbyArtistsResponse>(
-        `/Artists${queryString}&UserId=${userId}&Recursive=true&SortBy=SortName&SortOrder=Ascending`
+        `/Artists?UserId=${userId}&Recursive=true&SortBy=SortName&SortOrder=Ascending${paginationParams}`
       );
     },
     'fetchArtists'
@@ -111,10 +111,10 @@ export async function fetchTracks(
 ): Promise<EmbyTracksResponse> {
   return withRetry(
     () => {
-      const queryString = buildQueryString(params);
+      const paginationParams = buildPaginationParams(params);
       const albumFilter = albumId ? `&ParentId=${albumId}` : '';
       return fetchApi<EmbyTracksResponse>(
-        `/Users/${userId}/Items${queryString}&IncludeItemTypes=Audio&Recursive=true&Fields=Path${albumFilter}&SortBy=Album,SortName&SortOrder=Ascending`
+        `/Users/${userId}/Items?IncludeItemTypes=Audio&Recursive=true&Fields=Path${albumFilter}&SortBy=Album,SortName&SortOrder=Ascending${paginationParams}`
       );
     },
     'fetchTracks'
@@ -127,9 +127,9 @@ export async function fetchPlaylists(
 ): Promise<EmbyPlaylistsResponse> {
   return withRetry(
     () => {
-      const queryString = buildQueryString(params);
+      const paginationParams = buildPaginationParams(params);
       return fetchApi<EmbyPlaylistsResponse>(
-        `/Users/${userId}/Items${queryString}&IncludeItemTypes=Playlist&Recursive=true&MediaTypes=Audio&SortBy=SortName&SortOrder=Ascending`
+        `/Users/${userId}/Items?IncludeItemTypes=Playlist&Recursive=true&MediaTypes=Audio&SortBy=SortName&SortOrder=Ascending${paginationParams}`
       );
     },
     'fetchPlaylists'
@@ -143,9 +143,9 @@ export async function fetchPlaylistItems(
 ): Promise<EmbyPlaylistItemsResponse> {
   return withRetry(
     () => {
-      const queryString = buildQueryString(params);
+      const paginationParams = buildPaginationParams(params);
       return fetchApi<EmbyPlaylistItemsResponse>(
-        `/Playlists/${playlistId}/Items${queryString}&UserId=${userId}`
+        `/Playlists/${playlistId}/Items?UserId=${userId}${paginationParams}`
       );
     },
     'fetchPlaylistItems'

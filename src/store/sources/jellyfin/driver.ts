@@ -68,7 +68,7 @@ async function withRetry<T>(
 /**
  * Build query string from pagination params
  */
-function buildQueryString(params?: JellyfinPaginationParams): string {
+function buildPaginationParams(params?: JellyfinPaginationParams): string {
   if (!params) return '';
 
   const queryParams: string[] = [];
@@ -81,7 +81,7 @@ function buildQueryString(params?: JellyfinPaginationParams): string {
     queryParams.push(`Limit=${params.limit}`);
   }
 
-  return queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+  return queryParams.length > 0 ? `&${queryParams.join('&')}` : '';
 }
 
 /**
@@ -93,9 +93,9 @@ export async function fetchAlbums(
 ): Promise<JellyfinAlbumsResponse> {
   return withRetry(
     () => {
-      const queryString = buildQueryString(params);
+      const paginationParams = buildPaginationParams(params);
       return fetchApi<JellyfinAlbumsResponse>(
-        `/Users/${userId}/Items${queryString}&IncludeItemTypes=MusicAlbum&Recursive=true&Fields=ProductionYear&SortBy=SortName&SortOrder=Ascending`
+        `/Users/${userId}/Items?IncludeItemTypes=MusicAlbum&Recursive=true&Fields=ProductionYear&SortBy=SortName&SortOrder=Ascending${paginationParams}`
       );
     },
     'fetchAlbums'
@@ -111,9 +111,9 @@ export async function fetchArtists(
 ): Promise<JellyfinArtistsResponse> {
   return withRetry(
     () => {
-      const queryString = buildQueryString(params);
+      const paginationParams = buildPaginationParams(params);
       return fetchApi<JellyfinArtistsResponse>(
-        `/Artists${queryString}&UserId=${userId}&Recursive=true&SortBy=SortName&SortOrder=Ascending`
+        `/Artists?UserId=${userId}&Recursive=true&SortBy=SortName&SortOrder=Ascending${paginationParams}`
       );
     },
     'fetchArtists'
@@ -134,10 +134,10 @@ export async function fetchTracks(
 ): Promise<JellyfinTracksResponse> {
   return withRetry(
     () => {
-      const queryString = buildQueryString(params);
+      const paginationParams = buildPaginationParams(params);
       const albumFilter = albumId ? `&ParentId=${albumId}` : '';
       return fetchApi<JellyfinTracksResponse>(
-        `/Users/${userId}/Items${queryString}&IncludeItemTypes=Audio&Recursive=true&Fields=Path${albumFilter}&SortBy=Album,SortName&SortOrder=Ascending`
+        `/Users/${userId}/Items?IncludeItemTypes=Audio&Recursive=true&Fields=Path${albumFilter}&SortBy=Album,SortName&SortOrder=Ascending${paginationParams}`
       );
     },
     'fetchTracks'
@@ -153,9 +153,9 @@ export async function fetchPlaylists(
 ): Promise<JellyfinPlaylistsResponse> {
   return withRetry(
     () => {
-      const queryString = buildQueryString(params);
+      const paginationParams = buildPaginationParams(params);
       return fetchApi<JellyfinPlaylistsResponse>(
-        `/Users/${userId}/Items${queryString}&IncludeItemTypes=Playlist&Recursive=true&MediaTypes=Audio&SortBy=SortName&SortOrder=Ascending`
+        `/Users/${userId}/Items?IncludeItemTypes=Playlist&Recursive=true&MediaTypes=Audio&SortBy=SortName&SortOrder=Ascending${paginationParams}`
       );
     },
     'fetchPlaylists'
@@ -172,9 +172,9 @@ export async function fetchPlaylistItems(
 ): Promise<JellyfinPlaylistItemsResponse> {
   return withRetry(
     () => {
-      const queryString = buildQueryString(params);
+      const paginationParams = buildPaginationParams(params);
       return fetchApi<JellyfinPlaylistItemsResponse>(
-        `/Playlists/${playlistId}/Items${queryString}&UserId=${userId}`
+        `/Playlists/${playlistId}/Items?UserId=${userId}${paginationParams}`
       );
     },
     'fetchPlaylistItems'
