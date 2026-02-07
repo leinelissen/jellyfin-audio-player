@@ -7,6 +7,7 @@
 
 import React from 'react';
 import { View, Text, Button, FlatList, ActivityIndicator } from 'react-native';
+import { eq } from 'drizzle-orm';
 import {
   useAlbums,
   useArtists,
@@ -180,41 +181,47 @@ export function LibraryStatsExample() {
 }
 
 /**
- * Example 6: Advanced custom query with joins
+ * Example 6: Advanced custom query - Get artist's albums
  */
 export function ArtistWithAlbumsExample({ artistId }: { artistId: number }) {
   const queryFn = React.useCallback(async () => {
     const db = await getDatabase();
     
-    // Get artist with their albums
-    const artist = await db.query.artists.findFirst({
-      where: (artistsTable, { eq }) => eq(artistsTable.id, artistId),
-      with: {
-        albums: true,
-      },
-    });
+    // Get albums for this artist
+    const result = await db
+      .select()
+      .from(albums)
+      .where(eq(albums.artist_id, artistId))
+      .all();
     
-    return artist;
+    return result;
   }, [artistId]);
 
-  const { data: artist, isLoading } = useLiveQuery(
+  const { data: artistAlbums, isLoading } = useLiveQuery(
     queryFn,
-    ['artist-with-albums', artistId]
+    ['artist-albums', artistId]
   );
 
   if (isLoading) {
     return <ActivityIndicator />;
   }
 
-  if (!artist) {
-    return <Text>Artist not found</Text>;
+  if (!artistAlbums || artistAlbums.length === 0) {
+    return <Text>No albums found</Text>;
   }
 
   return (
     <View>
-      <Text>{artist.name}</Text>
       <Text>Albums:</Text>
-      {/* Render albums */}
+      <FlatList
+        data={artistAlbums}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View>
+            <Text>{item.name}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 }

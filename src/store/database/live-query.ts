@@ -146,8 +146,8 @@ class LiveQueryManager {
     return async () => {
       const entry = this.queries.get(key);
       
-      // If query is already cached and not loading, return cached data
-      if (entry && entry.hasExecuted && !entry.isLoading) {
+      // If query has executed successfully and not loading, return cached data
+      if (entry && entry.hasExecuted && !entry.isLoading && entry.error === null) {
         return entry.data as T;
       }
 
