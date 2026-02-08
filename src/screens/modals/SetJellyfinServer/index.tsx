@@ -20,7 +20,7 @@ export default function SetJellyfinServer() {
     const navigation = useNavigation();
 
     // Save creedentials to store and close the modal
-    const saveCredentials = useCallback((credentials?: { uri: string; user_id: string; access_token: string; device_id: string; type: 'jellyfin' | 'emby' }) => {
+    const saveCredentials = useCallback((credentials?: { uri: string; userId: string; accessToken: string; deviceId: string; type: 'jellyfin' | 'emby' }) => {
         if (credentials) {
             setCredentials(credentials);
             navigation.dispatch(StackActions.popToTop());

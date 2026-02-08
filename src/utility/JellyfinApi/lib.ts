@@ -165,7 +165,7 @@ export function useGetImage() {
     const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
     const credentials = sourceData?.[0];
 
-    return useCallback((item: Parameters<typeof getImage>[0]) => {
+    return useCallback(async (item: Parameters<typeof getImage>[0]) => {
         return getImage(item, credentials);
     }, [credentials]);
 }

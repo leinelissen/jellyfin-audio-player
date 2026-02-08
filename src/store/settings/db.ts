@@ -116,24 +116,24 @@ export async function getActiveSource(): Promise<SourceCredentials | undefined> 
  */
 export async function setCredentials(credentials: {
     uri: string;
-    user_id: string;
-    access_token: string;
-    device_id: string;
+    userId: string;
+    accessToken: string;
+    deviceId: string;
     type: 'jellyfin' | 'emby';
 }): Promise<void> {
     const now = Date.now();
     const sourceType = credentials.type === 'jellyfin' ? 'jellyfin.v1' : 'emby.v1';
     
-    // Use device_id as the source id for consistency
-    const sourceId = credentials.device_id;
+    // Use deviceId as the source id for consistency
+    const sourceId = credentials.deviceId;
 
     await db.insert(sources)
         .values({
             id: sourceId,
             uri: credentials.uri,
-            userId: credentials.user_id,
-            accessToken: credentials.access_token,
-            deviceId: credentials.device_id,
+            userId: credentials.userId,
+            accessToken: credentials.accessToken,
+            deviceId: credentials.deviceId,
             type: sourceType,
             createdAt: now,
             updatedAt: now,
@@ -142,9 +142,9 @@ export async function setCredentials(credentials: {
             target: sources.id,
             set: {
                 uri: credentials.uri,
-                userId: credentials.user_id,
-                accessToken: credentials.access_token,
-                deviceId: credentials.device_id,
+                userId: credentials.userId,
+                accessToken: credentials.accessToken,
+                deviceId: credentials.deviceId,
                 type: sourceType,
                 updatedAt: now,
             },

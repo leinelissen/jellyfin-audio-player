@@ -16,8 +16,8 @@ export default function LibrarySettings() {
     const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
     const credentials = sourceData?.[0] ? {
         uri: sourceData[0].uri,
-        access_token: sourceData[0].accessToken || '',
-        user_id: sourceData[0].userId || '',
+        accessToken: sourceData[0].accessToken || '',
+        userId: sourceData[0].userId || '',
     } : undefined;
     const navigation = useNavigation<NavigationProp>();
     const handleSetLibrary = useCallback(() => navigation.navigate('SetJellyfinServer'), [navigation]);
@@ -30,11 +30,11 @@ export default function LibrarySettings() {
             </InputContainer>
             <InputContainer>
                 <Paragraph style={defaultStyles.text}>{t('access-token')}</Paragraph>
-                <Input placeholder="deadbeefdeadbeefdeadbeef" value={credentials?.access_token} editable={false} style={defaultStyles.input} />
+                <Input placeholder="deadbeefdeadbeefdeadbeef" value={credentials?.accessToken} editable={false} style={defaultStyles.input} />
             </InputContainer>
             <InputContainer>
                 <Paragraph style={defaultStyles.text}>{t('user-id')}</Paragraph>
-                <Input placeholder="deadbeefdeadbeefdeadbeef" value={credentials?.user_id} editable={false} style={defaultStyles.input} />
+                <Input placeholder="deadbeefdeadbeefdeadbeef" value={credentials?.userId} editable={false} style={defaultStyles.input} />
             </InputContainer>
             <Button title={t('set-server')} onPress={handleSetLibrary} />
         </Container>
