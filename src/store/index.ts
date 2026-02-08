@@ -10,7 +10,7 @@ import sleepTimer from './sleep-timer';
 import search from './search';
 import { ColorScheme } from './settings/types';
 import MigratedStorage from '@/utility/MigratedStorage';
-import { initializeDatabaseSchema } from './database';
+import { runMigrations } from './database/migrate';
 
 const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
     key: 'root',
@@ -111,15 +111,15 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export const persistedStore = persistStore(store);
 
-// Initialize database schema
+// Run database migrations
 // This runs asynchronously and doesn't block store initialization
-// App will work normally even if database initialization fails
-initializeDatabaseSchema()
+// App will work normally even if migration fails
+runMigrations()
     .then(() => {
-        console.log('[Store] Database initialized successfully');
+        console.log('[Store] Database migrations completed successfully');
     })
     .catch((error) => {
-        console.error('[Store] Database initialization failed:', error);
+        console.error('[Store] Database migrations failed:', error);
     });
 
 export default store;

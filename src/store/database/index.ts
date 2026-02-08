@@ -5,8 +5,9 @@ export { db, getDatabase } from './connection';
 export * from './schema';
 export * from './enums';
 
-// Database initialization
+// Database initialization and migrations
 export { initializeDatabaseSchema } from './migrations';
+export { runMigrations } from './migrate';
 
 // Live query system
 export * from './live-query';

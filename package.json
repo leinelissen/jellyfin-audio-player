@@ -9,7 +9,10 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx  && tsc --noEmit",
-    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@d11/react-native-fast-image": "8.13.0",

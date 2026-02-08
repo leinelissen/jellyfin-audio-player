@@ -121,19 +121,3 @@ export const playlist_tracks = sqliteTable(
     trackIdIdx: index('playlist_tracks_track_id_idx').on(table.track_id),
   })
 );
-
-// Type exports for use in application code
-export type Artist = typeof artists.$inferSelect;
-export type NewArtist = typeof artists.$inferInsert;
-
-export type Album = typeof albums.$inferSelect;
-export type NewAlbum = typeof albums.$inferInsert;
-
-export type Track = typeof tracks.$inferSelect;
-export type NewTrack = typeof tracks.$inferInsert;
-
-export type Playlist = typeof playlists.$inferSelect;
-export type NewPlaylist = typeof playlists.$inferInsert;
-
-export type PlaylistTrack = typeof playlist_tracks.$inferSelect;
-export type NewPlaylistTrack = typeof playlist_tracks.$inferInsert;
