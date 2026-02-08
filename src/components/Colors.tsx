@@ -2,9 +2,12 @@ import { BlurView, BlurViewProps } from '@sbaiahmed1/react-native-blur';
 import React, { PropsWithChildren } from 'react';
 import { useContext } from 'react';
 import { ColorSchemeName, Platform, StyleSheet, View, useColorScheme } from 'react-native';
-import { useTypedSelector } from '@/store';
 import { ColorScheme } from '@/store/settings/types';
 import { useAccessibilitySetting } from 'react-native-accessibility-settings';
+import { useLiveQuery } from '@/store/db/live-queries';
+import { db } from '@/store/db';
+import { appSettings } from '@/store/db/schema/app-settings';
+import { eq } from 'drizzle-orm';
 
 const majorPlatformVersion = typeof Platform.Version === 'string' ? parseInt(Platform.Version, 10) : Platform.Version;
 
@@ -122,7 +125,10 @@ export const ColorSchemeContext = React.createContext(themes.dark);
  */
 export function useUserOrSystemScheme() {
     const systemScheme = useColorScheme();
-    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
+    const { data: settings } = useLiveQuery(
+        db.select().from(appSettings).where(eq(appSettings.id, 1)).limit(1)
+    );
+    const userScheme = settings?.[0]?.colorScheme || ColorScheme.System;
     return userScheme === ColorScheme.System ? systemScheme : userScheme;
 }
 

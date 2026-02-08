@@ -14,13 +14,16 @@ import TrackPopupMenu from './modals/TrackPopupMenu';
 import SetJellyfinServer from './modals/SetJellyfinServer';
 import ErrorReportingPopup from './modals/ErrorReportingPopup';
 
-import { useTypedSelector } from '@/store';
 import { t } from '@/localisation';
 import ErrorReportingAlert from '@/utility/ErrorReportingAlert';
 import useDefaultStyles from '@/components/Colors';
 import Player from './modals/Player';
 import { StackParams } from './types';
 import Lyrics from './modals/Lyrics';
+import { useLiveQuery } from '@/store/db/live-queries';
+import { db } from '@/store/db';
+import { appSettings } from '@/store/db/schema/app-settings';
+import { eq } from 'drizzle-orm';
 
 const Stack = createNativeStackNavigator<StackParams>();
 const Tab = createNativeBottomTabNavigator();
@@ -32,7 +35,10 @@ type Screens = {
 
 function Screens() {
     const styles = useDefaultStyles();
-    const isOnboardingComplete = useTypedSelector(state => state.settings.isOnboardingComplete);
+    const { data: settings } = useLiveQuery(
+        db.select().from(appSettings).where(eq(appSettings.id, 1)).limit(1)
+    );
+    const isOnboardingComplete = settings?.[0]?.isOnboardingComplete ?? false;
 
     // GUARD: If onboarding has not been completed, we instead render the
     // onboarding component, so that the user can get setup in the app.
