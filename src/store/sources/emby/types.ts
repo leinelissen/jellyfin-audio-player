@@ -29,4 +29,5 @@ export {
     SourceDriver,
 } from '../types';
 
-// Emby-specific types can be added here as needed
+// Export Emby API types
+export * from './api-types';

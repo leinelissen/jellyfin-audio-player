@@ -1,150 +1,134 @@
 /**
  * Shared Source Driver Types
  * 
- * Defines common types and the base abstract class for source drivers
+ * Defines common types and the base abstract class for source drivers.
+ * Driver methods return types compatible with the database schema.
  */
+
+import type { Artist as SchemaArtist, Album as SchemaAlbum, Track as SchemaTrack, Playlist as SchemaPlaylist } from '../db/types';
 
 /**
  * Source types enum
  */
 export enum SourceType {
-  JELLYFIN_V1 = 'jellyfin.v1',
-  EMBY_V1 = 'emby.v1',
+    JELLYFIN_V1 = 'jellyfin.v1',
+    EMBY_V1 = 'emby.v1',
 }
 
 /**
  * Source information
  */
 export interface Source {
-  id: string;
-  uri: string;
-  userId?: string;
-  accessToken?: string;
-  deviceId?: string;
-  type: SourceType;
+    id: string;
+    uri: string;
+    userId?: string;
+    accessToken?: string;
+    deviceId?: string;
+    type: SourceType;
 }
 
 /**
  * Source info returned during connection
  */
 export interface SourceInfo {
-  id: string;
-  name: string;
-  version: string;
-  operatingSystem?: string;
+    id: string;
+    name: string;
+    version: string;
+    operatingSystem?: string;
 }
 
 /**
  * Credentials
  */
 export interface Credentials {
-  accessToken: string;
-  userId: string;
+    accessToken: string;
+    userId: string;
 }
 
 /**
  * List parameters for paging
  */
 export interface ListParams {
-  offset?: number;  // Start index
-  limit?: number;   // Page size (default: 500)
+    offset?: number;  // Start index
+    limit?: number;   // Page size (default: 500)
 }
 
 /**
- * Artist entity
+ * Artist entity returned from drivers
+ * Compatible with schema but without sourceId, timestamps
  */
-export interface Artist {
-  id: string;
-  name: string;
-  isFolder: boolean;
-  [key: string]: unknown; // Additional metadata
-}
+export type Artist = Omit<SchemaArtist, 'sourceId' | 'createdAt' | 'updatedAt'>;
 
 /**
- * Album entity
+ * Album entity returned from drivers
+ * Compatible with schema but without sourceId, timestamps
+ * Includes temporary artistItems field for relationship data
  */
-export interface Album {
-  id: string;
-  name: string;
-  productionYear?: number;
-  isFolder: boolean;
-  albumArtist?: string;
-  dateCreated?: number;
-  artistItems?: Artist[];
-  [key: string]: unknown; // Additional metadata
-}
+export type Album = Omit<SchemaAlbum, 'sourceId' | 'createdAt' | 'updatedAt' | 'lastRefreshed'> & {
+    artistItems?: Artist[];
+};
 
 /**
- * Track entity
+ * Track entity returned from drivers
+ * Compatible with schema but without sourceId, timestamps
+ * Includes temporary artistItems field for relationship data
  */
-export interface Track {
-  id: string;
-  name: string;
-  albumId?: string;
-  album?: string;
-  albumArtist?: string;
-  productionYear?: number;
-  indexNumber?: number;
-  parentIndexNumber?: number;
-  runTimeTicks?: number;
-  artistItems?: Artist[];
-  [key: string]: unknown; // Additional metadata
-}
+export type Track = Omit<SchemaTrack, 'sourceId' | 'createdAt' | 'updatedAt' | 'hasLyrics' | 'lyrics'> & {
+    artistItems?: Artist[];
+};
 
 /**
- * Playlist entity
+ * Playlist entity returned from drivers
+ * Compatible with schema but without sourceId, timestamps
  */
-export interface Playlist {
-  id: string;
-  name: string;
-  canDelete: boolean;
-  childCount?: number;
-  [key: string]: unknown; // Additional metadata
-}
+export type Playlist = Omit<SchemaPlaylist, 'sourceId' | 'createdAt' | 'updatedAt'> & {
+    canDelete: boolean;
+    childCount?: number;
+};
 
 /**
  * Search filter types
  */
 export enum SearchFilterType {
-  ALBUMS = 'albums',
-  ARTISTS = 'artists',
-  TRACKS = 'tracks',
-  PLAYLISTS = 'playlists',
+    ALBUMS = 'albums',
+    ARTISTS = 'artists',
+    TRACKS = 'tracks',
+    PLAYLISTS = 'playlists',
 }
 
 /**
  * Search filter
  */
 export interface SearchFilter {
-  type: SearchFilterType;
+    type: SearchFilterType;
 }
 
 /**
  * Search result item
  */
 export interface SearchResultItem {
-  id: string;
-  name: string;
-  type: SearchFilterType;
-  [key: string]: unknown;
+    id: string;
+    name: string;
+    type: SearchFilterType;
+    [key: string]: unknown;
 }
 
 /**
  * Codec metadata
  */
 export interface CodecMetadata {
-  codec?: string;
-  bitrate?: number;
-  sampleRate?: number;
-  channels?: number;
-  bitDepth?: number;
+    codec?: string;
+    bitrate?: number;
+    sampleRate?: number;
+    channels?: number;
+    bitDepth?: number;
 }
 
 /**
  * Lyrics
  */
 export interface Lyrics {
-  lyrics: string;
+    lyrics: string;
 }
 
 /**

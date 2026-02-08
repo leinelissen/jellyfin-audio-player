@@ -29,4 +29,5 @@ export {
     SourceDriver,
 } from '../types';
 
-// Jellyfin-specific types can be added here as needed
+// Export Jellyfin API types
+export * from './api-types';
