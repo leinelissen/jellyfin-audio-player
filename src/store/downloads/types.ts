@@ -1,11 +1,9 @@
-export interface DownloadEntity {
-    id: string;
-    progress: number;
-    isFailed: boolean;
-    isComplete: boolean;
-    size?: number;
-    location?: string;
-    jobId?: number;
-    error?: string;
-    image?: string;
-}
+/**
+ * Download types
+ */
+
+import type { InferSelectModel } from 'drizzle-orm';
+import { downloads } from './downloads';
+
+export type Download = InferSelectModel<typeof downloads>;
+export type InsertDownload = typeof downloads.$inferInsert;

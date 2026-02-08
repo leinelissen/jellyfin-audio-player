@@ -5,59 +5,35 @@
 import { useMemo } from 'react';
 import { useLiveQuery } from '@/store/db/live-queries';
 import { db } from '@/store/db';
-import { downloads } from '@/store/db/schema/downloads';
+import { downloads } from './downloads';
 import { eq } from 'drizzle-orm';
-import { enrichDownload, type Download, type DownloadWithMetadata } from './db';
+import type { Download } from './types';
 
-/**
- * Get all downloads (from all sources)
- */
-export function useDownloads() {
+export function useDownloads(sourceId?: string) {
     const { data, error } = useLiveQuery(
-        db.select().from(downloads)
+        sourceId 
+            ? db.select().from(downloads).where(eq(downloads.sourceId, sourceId))
+            : db.select().from(downloads)
     );
     
-    return useMemo(() => {
-        const entities: Record<string, DownloadWithMetadata> = {};
-        const ids: string[] = [];
-        const queued: string[] = [];
-        
-        (data || []).forEach(download => {
-            const enriched = enrichDownload(download as Download);
-            entities[enriched.id] = enriched;
-            ids.push(enriched.id);
-            
-            // If download is not complete and not failed, it's queued
-            if (!enriched.isComplete && !enriched.isFailed) {
-                queued.push(enriched.id);
-            }
-        });
-        
-        return { entities, ids, queued, error };
-    }, [data, error]);
+    return useMemo(() => ({
+        data: (data || []) as Download[],
+        error,
+    }), [data, error]);
 }
 
-/**
- * Get a single download by id
- */
 export function useDownload(trackId: string) {
     const { data, error } = useLiveQuery(
         trackId ? db.select().from(downloads).where(eq(downloads.id, trackId)).limit(1) : null
     );
     
-    return useMemo(() => {
-        const download = data?.[0] as Download | undefined;
-        return {
-            entity: download ? enrichDownload(download) : undefined,
-            error
-        };
-    }, [data, error]);
+    return useMemo(() => ({
+        data: data?.[0] as Download | undefined,
+        error,
+    }), [data, error]);
 }
 
-/**
- * Check if a track is downloaded
- */
 export function useIsDownloaded(trackId: string): boolean {
-    const { entity } = useDownload(trackId);
-    return entity?.isComplete === true;
+    const { data } = useDownload(trackId);
+    return data?.isComplete === true;
 }

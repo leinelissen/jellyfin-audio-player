@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useDownload } from '@/store/downloads/hooks';
 import CloudIcon from '@/assets/icons/cloud.svg';
 import CloudDownArrow from '@/assets/icons/cloud-down-arrow.svg';
 import CloudExclamationMarkIcon from '@/assets/icons/cloud-exclamation-mark.svg';
@@ -8,9 +7,12 @@ import useDefaultStyles from './Colors';
 import Svg, { Circle, CircleProps } from 'react-native-svg';
 import { Animated, Easing, ViewProps } from 'react-native';
 import styled from 'styled-components/native';
+import type { Track } from '@/store/tracks/types';
+import type { Download } from '@/store/downloads/types';
 
 interface DownloadIconProps {
-    trackId: string;
+    track: Track;
+    download?: Download | null;
     size?: number;
     fill?: string;
     style?: ViewProps['style'];
@@ -27,35 +29,26 @@ const IconOverlay = styled.View`
     transform: scale(0.5);
 `;
 
-function DownloadIcon({ trackId, size = 16, fill, style }: DownloadIconProps) {
-    // determine styles
+function DownloadIcon({ track, download, size = 16, fill, style }: DownloadIconProps) {
     const defaultStyles = useDefaultStyles();
     const iconFill = fill || defaultStyles.textQuarterOpacity.color;
 
-    // Get download icon from database
-    const { entity } = useDownload(trackId);
-    const isQueued = entity && !entity.isComplete && !entity.isFailed;
-
-    // Memoize calculations for radius and circumference of the circle
+    const isQueued = download && !download.isComplete && !download.isFailed;
     const radius = useMemo(() => size / 2, [size]);
     const circumference = useMemo(() => radius * 2 * Math.PI, [radius]);
 
-    // Initialize refs for the circle and the animated value
     const circleRef = useRef<Circle>(null);
-    const offsetAnimation = useRef(new Animated.Value(entity?.progress || 0)).current;
+    const offsetAnimation = useRef(new Animated.Value(download?.progress || 0)).current;
 
-    // Whenever the progress changes, trigger the animation
     useEffect(() => {
         Animated.timing(offsetAnimation, {
-            toValue: (circumference * (1 - (entity?.progress || 0))),
+            toValue: (circumference * (1 - (download?.progress || 0))),
             duration: 250,
             useNativeDriver: false,
             easing: Easing.ease,
         }).start();
-    }, [entity?.progress, offsetAnimation, circumference]);
+    }, [download?.progress, offsetAnimation, circumference]);
 
-    // On mount, subscribe to changes in the animation value and then 
-    // apply them to the circle using native props
     useEffect(() => {
         const subscription = offsetAnimation.addListener((offset) => {
             const setNativeProps = circleRef.current?.setNativeProps as (props: CircleProps) => void | undefined;
@@ -65,25 +58,25 @@ function DownloadIcon({ trackId, size = 16, fill, style }: DownloadIconProps) {
         return () => offsetAnimation.removeListener(subscription);
     }, [offsetAnimation]);
 
-    if (!entity && !isQueued) {
+    if (!download && !isQueued) {
         return (
             <CloudIcon width={size} height={size} fill={iconFill} style={style} />
         );
     }
 
-    if (entity?.isComplete) {
+    if (download?.isComplete) {
         return (
             <InternalDriveIcon width={size} height={size} fill={iconFill} style={style} />
         );
     }
 
-    if (entity?.isFailed) {
+    if (download?.isFailed) {
         return (
             <CloudExclamationMarkIcon width={size} height={size} fill={iconFill} style={style} />
         );
     }
 
-    if (isQueued || (!entity?.isFailed && !entity?.isComplete)) {
+    if (isQueued || (!download?.isFailed && !download?.isComplete)) {
         return (
             <DownloadContainer>
                 <Svg width={size} height={size} transform={[{ rotate: '-90deg' }]}>
