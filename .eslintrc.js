@@ -4,6 +4,5 @@ module.exports = {
     rules: {
         // Enforce 4-space indentation
         'indent': ['error', 4, { 'SwitchCase': 1 }],
-        '@typescript-eslint/indent': ['error', 4, { 'SwitchCase': 1 }],
     },
 };
