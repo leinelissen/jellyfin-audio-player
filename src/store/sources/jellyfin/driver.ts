@@ -23,7 +23,7 @@ import {
   StreamOptions,
   DownloadOptions,
   DownloadInfo,
-} from '../types';
+} from './types';
 
 /** Map the output of `Platform.OS`, so that Jellyfin can understand it. */
 const deviceMap: Record<typeof Platform['OS'], string> = {
