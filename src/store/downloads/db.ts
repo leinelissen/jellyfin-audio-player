@@ -1,0 +1,193 @@
+import { db, sqliteDb } from '@/store/db';
+import { downloads } from '@/store/db/schema/downloads';
+import { eq } from 'drizzle-orm';
+
+export interface Download {
+    sourceId: string;
+    id: string;
+    hash: string | null;
+    filename: string | null;
+    mimetype: string | null;
+    progress: number | null;
+    isFailed: boolean;
+    isComplete: boolean;
+    metadataJson: string | null;
+    createdAt: number;
+    updatedAt: number;
+}
+
+export interface DownloadMetadata {
+    size?: number;
+    error?: string;
+}
+
+/**
+ * Get all downloads for a source
+ */
+export async function getAllDownloads(sourceId: string): Promise<Download[]> {
+    const result = await db
+        .select()
+        .from(downloads)
+        .where(eq(downloads.sourceId, sourceId));
+    
+    return result as Download[];
+}
+
+/**
+ * Get a single download by id
+ */
+export async function getDownload(id: string): Promise<Download | undefined> {
+    const result = await db
+        .select()
+        .from(downloads)
+        .where(eq(downloads.id, id))
+        .limit(1);
+    
+    return result[0] as Download | undefined;
+}
+
+/**
+ * Initialize a download
+ */
+export async function initializeDownload(
+    sourceId: string,
+    id: string,
+    hash?: string,
+    filename?: string,
+    mimetype?: string
+): Promise<void> {
+    const now = Date.now();
+    
+    await db.insert(downloads).values({
+        sourceId,
+        id,
+        hash: hash || null,
+        filename: filename || null,
+        mimetype: mimetype || null,
+        progress: 0,
+        isFailed: false,
+        isComplete: false,
+        metadataJson: null,
+        createdAt: now,
+        updatedAt: now,
+    }).onConflictDoUpdate({
+        target: downloads.id,
+        set: {
+            hash: hash || null,
+            filename: filename || null,
+            mimetype: mimetype || null,
+            progress: 0,
+            isFailed: false,
+            isComplete: false,
+            updatedAt: now,
+        },
+    });
+
+    sqliteDb.flushPendingReactiveQueries();
+}
+
+/**
+ * Update download progress
+ */
+export async function updateDownloadProgress(
+    id: string,
+    progress: number,
+    metadata?: DownloadMetadata
+): Promise<void> {
+    const updates: any = {
+        progress,
+        updatedAt: Date.now(),
+    };
+
+    if (metadata) {
+        updates.metadataJson = JSON.stringify(metadata);
+    }
+
+    await db.update(downloads)
+        .set(updates)
+        .where(eq(downloads.id, id));
+
+    sqliteDb.flushPendingReactiveQueries();
+}
+
+/**
+ * Mark download as complete
+ */
+export async function completeDownload(
+    id: string,
+    hash?: string,
+    filename?: string
+): Promise<void> {
+    const updates: any = {
+        isComplete: true,
+        isFailed: false,
+        progress: 100,
+        updatedAt: Date.now(),
+    };
+
+    if (hash) updates.hash = hash;
+    if (filename) updates.filename = filename;
+
+    await db.update(downloads)
+        .set(updates)
+        .where(eq(downloads.id, id));
+
+    sqliteDb.flushPendingReactiveQueries();
+}
+
+/**
+ * Mark download as failed
+ */
+export async function failDownload(id: string, error?: string): Promise<void> {
+    const metadata = error ? JSON.stringify({ error }) : null;
+
+    await db.update(downloads)
+        .set({
+            isFailed: true,
+            isComplete: false,
+            progress: 0,
+            metadataJson: metadata,
+            updatedAt: Date.now(),
+        })
+        .where(eq(downloads.id, id));
+
+    sqliteDb.flushPendingReactiveQueries();
+}
+
+/**
+ * Remove a download
+ */
+export async function removeDownload(id: string): Promise<void> {
+    await db.delete(downloads).where(eq(downloads.id, id));
+    sqliteDb.flushPendingReactiveQueries();
+}
+
+/**
+ * Parse download metadata
+ */
+export function parseDownloadMetadata(download: Download): DownloadMetadata {
+    if (!download.metadataJson) {
+        return {};
+    }
+    try {
+        return JSON.parse(download.metadataJson);
+    } catch {
+        return {};
+    }
+}
+
+/**
+ * Get download with parsed metadata
+ */
+export interface DownloadWithMetadata extends Download {
+    size?: number;
+    error?: string;
+}
+
+export function enrichDownload(download: Download): DownloadWithMetadata {
+    const metadata = parseDownloadMetadata(download);
+    return {
+        ...download,
+        ...metadata,
+    };
+}
