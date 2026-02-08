@@ -17,6 +17,9 @@ const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
     migrate: createMigrate({
         // @ts-expect-error migrations are poorly typed
         6: (state: AppState & PersistState) => {
+            // Migration v6: Remove music and downloads from Redux
+            // These are now database-backed only. Intentionally discarding
+            // old Redux state as data is persisted in SQLite database.
             return {
                 settings: state.settings,
                 sleepTimer: state.sleepTimer,

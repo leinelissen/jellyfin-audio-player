@@ -1,5 +1,5 @@
 import { sqliteTable, text, integer, index, primaryKey } from 'drizzle-orm/sqlite-core';
-import { sources } from './sources';
+import { sources } from '../db/schema/sources';
 
 /**
  * Album-Artists relation table (many-to-many)

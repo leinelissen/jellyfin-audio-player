@@ -45,7 +45,13 @@ export async function downloadTrack(trackId: string): Promise<void> {
         }
         
         // Parse metadata if needed for image URL
-        const metadata = track.metadataJson ? JSON.parse(track.metadataJson as string) : {};
+        let metadata: any = {};
+        try {
+            metadata = track.metadataJson ? JSON.parse(track.metadataJson as string) : {};
+        } catch (error) {
+            console.warn('Failed to parse track metadata:', error);
+        }
+        
         const trackWithMetadata = { ...track, ...metadata };
         
         const audioUrl = generateTrackUrl(trackId);

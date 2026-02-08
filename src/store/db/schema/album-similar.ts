@@ -1,5 +1,5 @@
 import { sqliteTable, text, primaryKey } from 'drizzle-orm/sqlite-core';
-import { sources } from './sources';
+import { sources } from '../db/schema/sources';
 
 /**
  * Album-Similar relation table (for similar albums)
