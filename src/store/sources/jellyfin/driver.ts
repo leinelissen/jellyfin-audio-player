@@ -8,7 +8,6 @@
 import { Platform } from 'react-native';
 import { version } from '../../../../package.json';
 import {
-  Source,
   SourceDriver,
   SourceInfo,
   Credentials,
@@ -37,13 +36,7 @@ const deviceMap: Record<typeof Platform['OS'], string> = {
 
 const DEFAULT_LIMIT = 500;
 
-export class JellyfinDriver implements SourceDriver {
-  private source: Source;
-
-  constructor(source: Source) {
-    this.source = source;
-  }
-
+export class JellyfinDriver extends SourceDriver {
   /**
    * Generate authentication headers for requests
    */
@@ -87,39 +80,19 @@ export class JellyfinDriver implements SourceDriver {
    * Connect to the Jellyfin server
    */
   async connect(): Promise<SourceInfo> {
-    const data = await this.fetch<any>('/System/Info');
+    const data = await this.fetch<{
+      Id: string;
+      ServerName: string;
+      Version: string;
+      OperatingSystem: string;
+    }>('/System/Info');
+    
     return {
       id: data.Id,
       name: data.ServerName,
       version: data.Version,
       operatingSystem: data.OperatingSystem,
     };
-  }
-
-  /**
-   * Refresh credentials (not implemented for now)
-   */
-  async refreshCredentials(): Promise<Credentials> {
-    throw new Error('refreshCredentials not implemented');
-  }
-
-  /**
-   * Validate credentials
-   */
-  async validateCredentials(): Promise<boolean> {
-    try {
-      await this.connect();
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  /**
-   * Sign out
-   */
-  async signOut(): Promise<void> {
-    // Jellyfin doesn't require explicit sign out
   }
 
   /**
@@ -140,7 +113,12 @@ export class JellyfinDriver implements SourceDriver {
       Limit: limit.toString(),
     });
 
-    const response = await this.fetch<{ Items: any[] }>(`/Artists/AlbumArtists?${queryParams}`);
+    const response = await this.fetch<{ Items: Array<{
+      Id: string;
+      Name: string;
+      IsFolder: boolean;
+      [key: string]: unknown;
+    }> }>(`/Artists/AlbumArtists?${queryParams}`);
     
     return response.Items.map(item => ({
       id: item.Id,
@@ -169,7 +147,20 @@ export class JellyfinDriver implements SourceDriver {
       Limit: limit.toString(),
     });
 
-    const response = await this.fetch<{ Items: any[] }>(
+    const response = await this.fetch<{ Items: Array<{
+      Id: string;
+      Name: string;
+      ProductionYear?: number;
+      IsFolder: boolean;
+      AlbumArtist?: string;
+      DateCreated?: string;
+      ArtistItems?: Array<{
+        Id: string;
+        Name: string;
+        IsFolder: boolean;
+      }>;
+      [key: string]: unknown;
+    }> }>(
       `/Users/${this.source.userId}/Items?${queryParams}`
     );
 
@@ -189,7 +180,20 @@ export class JellyfinDriver implements SourceDriver {
    * Get a specific album
    */
   async getAlbum(albumId: string): Promise<Album> {
-    const item = await this.fetch<any>(`/Users/${this.source.userId}/Items/${albumId}`);
+    const item = await this.fetch<{
+      Id: string;
+      Name: string;
+      ProductionYear?: number;
+      IsFolder: boolean;
+      AlbumArtist?: string;
+      DateCreated?: string;
+      ArtistItems?: Array<{
+        Id: string;
+        Name: string;
+        IsFolder: boolean;
+      }>;
+      [key: string]: unknown;
+    }>(`/Users/${this.source.userId}/Items/${albumId}`);
     
     return {
       id: item.Id,
@@ -218,7 +222,23 @@ export class JellyfinDriver implements SourceDriver {
       Limit: limit.toString(),
     });
 
-    const response = await this.fetch<{ Items: any[] }>(
+    const response = await this.fetch<{ Items: Array<{
+      Id: string;
+      Name: string;
+      AlbumId?: string;
+      Album?: string;
+      AlbumArtist?: string;
+      ProductionYear?: number;
+      IndexNumber?: number;
+      ParentIndexNumber?: number;
+      RunTimeTicks?: number;
+      ArtistItems?: Array<{
+        Id: string;
+        Name: string;
+        IsFolder: boolean;
+      }>;
+      [key: string]: unknown;
+    }> }>(
       `/Users/${this.source.userId}/Items?${queryParams}`
     );
 
@@ -256,7 +276,13 @@ export class JellyfinDriver implements SourceDriver {
       Limit: limit.toString(),
     });
 
-    const response = await this.fetch<{ Items: any[] }>(
+    const response = await this.fetch<{ Items: Array<{
+      Id: string;
+      Name: string;
+      CanDelete: boolean;
+      ChildCount?: number;
+      [key: string]: unknown;
+    }> }>(
       `/Users/${this.source.userId}/Items?${queryParams}`
     );
 
@@ -273,7 +299,13 @@ export class JellyfinDriver implements SourceDriver {
    * Get a specific playlist
    */
   async getPlaylist(playlistId: string): Promise<Playlist> {
-    const item = await this.fetch<any>(`/Users/${this.source.userId}/Items/${playlistId}`);
+    const item = await this.fetch<{
+      Id: string;
+      Name: string;
+      CanDelete: boolean;
+      ChildCount?: number;
+      [key: string]: unknown;
+    }>(`/Users/${this.source.userId}/Items/${playlistId}`);
     
     return {
       id: item.Id,
@@ -298,7 +330,23 @@ export class JellyfinDriver implements SourceDriver {
       Limit: limit.toString(),
     });
 
-    const response = await this.fetch<{ Items: any[] }>(
+    const response = await this.fetch<{ Items: Array<{
+      Id: string;
+      Name: string;
+      AlbumId?: string;
+      Album?: string;
+      AlbumArtist?: string;
+      ProductionYear?: number;
+      IndexNumber?: number;
+      ParentIndexNumber?: number;
+      RunTimeTicks?: number;
+      ArtistItems?: Array<{
+        Id: string;
+        Name: string;
+        IsFolder: boolean;
+      }>;
+      [key: string]: unknown;
+    }> }>(
       `/Playlists/${playlistId}/Items?${queryParams}`
     );
 
@@ -322,7 +370,7 @@ export class JellyfinDriver implements SourceDriver {
    */
   async search(
     query: string,
-    filters: SearchFilter[],
+    _filters: SearchFilter[],
     params?: ListParams
   ): Promise<SearchResultItem[]> {
     const offset = params?.offset || 0;
@@ -341,7 +389,12 @@ export class JellyfinDriver implements SourceDriver {
       Limit: limit.toString(),
     });
 
-    const response = await this.fetch<{ Items: any[] }>(
+    const response = await this.fetch<{ Items: Array<{
+      Id: string;
+      Name: string;
+      Type: string;
+      [key: string]: unknown;
+    }> }>(
       `/Users/${this.source.userId}/Items?${queryParams}`
     );
 
@@ -370,7 +423,20 @@ export class JellyfinDriver implements SourceDriver {
       Limit: limit.toString(),
     });
 
-    const response = await this.fetch<{ Items: any[] }>(
+    const response = await this.fetch<{ Items: Array<{
+      Id: string;
+      Name: string;
+      ProductionYear?: number;
+      IsFolder: boolean;
+      AlbumArtist?: string;
+      DateCreated?: string;
+      ArtistItems?: Array<{
+        Id: string;
+        Name: string;
+        IsFolder: boolean;
+      }>;
+      [key: string]: unknown;
+    }> }>(
       `/Users/${this.source.userId}/Items?${queryParams}`
     );
 
@@ -399,7 +465,20 @@ export class JellyfinDriver implements SourceDriver {
       Limit: limit.toString(),
     });
 
-    const response = await this.fetch<{ Items: any[] }>(
+    const response = await this.fetch<{ Items: Array<{
+      Id: string;
+      Name: string;
+      ProductionYear?: number;
+      IsFolder: boolean;
+      AlbumArtist?: string;
+      DateCreated?: string;
+      ArtistItems?: Array<{
+        Id: string;
+        Name: string;
+        IsFolder: boolean;
+      }>;
+      [key: string]: unknown;
+    }> }>(
       `/Items/${albumId}/Similar?${queryParams}`
     );
 
@@ -428,7 +507,23 @@ export class JellyfinDriver implements SourceDriver {
       Limit: limit.toString(),
     });
 
-    const response = await this.fetch<{ Items: any[] }>(
+    const response = await this.fetch<{ Items: Array<{
+      Id: string;
+      Name: string;
+      AlbumId?: string;
+      Album?: string;
+      AlbumArtist?: string;
+      ProductionYear?: number;
+      IndexNumber?: number;
+      ParentIndexNumber?: number;
+      RunTimeTicks?: number;
+      ArtistItems?: Array<{
+        Id: string;
+        Name: string;
+        IsFolder: boolean;
+      }>;
+      [key: string]: unknown;
+    }> }>(
       `/Items/${entityId}/InstantMix?${queryParams}`
     );
 
