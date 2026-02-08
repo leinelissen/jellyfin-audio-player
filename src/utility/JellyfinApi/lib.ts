@@ -131,11 +131,11 @@ function formatImageUri(ItemId: string | number, baseUri: string): string {
 
 /**
  * Retrieve an image URL for a given ItemId
+ * Note: This function is synchronous and does not check for downloaded images.
+ * Downloaded images should be handled separately if needed.
  */
-export async function getImage(item: string | number | Album | AlbumTrack | Playlist | ArtistItem | null, credentials?: Credentials): Promise<string | undefined> {
-    // Either accept provided credentials, or retrieve them directly from the database
-    const creds = credentials ?? await getCredentials();
-    const serverUri = creds?.uri;
+export function getImage(item: string | number | Album | AlbumTrack | Playlist | ArtistItem | null, credentials?: Credentials): string | undefined {
+    const serverUri = credentials?.uri;
 
     if (!item || !serverUri) {
         return undefined;
@@ -150,14 +150,7 @@ export async function getImage(item: string | number | Album | AlbumTrack | Play
                 ? item.AlbumId || item.Id 
                 : item.Id;
 
-    // Check if we have a downloaded image for this item
-    const downloadEntity = await db.select().from(downloads).where(eq(downloads.id, itemId)).limit(1);
-    const metadata = downloadEntity[0]?.metadataJson ? JSON.parse(downloadEntity[0].metadataJson) : {};
-    if (metadata.image) {
-        return metadata.image;
-    }
-
-    // If no downloaded image, fall back to server URL
+    // Return server URL for the image
     if (typeof item === 'string' || typeof item === 'number') {
         if (__DEV__) {
             console.warn('useGetImage: supplied item is string or number. Please submit an item object instead.', { item });

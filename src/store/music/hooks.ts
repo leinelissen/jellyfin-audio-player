@@ -10,7 +10,8 @@ import { albums } from '@/store/db/schema/albums';
 import { artists } from '@/store/db/schema/artists';
 import { tracks } from '@/store/db/schema/tracks';
 import { playlists } from '@/store/db/schema/playlists';
-import { eq, desc } from 'drizzle-orm';
+import { playlistTracks } from '@/store/db/schema/playlist-tracks';
+import { eq, desc, and, inArray } from 'drizzle-orm';
 import { parseISO } from 'date-fns';
 import { ALPHABET_LETTERS } from '@/CONSTANTS';
 import type { SectionListData } from 'react-native';
@@ -27,14 +28,23 @@ export function useAlbums(sourceId: string) {
     return useMemo(() => {
         const albumsMap: Record<string, Album> = {};
         const ids: string[] = [];
+        let lastRefreshed: Date | undefined;
         
         (data || []).forEach(album => {
             const enriched = enrichAlbum(album);
             albumsMap[enriched.Id] = enriched;
             ids.push(enriched.Id);
+            
+            // Track the oldest lastRefreshed date
+            if (enriched.lastRefreshed) {
+                const refreshDate = new Date(enriched.lastRefreshed);
+                if (!lastRefreshed || refreshDate < lastRefreshed) {
+                    lastRefreshed = refreshDate;
+                }
+            }
         });
         
-        return { albums: albumsMap, ids, error, isLoading: false };
+        return { albums: albumsMap, ids, error, isLoading: false, lastRefreshed };
     }, [data, error]);
 }
 
@@ -116,14 +126,23 @@ export function useArtists(sourceId: string) {
     return useMemo(() => {
         const artistsMap: Record<string, MusicArtist> = {};
         const ids: string[] = [];
+        let lastRefreshed: Date | undefined;
         
         (data || []).forEach(artist => {
             const enriched = enrichArtist(artist);
             artistsMap[enriched.Id] = enriched;
             ids.push(enriched.Id);
+            
+            // Track the oldest lastRefreshed date
+            if (enriched.lastRefreshed) {
+                const refreshDate = new Date(enriched.lastRefreshed);
+                if (!lastRefreshed || refreshDate < lastRefreshed) {
+                    lastRefreshed = refreshDate;
+                }
+            }
         });
         
-        return { artists: artistsMap, ids, error };
+        return { artists: artistsMap, ids, error, isLoading: false, lastRefreshed };
     }, [data, error]);
 }
 
@@ -159,23 +178,34 @@ export function usePlaylists(sourceId: string) {
     return useMemo(() => {
         const playlistsMap: Record<string, Playlist> = {};
         const ids: string[] = [];
+        let lastRefreshed: Date | undefined;
         
         (data || []).forEach(playlist => {
             const enriched = enrichPlaylist(playlist);
             playlistsMap[enriched.Id] = enriched;
             ids.push(enriched.Id);
+            
+            // Track the oldest lastRefreshed date
+            if (enriched.lastRefreshed) {
+                const refreshDate = new Date(enriched.lastRefreshed);
+                if (!lastRefreshed || refreshDate < lastRefreshed) {
+                    lastRefreshed = refreshDate;
+                }
+            }
         });
         
-        return { playlists: playlistsMap, ids, error };
+        return { playlists: playlistsMap, ids, error, isLoading: false, lastRefreshed };
     }, [data, error]);
 }
 
 /**
  * Get tracks by album
  */
-export function useTracksByAlbum(albumId: string) {
+export function useTracksByAlbum(sourceId: string, albumId: string) {
     const { data, error } = useLiveQuery(
-        albumId ? db.select().from(tracks).where(eq(tracks.albumId, albumId)) : null
+        sourceId && albumId 
+            ? db.select().from(tracks).where(and(eq(tracks.sourceId, sourceId), eq(tracks.albumId, albumId)))
+            : null
     );
     
     return useMemo(() => {
@@ -190,6 +220,42 @@ export function useTracksByAlbum(albumId: string) {
         
         return { tracks: tracksMap, ids, error };
     }, [data, error]);
+}
+
+/**
+ * Get tracks by playlist
+ */
+export function useTracksByPlaylist(sourceId: string, playlistId: string) {
+    const { data: relations, error: relError } = useLiveQuery(
+        sourceId && playlistId
+            ? db.select().from(playlistTracks).where(and(eq(playlistTracks.sourceId, sourceId), eq(playlistTracks.playlistId, playlistId)))
+            : null
+    );
+    
+    const trackIds = useMemo(() => (relations || []).map(r => r.trackId), [relations]);
+    
+    const { data: tracksData, error: tracksError } = useLiveQuery(
+        trackIds.length > 0
+            ? db.select().from(tracks).where(inArray(tracks.id, trackIds))
+            : null
+    );
+    
+    return useMemo(() => {
+        const tracksMap: Record<string, AlbumTrack> = {};
+        
+        // Create map for quick lookup
+        (tracksData || []).forEach(track => {
+            const enriched = enrichTrack(track);
+            tracksMap[enriched.Id] = enriched;
+        });
+        
+        // Sort by position in playlist
+        const sortedIds = (relations || [])
+            .sort((a, b) => (a.position || 0) - (b.position || 0))
+            .map(r => r.trackId);
+        
+        return { tracks: tracksMap, ids: sortedIds, error: relError || tracksError };
+    }, [relations, tracksData, relError, tracksError]);
 }
 
 /**
@@ -210,7 +276,7 @@ export function useTracks(sourceId: string) {
             ids.push(enriched.Id);
         });
         
-        return { tracks: tracksMap, ids, error };
+        return { tracks: tracksMap, ids, error, isLoading: false };
     }, [data, error]);
 }
 
