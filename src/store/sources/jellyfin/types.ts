@@ -1,33 +1,84 @@
 /**
- * Jellyfin Driver Types
+ * Jellyfin API Types
  * 
- * Re-exports common source driver types and defines Jellyfin-specific types
+ * Types for data coming from the Jellyfin API.
+ * These use PascalCase to match the API responses.
  */
 
-// Re-export all common types
-export type {
-    Source,
-    SourceInfo,
-    Credentials,
-    ListParams,
-    Artist,
-    Album,
-    Track,
-    Playlist,
-    SearchFilter,
-    SearchResultItem,
-    CodecMetadata,
-    Lyrics,
-    StreamOptions,
-    DownloadOptions,
-    DownloadInfo,
-} from '../types';
+import type { Platform } from 'react-native';
 
-export {
-    SourceType,
-    SearchFilterType,
-    SourceDriver,
-} from '../types';
+/**
+ * Device name mapping type
+ */
+export type DeviceMap = Record<typeof Platform['OS'], string>;
 
-// Export Jellyfin API types
-export * from './api-types';
+/**
+ * Track streaming options OS overrides type
+ */
+export type TrackOptionsOsOverrides = Record<typeof Platform.OS, Record<string, string>>;
+
+/**
+ * Base item from Jellyfin API
+ */
+export interface JellyfinBaseItem {
+    Id: string;
+    Name: string;
+    ServerId?: string;
+    [key: string]: unknown;
+}
+
+/**
+ * Artist from Jellyfin API
+ */
+export interface JellyfinArtist extends JellyfinBaseItem {
+    IsFolder: boolean;
+}
+
+/**
+ * Album from Jellyfin API
+ */
+export interface JellyfinAlbum extends JellyfinBaseItem {
+    ProductionYear?: number;
+    IsFolder: boolean;
+    AlbumArtist?: string;
+    DateCreated?: string;
+    ArtistItems?: JellyfinArtist[];
+}
+
+/**
+ * Track from Jellyfin API
+ */
+export interface JellyfinTrack extends JellyfinBaseItem {
+    AlbumId?: string;
+    Album?: string;
+    AlbumArtist?: string;
+    ProductionYear?: number;
+    IndexNumber?: number;
+    ParentIndexNumber?: number;
+    RunTimeTicks?: number;
+    ArtistItems?: JellyfinArtist[];
+}
+
+/**
+ * Playlist from Jellyfin API
+ */
+export interface JellyfinPlaylist extends JellyfinBaseItem {
+    CanDelete: boolean;
+    ChildCount?: number;
+}
+
+/**
+ * Items response wrapper
+ */
+export interface JellyfinItemsResponse<T> {
+    Items: T[];
+    TotalRecordCount: number;
+    StartIndex: number;
+}
+
+/**
+ * Search result from Jellyfin API
+ */
+export interface JellyfinSearchResult extends JellyfinBaseItem {
+    Type: string;
+}

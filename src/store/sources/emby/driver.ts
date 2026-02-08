@@ -7,30 +7,12 @@
 
 import { Platform } from 'react-native';
 import { version } from '../../../../package.json';
-import {
-    SourceDriver,
-    SourceInfo,
-    ListParams,
-    Artist,
-    Album,
-    Track,
-    Playlist,
-    SearchFilter,
-    SearchResultItem,
-    CodecMetadata,
-    Lyrics,
-    StreamOptions,
-    DownloadOptions,
-    DownloadInfo,
-    EmbyAlbum,
-    EmbyTrack,
-    EmbyArtist,
-    EmbyPlaylist,
-    EmbyItemsResponse,
-} from './types';
+import { SourceDriver } from '../types';
+import type { SourceInfo, ListParams, Artist, Album, Track, Playlist, SearchFilter, SearchResultItem, CodecMetadata, Lyrics, StreamOptions, DownloadOptions, DownloadInfo } from '../types';
+import type { EmbyAlbum, EmbyTrack, EmbyArtist, EmbyPlaylist, EmbyItemsResponse, DeviceMap, TrackOptionsOsOverrides } from './types';
 
 /** Map the output of `Platform.OS`, so that Emby can understand it. */
-const deviceMap: Record<typeof Platform['OS'], string> = {
+const deviceMap: DeviceMap = {
     ios: 'iOS',
     android: 'Android',
     macos: 'macOS',
@@ -534,7 +516,7 @@ export class EmbyDriver extends SourceDriver {
    * Get stream URL for a track
    */
     async getStreamUrl(trackId: string, options?: StreamOptions): Promise<string> {
-        const trackOptionsOsOverrides: Record<typeof Platform.OS, Record<string, string>> = {
+        const trackOptionsOsOverrides: TrackOptionsOsOverrides = {
             ios: {
                 Container: 'mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,wav,m4a,aiff,aif',
             },
