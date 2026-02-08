@@ -3,8 +3,11 @@ import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { Text, View, FlatList, ListRenderItem, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
-import { useAppDispatch, useTypedSelector } from '@/store';
-import { fetchAllPlaylists } from '@/store/music/actions';
+import { usePlaylists } from '@/store/music/hooks';
+import * as musicFetchers from '@/store/music/fetchers';
+import { useLiveQuery } from '@/store/db/live-queries';
+import { db } from '@/store/db';
+import { sources } from '@/store/db/schema/sources';
 import { PLAYLIST_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import TouchableHandler from '@/components/TouchableHandler';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
@@ -37,12 +40,11 @@ const Playlists: React.FC = () => {
     const offsets = useNavigationOffsets();
 
     // Retrieve data from store
-    const { entities, ids } = useTypedSelector((state) => state.music.playlists);
-    const isLoading = useTypedSelector((state) => state.music.playlists.isLoading);
-    const lastRefreshed = useTypedSelector((state) => state.music.playlists.lastRefreshed);
+    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
+    const sourceId = sourceData?.[0]?.id || '';
+    const { playlists, ids, isLoading, lastRefreshed } = usePlaylists(sourceId);
     
     // Initialise helpers
-    const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
     const listRef = useRef<FlatList<string>>(null);
@@ -54,7 +56,7 @@ const Playlists: React.FC = () => {
     }, []);
 
     // Set callbacks
-    const retrieveData = useCallback(() => dispatch(fetchAllPlaylists()), [dispatch]);
+    const retrieveData = useCallback(() => musicFetchers.fetchAndStoreAllPlaylists(), []);
     const selectAlbum = useCallback((id: string) => {
         navigation.navigate('Playlist', { id });
     }, [navigation]);
@@ -64,14 +66,14 @@ const Playlists: React.FC = () => {
         }
 
         const nextItemId = ids[index + 1];
-        const nextItem = entities[nextItemId];
+        const nextItem = playlists[nextItemId];
 
         return (
             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }} key={item}>
                 <GeneratedPlaylistItem
                     id={item}
-                    imageUrl={getImage(entities[item])}
-                    name={entities[item]?.Name || ''}
+                    imageUrl={getImage(playlists[item])}
+                    name={playlists[item]?.Name || ''}
                     onPress={selectAlbum}
                 />
                 {nextItem && 
@@ -84,7 +86,7 @@ const Playlists: React.FC = () => {
                 }
             </View>
         );
-    }, [entities, getImage, selectAlbum, ids]);
+    }, [playlists, getImage, selectAlbum, ids]);
 
     // Retrieve data on mount
     useEffect(() => { 

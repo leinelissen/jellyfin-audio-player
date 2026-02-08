@@ -2,12 +2,14 @@ import React, { useCallback, useEffect } from 'react';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch, useTypedSelector } from '@/store';
-import { fetchRecentAlbums } from '@/store/music/actions';
+import { useAlbums, useRecentAlbums } from '@/store/music/hooks';
+import * as musicFetchers from '@/store/music/fetchers';
+import { useLiveQuery } from '@/store/db/live-queries';
+import { db } from '@/store/db';
+import { sources } from '@/store/db/schema/sources';
 import TouchableHandler from '@/components/TouchableHandler';
 import ListContainer from './components/ListContainer';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
-import { useRecentAlbums } from '@/store/music/selectors';
 import { Header } from '@/components/Typography';
 import ListButton from '@/components/ListButton';
 import { t } from '@/localisation';
@@ -62,17 +64,17 @@ const RecentAlbums: React.FC = () => {
     const defaultStyles = useDefaultStyles();
 
     // Retrieve data from store
-    const { entities: albums } = useTypedSelector((state) => state.music.albums);
-    const recentAlbums = useRecentAlbums(24);
-    const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
+    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
+    const sourceId = sourceData?.[0]?.id || '';
+    const { albums, isLoading } = useAlbums(sourceId);
+    const { ids: recentAlbumIds } = useRecentAlbums(sourceId, 24);
 
     // Initialise helpers
-    const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
 
     // Set callbacks
-    const retrieveData = useCallback(() => dispatch(fetchRecentAlbums()), [dispatch]);
+    const retrieveData = useCallback(() => musicFetchers.fetchAndStoreRecentAlbums(), []);
     const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
 
     // Retrieve data on mount
@@ -80,7 +82,7 @@ const RecentAlbums: React.FC = () => {
 
     return (
         <SafeFlatList
-            data={recentAlbums}
+            data={recentAlbumIds}
             refreshing={isLoading}
             onRefresh={retrieveData}
             numColumns={2}

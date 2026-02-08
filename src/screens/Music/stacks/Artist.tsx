@@ -5,8 +5,11 @@ import { View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import { differenceInDays } from 'date-fns';
-import { useAppDispatch, useTypedSelector } from '@/store';
-import { fetchAllAlbums } from '@/store/music/actions';
+import { useAlbums, useArtists } from '@/store/music/hooks';
+import * as musicFetchers from '@/store/music/fetchers';
+import { useLiveQuery } from '@/store/db/live-queries';
+import { db } from '@/store/db';
+import { sources } from '@/store/db/schema/sources';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import TouchableHandler from '@/components/TouchableHandler';
 import useDefaultStyles from '@/components/Colors';
@@ -61,10 +64,11 @@ export default function Artist() {
     const { params } = useRoute<RouteProp<StackParams, 'Artist'>>();
 
     // Retrieve data from store
-    const { ids: allAlbumIds, entities: albums } = useTypedSelector((state) => state.music.albums);
-    const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
-    const lastRefreshed = useTypedSelector((state) => state.music.albums.lastRefreshed);
-    const artist = useTypedSelector((state) => state.music.artists.entities[params.id]);
+    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
+    const sourceId = sourceData?.[0]?.id || '';
+    const { ids: allAlbumIds, albums, isLoading, lastRefreshed } = useAlbums(sourceId);
+    const { artists } = useArtists(sourceId);
+    const artist = artists[params.id];
 
     const albumIds = useMemo(() => {
         return allAlbumIds.filter(id => {
@@ -74,14 +78,13 @@ export default function Artist() {
     }, [allAlbumIds, albums, params.id]);
 
     // Initialise helpers
-    const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
 
     // Set callbacks
     const retrieveData = useCallback(() => {
-        dispatch(fetchAllAlbums());
-    }, [dispatch]);
+        musicFetchers.fetchAndStoreAllAlbums();
+    }, []);
     const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
     const generateItem = useCallback(({ item }: { item: string[] }) => {
         return (

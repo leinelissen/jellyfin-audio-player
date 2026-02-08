@@ -3,12 +3,14 @@ import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
-import { useAppDispatch, useTypedSelector } from '@/store';
-import { fetchAllAlbums } from '@/store/music/actions';
+import { useAlbums, useAlbumsByAlphabet } from '@/store/music/hooks';
+import * as musicFetchers from '@/store/music/fetchers';
+import { useLiveQuery } from '@/store/db/live-queries';
+import { db } from '@/store/db';
+import { sources } from '@/store/db/schema/sources';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import TouchableHandler from '@/components/TouchableHandler';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
-import { selectAlbumsByAlphabet } from '@/store/music/selectors';
 import AlphabetScroller from '@/components/AlphabetScroller';
 import styled from 'styled-components/native';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
@@ -77,13 +79,12 @@ const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: Generat
 
 const Albums: React.FC = () => {
     // Retrieve data from store
-    const { entities: albums } = useTypedSelector((state) => state.music.albums);
-    const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
-    const lastRefreshed = useTypedSelector((state) => state.music.albums.lastRefreshed);
-    const sections = useTypedSelector(selectAlbumsByAlphabet);
+    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
+    const sourceId = sourceData?.[0]?.id || '';
+    const { albums, isLoading, lastRefreshed } = useAlbums(sourceId);
+    const sections = useAlbumsByAlphabet(sourceId);
     
     // Initialise helpers
-    const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
     const listRef = useRef<FlashListRef<string | string[]>>(null);
@@ -111,7 +112,7 @@ const Albums: React.FC = () => {
     }, [flatData]);
 
     // Set callbacks
-    const retrieveData = useCallback(() => dispatch(fetchAllAlbums()), [dispatch]);
+    const retrieveData = useCallback(() => musicFetchers.fetchAndStoreAllAlbums(), []);
     const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
     const selectLetter = useCallback(({ letter }: { letter: string, index: number }) => { 
         const index = flatData.findIndex((item) => (

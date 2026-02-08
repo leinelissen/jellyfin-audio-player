@@ -3,7 +3,11 @@ import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch, useTypedSelector } from '@/store';
+import { useTypedSelector } from '@/store';
+import { useTracks, useAlbums, usePlaylists } from '@/store/music/hooks';
+import { useLiveQuery } from '@/store/db/live-queries';
+import { db } from '@/store/db';
+import { sources } from '@/store/db/schema/sources';
 import TouchableHandler from '@/components/TouchableHandler';
 import useCurrentTrack from '@/utility/useCurrentTrack';
 import Play from '@/assets/icons/play.svg';
@@ -26,6 +30,7 @@ import { t } from '@/localisation';
 import { SafeScrollView, useNavigationOffsets } from '@/components/SafeNavigatorView';
 import { groupBy } from 'lodash';
 import Divider from '@/components/Divider';
+import { useAppDispatch } from '@/store';
 
 const styles = StyleSheet.create({
     index: {
@@ -97,10 +102,13 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const offsets = useNavigationOffsets();
 
     // Retrieve state
-    const tracks = useTypedSelector((state) => state.music.tracks.entities);
-    const isLoading = useTypedSelector((state) => state.music.tracks.isLoading);
+    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
+    const sourceId = sourceData?.[0]?.id || '';
+    const { tracks, isLoading } = useTracks(sourceId);
     const downloadedTracks = useTypedSelector(selectDownloadedTracks(trackIds));
-    const entity = useTypedSelector((state) => itemDisplayStyle === 'album' ? state.music.albums.entities[entityId] : state.music.playlists.entities[entityId]);
+    const { albums } = useAlbums(sourceId);
+    const { playlists } = usePlaylists(sourceId);
+    const entity = itemDisplayStyle === 'album' ? albums[entityId] : playlists[entityId];
     const totalDuration = useMemo(() => (
         trackIds.reduce<number>((sum, trackId) => (
             sum + (tracks[trackId]?.RunTimeTicks || 0)

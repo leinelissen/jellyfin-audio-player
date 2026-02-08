@@ -1,8 +1,11 @@
 import React, { useCallback, useEffect } from 'react';
 import { useRoute, RouteProp } from '@react-navigation/native';
-import { useAppDispatch, useTypedSelector } from '@/store';
+import { usePlaylists, useTracksByPlaylist } from '@/store/music/hooks';
+import * as musicFetchers from '@/store/music/fetchers';
+import { useLiveQuery } from '@/store/db/live-queries';
+import { db } from '@/store/db';
+import { sources } from '@/store/db/schema/sources';
 import TrackListView from './components/TrackListView';
-import { fetchTracksByPlaylist } from '@/store/music/actions';
 import { differenceInDays } from 'date-fns';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import { t } from '@/localisation';
@@ -12,16 +15,18 @@ type Route = RouteProp<StackParams, 'Playlist'>;
 
 const Playlist: React.FC = () => {
     const { params: { id } } = useRoute<Route>();
-    const dispatch = useAppDispatch();
 
-    // Retrieve the album data from the store
-    const playlist = useTypedSelector((state) => state.music.playlists.entities[id]);
-    const playlistTracks = useTypedSelector((state) => state.music.tracks.byPlaylist[id]);
+    // Retrieve the playlist data from the store
+    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
+    const sourceId = sourceData?.[0]?.id || '';
+    const { playlists } = usePlaylists(sourceId);
+    const playlist = playlists[id];
+    const { ids: playlistTrackIds } = useTracksByPlaylist(sourceId, id);
 
     // Define a function for refreshing this entity
     const refresh = useCallback(
-        () => dispatch(fetchTracksByPlaylist(id)),
-        [dispatch, id]
+        () => musicFetchers.fetchAndStoreTracksByPlaylist(id),
+        [id]
     );
 
     // Auto-fetch the track data periodically
@@ -33,7 +38,7 @@ const Playlist: React.FC = () => {
 
     return (
         <TrackListView
-            trackIds={playlistTracks || []}
+            trackIds={playlistTrackIds || []}
             title={playlist?.Name}
             entityId={id}
             refresh={refresh}
