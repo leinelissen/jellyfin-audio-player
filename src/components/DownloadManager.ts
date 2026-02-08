@@ -1,8 +1,10 @@
 import { xor } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { DocumentDirectoryPath, readDir } from 'react-native-fs';
-import { useAppDispatch, useTypedSelector } from '@/store';
-import { completeDownload, downloadTrack } from '@/store/downloads/actions';
+import { useDownloads } from '@/store/downloads/hooks';
+import { useSourceId } from '@/store/db/useSourceId';
+import { downloadTrack } from '@/store/downloads/queue';
+import { completeDownload } from '@/store/downloads/db';
 import { getMimeTypeForExtension } from '@/utility/mimeType';
 
 /**
@@ -17,9 +19,8 @@ const MAX_CONCURRENT_DOWNLOADS = 5;
  */
 function DownloadManager () {
     // Retrieve store helpers
-    const { queued, ids, entities } = useTypedSelector((state) => state.downloads);
-    const rehydrated = useTypedSelector((state) => state._persist.rehydrated);
-    const dispatch = useAppDispatch();
+    const sourceId = useSourceId();
+    const { queued, ids, entities } = useDownloads(sourceId);
     
     // Keep state for the currently active downloads (i.e. the downloads that
     // have actually been pushed out to react-native-fs).
@@ -42,7 +43,7 @@ function DownloadManager () {
         queue.filter((id) => !activeDownloads.current.has(id))
             .forEach((id) => {
                 // We dispatch the actual call to start downloading
-                dispatch(downloadTrack(id));
+                downloadTrack(id);
                 // And add it to the active downloads
                 activeDownloads.current.add(id);
             });
@@ -52,7 +53,7 @@ function DownloadManager () {
         xor(Array.from(activeDownloads.current), queue)
             .forEach((id) => activeDownloads.current.delete(id));
 
-    }, [queued, dispatch, activeDownloads]);
+    }, [queued, activeDownloads]);
 
     useEffect(() => {
         // GUARD: We only run this function once
@@ -60,16 +61,15 @@ function DownloadManager () {
             return;
         }
 
-        // GUARD: If the state has not been rehydrated, we cannot check against
-        // the store ids.
-        if (!rehydrated) {
+        // GUARD: Need a source ID to hydrate orphans
+        if (!sourceId) {
             return;
         }
 
         /**
          * Whenever the store is cleared, existing downloads get "lost" because
          * the only reference we have is the store. This function checks for
-         * those lost downloads and adds them to the store
+         * those lost downloads and adds them to the database
          */
         async function hydrateOrphanedDownloads() {
             // Retrieve all files for this app
@@ -82,7 +82,7 @@ function DownloadManager () {
                     const mimeType = getMimeTypeForExtension(extension);
 
                     // GUARD: Only process audio mime types
-                    if (!mimeType || mimeType.startsWith('audio')) {
+                    if (!mimeType || !mimeType.startsWith('audio')) {
                         return;
                     }
 
@@ -92,19 +92,14 @@ function DownloadManager () {
                         return;
                     }
 
-                    // Add the download to the store
-                    dispatch(completeDownload({ 
-                        id,
-                        location: file.path,
-                        size: file.size,
-                        
-                    }));
+                    // Add the download to the database
+                    completeDownload(id, file.path);
                 });
         }
         
         hydrateOrphanedDownloads();
         setHasRehydratedOrphans(true);
-    }, [rehydrated, ids, hasRehydratedOrphans, dispatch, entities]);
+    }, [sourceId, ids, hasRehydratedOrphans, entities]);
 
     return null;
 }

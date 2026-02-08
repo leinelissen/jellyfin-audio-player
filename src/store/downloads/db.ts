@@ -19,6 +19,7 @@ export interface Download {
 export interface DownloadMetadata {
     size?: number;
     error?: string;
+    image?: string;
 }
 
 /**
@@ -100,7 +101,10 @@ export async function updateDownloadProgress(
     };
 
     if (metadata) {
-        updates.metadataJson = JSON.stringify(metadata);
+        // Merge with existing metadata
+        const existing = await getDownload(id);
+        const existingMetadata = existing ? parseDownloadMetadata(existing) : {};
+        updates.metadataJson = JSON.stringify({ ...existingMetadata, ...metadata });
     }
 
     await db.update(downloads)
@@ -115,18 +119,26 @@ export async function updateDownloadProgress(
  */
 export async function completeDownload(
     id: string,
-    hash?: string,
-    filename?: string
+    filename?: string,
+    imageFilename?: string
 ): Promise<void> {
     const updates: any = {
         isComplete: true,
         isFailed: false,
-        progress: 100,
+        progress: 1,
         updatedAt: Date.now(),
     };
 
-    if (hash) updates.hash = hash;
-    if (filename) updates.filename = filename;
+    if (filename) {
+        updates.filename = filename;
+    }
+    
+    // Merge image into existing metadata
+    if (imageFilename) {
+        const existing = await getDownload(id);
+        const existingMetadata = existing ? parseDownloadMetadata(existing) : {};
+        updates.metadataJson = JSON.stringify({ ...existingMetadata, image: imageFilename });
+    }
 
     await db.update(downloads)
         .set(updates)
@@ -182,6 +194,7 @@ export function parseDownloadMetadata(download: Download): DownloadMetadata {
 export interface DownloadWithMetadata extends Download {
     size?: number;
     error?: string;
+    image?: string;
 }
 
 export function enrichDownload(download: Download): DownloadWithMetadata {

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useTypedSelector } from '@/store';
+import { useDownload } from '@/store/downloads/hooks';
 import CloudIcon from '@/assets/icons/cloud.svg';
 import CloudDownArrow from '@/assets/icons/cloud-down-arrow.svg';
 import CloudExclamationMarkIcon from '@/assets/icons/cloud-exclamation-mark.svg';
@@ -32,9 +32,9 @@ function DownloadIcon({ trackId, size = 16, fill, style }: DownloadIconProps) {
     const defaultStyles = useDefaultStyles();
     const iconFill = fill || defaultStyles.textQuarterOpacity.color;
 
-    // Get download icon from state
-    const entity = useTypedSelector((state) => state.downloads.entities[trackId]);
-    const isQueued = useTypedSelector((state) => state.downloads.queued.includes(trackId));
+    // Get download icon from database
+    const { entity } = useDownload(trackId);
+    const isQueued = entity && !entity.isComplete && !entity.isFailed;
 
     // Memoize calculations for radius and circumference of the circle
     const radius = useMemo(() => size / 2, [size]);

@@ -1,4 +1,5 @@
-import { useTypedSelector } from '@/store';
+import { useTracks } from '@/store/music/hooks';
+import { useSourceId } from '@/store/db/useSourceId';
 import { AlbumTrack } from '@/store/music/types';
 import { useEffect, useMemo, useState } from 'react';
 import TrackPlayer, { Event, useTrackPlayerEvents, Track } from 'react-native-track-player';
@@ -16,8 +17,9 @@ export default function useCurrentTrack(): CurrentTrackResponse {
     const [track, setTrack] = useState<Track | undefined>();
     const [index, setIndex] = useState<number | undefined>();
 
-    // Retrieve entities from the store
-    const entities = useTypedSelector((state) => state.music.tracks.entities);
+    // Retrieve entities from the database
+    const sourceId = useSourceId();
+    const { tracks: entities } = useTracks(sourceId);
 
     // Attempt to extract the track from the store
     const albumTrack = useMemo(() => (

@@ -12,7 +12,6 @@ import { tracks } from '@/store/db/schema/tracks';
 import { playlists } from '@/store/db/schema/playlists';
 import { playlistTracks } from '@/store/db/schema/playlist-tracks';
 import { eq, desc, and, inArray } from 'drizzle-orm';
-import { parseISO } from 'date-fns';
 import { ALPHABET_LETTERS } from '@/CONSTANTS';
 import type { SectionListData } from 'react-native';
 import type { Album, AlbumTrack, MusicArtist, Playlist } from './types';

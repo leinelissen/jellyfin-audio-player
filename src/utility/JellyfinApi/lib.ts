@@ -3,8 +3,6 @@ import { version } from '../../../package.json';
 import { Album, AlbumTrack, ArtistItem, Playlist } from '@/store/music/types';
 import { db } from '@/store/db';
 import { sources } from '@/store/db/schema/sources';
-import { downloads } from '@/store/db/schema/downloads';
-import { eq } from 'drizzle-orm';
 import { useLiveQuery } from '@/store/db/live-queries';
 import { useCallback } from 'react';
 
@@ -140,15 +138,6 @@ export function getImage(item: string | number | Album | AlbumTrack | Playlist |
     if (!item || !serverUri) {
         return undefined;
     }
-
-    // Get the item ID
-    const itemId = typeof item === 'string' || typeof item === 'number' 
-        ? item 
-        : 'PrimaryImageItemId' in item 
-            ? item.PrimaryImageItemId || item.Id 
-            : 'AlbumId' in item 
-                ? item.AlbumId || item.Id 
-                : item.Id;
 
     // Return server URL for the image
     if (typeof item === 'string' || typeof item === 'number') {

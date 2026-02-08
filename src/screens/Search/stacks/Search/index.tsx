@@ -4,10 +4,17 @@ import Input from '@/components/Input';
 import { ActivityIndicator, Animated, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import styled from 'styled-components/native';
 
-import { AppState, useAppDispatch, useTypedSelector } from '@/store';
 import Fuse, { IFuseOptions } from 'fuse.js';
 import { Album, AlbumTrack, MusicArtist, Playlist } from '@/store/music/types';
-import { addSearchQuery, clearSearchHistory } from '@/store/search';
+import { useAlbums, useTracks, useArtists, usePlaylists } from '@/store/music/hooks';
+import { useDownloads } from '@/store/downloads/hooks';
+import { useSourceId } from '@/store/db/useSourceId';
+import { searchAndStore } from '@/store/music/fetchers';
+import { addSearchQuery, clearSearchHistory, parseSearchQueries } from '@/store/search/db';
+import { useLiveQuery } from '@/store/db/live-queries';
+import { db } from '@/store/db';
+import { searchQueries } from '@/store/db/schema/search-queries';
+import { eq, desc } from 'drizzle-orm';
 
 import { FlatList } from 'react-native-gesture-handler';
 import TouchableHandler from '@/components/TouchableHandler';
@@ -15,7 +22,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { t } from '@/localisation';
 import useDefaultStyles from '@/components/Colors';
-import { searchAndFetch } from '@/store/music/actions';
 import { SubHeader, Text } from '@/components/Typography';
 import DownloadIcon from '@/components/DownloadIcon';
 import ChevronRight from '@/assets/icons/chevron-right.svg';
@@ -40,7 +46,7 @@ import { retrieveInstantMixByTrackId } from '@/utility/JellyfinApi/playlist';
 const KEYBOARD_OFFSET = Platform.select({
     ios: 0,
     // Android 15+ has edge-to-edge support, changing the keyboard offset to 0
-    android: Number.parseInt(Platform.Version as string) >= 35 ? 0 : 72,
+    android: parseInt(Platform.Version as string, 10) >= 35 ? 0 : 72,
 });
 const SEARCH_INPUT_HEIGHT = 104;
 
@@ -149,17 +155,11 @@ interface SearchResult {
 
 type SearchItem = Album | AlbumTrack | MusicArtist | Playlist;
 
-const albumSelector = (state: AppState) => state.music.albums.entities;
-const tracksSelector = (state: AppState) => state.music.tracks.entities;
-const artistsSelector = (state: AppState) => state.music.artists.entities;
-const playlistsSelector = (state: AppState) => state.music.playlists.entities;
-const downloadsSelector = (state: AppState) => state.downloads.entities;
-const searchHistorySelector = (state: AppState) => state.search.queryHistory;
-
 export default function Search() {
     const defaultStyles = useDefaultStyles();
     const offsets = useNavigationOffsets({ includeOverlay: false });
     const playTracks = usePlayTracks();
+    const sourceId = useSourceId();
 
     // Prepare state for fuse and albums
     const [searchTerm, setSearchTerm] = useState('');
@@ -168,17 +168,26 @@ export default function Search() {
     const [activeFilters, setActiveFilters] = useState<Set<SearchType>>(new Set());
     const [localPlaybackOnly, setLocalPlaybackOnly] = useState(false);
 
-    const albumEntities: Record<string, Album> = useTypedSelector(albumSelector);
-    const trackEntities: Record<string, AlbumTrack> = useTypedSelector(tracksSelector);
-    const artistEntities: Record<string, MusicArtist> = useTypedSelector(artistsSelector);
-    const playlistEntities: Record<string, Playlist> = useTypedSelector(playlistsSelector);
-    const downloadEntities = useTypedSelector(downloadsSelector);
-    const searchHistory = useTypedSelector(searchHistorySelector);
+    const { albums: albumEntities } = useAlbums(sourceId);
+    const { tracks: trackEntities } = useTracks(sourceId);
+    const { artists: artistEntities } = useArtists(sourceId);
+    const { playlists: playlistEntities } = usePlaylists(sourceId);
+    const { entities: downloadEntities } = useDownloads(sourceId);
+    
+    // Use live query for search history
+    const { data: searchHistoryData } = useLiveQuery(
+        sourceId 
+            ? db.select().from(searchQueries).where(eq(searchQueries.sourceId, sourceId)).orderBy(desc(searchQueries.timestamp)).limit(10)
+            : null
+    );
+    
+    const searchHistory = useMemo(() => {
+        return searchHistoryData ? parseSearchQueries(searchHistoryData as any) : [];
+    }, [searchHistoryData]);
 
     // Prepare helpers
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
-    const dispatch = useAppDispatch();
 
     /**
      * This function retrieves search results from Jellyfin. It is a seperate
@@ -187,11 +196,11 @@ export default function Search() {
      */
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchJellyfinResults = useCallback(debounce(async (searchTerm: string) => {
-        await dispatch(searchAndFetch({ term: searchTerm }));
+        await searchAndStore(searchTerm);
 
         // Loading is now complete
         setLoading(false);
-    }, 150), [dispatch]);
+    }, 150), []);
 
     /**
      * Debounced function to save search query to history after 10 seconds
@@ -199,12 +208,10 @@ export default function Search() {
      */
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const saveSearchToHistory = useCallback(debounce((query: string, filters: SearchType[], localOnly: boolean) => {
-        dispatch(addSearchQuery({
-            query,
-            filters,
-            localPlaybackOnly: localOnly,
-        }));
-    }, 10_000), [dispatch]);
+        if (sourceId) {
+            addSearchQuery(sourceId, query, filters, localOnly);
+        }
+    }, 10_000), [sourceId]);
 
 
     const searchItems = useMemo(() => ({
@@ -320,11 +327,9 @@ export default function Search() {
 
     const selectItem = useCallback(async ({ id, type }: { id: string; type: SearchType; }) => {
         // Save search query immediately when user selects a result
-        dispatch(addSearchQuery({
-            query: searchTerm.trim(),
-            filters: Array.from(activeFilters),
-            localPlaybackOnly,
-        }));
+        if (sourceId) {
+            await addSearchQuery(sourceId, searchTerm.trim(), Array.from(activeFilters), localPlaybackOnly);
+        }
 
         switch (type) {
             case 'Audio': {
@@ -349,7 +354,7 @@ export default function Search() {
                 navigation.navigate('Playlist', { id });
                 break;
         }
-    }, [navigation, searchItems, dispatch, playTracks, searchTerm, activeFilters, localPlaybackOnly]);
+    }, [navigation, searchItems, playTracks, searchTerm, activeFilters, localPlaybackOnly, sourceId]);
 
     const applyHistoryItem = useCallback((query: string, filters: SearchType[], localOnly: boolean) => {
         setSearchTerm(query);
@@ -362,9 +367,11 @@ export default function Search() {
         setSearchTerm('');
     }, [searchTerm, activeFilters, localPlaybackOnly, saveSearchToHistory]);
 
-    const handleClearHistory = useCallback(() => {
-        dispatch(clearSearchHistory());
-    }, [dispatch]);
+    const handleClearHistory = useCallback(async () => {
+        if (sourceId) {
+            await clearSearchHistory(sourceId);
+        }
+    }, [sourceId]);
 
     const SearchInput = React.useMemo(() => (
         <Animated.View style={{ paddingBottom: SEARCH_INPUT_OFFSET }}>
