@@ -1,147 +1,124 @@
 /**
- * Live Queries for Reactive UI
- * 
- * Provides React hooks for live database queries that automatically
- * re-render when data changes.
- * 
- * Note: This is a simple implementation. For production, consider using
- * a more sophisticated solution like @powersync/react or similar.
+ * Caveats
+ * 1. Reactive queries only fire on transactions - op-sqlite limitation. If you're mutating via
+ *   drizzle directly (not using db.transaction()), you may need to call
+ *   db.flushPendingReactiveQueries() after writes.
+ * 2. Table name extraction is basic - The shim parses FROM/JOIN clauses. Complex CTEs or subqueries
+ *   might not be detected correctly.
+ * 3. Raw rows from reactive callback - The reactive callback returns raw row data (not through
+ *   drizzle's transformations). For simple queries this works, but complex joins might differ
+ *   from initial fetch.
  */
 
-import { useState, useEffect, useCallback } from 'react';
-import { db } from './index';
-import { sql } from 'drizzle-orm';
+import { useState, useEffect, useRef, useMemo } from "react";
+import { sqliteDb } from '@/store/db'
+
+type DrizzleQuery = {
+    toSQL: () => { sql: string; params: unknown[] };
+    then: (onfulfilled?: (value: any) => any) => Promise<any>;
+};
+
+type UseLiveQueryResult<T> = {
+    data: T[];
+    error: Error | undefined;
+};
 
 /**
- * Table change listeners
+ * Extract table names from a SQL query string.
+ * Basic parser handling FROM and JOIN clauses.
  */
-type TableListener = () => void;
-const tableListeners = new Map<string, Set<TableListener>>();
+function extractTableNames(sql: string): string[] {
+    const tables: string[] = [];
+    const normalized = sql.toLowerCase();
 
-/**
- * Register a listener for table changes
- */
-function subscribeToTable(tableName: string, listener: TableListener) {
-    if (!tableListeners.has(tableName)) {
-        tableListeners.set(tableName, new Set());
+    const fromMatch = normalized.match(/from\s+["'`]?(\w+)["'`]?/i);
+    if (fromMatch) {
+        tables.push(fromMatch[1]);
     }
-    tableListeners.get(tableName)!.add(listener);
 
-    return () => {
-        const listeners = tableListeners.get(tableName);
-        if (listeners) {
-            listeners.delete(listener);
-            if (listeners.size === 0) {
-                tableListeners.delete(tableName);
-            }
+    const joinMatches = normalized.matchAll(/join\s+["'`]?(\w+)["'`]?/gi);
+    for (const match of joinMatches) {
+        if (!tables.includes(match[1])) {
+            tables.push(match[1]);
         }
-    };
-}
-
-/**
- * Notify listeners that a table has changed
- */
-export function invalidateTable(tableName: string) {
-    const listeners = tableListeners.get(tableName);
-    if (listeners) {
-        listeners.forEach(listener => listener());
     }
+
+    return tables;
 }
 
 /**
- * Invalidate multiple tables at once
+ * Shim for useLiveQuery that bridges Drizzle ORM with op-sqlite's reactiveExecute.
+ *
+ * Based on: https://op-engineering.github.io/op-sqlite/docs/reactive_queries
+ * Workaround until drizzle-orm adds native support:
+ * https://github.com/drizzle-team/drizzle-orm/issues/2926
  */
-export function invalidateTables(tableNames: string[]) {
-    tableNames.forEach(invalidateTable);
-}
+export function useLiveQuery<T>(
+    query: DrizzleQuery | undefined | null
+): UseLiveQueryResult<T> {
+    const [data, setData] = useState<T[]>([]);
+    const [error, setError] = useState<Error | undefined>(undefined);
+    const unsubscribeRef = useRef<(() => void) | null>(null);
 
-/**
- * Hook for live query results
- * 
- * @param query - SQL query string
- * @param params - Query parameters
- * @param tables - Array of table names to watch for changes
- * @returns Query results that update when tables change
- * 
- * @example
- * ```typescript
- * const albums = useLiveQuery(
- *   'SELECT * FROM albums WHERE source_id = ? ORDER BY name',
- *   [sourceId],
- *   ['albums']
- * );
- * ```
- */
-export function useLiveQuery<T = unknown>(
-    query: string,
-    params: unknown[] = [],
-    tables: string[] = []
-): T[] | null {
-    const [data, setData] = useState<T[] | null>(null);
-    const [version, setVersion] = useState(0);
+    // Memoize the SQL to avoid re-subscribing on every render
+    const sqlKey = useMemo(() => {
+        if (!query) return null;
+        try {
+            const { sql, params } = query.toSQL();
+            return JSON.stringify({ sql, params });
+        } catch {
+            return null;
+        }
+    }, [query]);
 
-    // Increment version when any watched table changes
     useEffect(() => {
-        if (tables.length === 0) return;
-
-        const unsubscribers = tables.map(table =>
-            subscribeToTable(table, () => setVersion(v => v + 1))
-        );
-
-        return () => {
-            unsubscribers.forEach(unsub => unsub());
-        };
-    }, [tables]);
-
-    // Execute query whenever version changes
-    const serializedParams = JSON.stringify(params);
-    useEffect(() => {
-        let cancelled = false;
-
-        async function executeQuery() {
-            try {
-                // Execute raw SQL query using Drizzle's sql helper
-                const result = await db.all(sql.raw(query));
-                
-                if (!cancelled) {
-                    setData(result as T[]);
-                }
-            } catch (error) {
-                console.error('Live query error:', error);
-                if (!cancelled) {
-                    setData([]);
-                }
-            }
+        if (!query || !sqlKey) {
+            return;
         }
 
-        executeQuery();
+        try {
+            const { sql, params } = query.toSQL();
+            const tables = extractTableNames(sql);
+
+            if (tables.length === 0) {
+                console.warn("[useLiveQuery] Could not extract table names from query");
+            }
+
+            const fireOn = tables.map((table) => ({ table }));
+
+            // Initial fetch via drizzle (preserves ORM transformations)
+            query
+                .then((result: T[]) => {
+                    setData(result);
+                    setError(undefined);
+                })
+                .catch((e: Error) => {
+                    console.error("[useLiveQuery] Initial fetch error:", e);
+                    setError(e);
+                });
+
+            // Subscribe to reactive updates via op-sqlite
+            unsubscribeRef.current = sqliteDb.reactiveExecute({
+                query: sql,
+                arguments: params as any[],
+                fireOn,
+                callback: (response) => {
+                    // response.rows contains raw row data from reactive callback
+                    setData(response.rows as T[]);
+                },
+            });
+        } catch (e) {
+            console.error("[useLiveQuery] Setup error:", e);
+            setError(e instanceof Error ? e : new Error(String(e)));
+        }
 
         return () => {
-            cancelled = true;
+            if (unsubscribeRef.current) {
+                unsubscribeRef.current();
+                unsubscribeRef.current = null;
+            }
         };
-    }, [query, serializedParams, version]);
+    }, [sqlKey, query]);
 
-    return data;
-}
-
-/**
- * Hook for a single live query result
- */
-export function useLiveQueryOne<T = unknown>(
-    query: string,
-    params: unknown[] = [],
-    tables: string[] = []
-): T | null {
-    const results = useLiveQuery<T>(query, params, tables);
-    return results && results.length > 0 ? results[0] : null;
-}
-
-/**
- * Hook to invalidate tables manually
- */
-export function useInvalidateTables() {
-    return useCallback((tableNames: string | string[]) => {
-        const tables = Array.isArray(tableNames) ? tableNames : [tableNames];
-        invalidateTables(tables);
-    }, []);
+    return { data, error };
 }

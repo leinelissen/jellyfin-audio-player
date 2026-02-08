@@ -38,7 +38,7 @@ const schema = {
 };
 
 // Open the SQLite database
-const sqliteDb = open({
+export const sqliteDb = open({
     name: 'fintunes.db',
     location: '../databases',
 });
