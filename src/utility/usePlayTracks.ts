@@ -7,6 +7,10 @@ import { useDownloads } from '@/store/downloads/hooks';
 import { useSourceId } from '@/store/db/useSourceId';
 import type { AlbumTrack } from '@/store/music/types';
 import type { DownloadWithMetadata } from '@/store/downloads/db';
+import type { DownloadEntity } from '@/store/downloads/types';
+
+// Union type to support both database and Redux formats (for CarPlay compatibility)
+type DownloadRecord = Record<string, DownloadWithMetadata | DownloadEntity>;
 
 interface PlayOptions {
     play: boolean;
@@ -35,7 +39,7 @@ const defaults: PlayOptions = {
 export async function playTracks(
     trackIds: string[] | undefined,
     tracks: Record<string, AlbumTrack>,
-    downloads: Record<string, DownloadWithMetadata | any>,
+    downloads: DownloadRecord,
     options: Partial<PlayOptions> = {},
 ): Promise<Track[] | undefined> {
     if (!trackIds) {

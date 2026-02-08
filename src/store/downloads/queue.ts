@@ -7,6 +7,7 @@ import { DocumentDirectoryPath, downloadFile, unlink, exists } from 'react-nativ
 import { getActiveSource } from '@/store/settings/db';
 import { db } from '@/store/db';
 import { tracks } from '@/store/db/schema/tracks';
+import { downloads } from '@/store/db/schema/downloads';
 import { eq } from 'drizzle-orm';
 import { generateTrackUrl } from '@/utility/JellyfinApi/track';
 import { getImage } from '@/utility/JellyfinApi/lib';
@@ -125,8 +126,8 @@ export async function removeDownloadedTrack(trackId: string): Promise<void> {
     // Get the download from database
     const downloadData = await db
         .select()
-        .from(require('@/store/db/schema/downloads').downloads)
-        .where(eq(require('@/store/db/schema/downloads').downloads.id, trackId))
+        .from(downloads)
+        .where(eq(downloads.id, trackId))
         .limit(1);
     
     const download = downloadData[0];
