@@ -10,7 +10,6 @@ import { version } from '../../../../package.json';
 import {
     SourceDriver,
     SourceInfo,
-    Credentials,
     ListParams,
     Artist,
     Album,
