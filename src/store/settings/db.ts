@@ -1,28 +1,13 @@
 import { db, sqliteDb } from '@/store/db';
 import { appSettings } from '@/store/db/schema/app-settings';
 import { sources } from '@/store/db/schema/sources';
+import type { AppSettings as AppSettingsType, Source } from '@/store/db/types';
 import { eq } from 'drizzle-orm';
 import { ColorScheme } from './types';
 
-export interface AppSettings {
-    id: number;
-    bitrate: number;
-    isOnboardingComplete: boolean;
-    hasReceivedErrorReportingAlert: boolean;
-    enablePlaybackReporting: boolean;
-    colorScheme: ColorScheme;
-    createdAt: number;
-    updatedAt: number;
-}
-
-export interface SourceCredentials {
-    id: string;
-    uri: string;
-    userId: string | null;
-    accessToken: string | null;
-    deviceId: string | null;
-    type: string;
-}
+// Re-export for convenience
+export type AppSettings = AppSettingsType;
+export type SourceCredentials = Source;
 
 /**
  * Get app settings (single row, id=1)

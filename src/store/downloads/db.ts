@@ -1,20 +1,7 @@
 import { db, sqliteDb } from '@/store/db';
 import { downloads } from '@/store/db/schema/downloads';
+import type { Download } from '@/store/db/types';
 import { eq } from 'drizzle-orm';
-
-export interface Download {
-    sourceId: string;
-    id: string;
-    hash: string | null;
-    filename: string | null;
-    mimetype: string | null;
-    progress: number | null;
-    isFailed: boolean;
-    isComplete: boolean;
-    metadataJson: string | null;
-    createdAt: number;
-    updatedAt: number;
-}
 
 export interface DownloadMetadata {
     size?: number;

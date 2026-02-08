@@ -1,19 +1,9 @@
 import { db, sqliteDb } from '@/store/db';
 import { searchQueries } from '@/store/db/schema/search-queries';
+import type { SearchQuery } from '@/store/db/types';
 import { desc, eq } from 'drizzle-orm';
 
 type SearchType = 'Audio' | 'MusicAlbum' | 'MusicArtist' | 'Playlist';
-
-export interface SearchQuery {
-    sourceId: string;
-    id: string;
-    query: string;
-    timestamp: number;
-    localPlaybackOnly: boolean;
-    metadataJson: string | null;
-    createdAt: number;
-    updatedAt: number;
-}
 
 export interface SearchQueryDisplay {
     query: string;
