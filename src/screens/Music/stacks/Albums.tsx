@@ -78,8 +78,8 @@ const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: Generat
 const Albums: React.FC = () => {
     // Retrieve data from store
     const sourceId = useSourceId();
-    const { albums, isLoading, lastRefreshed } = useAlbums(sourceId);
-    const sections = useAlbumsByAlphabet(sourceId);
+    const { albums, isLoading, lastRefreshed } = useAlbums();
+    const sections = useAlbumsByAlphabet();
     
     // Initialise helpers
     const navigation = useNavigation<NavigationProp>();

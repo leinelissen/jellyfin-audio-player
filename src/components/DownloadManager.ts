@@ -20,7 +20,7 @@ const MAX_CONCURRENT_DOWNLOADS = 5;
 function DownloadManager () {
     // Retrieve store helpers
     const sourceId = useSourceId();
-    const { queued, ids, entities } = useDownloads(sourceId);
+    const { queued, ids, entities } = useDownloads();
     
     // Keep state for the currently active downloads (i.e. the downloads that
     // have actually been pushed out to react-native-fs).

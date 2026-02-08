@@ -42,7 +42,7 @@ function Downloads() {
     const getImage = useGetImage();
     const sourceId = useSourceId();
 
-    const { entities, ids } = useDownloads(sourceId);
+    const { entities, ids } = useDownloads();
     const { tracks } = useTracks(sourceId);
 
     // Calculate the total download size

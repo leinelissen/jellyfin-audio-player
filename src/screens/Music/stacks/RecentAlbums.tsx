@@ -63,8 +63,8 @@ const RecentAlbums: React.FC = () => {
 
     // Retrieve data from store
     const sourceId = useSourceId();
-    const { albums, isLoading } = useAlbums(sourceId);
-    const { ids: recentAlbumIds } = useRecentAlbums(sourceId, 24);
+    const { albums, isLoading } = useAlbums();
+    const { ids: recentAlbumIds } = useRecentAlbums( 24);
 
     // Initialise helpers
     const navigation = useNavigation<NavigationProp>();

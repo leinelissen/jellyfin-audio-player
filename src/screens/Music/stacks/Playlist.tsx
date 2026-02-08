@@ -16,9 +16,9 @@ const Playlist: React.FC = () => {
 
     // Retrieve the playlist data from the store
     const sourceId = useSourceId();
-    const { playlists } = usePlaylists(sourceId);
+    const { playlists } = usePlaylists();
     const playlist = playlists[id];
-    const { ids: playlistTrackIds } = useTracksByPlaylist(sourceId, id);
+    const { ids: playlistTrackIds } = useTracksByPlaylist(id);
 
     // Define a function for refreshing this entity
     const refresh = useCallback(

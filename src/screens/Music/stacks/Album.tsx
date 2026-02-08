@@ -31,7 +31,7 @@ function SimilarAlbum({ id }: { id: string }) {
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
     const sourceId = useSourceId();
-    const { albums } = useAlbums(sourceId);
+    const { albums } = useAlbums();
     const album = albums[id];
 
     const handlePress = useCallback(() => {
@@ -60,9 +60,9 @@ const Album: React.FC = () => {
 
     // Retrieve the album data from the store
     const sourceId = useSourceId();
-    const { albums } = useAlbums(sourceId);
+    const { albums } = useAlbums();
     const album = albums[id];
-    const { ids: albumTrackIds } = useTracksByAlbum(sourceId, id);
+    const { ids: albumTrackIds } = useTracksByAlbum(id);
 
     // Define a function for refreshing this entity
     const refresh = useCallback(async () => { 

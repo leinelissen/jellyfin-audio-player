@@ -39,7 +39,7 @@ const Playlists: React.FC = () => {
 
     // Retrieve data from store
     const sourceId = useSourceId();
-    const { playlists, ids, isLoading, lastRefreshed } = usePlaylists(sourceId);
+    const { playlists, ids, isLoading, lastRefreshed } = usePlaylists();
     
     // Initialise helpers
     const navigation = useNavigation<NavigationProp>();

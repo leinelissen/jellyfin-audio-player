@@ -103,8 +103,8 @@ const GeneratedArtistItem = React.memo(function GeneratedArtistItem(props: Gener
 const Artists: React.FC = () => {
     // Retrieve data from store
     const sourceId = useSourceId();
-    const { isLoading, lastRefreshed } = useArtists(sourceId);
-    const sections = useArtistsByAlphabet(sourceId);
+    const { isLoading, lastRefreshed } = useArtists();
+    const sections = useArtistsByAlphabet();
     
     // Initialise helpers
     const navigation = useNavigation<NavigationProp>();
