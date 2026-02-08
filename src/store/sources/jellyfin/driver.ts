@@ -6,10 +6,10 @@
  */
 
 import { Platform } from 'react-native';
-import { version } from '../../../../package.json';
 import { SourceDriver } from '../types';
 import type { SourceInfo, ListParams, Artist, Album, Track, Playlist, SearchFilter, SearchResultItem, CodecMetadata, Lyrics, StreamOptions, DownloadOptions, DownloadInfo } from '../types';
 import type { JellyfinAlbum, JellyfinTrack, JellyfinArtist, JellyfinPlaylist, JellyfinItemsResponse, DeviceMap, TrackOptionsOsOverrides } from './types';
+import { APP_VERSION } from '@/CONSTANTS';
 
 /** Map the output of `Platform.OS`, so that Jellyfin can understand it. */
 const deviceMap: DeviceMap = {
@@ -28,7 +28,7 @@ export class JellyfinDriver extends SourceDriver {
    */
     private generateHeaders(): Record<string, string> {
         return {
-            'Authorization': `MediaBrowser Client="Fintunes", Device="${deviceMap[Platform.OS]}", DeviceId="${this.source.deviceId}", Version="${version}", Token="${this.source.accessToken}"`,
+            'Authorization': `MediaBrowser Client="Fintunes", Device="${deviceMap[Platform.OS]}", DeviceId="${this.source.deviceId}", Version="${APP_VERSION}", Token="${this.source.accessToken}"`,
         };
     }
 
