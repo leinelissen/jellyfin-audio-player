@@ -171,9 +171,7 @@ export function DefaultStylesProvider(props: DefaultStylesProviderProps) {
 }
 
 export function ColoredBlurView({ children, style, ...props }: PropsWithChildren<BlurViewProps>) {
-    const systemScheme = useColorScheme();
-    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
-    const scheme = userScheme === ColorScheme.System ? systemScheme : userScheme;
+    const scheme = useUserOrSystemScheme();
 
     return Platform.OS === 'ios' ? (
         <View style={[style, { overflow: 'hidden' }]}>

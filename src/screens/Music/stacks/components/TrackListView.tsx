@@ -3,9 +3,9 @@ import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
-import { useTypedSelector } from '@/store';
 import { useTracks, useAlbums, usePlaylists } from '@/store/music/hooks';
 import { useSourceId } from '@/store/db/useSourceId';
+import { useDownloads } from '@/store/downloads/hooks';
 import TouchableHandler from '@/components/TouchableHandler';
 import useCurrentTrack from '@/utility/useCurrentTrack';
 import Play from '@/assets/icons/play.svg';
@@ -17,18 +17,9 @@ import { NavigationProp } from '@/screens/types';
 import DownloadIcon from '@/components/DownloadIcon';
 import CloudDownArrow from '@/assets/icons/cloud-down-arrow.svg';
 import Trash from '@/assets/icons/trash.svg';
-import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/actions';
-import { selectDownloadedTracks } from '@/store/downloads/selectors';
+import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/queue';
 import { Header, SubHeader } from '@/components/Typography';
 import { Text } from '@/components/Typography';
-
-import CoverImage from '@/components/CoverImage';
-import ticksToDuration from '@/utility/ticksToDuration';
-import { t } from '@/localisation';
-import { SafeScrollView, useNavigationOffsets } from '@/components/SafeNavigatorView';
-import { groupBy } from 'lodash';
-import Divider from '@/components/Divider';
-import { useAppDispatch } from '@/store';
 
 const styles = StyleSheet.create({
     index: {
@@ -102,7 +93,10 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     // Retrieve state
     const sourceId = useSourceId();
     const { tracks, isLoading } = useTracks(sourceId);
-    const downloadedTracks = useTypedSelector(selectDownloadedTracks(trackIds));
+    const { downloads } = useDownloads(sourceId);
+    const downloadedTracks = useMemo(() => {
+        return trackIds.filter(id => downloads[id]?.isComplete);
+    }, [trackIds, downloads]);
     const { albums } = useAlbums(sourceId);
     const { playlists } = usePlaylists(sourceId);
     const entity = itemDisplayStyle === 'album' ? albums[entityId] : playlists[entityId];
@@ -129,7 +123,6 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const playTracks = usePlayTracks();
     const { track: currentTrack } = useCurrentTrack();
     const navigation = useNavigation<NavigationProp>();
-    const dispatch = useAppDispatch();
 
     // Visual helpers
     const { indexWidth } = useMemo(() => {
@@ -164,11 +157,11 @@ const TrackListView: React.FC<TrackListViewProps> = ({
         navigation.navigate('TrackPopupMenu', { trackId });
     }, [navigation]);
     const downloadAllTracks = useCallback(() => {
-        trackIds.forEach((trackId) => dispatch(queueTrackForDownload(trackId)));
-    }, [dispatch, trackIds]);
+        trackIds.forEach((trackId) => queueTrackForDownload(trackId));
+    }, [trackIds]);
     const deleteAllTracks = useCallback(() => {
-        downloadedTracks.forEach((trackId) => dispatch(removeDownloadedTrack(trackId)));
-    }, [dispatch, downloadedTracks]);
+        downloadedTracks.forEach((trackId) => removeDownloadedTrack(trackId));
+    }, [downloadedTracks]);
 
     return (
         <SafeScrollView
