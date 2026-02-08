@@ -22,6 +22,11 @@ import {
     StreamOptions,
     DownloadOptions,
     DownloadInfo,
+    JellyfinAlbum,
+    JellyfinTrack,
+    JellyfinArtist,
+    JellyfinPlaylist,
+    JellyfinItemsResponse,
 } from './types';
 
 /** Map the output of `Platform.OS`, so that Jellyfin can understand it. */
@@ -146,22 +151,9 @@ export class JellyfinDriver extends SourceDriver {
             Limit: limit.toString(),
         });
 
-        const response = await this.fetch<{ Items: Array<{
-      Id: string;
-      Name: string;
-      ProductionYear?: number;
-      IsFolder: boolean;
-      AlbumArtist?: string;
-      DateCreated?: string;
-      ArtistItems?: Array<{
-        Id: string;
-        Name: string;
-        IsFolder: boolean;
-      }>;
-      [key: string]: unknown;
-    }> }>(
-        `/Users/${this.source.userId}/Items?${queryParams}`
-    );
+        const response = await this.fetch<JellyfinItemsResponse<JellyfinAlbum>>(
+            `/Users/${this.source.userId}/Items?${queryParams}`
+        );
 
         return response.Items.map(item => ({
             id: item.Id,
@@ -170,12 +162,13 @@ export class JellyfinDriver extends SourceDriver {
             isFolder: item.IsFolder || false,
             albumArtist: item.AlbumArtist,
             dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : undefined,
+            metadataJson: JSON.stringify(item),
             artistItems: item.ArtistItems?.map(artist => ({
                 id: artist.Id,
                 name: artist.Name,
                 isFolder: artist.IsFolder,
+                metadataJson: JSON.stringify(artist),
             })) || [],
-            ...item,
         }));
     }
 
@@ -183,20 +176,9 @@ export class JellyfinDriver extends SourceDriver {
    * Get a specific album
    */
     async getAlbum(albumId: string): Promise<Album> {
-        const item = await this.fetch<{
-      Id: string;
-      Name: string;
-      ProductionYear?: number;
-      IsFolder: boolean;
-      AlbumArtist?: string;
-      DateCreated?: string;
-      ArtistItems?: Array<{
-        Id: string;
-        Name: string;
-        IsFolder: boolean;
-      }>;
-      [key: string]: unknown;
-    }>(`/Users/${this.source.userId}/Items/${albumId}`);
+        const item = await this.fetch<JellyfinAlbum>(
+            `/Users/${this.source.userId}/Items/${albumId}`
+        );
     
         return {
             id: item.Id,
@@ -205,12 +187,13 @@ export class JellyfinDriver extends SourceDriver {
             isFolder: item.IsFolder || false,
             albumArtist: item.AlbumArtist,
             dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : undefined,
+            metadataJson: JSON.stringify(item),
             artistItems: item.ArtistItems?.map(artist => ({
                 id: artist.Id,
                 name: artist.Name,
                 isFolder: artist.IsFolder,
+                metadataJson: JSON.stringify(artist),
             })) || [],
-            ...item,
         };
     }
 
@@ -229,25 +212,9 @@ export class JellyfinDriver extends SourceDriver {
             Limit: limit.toString(),
         });
 
-        const response = await this.fetch<{ Items: Array<{
-      Id: string;
-      Name: string;
-      AlbumId?: string;
-      Album?: string;
-      AlbumArtist?: string;
-      ProductionYear?: number;
-      IndexNumber?: number;
-      ParentIndexNumber?: number;
-      RunTimeTicks?: number;
-      ArtistItems?: Array<{
-        Id: string;
-        Name: string;
-        IsFolder: boolean;
-      }>;
-      [key: string]: unknown;
-    }> }>(
-        `/Users/${this.source.userId}/Items?${queryParams}`
-    );
+        const response = await this.fetch<JellyfinItemsResponse<JellyfinTrack>>(
+            `/Users/${this.source.userId}/Items?${queryParams}`
+        );
 
         return response.Items.map(item => ({
             id: item.Id,
@@ -259,8 +226,13 @@ export class JellyfinDriver extends SourceDriver {
             indexNumber: item.IndexNumber,
             parentIndexNumber: item.ParentIndexNumber,
             runTimeTicks: item.RunTimeTicks,
-            artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder })) || [],
-            ...item,
+            metadataJson: JSON.stringify(item),
+            artistItems: item.ArtistItems?.map(artist => ({
+                id: artist.Id,
+                name: artist.Name,
+                isFolder: artist.IsFolder,
+                metadataJson: JSON.stringify(artist),
+            })) || [],
         }));
     }
 
