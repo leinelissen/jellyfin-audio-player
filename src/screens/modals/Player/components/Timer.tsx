@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import styled from 'styled-components/native';
-import { useDispatch } from 'react-redux';
-import { useTypedSelector } from '@/store';
 import TimerIcon from '@/assets/icons/timer.svg';
-import { setTimerDate } from '@/store/sleep-timer';
+import { setSleepTimerDate } from '@/store/sleep-timer/db';
+import { useLiveQueryOne } from '@/store/db/live-queries';
+import { sleepTimer } from '@/store/db/schema/sleep-timer';
+import { eq } from 'drizzle-orm';
 import ticksToDuration from '@/utility/ticksToDuration';
 import useDefaultStyles from '@/components/Colors';
 import { t } from '@/localisation';
@@ -38,34 +39,37 @@ export default function Timer() {
     // Show the picker or not
     const [showPicker, setShowPicker] = useState<boolean>(false);
     
-    // Retrieve Redux state and methods
-    const date = useTypedSelector(state => state.sleepTimer.date);
-    const dispatch = useDispatch();
+    // Retrieve sleep timer from database using live query
+    const timerData = useLiveQueryOne(
+        (db) => db.select().from(sleepTimer).where(eq(sleepTimer.id, 1)).limit(1),
+        ['sleep_timer']
+    );
+    const date = timerData?.date ?? null;
     
     // Retrieve styles
     const defaultStyles = useDefaultStyles();
 
     // Deal with a date being selected
-    const handleConfirm = useCallback((date: Date) => {
+    const handleConfirm = useCallback((selectedDate: Date) => {
         // GUARD: If the date is in the past, we need to add 24 hours to it to
         // ensure it is in the future
-        if (date.getTime() < new Date().getTime()) {
-            date = new Date(date.getTime() + 24 * 60 * 60 * 1_000);
+        if (selectedDate.getTime() < new Date().getTime()) {
+            selectedDate = new Date(selectedDate.getTime() + 24 * 60 * 60 * 1_000);
         }
 
         // Only accept minutes and hours
-        date.setSeconds(0);
+        selectedDate.setSeconds(0);
 
         // Set the date and close the picker
-        dispatch(setTimerDate(date));
+        setSleepTimerDate(selectedDate);
         setShowPicker(false);
-    }, [dispatch]);
+    }, []);
 
     // Close the picker when it is canceled
     const handleCancelDatePicker = useCallback(() => {
         setShowPicker(false);
-        dispatch(setTimerDate(null));
-    }, [dispatch]);
+        setSleepTimerDate(null);
+    }, []);
 
     // Show it when it should be opened
     const showDatePicker = useCallback(() => {
