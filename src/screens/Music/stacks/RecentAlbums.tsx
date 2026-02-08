@@ -65,7 +65,7 @@ const RecentAlbums: React.FC = () => {
 
     // Retrieve data from store
     const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = sourceData?.[0]?.id || '';
+    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
     const { albums, isLoading } = useAlbums(sourceId);
     const { ids: recentAlbumIds } = useRecentAlbums(sourceId, 24);
 

@@ -80,7 +80,7 @@ const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: Generat
 const Albums: React.FC = () => {
     // Retrieve data from store
     const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = sourceData?.[0]?.id || '';
+    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
     const { albums, isLoading, lastRefreshed } = useAlbums(sourceId);
     const sections = useAlbumsByAlphabet(sourceId);
     

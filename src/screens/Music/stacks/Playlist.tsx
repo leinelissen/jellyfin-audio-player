@@ -18,7 +18,7 @@ const Playlist: React.FC = () => {
 
     // Retrieve the playlist data from the store
     const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = sourceData?.[0]?.id || '';
+    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
     const { playlists } = usePlaylists(sourceId);
     const playlist = playlists[id];
     const { ids: playlistTrackIds } = useTracksByPlaylist(sourceId, id);

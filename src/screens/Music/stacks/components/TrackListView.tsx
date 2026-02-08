@@ -103,7 +103,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
 
     // Retrieve state
     const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = sourceData?.[0]?.id || '';
+    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
     const { tracks, isLoading } = useTracks(sourceId);
     const downloadedTracks = useTypedSelector(selectDownloadedTracks(trackIds));
     const { albums } = useAlbums(sourceId);

@@ -33,7 +33,7 @@ function SimilarAlbum({ id }: { id: string }) {
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
     const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = sourceData?.[0]?.id || '';
+    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
     const { albums } = useAlbums(sourceId);
     const album = albums[id];
 
@@ -63,7 +63,7 @@ const Album: React.FC = () => {
 
     // Retrieve the album data from the store
     const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = sourceData?.[0]?.id || '';
+    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
     const { albums } = useAlbums(sourceId);
     const album = albums[id];
     const { ids: albumTrackIds } = useTracksByAlbum(sourceId, id);
