@@ -24,7 +24,8 @@ const config = {
         sourceExts: [
             ...sourceExts,
             'svg',
-            'md'
+            'md',
+            'sql',
         ]
     },
     serializer: {

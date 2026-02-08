@@ -22,6 +22,12 @@ module.exports = {
             }
         ],
         [
+            'inline-import',
+            {
+                extensions: ['.sql'],
+            },
+        ],
+        [
             'module:react-native-dotenv'
         ],
         '@babel/plugin-proposal-numeric-separator',

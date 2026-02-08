@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/op-sqlite';
 import { open } from '@op-engineering/op-sqlite';
 import { migrate } from 'drizzle-orm/op-sqlite/migrator';
+import migrations from './migrations/migrations';
 
 // Import all schema tables
 import { sources } from './schema/sources';
@@ -49,9 +50,9 @@ export const db = drizzle(sqliteDb, { schema });
  * Run database migrations
  * Migrations should be generated using drizzle-kit
  */
-export function runMigrations() {
+export async function runMigrations() {
   try {
-    migrate(db, { migrationsFolder: './drizzle' });
+    await migrate(db, migrations);
     console.log('Database migrations completed');
   } catch (error) {
     console.error('Migration error:', error);
@@ -62,7 +63,7 @@ export function runMigrations() {
 /**
  * Initialize the database
  */
-export function initializeDatabase() {
-  runMigrations();
+export async function initializeDatabase() {
+  await runMigrations();
   return db;
 }

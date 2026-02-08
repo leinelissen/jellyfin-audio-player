@@ -77,6 +77,7 @@
     "@types/react": "19.2.9",
     "@typescript-eslint/eslint-plugin": "8.53.1",
     "@typescript-eslint/parser": "8.53.1",
+    "babel-plugin-inline-import": "^3.0.0",
     "babel-plugin-module-resolver": "5.0.2",
     "drizzle-kit": "^0.31.8",
     "eslint": "8.57.1",
