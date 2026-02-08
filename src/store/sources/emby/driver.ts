@@ -170,7 +170,7 @@ export class EmbyDriver extends SourceDriver {
             isFolder: item.IsFolder || false,
             albumArtist: item.AlbumArtist,
             dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : undefined,
-            artistItems: item.ArtistItems || [],
+            artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder })) || [],
             ...item,
         }));
     }
@@ -201,7 +201,7 @@ export class EmbyDriver extends SourceDriver {
             isFolder: item.IsFolder || false,
             albumArtist: item.AlbumArtist,
             dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : undefined,
-            artistItems: item.ArtistItems || [],
+            artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder })) || [],
             ...item,
         };
     }
@@ -251,7 +251,7 @@ export class EmbyDriver extends SourceDriver {
             indexNumber: item.IndexNumber,
             parentIndexNumber: item.ParentIndexNumber,
             runTimeTicks: item.RunTimeTicks,
-            artistItems: item.ArtistItems || [],
+            artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder })) || [],
             ...item,
         }));
     }
@@ -359,7 +359,7 @@ export class EmbyDriver extends SourceDriver {
             indexNumber: item.IndexNumber,
             parentIndexNumber: item.ParentIndexNumber,
             runTimeTicks: item.RunTimeTicks,
-            artistItems: item.ArtistItems || [],
+            artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder })) || [],
             ...item,
         }));
     }
@@ -446,7 +446,7 @@ export class EmbyDriver extends SourceDriver {
             isFolder: item.IsFolder || false,
             albumArtist: item.AlbumArtist,
             dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : undefined,
-            artistItems: item.ArtistItems || [],
+            artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder })) || [],
             ...item,
         }));
     }
@@ -488,7 +488,7 @@ export class EmbyDriver extends SourceDriver {
             isFolder: item.IsFolder || false,
             albumArtist: item.AlbumArtist,
             dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : undefined,
-            artistItems: item.ArtistItems || [],
+            artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder })) || [],
             ...item,
         }));
     }
@@ -536,7 +536,7 @@ export class EmbyDriver extends SourceDriver {
             indexNumber: item.IndexNumber,
             parentIndexNumber: item.ParentIndexNumber,
             runTimeTicks: item.RunTimeTicks,
-            artistItems: item.ArtistItems || [],
+            artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder })) || [],
             ...item,
         }));
     }
