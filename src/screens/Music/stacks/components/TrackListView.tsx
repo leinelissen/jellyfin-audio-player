@@ -93,7 +93,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     // Retrieve state
     const sourceId = useSourceId();
     const { tracks, isLoading } = useTracks(sourceId);
-    const { downloads } = useDownloads(sourceId);
+    const { entities: downloads } = useDownloads(sourceId);
     const downloadedTracks = useMemo(() => {
         return trackIds.filter(id => downloads[id]?.isComplete);
     }, [trackIds, downloads]);

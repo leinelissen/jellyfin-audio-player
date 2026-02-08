@@ -4,7 +4,7 @@ import { DocumentDirectoryPath, readDir } from 'react-native-fs';
 import { useDownloads } from '@/store/downloads/hooks';
 import { useSourceId } from '@/store/db/useSourceId';
 import { downloadTrack } from '@/store/downloads/queue';
-import { completeDownload } from '@/store/downloads/db';
+import { completeDownload } from '@/store/downloads/actions';
 import { getMimeTypeForExtension } from '@/utility/mimeType';
 
 /**

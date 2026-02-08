@@ -170,3 +170,6 @@ export interface Playlist {
     Tracks?: string[];
     lastRefreshed?: number;
 }
+
+// Type alias for section list artist items
+export type SectionArtistItem = MusicArtist;

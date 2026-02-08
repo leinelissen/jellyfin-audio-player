@@ -6,11 +6,9 @@ import { useTracks } from '@/store/music/hooks';
 import { useDownloads } from '@/store/downloads/hooks';
 import { useSourceId } from '@/store/db/useSourceId';
 import type { AlbumTrack } from '@/store/music/types';
-import type { DownloadWithMetadata } from '@/store/downloads/db';
-import type { DownloadEntity } from '@/store/downloads/types';
+import type { Download } from '@/store/downloads/types';
 
-// Union type to support both database and Redux formats (for CarPlay compatibility)
-type DownloadRecord = Record<string, DownloadWithMetadata | DownloadEntity>;
+type DownloadRecord = Record<string, Download>;
 
 interface PlayOptions {
     play: boolean;

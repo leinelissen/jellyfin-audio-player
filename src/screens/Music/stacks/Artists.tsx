@@ -8,7 +8,7 @@ import * as musicFetchers from '@/store/music/fetchers';
 import { useSourceId } from '@/store/db/useSourceId';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import AlbumImage from './components/AlbumImage';
-import { SectionArtistItem } from '@/store/music/selectors';
+import { SectionArtistItem } from '@/store/music/types';
 import AlphabetScroller from '@/components/AlphabetScroller';
 import styled from 'styled-components/native';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';

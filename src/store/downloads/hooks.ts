@@ -16,10 +16,29 @@ export function useDownloads(sourceId?: string) {
             : db.select().from(downloads)
     );
     
-    return useMemo(() => ({
-        data: (data || []) as Download[],
-        error,
-    }), [data, error]);
+    return useMemo(() => {
+        const entities: Record<string, Download> = {};
+        const ids: string[] = [];
+        const queued: string[] = [];
+        
+        (data || []).forEach(download => {
+            const d = download as Download;
+            entities[d.id] = d;
+            ids.push(d.id);
+            
+            if (!d.isComplete && !d.isFailed) {
+                queued.push(d.id);
+            }
+        });
+        
+        return { 
+            data: (data || []) as Download[],
+            entities, 
+            ids, 
+            queued, 
+            error 
+        };
+    }, [data, error]);
 }
 
 export function useDownload(trackId: string) {
