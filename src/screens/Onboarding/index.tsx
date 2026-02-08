@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
+import { ActivityIndicator } from 'react-native';
 import { NavigationProp } from '@/screens';
 import { useAppDispatch, useTypedSelector } from '@/store';
 import { setOnboardingStatus } from '@/store/settings/actions';
@@ -9,6 +10,7 @@ import Button from '@/components/Button';
 import { Header, Text as BaseText } from '@/components/Typography';
 import { ShadowWrapper } from '@/components/Shadow';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { syncAll } from '@/store/sources/jellyfin/sync';
 
 const Container = styled(SafeAreaView)`
     flex: 1;
@@ -26,6 +28,45 @@ const Text = styled(BaseText)`
 
 const ButtonContainer = styled.View`
     margin-top: 50px;
+`;
+
+const SkipButton = styled.Pressable`
+    margin-top: 16px;
+    padding: 12px;
+    align-items: center;
+`;
+
+const SyncContainer = styled.View`
+    align-items: center;
+    margin-top: 24px;
+`;
+
+const SyncText = styled(BaseText)`
+    text-align: center;
+    margin-top: 16px;
+    opacity: 0.7;
+`;
+
+const ErrorText = styled(BaseText)`
+    color: #d32f2f;
+    text-align: center;
+    margin-bottom: 16px;
+`;
+
+const ErrorDetailText = styled(BaseText)`
+    text-align: center;
+    opacity: 0.7;
+    font-size: 12px;
+    margin-bottom: 16px;
+`;
+
+const CenteredText = styled(BaseText)`
+    text-align: center;
+`;
+
+const CenteredHeader = styled(Header)`
+    text-align: center;
+    margin-bottom: 24px;
 `; 
 
 const Logo = styled.Image`
@@ -42,18 +83,101 @@ function Onboarding() {
     const account = useTypedSelector(state => state.settings.credentials);
     const dispatch = useAppDispatch();
 
+    // State for sync flow
+    const [isSyncing, setIsSyncing] = useState(false);
+    const [syncError, setSyncError] = useState<string | null>(null);
+    const [showSyncPrompt, setShowSyncPrompt] = useState(false);
+
     // Also retrieve the navigation handler so that we can open the modal in
     // which the Jellyfin server is set
     const navigation = useNavigation<NavigationProp>();
     const handleClick = useCallback(() => navigation.navigate('SetJellyfinServer'), [navigation]);
     
-    // We'll also respond to any change in the account, setting the onboarding
-    // status to true, so that the app becomes available.
-    useEffect(() => {
-        if (account) {
+    // Handle initial sync
+    const handleSync = useCallback(async () => {
+        if (!account?.user_id) return;
+        
+        setIsSyncing(true);
+        setSyncError(null);
+        
+        try {
+            await syncAll(account.user_id);
+            // Sync successful, complete onboarding
             dispatch(setOnboardingStatus(true));
+        } catch (error) {
+            console.error('[Onboarding] Sync failed:', error);
+            setSyncError(error instanceof Error ? error.message : 'Sync failed');
+            setIsSyncing(false);
         }
-    }, [account, dispatch]);
+    }, [account?.user_id, dispatch]);
+
+    // Skip sync and complete onboarding
+    const handleSkipSync = useCallback(() => {
+        dispatch(setOnboardingStatus(true));
+    }, [dispatch]);
+    
+    // When account is set, show sync prompt
+    useEffect(() => {
+        if (account && !showSyncPrompt) {
+            setShowSyncPrompt(true);
+        }
+    }, [account, showSyncPrompt]);
+    
+    // Render sync step
+    if (showSyncPrompt) {
+        return (
+            <Container>
+                <TextContainer contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
+                    <ShadowWrapper size="medium">
+                        <Logo source={require('../../assets/icons/app-icon.png')} />
+                    </ShadowWrapper>
+                    <CenteredHeader>
+                        {isSyncing ? t('onboarding-sync-title') : t('onboarding-sync-prompt')}
+                    </CenteredHeader>
+                    
+                    {isSyncing ? (
+                        <SyncContainer>
+                            <ActivityIndicator size="large" />
+                            <SyncText>{t('onboarding-sync-progress')}</SyncText>
+                        </SyncContainer>
+                    ) : syncError ? (
+                        <>
+                            <ErrorText>
+                                {t('onboarding-sync-error')}
+                            </ErrorText>
+                            <ErrorDetailText>
+                                {syncError}
+                            </ErrorDetailText>
+                            <ButtonContainer>
+                                <Button
+                                    title={t('onboarding-sync-retry')}
+                                    onPress={handleSync}
+                                />
+                                <SkipButton onPress={handleSkipSync}>
+                                    <Text>{t('onboarding-sync-skip')}</Text>
+                                </SkipButton>
+                            </ButtonContainer>
+                        </>
+                    ) : (
+                        <>
+                            <CenteredText>
+                                {t('onboarding-sync-description')}
+                            </CenteredText>
+                            <ButtonContainer>
+                                <Button
+                                    title={t('onboarding-sync-start')}
+                                    onPress={handleSync}
+                                />
+                                <SkipButton onPress={handleSkipSync}>
+                                    <Text>{t('onboarding-sync-skip')}</Text>
+                                </SkipButton>
+                            </ButtonContainer>
+                        </>
+                    )}
+                </TextContainer>
+            </Container>
+        );
+    }
     
     return (
         <Container>
@@ -61,9 +185,9 @@ function Onboarding() {
                 <ShadowWrapper size="medium">
                     <Logo source={require('../../assets/icons/app-icon.png')} />
                 </ShadowWrapper>
-                <Header style={{ textAlign: 'center', marginBottom: 24 }}>
+                <CenteredHeader>
                     {t('onboarding-welcome')}
-                </Header>
+                </CenteredHeader>
                 <Text>
                     {t('onboarding-intro')}
                 </Text>
