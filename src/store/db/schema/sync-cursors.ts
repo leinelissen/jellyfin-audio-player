@@ -1,5 +1,5 @@
 import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
-import { sources } from '../db/schema/sources';
+import { sources } from './sources';
 
 /**
  * Sync cursors table - tracks prefill progress
