@@ -69,7 +69,7 @@ export async function playTracks(
         const download = downloads[trackId];
         if (download?.isComplete) {
             // Handle both old Redux format (location) and new DB format (filename)
-            const audioPath = download.filename || download.location;
+            const audioPath = 'filename' in download ? download.filename : 'location' in download ? download.location : null;
             if (audioPath) {
                 generatedTrack.url = 'file://' + audioPath;
             }
