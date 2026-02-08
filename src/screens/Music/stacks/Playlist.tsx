@@ -22,7 +22,7 @@ const Playlist: React.FC = () => {
 
     // Define a function for refreshing this entity
     const refresh = useCallback(
-        () => musicFetchers.fetchAndStoreTracksByPlaylist(id),
+        async () => await musicFetchers.fetchAndStoreTracksByPlaylist(id),
         [id]
     );
 

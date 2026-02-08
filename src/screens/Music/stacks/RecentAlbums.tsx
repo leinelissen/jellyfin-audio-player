@@ -71,7 +71,7 @@ const RecentAlbums: React.FC = () => {
     const getImage = useGetImage();
 
     // Set callbacks
-    const retrieveData = useCallback(() => musicFetchers.fetchAndStoreRecentAlbums(), []);
+    const retrieveData = useCallback(async () => await musicFetchers.fetchAndStoreRecentAlbums(), []);
     const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
 
     // Retrieve data on mount

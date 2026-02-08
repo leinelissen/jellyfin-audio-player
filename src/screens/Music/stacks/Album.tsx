@@ -65,10 +65,12 @@ const Album: React.FC = () => {
     const { ids: albumTrackIds } = useTracksByAlbum(sourceId, id);
 
     // Define a function for refreshing this entity
-    const refresh = useCallback(() => { 
-        musicFetchers.fetchAndStoreTracksByAlbum(id); 
-        musicFetchers.fetchAndStoreAlbum(id);
-        musicFetchers.fetchAndStoreSimilarAlbums(id);
+    const refresh = useCallback(async () => { 
+        await Promise.all([
+            musicFetchers.fetchAndStoreTracksByAlbum(id),
+            musicFetchers.fetchAndStoreAlbum(id),
+            musicFetchers.fetchAndStoreSimilarAlbums(id)
+        ]);
     }, [id]);
 
     // Auto-fetch the track data periodically

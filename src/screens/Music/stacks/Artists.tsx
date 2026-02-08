@@ -134,7 +134,7 @@ const Artists: React.FC = () => {
     }, [flatData]);
     
     // Set callbacks
-    const retrieveData = useCallback(() => musicFetchers.fetchAndStoreAllArtists(), []);
+    const retrieveData = useCallback(async () => await musicFetchers.fetchAndStoreAllArtists(), []);
     const selectArtist = useCallback((payload: { id: string; name: string; }) => (
         navigation.navigate('Artist', payload)
     ), [navigation]);

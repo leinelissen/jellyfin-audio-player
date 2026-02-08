@@ -79,8 +79,8 @@ export default function Artist() {
     const getImage = useGetImage();
 
     // Set callbacks
-    const retrieveData = useCallback(() => {
-        musicFetchers.fetchAndStoreAllAlbums();
+    const retrieveData = useCallback(async () => {
+        await musicFetchers.fetchAndStoreAllAlbums();
     }, []);
     const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
     const generateItem = useCallback(({ item }: { item: string[] }) => {
