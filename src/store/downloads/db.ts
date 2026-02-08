@@ -10,13 +10,12 @@ export interface DownloadMetadata {
 }
 
 /**
- * Get all downloads for a source
+ * Get all downloads (from all sources)
  */
-export async function getAllDownloads(sourceId: string): Promise<Download[]> {
+export async function getAllDownloads(): Promise<Download[]> {
     const result = await db
         .select()
-        .from(downloads)
-        .where(eq(downloads.sourceId, sourceId));
+        .from(downloads);
     
     return result as Download[];
 }

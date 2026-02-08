@@ -10,11 +10,11 @@ import { eq } from 'drizzle-orm';
 import { enrichDownload, type Download, type DownloadWithMetadata } from './db';
 
 /**
- * Get all downloads for a source
+ * Get all downloads (from all sources)
  */
-export function useDownloads(sourceId: string) {
+export function useDownloads() {
     const { data, error } = useLiveQuery(
-        sourceId ? db.select().from(downloads).where(eq(downloads.sourceId, sourceId)) : null
+        db.select().from(downloads)
     );
     
     return useMemo(() => {

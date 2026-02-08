@@ -14,8 +14,8 @@ import type { Album, AlbumTrack, MusicArtist, Playlist } from './types';
  * ALBUMS
  */
 
-export async function getAllAlbums(sourceId: string) {
-    const result = await db.select().from(albums).where(eq(albums.sourceId, sourceId));
+export async function getAllAlbums() {
+    const result = await db.select().from(albums);
     return result.map(album => enrichAlbum(album));
 }
 
@@ -25,11 +25,10 @@ export async function getAlbum(id: string) {
     return enrichAlbum(result[0]);
 }
 
-export async function getRecentAlbums(sourceId: string, limit: number = 50) {
+export async function getRecentAlbums(limit: number = 50) {
     const result = await db
         .select()
         .from(albums)
-        .where(eq(albums.sourceId, sourceId))
         .orderBy(desc(albums.dateCreated))
         .limit(limit);
     return result.map(album => enrichAlbum(album));
@@ -114,8 +113,8 @@ export async function setSimilarAlbums(sourceId: string, albumId: string, simila
  * ARTISTS
  */
 
-export async function getAllArtists(sourceId: string) {
-    const result = await db.select().from(artists).where(eq(artists.sourceId, sourceId));
+export async function getAllArtists() {
+    const result = await db.select().from(artists);
     return result.map(artist => enrichArtist(artist));
 }
 
@@ -256,8 +255,8 @@ export async function updateTrackCodec(trackId: string, codec: any) {
  * PLAYLISTS
  */
 
-export async function getAllPlaylists(sourceId: string) {
-    const result = await db.select().from(playlists).where(eq(playlists.sourceId, sourceId));
+export async function getAllPlaylists() {
+    const result = await db.select().from(playlists);
     return result.map(playlist => enrichPlaylist(playlist));
 }
 
