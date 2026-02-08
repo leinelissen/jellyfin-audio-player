@@ -10,7 +10,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { db } from './index';
-import type { SQLiteRunResult } from 'drizzle-orm/sqlite-core';
+import { sql } from 'drizzle-orm';
 
 /**
  * Table change listeners
@@ -94,16 +94,17 @@ export function useLiveQuery<T = unknown>(
     }, [tables]);
 
     // Execute query whenever version changes
+    const serializedParams = JSON.stringify(params);
     useEffect(() => {
         let cancelled = false;
 
         async function executeQuery() {
             try {
-                // Execute raw SQL query
-                const result = await db.execute(query, params);
+                // Execute raw SQL query using Drizzle's sql helper
+                const result = await db.all(sql.raw(query));
                 
                 if (!cancelled) {
-                    setData(result.rows as T[]);
+                    setData(result as T[]);
                 }
             } catch (error) {
                 console.error('Live query error:', error);
@@ -118,7 +119,7 @@ export function useLiveQuery<T = unknown>(
         return () => {
             cancelled = true;
         };
-    }, [query, JSON.stringify(params), version]);
+    }, [query, serializedParams, version]);
 
     return data;
 }

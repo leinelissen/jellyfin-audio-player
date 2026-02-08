@@ -212,7 +212,7 @@ export class PrefillTaskGraph {
      * Fetch similar albums for a single album
      */
     private async fetchSimilarAlbums(albumId: string): Promise<void> {
-        const similarAlbums = await this.driver.getSimilarAlbums(albumId, { limit: 20 });
+        await this.driver.getSimilarAlbums(albumId, { limit: 20 });
         
         // Insert similar albums into database
         // This is a placeholder - actual implementation would use proper upsert

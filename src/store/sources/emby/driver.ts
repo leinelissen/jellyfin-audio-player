@@ -8,7 +8,7 @@
 import { Platform } from 'react-native';
 import { SourceDriver } from '../types';
 import type { SourceInfo, ListParams, Artist, Album, Track, Playlist, SearchFilter, SearchResultItem, CodecMetadata, Lyrics, StreamOptions, DownloadOptions, DownloadInfo } from '../types';
-import type { EmbyAlbum, EmbyTrack, EmbyArtist, EmbyPlaylist, EmbyItemsResponse, DeviceMap, TrackOptionsOsOverrides } from './types';
+import type { EmbyAlbum, EmbyTrack, EmbyItemsResponse, DeviceMap, TrackOptionsOsOverrides } from './types';
 import { APP_VERSION } from '@/CONSTANTS';
 
 /** Map the output of `Platform.OS`, so that Emby can understand it. */
@@ -110,7 +110,7 @@ export class EmbyDriver extends SourceDriver {
             id: item.Id,
             name: item.Name,
             isFolder: item.IsFolder || false,
-            ...item,
+            metadataJson: JSON.stringify(item),
         }));
     }
 
@@ -140,12 +140,17 @@ export class EmbyDriver extends SourceDriver {
         return response.Items.map(item => ({
             id: item.Id,
             name: item.Name,
-            productionYear: item.ProductionYear,
+            productionYear: item.ProductionYear ?? null,
             isFolder: item.IsFolder || false,
-            albumArtist: item.AlbumArtist,
-            dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : undefined,
+            albumArtist: item.AlbumArtist ?? null,
+            dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : null,
             metadataJson: JSON.stringify(item),
-            artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder, metadataJson: JSON.stringify(artist) })) || [],
+            artistItems: item.ArtistItems?.map(artist => ({
+                id: artist.Id,
+                name: artist.Name,
+                isFolder: artist.IsFolder,
+                metadataJson: JSON.stringify(artist),
+            })) || [],
         }));
     }
 
@@ -160,10 +165,10 @@ export class EmbyDriver extends SourceDriver {
         return {
             id: item.Id,
             name: item.Name,
-            productionYear: item.ProductionYear,
+            productionYear: item.ProductionYear ?? null,
             isFolder: item.IsFolder || false,
-            albumArtist: item.AlbumArtist,
-            dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : undefined,
+            albumArtist: item.AlbumArtist ?? null,
+            dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : null,
             metadataJson: JSON.stringify(item),
             artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder, metadataJson: JSON.stringify(artist) })) || [],
         };
@@ -191,13 +196,13 @@ export class EmbyDriver extends SourceDriver {
         return response.Items.map(item => ({
             id: item.Id,
             name: item.Name,
-            albumId: item.AlbumId,
-            album: item.Album,
-            albumArtist: item.AlbumArtist,
-            productionYear: item.ProductionYear,
-            indexNumber: item.IndexNumber,
-            parentIndexNumber: item.ParentIndexNumber,
-            runTimeTicks: item.RunTimeTicks,
+            albumId: item.AlbumId ?? null,
+            album: item.Album ?? null,
+            albumArtist: item.AlbumArtist ?? null,
+            productionYear: item.ProductionYear ?? null,
+            indexNumber: item.IndexNumber ?? null,
+            parentIndexNumber: item.ParentIndexNumber ?? null,
+            runTimeTicks: item.RunTimeTicks ?? null,
             metadataJson: JSON.stringify(item),
             artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder, metadataJson: JSON.stringify(artist) })) || [],
         }));
@@ -236,8 +241,8 @@ export class EmbyDriver extends SourceDriver {
             id: item.Id,
             name: item.Name,
             canDelete: item.CanDelete || false,
-            childCount: item.ChildCount,
-            ...item,
+            childCount: item.ChildCount ?? null,
+            metadataJson: JSON.stringify(item),
         }));
     }
 
@@ -257,8 +262,8 @@ export class EmbyDriver extends SourceDriver {
             id: item.Id,
             name: item.Name,
             canDelete: item.CanDelete || false,
-            childCount: item.ChildCount,
-            ...item,
+            childCount: item.ChildCount ?? null,
+            metadataJson: JSON.stringify(item),
         };
     }
 
@@ -299,15 +304,15 @@ export class EmbyDriver extends SourceDriver {
         return response.Items.map(item => ({
             id: item.Id,
             name: item.Name,
-            albumId: item.AlbumId,
-            album: item.Album,
-            albumArtist: item.AlbumArtist,
-            productionYear: item.ProductionYear,
-            indexNumber: item.IndexNumber,
-            parentIndexNumber: item.ParentIndexNumber,
-            runTimeTicks: item.RunTimeTicks,
+            albumId: item.AlbumId ?? null,
+            album: item.Album ?? null,
+            albumArtist: item.AlbumArtist ?? null,
+            productionYear: item.ProductionYear ?? null,
+            indexNumber: item.IndexNumber ?? null,
+            parentIndexNumber: item.ParentIndexNumber ?? null,
+            runTimeTicks: item.RunTimeTicks ?? null,
+            metadataJson: JSON.stringify(item),
             artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder, metadataJson: JSON.stringify(artist) })) || [],
-            ...item,
         }));
     }
 
@@ -348,7 +353,6 @@ export class EmbyDriver extends SourceDriver {
             id: item.Id,
             name: item.Name,
             type: item.Type === 'MusicAlbum' ? 'albums' : item.Type === 'Audio' ? 'tracks' : 'playlists',
-            ...item,
         })) as SearchResultItem[];
     }
 
@@ -389,12 +393,12 @@ export class EmbyDriver extends SourceDriver {
         return response.Items.map(item => ({
             id: item.Id,
             name: item.Name,
-            productionYear: item.ProductionYear,
+            productionYear: item.ProductionYear ?? null,
             isFolder: item.IsFolder || false,
-            albumArtist: item.AlbumArtist,
-            dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : undefined,
+            albumArtist: item.AlbumArtist ?? null,
+            dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : null,
+            metadataJson: JSON.stringify(item),
             artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder, metadataJson: JSON.stringify(artist) })) || [],
-            ...item,
         }));
     }
 
@@ -431,12 +435,12 @@ export class EmbyDriver extends SourceDriver {
         return response.Items.map(item => ({
             id: item.Id,
             name: item.Name,
-            productionYear: item.ProductionYear,
+            productionYear: item.ProductionYear ?? null,
             isFolder: item.IsFolder || false,
-            albumArtist: item.AlbumArtist,
-            dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : undefined,
+            albumArtist: item.AlbumArtist ?? null,
+            dateCreated: item.DateCreated ? new Date(item.DateCreated).getTime() : null,
+            metadataJson: JSON.stringify(item),
             artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder, metadataJson: JSON.stringify(artist) })) || [],
-            ...item,
         }));
     }
 
@@ -476,15 +480,15 @@ export class EmbyDriver extends SourceDriver {
         return response.Items.map(item => ({
             id: item.Id,
             name: item.Name,
-            albumId: item.AlbumId,
-            album: item.Album,
-            albumArtist: item.AlbumArtist,
-            productionYear: item.ProductionYear,
-            indexNumber: item.IndexNumber,
-            parentIndexNumber: item.ParentIndexNumber,
-            runTimeTicks: item.RunTimeTicks,
+            albumId: item.AlbumId ?? null,
+            album: item.Album ?? null,
+            albumArtist: item.AlbumArtist ?? null,
+            productionYear: item.ProductionYear ?? null,
+            indexNumber: item.IndexNumber ?? null,
+            parentIndexNumber: item.ParentIndexNumber ?? null,
+            runTimeTicks: item.RunTimeTicks ?? null,
+            metadataJson: JSON.stringify(item),
             artistItems: item.ArtistItems?.map(artist => ({ id: artist.Id, name: artist.Name, isFolder: artist.IsFolder, metadataJson: JSON.stringify(artist) })) || [],
-            ...item,
         }));
     }
 

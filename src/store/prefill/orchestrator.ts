@@ -8,8 +8,10 @@
 import PQueue from 'p-queue';
 import { db } from '../db/index';
 import type { SourceDriver } from '../sources/types';
-import type { InsertSyncCursor } from '../db/types';
 import { syncCursors } from '../db/schema/sync-cursors';
+import { artists } from '../db/schema/artists';
+import { albums } from '../db/schema/albums';
+import { playlists } from '../db/schema/playlists';
 import { eq, and } from 'drizzle-orm';
 
 /**
@@ -75,7 +77,7 @@ async function getSyncCursor(
         )
         .limit(1);
 
-    return cursor[0]?.offset || 0;
+    return cursor[0]?.startIndex || 0;
 }
 
 /**
@@ -84,7 +86,9 @@ async function getSyncCursor(
 async function updateSyncCursor(
     sourceId: string,
     entityType: EntityType,
-    offset: number
+    startIndex: number,
+    pageSize: number,
+    completed: boolean
 ) {
     const now = Date.now();
     
@@ -93,14 +97,17 @@ async function updateSyncCursor(
         .values({
             sourceId,
             entityType,
-            offset,
-            createdAt: now,
+            startIndex,
+            pageSize,
+            completed,
             updatedAt: now,
         })
         .onConflictDoUpdate({
             target: [syncCursors.sourceId, syncCursors.entityType],
             set: {
-                offset,
+                startIndex,
+                pageSize,
+                completed,
                 updatedAt: now,
             },
         });
@@ -145,50 +152,56 @@ export class PrefillOrchestrator {
 
         while (hasMore) {
             try {
-                const artists = await this.driver.getArtists({
+                const artistsData = await this.driver.getArtists({
                     offset,
                     limit: this.config.pageSize,
                 });
 
-                if (artists.length === 0) {
+                if (artistsData.length === 0) {
                     hasMore = false;
                     break;
                 }
 
                 // Insert artists into database
                 const now = Date.now();
-                await db.insert(syncCursors).values(
-                    artists.map(artist => ({
+                await db.insert(artists).values(
+                    artistsData.map(artist => ({
                         sourceId: this.sourceId,
                         id: artist.id,
                         name: artist.name,
                         isFolder: artist.isFolder,
-                        metadataJson: JSON.stringify(artist),
+                        metadataJson: artist.metadataJson,
                         createdAt: now,
                         updatedAt: now,
                     }))
                 ).onConflictDoUpdate({
-                    target: [syncCursors.sourceId, syncCursors.id],
+                    target: [artists.id],
                     set: {
-                        name: artists[0].name,
-                        isFolder: artists[0].isFolder,
-                        metadataJson: JSON.stringify(artists[0]),
+                        name: artistsData[0].name,
+                        isFolder: artistsData[0].isFolder,
+                        metadataJson: artistsData[0].metadataJson,
                         updatedAt: now,
                     },
                 });
 
-                totalFetched += artists.length;
-                offset += artists.length;
+                totalFetched += artistsData.length;
+                offset += artistsData.length;
 
-                await updateSyncCursor(this.sourceId, entityType, offset);
+                await updateSyncCursor(
+                    this.sourceId,
+                    entityType,
+                    offset,
+                    this.config.pageSize,
+                    artistsData.length < this.config.pageSize
+                );
 
                 this.reportProgress({
                     entityType,
                     totalFetched,
-                    hasMore: artists.length === this.config.pageSize,
+                    hasMore: artistsData.length === this.config.pageSize,
                 });
 
-                hasMore = artists.length === this.config.pageSize;
+                hasMore = artistsData.length === this.config.pageSize;
             } catch (error) {
                 this.reportProgress({
                     entityType,
@@ -212,31 +225,63 @@ export class PrefillOrchestrator {
 
         while (hasMore) {
             try {
-                const albums = await this.driver.getAlbums({
+                const albumsData = await this.driver.getAlbums({
                     offset,
                     limit: this.config.pageSize,
                 });
 
-                if (albums.length === 0) {
+                if (albumsData.length === 0) {
                     hasMore = false;
                     break;
                 }
 
-                // Albums will be inserted by upsert logic
-                // This is a placeholder - actual implementation would use proper upsert
+                // Insert albums into database
+                const now = Date.now();
+                await db.insert(albums).values(
+                    albumsData.map(album => ({
+                        sourceId: this.sourceId,
+                        id: album.id,
+                        name: album.name,
+                        productionYear: album.productionYear ?? null,
+                        isFolder: album.isFolder,
+                        albumArtist: album.albumArtist ?? null,
+                        dateCreated: album.dateCreated ?? null,
+                        lastRefreshed: null,
+                        metadataJson: album.metadataJson,
+                        createdAt: now,
+                        updatedAt: now,
+                    }))
+                ).onConflictDoUpdate({
+                    target: [albums.id],
+                    set: {
+                        name: albumsData[0].name,
+                        productionYear: albumsData[0].productionYear ?? null,
+                        isFolder: albumsData[0].isFolder,
+                        albumArtist: albumsData[0].albumArtist ?? null,
+                        dateCreated: albumsData[0].dateCreated ?? null,
+                        metadataJson: albumsData[0].metadataJson,
+                        updatedAt: now,
+                    },
+                });
 
-                totalFetched += albums.length;
-                offset += albums.length;
+                totalFetched += albumsData.length;
+                offset += albumsData.length;
 
-                await updateSyncCursor(this.sourceId, entityType, offset);
+                await updateSyncCursor(
+                    this.sourceId,
+                    entityType,
+                    offset,
+                    this.config.pageSize,
+                    albumsData.length < this.config.pageSize
+                );
 
                 this.reportProgress({
                     entityType,
                     totalFetched,
-                    hasMore: albums.length === this.config.pageSize,
+                    hasMore: albumsData.length === this.config.pageSize,
                 });
 
-                hasMore = albums.length === this.config.pageSize;
+                hasMore = albumsData.length === this.config.pageSize;
             } catch (error) {
                 this.reportProgress({
                     entityType,
@@ -260,31 +305,59 @@ export class PrefillOrchestrator {
 
         while (hasMore) {
             try {
-                const playlists = await this.driver.getPlaylists({
+                const playlistsData = await this.driver.getPlaylists({
                     offset,
                     limit: this.config.pageSize,
                 });
 
-                if (playlists.length === 0) {
+                if (playlistsData.length === 0) {
                     hasMore = false;
                     break;
                 }
 
-                // Playlists will be inserted by upsert logic
-                // This is a placeholder - actual implementation would use proper upsert
+                // Insert playlists into database
+                const now = Date.now();
+                await db.insert(playlists).values(
+                    playlistsData.map(playlist => ({
+                        sourceId: this.sourceId,
+                        id: playlist.id,
+                        name: playlist.name,
+                        canDelete: playlist.canDelete,
+                        childCount: playlist.childCount ?? null,
+                        lastRefreshed: null,
+                        metadataJson: playlist.metadataJson,
+                        createdAt: now,
+                        updatedAt: now,
+                    }))
+                ).onConflictDoUpdate({
+                    target: [playlists.id],
+                    set: {
+                        name: playlistsData[0].name,
+                        canDelete: playlistsData[0].canDelete,
+                        childCount: playlistsData[0].childCount ?? null,
+                        metadataJson: playlistsData[0].metadataJson,
+                        updatedAt: now,
+                    },
+                });
 
-                totalFetched += playlists.length;
-                offset += playlists.length;
+                totalFetched += playlistsData.length;
+                offset += playlistsData.length;
 
-                await updateSyncCursor(this.sourceId, entityType, offset);
+                await updateSyncCursor(
+                    this.sourceId,
+                    entityType,
+                    offset,
+                    this.config.pageSize,
+                    playlistsData.length < this.config.pageSize
+                );
 
                 this.reportProgress({
                     entityType,
                     totalFetched,
-                    hasMore: playlists.length === this.config.pageSize,
+                    hasMore: playlistsData.length === this.config.pageSize,
                 });
 
-                hasMore = playlists.length === this.config.pageSize;
+                hasMore = playlistsData.length === this.config.pageSize;
             } catch (error) {
                 this.reportProgress({
                     entityType,

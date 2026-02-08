@@ -81,10 +81,7 @@ export type Track = Omit<SchemaTrack, 'sourceId' | 'createdAt' | 'updatedAt' | '
  * Playlist entity returned from drivers
  * Compatible with schema but without sourceId, timestamps
  */
-export type Playlist = Omit<SchemaPlaylist, 'sourceId' | 'createdAt' | 'updatedAt'> & {
-    canDelete: boolean;
-    childCount?: number;
-};
+export type Playlist = Omit<SchemaPlaylist, 'sourceId' | 'createdAt' | 'updatedAt' | 'lastRefreshed'>;
 
 /**
  * Search filter types
