@@ -179,11 +179,11 @@ export interface DownloadInfo {
  * Optional methods have default implementations
  */
 export abstract class SourceDriver {
-  protected source: Source;
+    protected source: Source;
 
-  constructor(source: Source) {
-    this.source = source;
-  }
+    constructor(source: Source) {
+        this.source = source;
+    }
 
   /**
    * Connect to the source and retrieve server info
@@ -195,7 +195,7 @@ export abstract class SourceDriver {
    * Default implementation throws error
    */
   refreshCredentials(): Promise<Credentials> {
-    throw new Error('refreshCredentials not implemented');
+      throw new Error('refreshCredentials not implemented');
   }
 
   /**
@@ -203,12 +203,12 @@ export abstract class SourceDriver {
    * Default implementation tries to connect
    */
   async validateCredentials(): Promise<boolean> {
-    try {
-      await this.connect();
-      return true;
-    } catch {
-      return false;
-    }
+      try {
+          await this.connect();
+          return true;
+      } catch {
+          return false;
+      }
   }
 
   /**
@@ -216,7 +216,7 @@ export abstract class SourceDriver {
    * Default implementation does nothing
    */
   async signOut(): Promise<void> {
-    // Default: no-op
+      // Default: no-op
   }
 
   /**

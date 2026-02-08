@@ -21,26 +21,26 @@ import { syncCursors } from './schema/sync-cursors';
 
 // Combined schema for drizzle
 const schema = {
-  sources,
-  appSettings,
-  sleepTimer,
-  artists,
-  albums,
-  tracks,
-  playlists,
-  downloads,
-  searchQueries,
-  albumArtists,
-  trackArtists,
-  playlistTracks,
-  albumSimilar,
-  syncCursors,
+    sources,
+    appSettings,
+    sleepTimer,
+    artists,
+    albums,
+    tracks,
+    playlists,
+    downloads,
+    searchQueries,
+    albumArtists,
+    trackArtists,
+    playlistTracks,
+    albumSimilar,
+    syncCursors,
 };
 
 // Open the SQLite database
 const sqliteDb = open({
-  name: 'fintunes.db',
-  location: '../databases',
+    name: 'fintunes.db',
+    location: '../databases',
 });
 
 // Create drizzle instance with schema - exported as singleton
@@ -51,19 +51,19 @@ export const db = drizzle(sqliteDb, { schema });
  * Migrations should be generated using drizzle-kit
  */
 export async function runMigrations() {
-  try {
-    await migrate(db, migrations);
-    console.log('Database migrations completed');
-  } catch (error) {
-    console.error('Migration error:', error);
-    throw error;
-  }
+    try {
+        await migrate(db, migrations);
+        console.log('Database migrations completed');
+    } catch (error) {
+        console.error('Migration error:', error);
+        throw error;
+    }
 }
 
 /**
  * Initialize the database
  */
 export async function initializeDatabase() {
-  await runMigrations();
-  return db;
+    await runMigrations();
+    return db;
 }
