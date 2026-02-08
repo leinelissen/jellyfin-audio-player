@@ -7,9 +7,7 @@ import styled from 'styled-components/native';
 import { differenceInDays } from 'date-fns';
 import { useAlbums, useArtists } from '@/store/music/hooks';
 import * as musicFetchers from '@/store/music/fetchers';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { sources } from '@/store/db/schema/sources';
+import { useSourceId } from '@/store/db/useSourceId';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import TouchableHandler from '@/components/TouchableHandler';
 import useDefaultStyles from '@/components/Colors';
@@ -64,8 +62,7 @@ export default function Artist() {
     const { params } = useRoute<RouteProp<StackParams, 'Artist'>>();
 
     // Retrieve data from store
-    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
+    const sourceId = useSourceId();
     const { ids: allAlbumIds, albums, isLoading, lastRefreshed } = useAlbums(sourceId);
     const { artists } = useArtists(sourceId);
     const artist = artists[params.id];

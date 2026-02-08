@@ -5,9 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
 import { useArtists, useArtistsByAlphabet } from '@/store/music/hooks';
 import * as musicFetchers from '@/store/music/fetchers';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { sources } from '@/store/db/schema/sources';
+import { useSourceId } from '@/store/db/useSourceId';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import AlbumImage from './components/AlbumImage';
 import { SectionArtistItem } from '@/store/music/selectors';
@@ -104,8 +102,7 @@ const GeneratedArtistItem = React.memo(function GeneratedArtistItem(props: Gener
 
 const Artists: React.FC = () => {
     // Retrieve data from store
-    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
+    const sourceId = useSourceId();
     const { isLoading, lastRefreshed } = useArtists(sourceId);
     const sections = useArtistsByAlphabet(sourceId);
     

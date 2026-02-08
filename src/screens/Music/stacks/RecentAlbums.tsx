@@ -4,9 +4,7 @@ import { Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAlbums, useRecentAlbums } from '@/store/music/hooks';
 import * as musicFetchers from '@/store/music/fetchers';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { sources } from '@/store/db/schema/sources';
+import { useSourceId } from '@/store/db/useSourceId';
 import TouchableHandler from '@/components/TouchableHandler';
 import ListContainer from './components/ListContainer';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
@@ -64,8 +62,7 @@ const RecentAlbums: React.FC = () => {
     const defaultStyles = useDefaultStyles();
 
     // Retrieve data from store
-    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
+    const sourceId = useSourceId();
     const { albums, isLoading } = useAlbums(sourceId);
     const { ids: recentAlbumIds } = useRecentAlbums(sourceId, 24);
 

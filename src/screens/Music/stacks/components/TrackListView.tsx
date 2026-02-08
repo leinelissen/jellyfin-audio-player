@@ -5,9 +5,7 @@ import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { useTypedSelector } from '@/store';
 import { useTracks, useAlbums, usePlaylists } from '@/store/music/hooks';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { sources } from '@/store/db/schema/sources';
+import { useSourceId } from '@/store/db/useSourceId';
 import TouchableHandler from '@/components/TouchableHandler';
 import useCurrentTrack from '@/utility/useCurrentTrack';
 import Play from '@/assets/icons/play.svg';
@@ -102,8 +100,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
     const offsets = useNavigationOffsets();
 
     // Retrieve state
-    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
+    const sourceId = useSourceId();
     const { tracks, isLoading } = useTracks(sourceId);
     const downloadedTracks = useTypedSelector(selectDownloadedTracks(trackIds));
     const { albums } = useAlbums(sourceId);

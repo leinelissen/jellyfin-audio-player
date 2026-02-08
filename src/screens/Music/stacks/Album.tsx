@@ -2,9 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { useAlbums, useTracksByAlbum } from '@/store/music/hooks';
 import * as musicFetchers from '@/store/music/fetchers';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { sources } from '@/store/db/schema/sources';
+import { useSourceId } from '@/store/db/useSourceId';
 import TrackListView from './components/TrackListView';
 import { differenceInDays } from 'date-fns';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
@@ -32,8 +30,7 @@ const Cover = styled(AlbumImage)`
 function SimilarAlbum({ id }: { id: string }) {
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
-    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
+    const sourceId = useSourceId();
     const { albums } = useAlbums(sourceId);
     const album = albums[id];
 
@@ -62,8 +59,7 @@ const Album: React.FC = () => {
     const defaultStyles = useDefaultStyles();
 
     // Retrieve the album data from the store
-    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
+    const sourceId = useSourceId();
     const { albums } = useAlbums(sourceId);
     const album = albums[id];
     const { ids: albumTrackIds } = useTracksByAlbum(sourceId, id);

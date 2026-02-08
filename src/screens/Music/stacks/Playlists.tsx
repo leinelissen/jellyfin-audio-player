@@ -5,9 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
 import { usePlaylists } from '@/store/music/hooks';
 import * as musicFetchers from '@/store/music/fetchers';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { sources } from '@/store/db/schema/sources';
+import { useSourceId } from '@/store/db/useSourceId';
 import { PLAYLIST_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import TouchableHandler from '@/components/TouchableHandler';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
@@ -40,8 +38,7 @@ const Playlists: React.FC = () => {
     const offsets = useNavigationOffsets();
 
     // Retrieve data from store
-    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
-    const sourceId = (sourceData?.[0] as typeof sources.$inferSelect | undefined)?.id || '';
+    const sourceId = useSourceId();
     const { playlists, ids, isLoading, lastRefreshed } = usePlaylists(sourceId);
     
     // Initialise helpers
