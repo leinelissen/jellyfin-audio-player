@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 import TimerIcon from '@/assets/icons/timer.svg';
 import { setSleepTimerDate } from '@/store/sleep-timer/db';
 import { useLiveQueryOne } from '@/store/db/live-queries';
-import { sleepTimer } from '@/store/db/schema/sleep-timer';
+import { sleepTimer } from '@/store/sleep-timer/sleep-timer';
 import { eq } from 'drizzle-orm';
 import ticksToDuration from '@/utility/ticksToDuration';
 import useDefaultStyles from '@/components/Colors';

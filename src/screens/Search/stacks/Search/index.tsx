@@ -13,7 +13,7 @@ import { searchAndStore } from '@/store/music/fetchers';
 import { addSearchQuery, clearSearchHistory, parseSearchQueries } from '@/store/search/db';
 import { useLiveQuery } from '@/store/db/live-queries';
 import { db } from '@/store/db';
-import { searchQueries } from '@/store/db/schema/search-queries';
+import { searchQueries } from '@/store/search-queries/search-queries';
 import { eq, desc } from 'drizzle-orm';
 
 import { FlatList } from 'react-native-gesture-handler';

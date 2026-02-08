@@ -6,10 +6,10 @@
 import { useMemo } from 'react';
 import { useLiveQuery } from '@/store/db/live-queries';
 import { db } from '@/store/db';
-import { albums } from '@/store/db/schema/albums';
-import { artists } from '@/store/db/schema/artists';
-import { tracks } from '@/store/db/schema/tracks';
-import { playlists } from '@/store/db/schema/playlists';
+import { albums } from '@/store/albums/albums';
+import { artists } from '@/store/artists/artists';
+import { tracks } from '@/store/tracks/tracks';
+import { playlists } from '@/store/playlists/playlists';
 import { playlistTracks } from '@/store/db/schema/playlist-tracks';
 import { eq, desc, inArray } from 'drizzle-orm';
 import { ALPHABET_LETTERS } from '@/CONSTANTS';

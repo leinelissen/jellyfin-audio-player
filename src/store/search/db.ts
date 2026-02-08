@@ -1,5 +1,5 @@
 import { db, sqliteDb } from '@/store/db';
-import { searchQueries } from '@/store/db/schema/search-queries';
+import { searchQueries } from '@/store/search-queries/search-queries';
 import type { SearchQuery } from '@/store/db/types';
 import { desc, eq } from 'drizzle-orm';
 

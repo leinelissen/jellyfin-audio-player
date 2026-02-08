@@ -6,10 +6,10 @@ import styled from 'styled-components/native';
 import { Paragraph } from '@/components/Typography';
 import Container from '../components/Container';
 import { db } from '@/store/db';
-import { albums } from '@/store/db/schema/albums';
-import { artists } from '@/store/db/schema/artists';
-import { tracks } from '@/store/db/schema/tracks';
-import { playlists } from '@/store/db/schema/playlists';
+import { albums } from '@/store/albums/albums';
+import { artists } from '@/store/artists/artists';
+import { tracks } from '@/store/tracks/tracks';
+import { playlists } from '@/store/playlists/playlists';
 
 const ClearCache = styled(Button)`
     margin-top: 16px;

@@ -4,8 +4,6 @@ import { persistStore, persistReducer, PersistConfig, createMigrate, PersistStat
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 import settings from './settings';
-import music, { initialState as musicInitialState } from './music';
-import downloads, { initialState as downloadsInitialState } from './downloads';
 import sleepTimer from './sleep-timer';
 import search from './search';
 import { ColorScheme } from './settings/types';
@@ -14,71 +12,15 @@ import MigratedStorage from '@/utility/MigratedStorage';
 const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
     key: 'root',
     storage: MigratedStorage,
-    version: 2,
+    version: 6,
     stateReconciler: autoMergeLevel2,
     migrate: createMigrate({
         // @ts-expect-error migrations are poorly typed
-        1: (state: AppState & PersistState) => {
+        6: (state: AppState & PersistState) => {
             return {
-                ...state,
                 settings: state.settings,
-                downloads: downloadsInitialState,
-                music: musicInitialState
-            };
-        },
-        // @ts-expect-error migrations are poorly typed
-        2: (state: AppState) => {
-            return {
-                ...state,
-                downloads: {
-                    ...state.downloads,
-                    queued: []
-                }
-            };
-        },
-        // @ts-expect-error migrations are poorly typed
-        3: (state: AppState) => {
-            return {
-                ...state,
-                settings: {
-                    ...state.settings,
-                    enablePlaybackReporting: true,
-                }
-            };
-        },
-        // @ts-expect-error migrations are poorly typed
-        4: (state: AppState) => {
-            return {
-                ...state,
-                settings: {
-                    ...state.settings,
-                    colorScheme: ColorScheme.System,
-                }
-            };
-        },
-        // 4: (state: AppState) => {
-        //     return {
-        //         ...state,
-        //         sleepTimer: {
-        //             date: null,
-        //         }
-        //     };
-        // },
-        // @ts-expect-error migrations are poorly typed
-        5: (state: AppState) => {
-            // @ts-expect-error
-            const credentials = state.settings.jellyfin && { 
-                // @ts-expect-error
-                ...(state.settings.jellyfin as AppState['settings']['credentials']),
-                type: 'jellyfin',
-            };
-
-            return {
-                ...state,
-                settings: {
-                    ...state.settings,
-                    credentials,
-                },
+                sleepTimer: state.sleepTimer,
+                search: state.search,
             };
         },
     })
@@ -86,8 +28,6 @@ const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
 
 const reducers = combineReducers({
     settings,
-    music: music.reducer,
-    downloads: downloads.reducer,
     sleepTimer: sleepTimer.reducer,
     search: search.reducer,
 });

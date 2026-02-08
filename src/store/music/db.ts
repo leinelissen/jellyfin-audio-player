@@ -1,8 +1,8 @@
 import { db, sqliteDb } from '@/store/db';
-import { albums } from '@/store/db/schema/albums';
-import { artists } from '@/store/db/schema/artists';
-import { tracks } from '@/store/db/schema/tracks';
-import { playlists } from '@/store/db/schema/playlists';
+import { albums } from '@/store/albums/albums';
+import { artists } from '@/store/artists/artists';
+import { tracks } from '@/store/tracks/tracks';
+import { playlists } from '@/store/playlists/playlists';
 import { albumArtists } from '@/store/db/schema/album-artists';
 import { trackArtists } from '@/store/db/schema/track-artists';
 import { playlistTracks } from '@/store/db/schema/playlist-tracks';
