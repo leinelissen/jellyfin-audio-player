@@ -86,5 +86,8 @@
     "shuffle": "Keverés",
     "tracks": "számok",
     "unknown-artist": "Ismeretlen előadó",
-    "unknown-track": "Ismeretlen szám"
+    "unknown-track": "Ismeretlen szám",
+    "recent-searches": "Legutóbbi keresések",
+    "clear-history": "Előzmények törlése",
+    "artist": "Művész"
 }
