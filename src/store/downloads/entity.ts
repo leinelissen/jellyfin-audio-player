@@ -1,10 +1,10 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { sources } from '../db/schema/sources';
+import sources from '../sources/entity';
 
 /**
  * Downloads table
  */
-export const downloads = sqliteTable('downloads', {
+const downloads = sqliteTable('downloads', {
     sourceId: text('source_id').notNull().references(() => sources.id, { onDelete: 'cascade' }),
     id: text('id').primaryKey(),
     hash: text('hash'),
@@ -17,3 +17,5 @@ export const downloads = sqliteTable('downloads', {
     createdAt: integer('created_at').notNull(),
     updatedAt: integer('updated_at').notNull(),
 });
+
+export default downloads;

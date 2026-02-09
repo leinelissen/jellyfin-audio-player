@@ -2,8 +2,8 @@
  * Database actions for search queries
  */
 
-import { db, sqliteDb } from '@/store/db';
-import { searchQueries } from './search-queries';
+import { db, sqliteDb } from '@/store';
+import searchQueries from './entity';
 import { eq } from 'drizzle-orm';
 import type { InsertSearchQuery } from './types';
 

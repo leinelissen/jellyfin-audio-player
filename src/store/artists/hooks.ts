@@ -3,9 +3,9 @@
  */
 
 import { useMemo } from 'react';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { artists } from './artists';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import artists from './entity';
 import { eq } from 'drizzle-orm';
 import type { Artist } from './types';
 

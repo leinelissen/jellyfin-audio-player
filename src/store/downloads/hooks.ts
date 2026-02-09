@@ -3,9 +3,9 @@
  */
 
 import { useMemo } from 'react';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { downloads } from './downloads';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import downloads from './entity';
 import { eq } from 'drizzle-orm';
 import type { Download } from './types';
 
@@ -23,11 +23,14 @@ export function useDownloads(sourceId?: string) {
         
         (data || []).forEach(download => {
             const d = download as Download;
-            entities[d.id] = d;
-            ids.push(d.id);
+            const metadata = d.metadataJson ? JSON.parse(d.metadataJson) : {};
+            const normalized = { ...d, ...metadata } as Download;
+
+            entities[normalized.id] = normalized;
+            ids.push(normalized.id);
             
-            if (!d.isComplete && !d.isFailed) {
-                queued.push(d.id);
+            if (!normalized.isComplete && !normalized.isFailed) {
+                queued.push(normalized.id);
             }
         });
         

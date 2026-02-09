@@ -11,15 +11,15 @@
  */
 
 import { useState, useEffect, useRef, useMemo } from "react";
-import { sqliteDb } from '@/store/db'
+import { sqliteDb } from '@/store'
+import { QueryPromise } from 'drizzle-orm';
 
-type DrizzleQuery = {
+type DrizzleQuery<T> = QueryPromise<T> &{
     toSQL: () => { sql: string; params: unknown[] };
-    then: (onfulfilled?: (value: any) => any) => Promise<any>;
 };
 
 type UseLiveQueryResult<T> = {
-    data: T[];
+    data: T | null;
     error: Error | undefined;
 };
 
@@ -54,9 +54,9 @@ function extractTableNames(sql: string): string[] {
  * https://github.com/drizzle-team/drizzle-orm/issues/2926
  */
 export function useLiveQuery<T>(
-    query: DrizzleQuery | undefined | null
+    query: DrizzleQuery<T> | undefined | null
 ): UseLiveQueryResult<T> {
-    const [data, setData] = useState<T[]>([]);
+    const [data, setData] = useState<T | null>(null);
     const [error, setError] = useState<Error | undefined>(undefined);
     const unsubscribeRef = useRef<(() => void) | null>(null);
 
@@ -88,7 +88,7 @@ export function useLiveQuery<T>(
 
             // Initial fetch via drizzle (preserves ORM transformations)
             query
-                .then((result: T[]) => {
+                .then((result: T) => {
                     setData(result);
                     setError(undefined);
                 })
@@ -104,7 +104,7 @@ export function useLiveQuery<T>(
                 fireOn,
                 callback: (response) => {
                     // response.rows contains raw row data from reactive callback
-                    setData(response.rows as T[]);
+                    setData(response.rows as T);
                 },
             });
         } catch (e) {

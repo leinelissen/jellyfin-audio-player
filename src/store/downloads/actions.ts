@@ -1,5 +1,5 @@
-import { db, sqliteDb } from '@/store/db';
-import { downloads } from './downloads';
+import { db, sqliteDb } from '@/store';
+import downloads from './entity';
 import type { Download } from './types';
 import { eq } from 'drizzle-orm';
 

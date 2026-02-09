@@ -2,15 +2,15 @@ import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@/screens';
-import { setOnboardingStatus } from '@/store/settings/db';
+import { setOnboardingStatus } from '@/store/settings/actions';
 import { t } from '@/localisation';
 import Button from '@/components/Button';
 import { Header, Text as BaseText } from '@/components/Typography';
 import { ShadowWrapper } from '@/components/Shadow';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { sources } from '@/store/db/schema/sources';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import sources from '@/store/sources/entity';
 
 const Container = styled(SafeAreaView)`
     flex: 1;

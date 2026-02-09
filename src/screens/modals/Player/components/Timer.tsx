@@ -3,8 +3,9 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import styled from 'styled-components/native';
 import TimerIcon from '@/assets/icons/timer.svg';
 import { setSleepTimerDate } from '@/store/sleep-timer/db';
-import { useLiveQueryOne } from '@/store/db/live-queries';
-import { sleepTimer } from '@/store/sleep-timer/sleep-timer';
+import { useLiveQuery } from '@/store/live-queries';
+import sleepTimer from '@/store/sleep-timer/entity';
+import { db } from '@/store';
 import { eq } from 'drizzle-orm';
 import ticksToDuration from '@/utility/ticksToDuration';
 import useDefaultStyles from '@/components/Colors';
@@ -40,11 +41,10 @@ export default function Timer() {
     const [showPicker, setShowPicker] = useState<boolean>(false);
     
     // Retrieve sleep timer from database using live query
-    const timerData = useLiveQueryOne(
-        (db) => db.select().from(sleepTimer).where(eq(sleepTimer.id, 1)).limit(1),
-        ['sleep_timer']
+    const { data: timerRows } = useLiveQuery(
+        db.select().from(sleepTimer).where(eq(sleepTimer.id, 1)).limit(1)
     );
-    const date = timerData?.date ?? null;
+    const date = timerRows?.[0]?.date ?? null;
     
     // Retrieve styles
     const defaultStyles = useDefaultStyles();

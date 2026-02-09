@@ -7,9 +7,9 @@ import Button from '@/components/Button';
 import { Paragraph } from '@/components/Typography';
 import Container from '../components/Container';
 import { InputContainer, Input } from '../components/Input';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { sources } from '@/store/db/schema/sources';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import sources from '@/store/sources/entity';
 
 export default function LibrarySettings() {
     const defaultStyles = useDefaultStyles();

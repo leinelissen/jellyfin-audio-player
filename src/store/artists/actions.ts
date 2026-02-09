@@ -2,8 +2,8 @@
  * Database actions for artists
  */
 
-import { db, sqliteDb } from '@/store/db';
-import { artists } from './artists';
+import { db, sqliteDb } from '@/store';
+import artists from './entity';
 import { eq } from 'drizzle-orm';
 import type { InsertArtist } from './types';
 

@@ -2,9 +2,8 @@
  * Database actions for sleep timer
  */
 
-import { db, sqliteDb } from '@/store/db';
-import { sleepTimer } from './sleep-timer';
-import { eq } from 'drizzle-orm';
+import { db, sqliteDb } from '@/store';
+import sleepTimer from './entity';
 
 export async function setSleepTimer(date: number | null): Promise<void> {
     const now = Date.now();

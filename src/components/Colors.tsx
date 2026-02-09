@@ -4,9 +4,9 @@ import { useContext } from 'react';
 import { ColorSchemeName, Platform, StyleSheet, View, useColorScheme } from 'react-native';
 import { ColorScheme } from '@/store/settings/types';
 import { useAccessibilitySetting } from 'react-native-accessibility-settings';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { appSettings } from '@/store/db/schema/app-settings';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import appSettings from '@/store/settings/entity';
 import { eq } from 'drizzle-orm';
 
 const majorPlatformVersion = typeof Platform.Version === 'string' ? parseInt(Platform.Version, 10) : Platform.Version;

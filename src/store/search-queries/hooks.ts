@@ -3,9 +3,9 @@
  */
 
 import { useMemo } from 'react';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { searchQueries } from './search-queries';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import searchQueries from './entity';
 import { eq, desc } from 'drizzle-orm';
 import type { SearchQuery } from './types';
 

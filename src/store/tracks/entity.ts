@@ -1,10 +1,10 @@
 import { sqliteTable, text, integer, index } from 'drizzle-orm/sqlite-core';
-import { sources } from '../db/schema/sources';
+import sources from '../sources/entity';
 
 /**
  * Tracks table
  */
-export const tracks = sqliteTable('tracks', {
+const tracks = sqliteTable('tracks', {
     sourceId: text('source_id').notNull().references(() => sources.id, { onDelete: 'cascade' }),
     id: text('id').primaryKey(),
     name: text('name').notNull(),
@@ -24,3 +24,5 @@ export const tracks = sqliteTable('tracks', {
     sourceAlbumIdx: index('tracks_source_album_idx').on(table.sourceId, table.albumId),
     sourceNameIdx: index('tracks_source_name_idx').on(table.sourceId, table.name),
 }));
+
+export default tracks;

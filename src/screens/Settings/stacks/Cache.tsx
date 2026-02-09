@@ -5,11 +5,11 @@ import Button from '@/components/Button';
 import styled from 'styled-components/native';
 import { Paragraph } from '@/components/Typography';
 import Container from '../components/Container';
-import { db } from '@/store/db';
-import { albums } from '@/store/albums/albums';
-import { artists } from '@/store/artists/artists';
-import { tracks } from '@/store/tracks/tracks';
-import { playlists } from '@/store/playlists/playlists';
+import { db } from '@/store';
+import albums from '@/store/albums/entity';
+import artists from '@/store/artists/entity';
+import tracks from '@/store/tracks/entity';
+import playlists from '@/store/playlists/entity';
 
 const ClearCache = styled(Button)`
     margin-top: 16px;

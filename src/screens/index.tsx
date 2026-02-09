@@ -20,9 +20,9 @@ import useDefaultStyles from '@/components/Colors';
 import Player from './modals/Player';
 import { StackParams } from './types';
 import Lyrics from './modals/Lyrics';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { appSettings } from '@/store/db/schema/app-settings';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import appSettings from '@/store/settings/entity';
 import { eq } from 'drizzle-orm';
 
 const Stack = createNativeStackNavigator<StackParams>();

@@ -8,17 +8,17 @@
  */
 
 import PQueue from 'p-queue';
-import { db } from '../db/client';
-import type { SourceDriver } from '../sources/types';
-import { syncCursors } from '../db/schema/sync-cursors';
-import { artists } from '../artists/artists';
-import { albums } from '../albums/albums';
-import { playlists } from '../playlists/playlists';
-import { tracks } from '../tracks/tracks';
-import { playlistTracks } from '../db/schema/playlist-tracks';
-import { albumSimilar } from '../db/schema/album-similar';
 import { eq, and } from 'drizzle-orm';
-import { invalidateTable } from '../db/live-queries';
+
+import { db } from '@/store/db';
+import type { SourceDriver } from '@/store/sources/types';
+import syncCursors from '@/store/sync-cursors/entity';
+import artists from '@/store/artists/entity';
+import albums from '@/store/albums/entity';
+import playlists from '@/store/playlists/entity';
+import tracks from '@/store/tracks/entity';
+import playlistTracks from '@/store/playlist-tracks/entity';
+import albumSimilar from '@/store/album-similar/entity';
 
 /**
  * Entity types that can be prefilled
@@ -197,7 +197,6 @@ export class PrefillManager {
             if (artistsData.length === 0) {
                 this.updateProgress(entityType, { isComplete: true });
                 await this.updateSyncCursor(entityType, offset, true);
-                invalidateTable('artists');
                 return;
             }
 
@@ -231,7 +230,6 @@ export class PrefillManager {
             });
 
             await this.updateSyncCursor(entityType, newOffset, false);
-            invalidateTable('artists');
 
             // If we got a full page, recursively spawn the next page fetch
             if (artistsData.length === this.config.pageSize) {
@@ -264,7 +262,6 @@ export class PrefillManager {
             if (albumsData.length === 0) {
                 this.updateProgress(entityType, { isComplete: true });
                 await this.updateSyncCursor(entityType, offset, true);
-                invalidateTable('albums');
                 return;
             }
 
@@ -305,7 +302,6 @@ export class PrefillManager {
             });
 
             await this.updateSyncCursor(entityType, newOffset, false);
-            invalidateTable('albums');
 
             // If we got a full page, recursively spawn the next page fetch
             if (albumsData.length === this.config.pageSize) {
@@ -338,7 +334,6 @@ export class PrefillManager {
             if (playlistsData.length === 0) {
                 this.updateProgress(entityType, { isComplete: true });
                 await this.updateSyncCursor(entityType, offset, true);
-                invalidateTable('playlists');
                 return;
             }
 
@@ -375,7 +370,6 @@ export class PrefillManager {
             });
 
             await this.updateSyncCursor(entityType, newOffset, false);
-            invalidateTable('playlists');
 
             // If we got a full page, recursively spawn the next page fetch
             if (playlistsData.length === this.config.pageSize) {
@@ -447,7 +441,6 @@ export class PrefillManager {
                 totalInserted: this.progress[entityType].totalInserted + tracksData.length,
             });
 
-            invalidateTable('tracks');
 
             // Recursively fetch next page if this was a full page
             if (tracksData.length === this.config.pageSize) {
@@ -528,8 +521,6 @@ export class PrefillManager {
                 totalInserted: this.progress[entityType].totalInserted + tracksData.length,
             });
 
-            invalidateTable('tracks');
-            invalidateTable('playlist_tracks');
 
             // Recursively fetch next page if this was a full page
             if (tracksData.length === this.config.pageSize) {
@@ -573,7 +564,6 @@ export class PrefillManager {
                 totalInserted: this.progress[EntityType.SIMILAR_ALBUMS].totalInserted + similarAlbums.length,
             });
 
-            invalidateTable('album_similar');
         } catch (error) {
             // Similar albums are optional, silently fail
             console.debug(`Could not fetch similar albums for ${albumId}:`, error);

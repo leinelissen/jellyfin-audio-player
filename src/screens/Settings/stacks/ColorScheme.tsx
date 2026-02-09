@@ -4,20 +4,15 @@ import Container from '../components/Container';
 import { t } from '@/localisation';
 import { RadioItem, RadioList } from '../components/Radio';
 import { ColorScheme } from '@/store/settings/types';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { appSettings } from '@/store/db/schema/app-settings';
-import { eq } from 'drizzle-orm';
-import { setColorScheme as setColorSchemeDb } from '@/store/settings/db';
+import { updateAppSettings } from '@/store/settings/actions';
+import { useAppSettings } from '@/store/settings/hooks';
 
 export default function ColorSchemeSetting() {
-    const { data: settings } = useLiveQuery(
-        db.select().from(appSettings).where(eq(appSettings.id, 1)).limit(1)
-    );
-    const scheme = settings?.[0]?.colorScheme || ColorScheme.System;
+    const { data: settings } = useAppSettings();
+    const scheme = settings?.colorScheme || ColorScheme.System;
 
     const handlePress = useCallback((value: ColorScheme) => {
-        setColorSchemeDb(value);
+        updateAppSettings({ colorScheme: value });
     }, []);
 
     return (

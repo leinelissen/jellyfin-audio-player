@@ -2,9 +2,9 @@
  * Database actions for playlists
  */
 
-import { db, sqliteDb } from '@/store/db';
-import { playlists } from './playlists';
-import { playlistTracks } from '@/store/db/schema/playlist-tracks';
+import { db, sqliteDb } from '@/store';
+import playlists from './entity';
+import playlistTracks from '@/store/playlist-tracks/entity';
 import { eq, and } from 'drizzle-orm';
 import type { InsertPlaylist } from './types';
 

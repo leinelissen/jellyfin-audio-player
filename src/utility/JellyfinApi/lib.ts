@@ -1,9 +1,9 @@
 import { Platform } from 'react-native';
 import { version } from '../../../package.json';
 import { Album, AlbumTrack, ArtistItem, Playlist } from '@/store/music/types';
-import { db } from '@/store/db';
-import { sources } from '@/store/db/schema/sources';
-import { useLiveQuery } from '@/store/db/live-queries';
+import { db } from '@/store';
+import sources from '@/store/sources/entity';
+import { useLiveQuery } from '@/store/live-queries';
 import { useCallback } from 'react';
 
 type Credentials = {
@@ -165,7 +165,7 @@ export function useGetImage() {
     const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
     const credentials = sourceData?.[0];
 
-    return useCallback(async (item: Parameters<typeof getImage>[0]) => {
+    return useCallback((item: Parameters<typeof getImage>[0]) => {
         return getImage(item, credentials);
     }, [credentials]);
 }

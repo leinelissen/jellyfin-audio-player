@@ -2,11 +2,11 @@ import { Paragraph } from '@/components/Typography';
 import React, { useCallback } from 'react';
 import { Switch } from 'react-native-gesture-handler';
 import { t } from '@/localisation';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { appSettings } from '@/store/db/schema/app-settings';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import appSettings from '@/store/settings/entity';
 import { eq } from 'drizzle-orm';
-import { setEnablePlaybackReporting } from '@/store/settings/db';
+import { setEnablePlaybackReporting } from '@/store/settings/actions';
 import Container from '../components/Container';
 import { SwitchContainer, SwitchLabel } from '../components/Switch';
 

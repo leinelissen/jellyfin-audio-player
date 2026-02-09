@@ -1,11 +1,16 @@
 import React, { useRef, useCallback, useMemo } from 'react';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { debounce } from 'lodash';
-import { AppState } from '@/store';
 
 interface Props {
     serverUrl: string;
-    onCredentialsRetrieved: (credentials: AppState['settings']['credentials']) => void;
+    onCredentialsRetrieved: (credentials: {
+        uri: string;
+        user_id: string;
+        access_token: string;
+        device_id: string;
+        type: 'emby' | 'jellyfin';
+    }) => void;
 }
 
 type CredentialEventData = {

@@ -7,11 +7,11 @@ import useDefaultStyles from './Colors';
 import Svg, { Circle, CircleProps } from 'react-native-svg';
 import { Animated, Easing, ViewProps } from 'react-native';
 import styled from 'styled-components/native';
-import type { Track } from '@/store/tracks/types';
 import type { Download } from '@/store/downloads/types';
+import { useDownload } from '@/store/downloads/hooks';
 
 interface DownloadIconProps {
-    track: Track;
+    trackId?: string;
     download?: Download | null;
     size?: number;
     fill?: string;
@@ -29,9 +29,12 @@ const IconOverlay = styled.View`
     transform: scale(0.5);
 `;
 
-function DownloadIcon({ track, download, size = 16, fill, style }: DownloadIconProps) {
+function DownloadIcon({ trackId, download: downloadProp, size = 16, fill, style }: DownloadIconProps) {
     const defaultStyles = useDefaultStyles();
     const iconFill = fill || defaultStyles.textQuarterOpacity.color;
+
+    const { data: downloadData } = useDownload(trackId || '');
+    const download = downloadProp || downloadData || null;
 
     const isQueued = download && !download.isComplete && !download.isFailed;
     const radius = useMemo(() => size / 2, [size]);

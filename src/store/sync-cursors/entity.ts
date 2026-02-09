@@ -1,10 +1,10 @@
 import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
-import { sources } from './sources';
+import sources from '../sources/entity';
 
 /**
  * Sync cursors table - tracks prefill progress
  */
-export const syncCursors = sqliteTable('sync_cursors', {
+const syncCursors = sqliteTable('sync_cursors', {
     sourceId: text('source_id').notNull().references(() => sources.id, { onDelete: 'cascade' }),
     entityType: text('entity_type').notNull(), // 'artists', 'albums', 'tracks', 'playlists', etc.
     startIndex: integer('start_index').notNull(),
@@ -14,3 +14,5 @@ export const syncCursors = sqliteTable('sync_cursors', {
 }, (table) => ({
     pk: primaryKey({ columns: [table.sourceId, table.entityType] }),
 }));
+
+export default syncCursors;

@@ -5,9 +5,9 @@
  */
 
 import { db } from '../db/client';
-import { sleepTimer } from '../db/schema/sleep-timer';
+import sleepTimer from './entity';
 import { eq } from 'drizzle-orm';
-import { invalidateTable } from '../db/live-queries';
+import { invalidateTable } from '../live-queries';
 
 const SLEEP_TIMER_ID = 1;
 

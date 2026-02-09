@@ -4,13 +4,13 @@
  */
 
 import { useMemo } from 'react';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { albums } from '@/store/albums/albums';
-import { artists } from '@/store/artists/artists';
-import { tracks } from '@/store/tracks/tracks';
-import { playlists } from '@/store/playlists/playlists';
-import { playlistTracks } from '@/store/db/schema/playlist-tracks';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import albums from '@/store/albums/entity';
+import artists from '@/store/artists/entity';
+import tracks from '@/store/tracks/entity';
+import playlists from '@/store/playlists/entity';
+import playlistTracks from '@/store/playlist-tracks/entity';
 import { eq, desc, inArray } from 'drizzle-orm';
 import { ALPHABET_LETTERS } from '@/CONSTANTS';
 import type { SectionListData } from 'react-native';
@@ -19,9 +19,11 @@ import type { Album, AlbumTrack, MusicArtist, Playlist } from './types';
 /**
  * Get all albums (from all sources)
  */
-export function useAlbums() {
+export function useAlbums(sourceId?: string) {
     const { data, error } = useLiveQuery(
-        db.select().from(albums)
+        sourceId
+            ? db.select().from(albums).where(eq(albums.sourceId, sourceId))
+            : db.select().from(albums)
     );
     
     return useMemo(() => {
@@ -50,9 +52,11 @@ export function useAlbums() {
 /**
  * Get recent albums (sorted by date created, from all sources)
  */
-export function useRecentAlbums(amount: number = 24) {
+export function useRecentAlbums(amount: number = 24, sourceId?: string) {
     const { data, error } = useLiveQuery(
-        db.select().from(albums).orderBy(desc(albums.dateCreated)).limit(amount)
+        sourceId
+            ? db.select().from(albums).where(eq(albums.sourceId, sourceId)).orderBy(desc(albums.dateCreated)).limit(amount)
+            : db.select().from(albums).orderBy(desc(albums.dateCreated)).limit(amount)
     );
     
     return useMemo(() => {
@@ -115,9 +119,11 @@ export function useAlbumsByAlphabet() {
 /**
  * Get all artists (from all sources)
  */
-export function useArtists() {
+export function useArtists(sourceId?: string) {
     const { data, error } = useLiveQuery(
-        db.select().from(artists)
+        sourceId
+            ? db.select().from(artists).where(eq(artists.sourceId, sourceId))
+            : db.select().from(artists)
     );
     
     return useMemo(() => {
@@ -167,9 +173,11 @@ export function useArtistsByAlphabet() {
 /**
  * Get all playlists (from all sources)
  */
-export function usePlaylists() {
+export function usePlaylists(sourceId?: string) {
     const { data, error } = useLiveQuery(
-        db.select().from(playlists)
+        sourceId
+            ? db.select().from(playlists).where(eq(playlists.sourceId, sourceId))
+            : db.select().from(playlists)
     );
     
     return useMemo(() => {
@@ -258,9 +266,11 @@ export function useTracksByPlaylist(playlistId: string) {
 /**
  * Get all tracks (from all sources)
  */
-export function useTracks() {
+export function useTracks(sourceId?: string) {
     const { data, error } = useLiveQuery(
-        db.select().from(tracks)
+        sourceId
+            ? db.select().from(tracks).where(eq(tracks.sourceId, sourceId))
+            : db.select().from(tracks)
     );
     
     return useMemo(() => {

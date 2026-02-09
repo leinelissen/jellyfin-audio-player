@@ -3,9 +3,9 @@
  */
 
 import { useMemo } from 'react';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { sleepTimer } from './sleep-timer';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import sleepTimer from './entity';
 import { eq } from 'drizzle-orm';
 import type { SleepTimer } from './types';
 

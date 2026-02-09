@@ -1,175 +1,97 @@
-export interface UserData {
-    PlaybackPositionTicks: number;
-    PlayCount: number;
-    IsFavorite: boolean;
-    Played: boolean;
-    Key: string;
+export interface ArtistItem {
+    Id: string;
+    Name?: string;
+    PrimaryImageItemId?: string;
+    ImageTags?: {
+        Primary?: string;
+        [key: string]: unknown;
+    };
+    [key: string]: unknown;
 }
 
 export interface MediaStream {
-    Codec: string
-    TimeBase: string
-    VideoRange: string
-    VideoRangeType: string
-    AudioSpatialFormat: string
-    DisplayTitle: string
-    IsInterlaced: boolean
-    ChannelLayout: string
-    BitRate: number
-    Channels: number
-    SampleRate: number
-    IsDefault: boolean
-    IsForced: boolean
-    IsHearingImpaired: boolean
-    Type: string
-    Index: number
-    IsExternal: boolean
-    IsTextSubtitleStream: boolean
-    SupportsExternalStream: boolean
-    Level: number
-} 
-
-export interface ArtistItem {
-    Name: string;
-    Id: string;
+    Type?: string;
+    Codec?: string;
+    BitRate?: number;
+    SampleRate?: number;
+    [key: string]: unknown;
 }
 
-export interface AlbumArtist {
-    Name: string;
-    Id: string;
+export interface TrackLyricsLine {
+    Start: number;
+    Text?: string;
+    [key: string]: unknown;
 }
 
-export interface MusicArtist {
-    Name: string;
-    ServerId: string;
-    Id: string;
-    ChannelId: string;
-    RunTimeTicks: number;
-    IsFolder: boolean;
-    UserData: UserData;
-    Type: 'MusicArtist';
-    ImageTags: ImageTags;
-    BackdropImageTags: any[];
-    ImageBlurHashes: any;
-    LocationType: string;
-    Overview: string;
+export interface TrackLyrics {
+    Lyrics: TrackLyricsLine[];
+    [key: string]: unknown;
 }
 
-export interface ImageTags {
-    Primary: string;
+export interface CodecInfo {
+    isDirectPlay?: boolean;
+    contentType?: string;
+    [key: string]: unknown;
 }
 
 export interface Album {
-    Name: string;
-    ServerId: string;
     Id: string;
-    SortName: string;
-    RunTimeTicks: number;
-    ProductionYear: number;
-    IsFolder: boolean;
-    Type: 'MusicAlbum';
-    UserData: UserData;
-    PrimaryImageAspectRatio: number;
-    Artists: string[];
-    ArtistItems: ArtistItem[];
-    AlbumArtist?: string;
-    AlbumArtists: AlbumArtist[];
-    ImageTags: ImageTags;
-    BackdropImageTags: any[];
-    LocationType: string;
-    Tracks?: string[];
-    lastRefreshed?: number;
-    DateCreated: string;
+    Name: string;
+    AlbumArtist?: string | null;
+    Artists?: string[];
+    ArtistItems?: ArtistItem[];
     Overview?: string;
-    Similar?: string[];
-    /** Emby potentially carries different ids for primary images */
     PrimaryImageItemId?: string;
+    DateCreated?: string;
+    ProductionYear?: number | null;
+    IsFolder?: boolean;
+    lastRefreshed?: number;
+    Similar?: string[];
+    [key: string]: unknown;
 }
 
-export interface CodecMetadata {
-    contentType?: string;
-    isDirectPlay: boolean;
-}
-
-export interface LyricMetadata {
-    Artist: string
-    Album: string
-    Title: string
-    Author: string
-    Length: number
-    By: string
-    Offset: number
-    Creator: string
-    Version: string
-    IsSynced: boolean
-}
-
-export interface LyricData {
-    Text: string
-    Start: number
-}
-
-export interface Lyrics {
-    Metadata: LyricMetadata;
-    Lyrics: LyricData[]
+export interface MusicArtist {
+    Id: string;
+    Name: string;
+    IsFolder?: boolean;
+    Overview?: string;
+    PrimaryImageItemId?: string;
+    ImageTags?: {
+        Primary?: string;
+        [key: string]: unknown;
+    };
+    [key: string]: unknown;
 }
 
 export interface AlbumTrack {
-    Name: string;
-    ServerId: string;
     Id: string;
-    RunTimeTicks: number;
-    ProductionYear: number;
-    IndexNumber: number;
-    ParentIndexNumber: number;
-    IsFolder: boolean;
-    Type: 'Audio';
-    UserData: UserData;
-    Artists: string[];
-    ArtistItems: ArtistItem[];
-    Album: string;
-    AlbumId: string;
-    AlbumPrimaryImageTag: string;
-    AlbumArtist: string;
-    AlbumArtists: AlbumArtist[];
-    ImageTags: ImageTags;
-    BackdropImageTags: any[];
-    LocationType: string;
-    MediaType: string;
-    HasLyrics: boolean;
-    Lyrics?: Lyrics;
-    Codec?: CodecMetadata;
-    MediaStreams: MediaStream[];
-}
-
-export interface State {
-    albums: {
-        ids: string[];
-        entities: Record<string, Album>;
-        isLoading: boolean;
-    }
+    Name: string;
+    AlbumId?: string | null;
+    Album?: string | null;
+    AlbumArtist?: string | null;
+    Artists?: string[];
+    ArtistItems?: ArtistItem[];
+    ProductionYear?: number | null;
+    IndexNumber?: number | null;
+    ParentIndexNumber?: number | null;
+    RunTimeTicks?: number | null;
+    HasLyrics?: boolean;
+    Lyrics?: TrackLyrics;
+    MediaStreams?: MediaStream[];
+    Codec?: CodecInfo;
+    PrimaryImageItemId?: string;
+    [key: string]: unknown;
 }
 
 export interface Playlist {
-    Name: string;
-    ServerId: string;
     Id: string;
-    CanDelete: boolean;
-    SortName: string;
-    ChannelId?: any;
-    RunTimeTicks: number;
-    IsFolder: boolean;
-    Type: 'Playlist';
-    UserData: UserData;
-    PrimaryImageAspectRatio: number;
-    ImageTags: ImageTags;
-    BackdropImageTags: any[];
-    LocationType: string;
-    MediaType: string;
-    ChildCount?: number;
-    Tracks?: string[];
+    Name: string;
+    CanDelete?: boolean;
+    ChildCount?: number | null;
     lastRefreshed?: number;
+    Overview?: string;
+    PrimaryImageItemId?: string;
+    [key: string]: unknown;
 }
 
-// Type alias for section list artist items
 export type SectionArtistItem = MusicArtist;

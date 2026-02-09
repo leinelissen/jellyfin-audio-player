@@ -20,6 +20,7 @@ import Trash from '@/assets/icons/trash.svg';
 import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/queue';
 import { Header, SubHeader } from '@/components/Typography';
 import { Text } from '@/components/Typography';
+import { SafeScrollView, useNavigationOffsets } from '@/components/SafeNavigatorView';
 
 const styles = StyleSheet.create({
     index: {

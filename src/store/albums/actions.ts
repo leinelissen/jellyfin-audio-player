@@ -2,8 +2,8 @@
  * Database actions for albums
  */
 
-import { db, sqliteDb } from '@/store/db';
-import { albums } from './albums';
+import { db, sqliteDb } from '@/store';
+import albums from './entity';
 import { eq } from 'drizzle-orm';
 import type { InsertAlbum } from './types';
 

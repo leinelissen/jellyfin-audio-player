@@ -11,9 +11,9 @@ import { useDownloads } from '@/store/downloads/hooks';
 import { useSourceId } from '@/store/db/useSourceId';
 import { searchAndStore } from '@/store/music/fetchers';
 import { addSearchQuery, clearSearchHistory, parseSearchQueries } from '@/store/search/db';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { searchQueries } from '@/store/search-queries/search-queries';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import searchQueries from '@/store/search-queries/entity';
 import { eq, desc } from 'drizzle-orm';
 
 import { FlatList } from 'react-native-gesture-handler';

@@ -3,7 +3,7 @@ import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 /**
  * Sources table - stores Jellyfin/Emby server connections
  */
-export const sources = sqliteTable('sources', {
+const sources = sqliteTable('sources', {
     id: text('id').primaryKey(),
     uri: text('uri').notNull(),
     userId: text('user_id'),
@@ -13,3 +13,5 @@ export const sources = sqliteTable('sources', {
     createdAt: integer('created_at').notNull(),
     updatedAt: integer('updated_at').notNull(),
 });
+
+export default sources;

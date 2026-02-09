@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { t } from '@/localisation';
-import { setReceivedErrorReportingAlert } from '@/store/settings/db';
+import { setReceivedErrorReportingAlert } from '@/store/settings/actions';
 import { setSentryStatus } from './Sentry';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@/screens/types';
-import { useLiveQuery } from '@/store/db/live-queries';
-import { db } from '@/store/db';
-import { appSettings } from '@/store/db/schema/app-settings';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import appSettings from '@/store/settings/entity';
 import { eq } from 'drizzle-orm';
 
 /**
