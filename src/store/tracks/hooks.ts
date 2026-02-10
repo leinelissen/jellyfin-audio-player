@@ -2,7 +2,7 @@
  * Database-backed hooks for tracks with download joins
  */
 
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { useLiveQuery } from '@/store/live-queries';
 import { db } from '@/store';
 import tracks from './entity';
@@ -15,8 +15,11 @@ export function useTracks(sourceId?: string) {
     );
 }
 
-export function useTrack(id: string) {
+export function useTrack([sourceId, id]: [sourceId: string, id: string]) {
     return useLiveQuery(
-        id ? db.select().from(tracks).where(eq(tracks.id, id)).limit(1) : null
+        db.select()
+            .from(tracks)
+            .where(and(eq(tracks.sourceId, sourceId), eq(tracks.id, id)))
+            .limit(1)
     );
 }

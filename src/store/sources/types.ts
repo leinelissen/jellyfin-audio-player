@@ -5,7 +5,7 @@
  * Driver methods return types compatible with the database schema.
  */
 
-import type { Artist as SchemaArtist, Album as SchemaAlbum, Track as SchemaTrack, Playlist as SchemaPlaylist } from '../db/types';
+import type { Artist as SchemaArtist, Album as SchemaAlbum, Track as SchemaTrack, Playlist as SchemaPlaylist } from '../database/types';
 
 /**
  * Source types enum

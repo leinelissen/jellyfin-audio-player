@@ -6,29 +6,31 @@ import { useMemo } from 'react';
 import { useLiveQuery } from '@/store/live-queries';
 import { db } from '@/store';
 import artists from './entity';
-import { eq } from 'drizzle-orm';
-import type { Artist } from './types';
+import { and, eq } from 'drizzle-orm';
 
 export function useArtists(sourceId?: string) {
     const { data, error } = useLiveQuery(
-        sourceId 
+        sourceId
             ? db.select().from(artists).where(eq(artists.sourceId, sourceId))
             : db.select().from(artists)
     );
     
     return useMemo(() => ({
-        data: (data || []) as Artist[],
+        data: data ?? [],
         error,
     }), [data, error]);
 }
 
-export function useArtist(id: string) {
+export function useArtist([sourceId, id]: [sourceId: string, id: string]) {
     const { data, error } = useLiveQuery(
-        id ? db.select().from(artists).where(eq(artists.id, id)).limit(1) : null
+        db.select()
+            .from(artists)
+            .where(and(eq(artists.sourceId, sourceId), eq(artists.id, id)))
+            .limit(1)
     );
     
     return useMemo(() => ({
-        data: data?.[0] as Artist | undefined,
+        data: data?.[0],
         error,
     }), [data, error]);
 }

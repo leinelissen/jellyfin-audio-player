@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/op-sqlite';
 import { open } from '@op-engineering/op-sqlite';
 import { migrate } from 'drizzle-orm/op-sqlite/migrator';
-import migrations from './db/migrations/migrations.js';
+import migrations from './database/migrations/migrations.js';
 
 // Import all schema tables
 import sources from './sources/entity';

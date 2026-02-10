@@ -7,7 +7,6 @@ import { useLiveQuery } from '@/store/live-queries';
 import { db } from '@/store';
 import searchQueries from './entity';
 import { eq, desc } from 'drizzle-orm';
-import type { SearchQuery } from './types';
 
 export function useSearchQueries(sourceId?: string, limit?: number) {
     const { data, error } = useLiveQuery(
@@ -17,7 +16,7 @@ export function useSearchQueries(sourceId?: string, limit?: number) {
     );
     
     return useMemo(() => ({
-        data: (data || []) as SearchQuery[],
+        data: data ?? [],
         error,
     }), [data, error]);
 }

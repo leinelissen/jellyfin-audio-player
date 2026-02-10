@@ -11,10 +11,15 @@ import artists from '@/store/artists/entity';
 import tracks from '@/store/tracks/entity';
 import playlists from '@/store/playlists/entity';
 import playlistTracks from '@/store/playlist-tracks/entity';
-import { eq, desc, inArray } from 'drizzle-orm';
+import { and, eq, desc, inArray } from 'drizzle-orm';
 import { ALPHABET_LETTERS } from '@/CONSTANTS';
-import type { SectionListData } from 'react-native';
 import type { Album, AlbumTrack, MusicArtist, Playlist } from './types';
+
+type AlbumSection = { label: string; data: string[][] };
+type ArtistSection = { label: string; data: MusicArtist[] };
+
+const createAlbumSection = (label: string): AlbumSection => ({ label, data: [[]] });
+const createArtistSection = (label: string): ArtistSection => ({ label, data: [] });
 
 /**
  * Get all albums (from all sources)
@@ -95,7 +100,7 @@ export function useAlbumsByAlphabet() {
         });
         
         // Split into alphabet sections
-        const sections: SectionListData<string[]>[] = ALPHABET_LETTERS.split('').map((l) => ({ label: l, data: [[]] }));
+        const sections = ALPHABET_LETTERS.split('').map(createAlbumSection);
         
         sorted.forEach((id) => {
             const album = albumsMap[id];
@@ -108,7 +113,7 @@ export function useAlbumsByAlphabet() {
             section.data[row].push(id);
             
             if (section.data[row].length >= 2) {
-                (section.data as string[][]).push([]);
+                section.data.push([]);
             }
         });
         
@@ -157,13 +162,13 @@ export function useArtistsByAlphabet() {
     
     return useMemo(() => {
         const artistsList = Object.values(artistsMap);
-        const sections: SectionListData<MusicArtist>[] = ALPHABET_LETTERS.split('').map((l) => ({ label: l, data: [] }));
+        const sections = ALPHABET_LETTERS.split('').map(createArtistSection);
         
         artistsList.forEach((artist) => {
             const letter = artist.Name.toUpperCase().charAt(0);
             const index = letter ? ALPHABET_LETTERS.indexOf(letter) : 26;
             const section = sections[index >= 0 ? index : 26];
-            (section.data as MusicArtist[]).push(artist);
+            section.data.push(artist);
         });
         
         return sections;
@@ -206,11 +211,11 @@ export function usePlaylists(sourceId?: string) {
 /**
  * Get tracks by album
  */
-export function useTracksByAlbum(albumId: string) {
+export function useTracksByAlbum([sourceId, albumId]: [sourceId: string, albumId: string]) {
     const { data, error } = useLiveQuery(
-        albumId 
-            ? db.select().from(tracks).where(eq(tracks.albumId, albumId))
-            : null
+        db.select()
+            .from(tracks)
+            .where(and(eq(tracks.sourceId, sourceId), eq(tracks.albumId, albumId)))
     );
     
     return useMemo(() => {
@@ -230,18 +235,20 @@ export function useTracksByAlbum(albumId: string) {
 /**
  * Get tracks by playlist
  */
-export function useTracksByPlaylist(playlistId: string) {
+export function useTracksByPlaylist([sourceId, playlistId]: [sourceId: string, playlistId: string]) {
     const { data: relations, error: relError } = useLiveQuery(
-        playlistId
-            ? db.select().from(playlistTracks).where(eq(playlistTracks.playlistId, playlistId))
-            : null
+        db.select()
+            .from(playlistTracks)
+            .where(and(eq(playlistTracks.sourceId, sourceId), eq(playlistTracks.playlistId, playlistId)))
     );
     
     const trackIds = useMemo(() => (relations || []).map(r => r.trackId), [relations]);
     
     const { data: tracksData, error: tracksError } = useLiveQuery(
         trackIds.length > 0
-            ? db.select().from(tracks).where(inArray(tracks.id, trackIds))
+            ? db.select()
+                .from(tracks)
+                .where(and(eq(tracks.sourceId, sourceId), inArray(tracks.id, trackIds)))
             : null
     );
     

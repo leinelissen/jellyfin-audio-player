@@ -4,7 +4,7 @@
  * Replaces Redux store with direct database operations for sleep timer.
  */
 
-import { db } from '../db/client';
+import { db } from '../database/client';
 import sleepTimer from './entity';
 import { eq } from 'drizzle-orm';
 import { invalidateTable } from '../live-queries';

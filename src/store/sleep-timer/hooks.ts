@@ -7,7 +7,6 @@ import { useLiveQuery } from '@/store/live-queries';
 import { db } from '@/store';
 import sleepTimer from './entity';
 import { eq } from 'drizzle-orm';
-import type { SleepTimer } from './types';
 
 export function useSleepTimer() {
     const { data, error } = useLiveQuery(
@@ -15,7 +14,7 @@ export function useSleepTimer() {
     );
     
     return useMemo(() => ({
-        data: data?.[0] as SleepTimer | undefined,
+        data: data?.[0],
         error,
     }), [data, error]);
 }
