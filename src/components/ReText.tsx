@@ -26,7 +26,7 @@ const ReText = (props: TextProps) => {
         return {
             text: text.value,
             // Here we use any because the text prop is not available in the type
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+             
         } as any;
     });
     

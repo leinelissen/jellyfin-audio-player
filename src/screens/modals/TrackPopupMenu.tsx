@@ -1,7 +1,10 @@
 import React, { useCallback } from 'react';
 import { useNavigation, StackActions, useRoute, RouteProp } from '@react-navigation/native';
 import { StackParams } from '@/screens/types';
-import { useAppDispatch, useTypedSelector } from '@/store';
+import { useTracks } from '@/store/music/hooks';
+import { useIsDownloaded } from '@/store/downloads/hooks';
+import { useSourceId } from '@/store/db/useSourceId';
+import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/queue';
 import { Header, SubHeader } from '@/components/Typography';
 import styled from 'styled-components/native';
 import { t } from '@/localisation';
@@ -12,9 +15,7 @@ import TrashIcon from '@/assets/icons/trash.svg';
 
 import { WrappableButton, WrappableButtonRow } from '@/components/WrappableButtonRow';
 import CoverImage from '@/components/CoverImage';
-import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/actions';
 import usePlayTracks from '@/utility/usePlayTracks';
-import { selectIsDownloaded } from '@/store/downloads/selectors';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { ColoredBlurView } from '@/components/Colors';
 
@@ -37,13 +38,14 @@ function TrackPopupMenu() {
 
     // Retrieve helpers
     const navigation = useNavigation();
-    const dispatch = useAppDispatch();
     const playTracks = usePlayTracks();
     const getImage = useGetImage();
+    const sourceId = useSourceId();
 
-    // Retrieve data from store
-    const track = useTypedSelector((state) => state.music.tracks.entities[trackId]);
-    const isDownloaded = useTypedSelector(selectIsDownloaded(trackId));
+    // Retrieve data from database
+    const { tracks } = useTracks(sourceId);
+    const track = tracks[trackId];
+    const isDownloaded = useIsDownloaded(trackId);
 
     // Set callback to close the modal
     const closeModal = useCallback(() => {
@@ -63,16 +65,16 @@ function TrackPopupMenu() {
     }, [playTracks, closeModal, trackId]);
 
     // Callback for downloading the track
-    const handleDownload = useCallback(() => {
-        dispatch(queueTrackForDownload(trackId));
+    const handleDownload = useCallback(async () => {
+        await queueTrackForDownload(trackId);
         closeModal();
-    }, [trackId, dispatch, closeModal]);
+    }, [trackId, closeModal]);
 
     // Callback for removing the downloaded track
-    const handleDelete = useCallback(() => {
-        dispatch(removeDownloadedTrack(trackId));
+    const handleDelete = useCallback(async () => {
+        await removeDownloadedTrack(trackId);
         closeModal();
-    }, [trackId, dispatch, closeModal]);
+    }, [trackId, closeModal]);
 
     return (
         <ColoredBlurView style={{flex: 1}}>

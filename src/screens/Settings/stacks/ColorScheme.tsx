@@ -4,16 +4,16 @@ import Container from '../components/Container';
 import { t } from '@/localisation';
 import { RadioItem, RadioList } from '../components/Radio';
 import { ColorScheme } from '@/store/settings/types';
-import { useAppDispatch, useTypedSelector } from '@/store';
-import { setColorScheme } from '@/store/settings/actions';
+import { updateAppSettings } from '@/store/settings/actions';
+import { useAppSettings } from '@/store/settings/hooks';
 
 export default function ColorSchemeSetting() {
-    const dispatch = useAppDispatch();
-    const scheme = useTypedSelector((state) => state.settings.colorScheme);
+    const { data: settings } = useAppSettings();
+    const scheme = settings?.colorScheme || ColorScheme.System;
 
     const handlePress = useCallback((value: ColorScheme) => {
-        dispatch(setColorScheme(value));
-    }, [dispatch]);
+        updateAppSettings({ colorScheme: value });
+    }, []);
 
     return (
         <Container>

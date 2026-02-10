@@ -220,14 +220,14 @@ Legend: NOT STARTED | IN PROGRESS | BLOCKED | DONE
 
 | Area | Owner | Status | Notes |
 | --- | --- | --- | --- |
-| Schema + migrations | | NOT STARTED | |
-| SQLite access layer | | NOT STARTED | |
-| Live queries shim | | NOT STARTED | |
-| Driver interfaces + types | | NOT STARTED | |
-| Jellyfin driver | | NOT STARTED | |
-| Emby driver | | NOT STARTED | |
-| Prefill orchestrator | | NOT STARTED | |
-| Prefill task graph | | NOT STARTED | |
-| Redux removal | | NOT STARTED | |
-| Onboarding progress UI | | NOT STARTED | |
-| Tests | | NOT STARTED | |
+| Schema + migrations | AI | DONE | Created schema.ts with all tables and indexes per spec |
+| SQLite access layer | AI | DONE | Created client.ts with DB init, migrations, and query helpers |
+| Live queries shim | AI | DONE | Created live-queries.ts with reactive query support |
+| Driver interfaces + types | AI | DONE | Created types.ts with Source, Driver interface, and all entity types |
+| Jellyfin driver | AI | DONE | Created complete Jellyfin driver with all methods and paging support |
+| Emby driver | AI | DONE | Created complete Emby driver with all methods and paging support |
+| Prefill orchestrator | AI | DONE | Created orchestrator with bounded concurrency, cursor resume, and error handling |
+| Prefill task graph | AI | DONE | Created task graph for album/playlist tracks, similar albums, and lyrics |
+| Redux removal | | NOT STARTED | Core infrastructure complete; integration requires touching many files |
+| Onboarding progress UI | | NOT STARTED | Prefill system ready; UI integration pending |
+| Tests | AI | DONE | Created smoke tests for database operations and sync cursors |

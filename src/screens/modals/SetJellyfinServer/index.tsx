@@ -2,14 +2,12 @@ import React, { useState, useCallback } from 'react';
 import { Button, View } from 'react-native';
 import Modal from '@/components/Modal';
 import Input from '@/components/Input';
-import { setJellyfinCredentials } from '@/store/settings/actions';
+import { setCredentials } from '@/store/settings/actions';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import CredentialGenerator from './components/CredentialGenerator';
 import { t } from '@/localisation';
 import useDefaultStyles from '@/components/Colors';
 import { Text } from '@/components/Typography';
-import { AppState, useAppDispatch } from '@/store';
-import { fetchRecentAlbums } from '@/store/music/actions';
 
 
 export default function SetJellyfinServer() {
@@ -19,17 +17,15 @@ export default function SetJellyfinServer() {
     const [isLogginIn, setIsLogginIn] = useState<boolean>(false);
 
     // Handlers needed for dispatching stuff
-    const dispatch = useAppDispatch();
     const navigation = useNavigation();
 
     // Save creedentials to store and close the modal
-    const saveCredentials = useCallback((credentials: AppState['settings']['credentials']) => {
+    const saveCredentials = useCallback((credentials?: { uri: string; userId: string; accessToken: string; deviceId: string; type: 'jellyfin' | 'emby' }) => {
         if (credentials) {
-            dispatch(setJellyfinCredentials(credentials));
+            setCredentials(credentials);
             navigation.dispatch(StackActions.popToTop());
-            dispatch(fetchRecentAlbums());
         }
-    }, [navigation, dispatch]);
+    }, [navigation]);
 
     return (
         <Modal>

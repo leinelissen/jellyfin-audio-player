@@ -3,11 +3,12 @@ import { useGetImage } from '@/utility/JellyfinApi/lib';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { differenceInDays } from 'date-fns';
-import { useAppDispatch, useTypedSelector } from '@/store';
-import { fetchAllArtists } from '@/store/music/actions';
+import { useArtists, useArtistsByAlphabet } from '@/store/music/hooks';
+import * as musicFetchers from '@/store/music/fetchers';
+import { useSourceId } from '@/store/db/useSourceId';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import AlbumImage from './components/AlbumImage';
-import { SectionArtistItem, selectArtists } from '@/store/music/selectors';
+import { SectionArtistItem } from '@/store/music/types';
 import AlphabetScroller from '@/components/AlphabetScroller';
 import styled from 'styled-components/native';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
@@ -101,12 +102,11 @@ const GeneratedArtistItem = React.memo(function GeneratedArtistItem(props: Gener
 
 const Artists: React.FC = () => {
     // Retrieve data from store
-    const isLoading = useTypedSelector((state) => state.music.artists.isLoading);
-    const lastRefreshed = useTypedSelector((state) => state.music.artists.lastRefreshed);
-    const sections = useTypedSelector(selectArtists);
+    const sourceId = useSourceId();
+    const { isLoading, lastRefreshed } = useArtists();
+    const sections = useArtistsByAlphabet();
     
     // Initialise helpers
-    const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
     const listRef = useRef<FlashListRef<string | SectionArtistItem>>(null);
@@ -134,7 +134,7 @@ const Artists: React.FC = () => {
     }, [flatData]);
     
     // Set callbacks
-    const retrieveData = useCallback(() => dispatch(fetchAllArtists()), [dispatch]);
+    const retrieveData = useCallback(async () => await musicFetchers.fetchAndStoreAllArtists(), []);
     const selectArtist = useCallback((payload: { id: string; name: string; }) => (
         navigation.navigate('Artist', payload)
     ), [navigation]);
