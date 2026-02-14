@@ -49,8 +49,8 @@ export interface MusicArtist {
     UserData: UserData;
     Type: 'MusicArtist';
     ImageTags: ImageTags;
-    BackdropImageTags: any[];
-    ImageBlurHashes: any;
+    BackdropImageTags: string[];
+    ImageBlurHashes: Record<string, string>;
     LocationType: string;
     Overview: string;
 }
@@ -75,7 +75,7 @@ export interface Album {
     AlbumArtist?: string;
     AlbumArtists: AlbumArtist[];
     ImageTags: ImageTags;
-    BackdropImageTags: any[];
+    BackdropImageTags: string[];
     LocationType: string;
     Tracks?: string[];
     lastRefreshed?: number;
@@ -133,7 +133,7 @@ export interface AlbumTrack {
     AlbumArtist: string;
     AlbumArtists: AlbumArtist[];
     ImageTags: ImageTags;
-    BackdropImageTags: any[];
+    BackdropImageTags: string[];
     LocationType: string;
     MediaType: string;
     HasLyrics: boolean;
@@ -156,14 +156,14 @@ export interface Playlist {
     Id: string;
     CanDelete: boolean;
     SortName: string;
-    ChannelId?: any;
+    ChannelId?: string;
     RunTimeTicks: number;
     IsFolder: boolean;
     Type: 'Playlist';
     UserData: UserData;
     PrimaryImageAspectRatio: number;
     ImageTags: ImageTags;
-    BackdropImageTags: any[];
+    BackdropImageTags: string[];
     LocationType: string;
     MediaType: string;
     ChildCount?: number;
