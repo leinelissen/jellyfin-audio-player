@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect } from 'react';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
-import { useAppDispatch, useTypedSelector } from '@/store';
+import { useAlbums, useTracksByAlbum } from '@/store/music/hooks';
+import * as musicFetchers from '@/store/music/fetchers';
+import { useSourceId } from '@/store/db/useSourceId';
 import TrackListView from './components/TrackListView';
-import { fetchAlbum, fetchSimilarAlbums, fetchTracksByAlbum } from '@/store/music/actions';
 import { differenceInDays } from 'date-fns';
 import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
 import { t } from '@/localisation';
@@ -29,7 +30,9 @@ const Cover = styled(AlbumImage)`
 function SimilarAlbum({ id }: { id: string }) {
     const navigation = useNavigation<NavigationProp>();
     const getImage = useGetImage();
-    const album = useTypedSelector((state) => state.music.albums.entities[id]);
+    const sourceId = useSourceId();
+    const { albums } = useAlbums();
+    const album = albums[id];
 
     const handlePress = useCallback(() => {
         album && navigation.push('Album', { id, album });
@@ -53,19 +56,22 @@ function SimilarAlbum({ id }: { id: string }) {
 
 const Album: React.FC = () => {
     const { params: { id } } = useRoute<Route>();
-    const dispatch = useAppDispatch();
     const defaultStyles = useDefaultStyles();
 
     // Retrieve the album data from the store
-    const album = useTypedSelector((state) => state.music.albums.entities[id]);
-    const albumTracks = useTypedSelector((state) => state.music.tracks.byAlbum[id]);
+    const sourceId = useSourceId();
+    const { albums } = useAlbums();
+    const album = albums[id];
+    const { ids: albumTrackIds } = useTracksByAlbum(id);
 
     // Define a function for refreshing this entity
-    const refresh = useCallback(() => { 
-        dispatch(fetchTracksByAlbum(id)); 
-        dispatch(fetchAlbum(id));
-        dispatch(fetchSimilarAlbums(id));
-    }, [id, dispatch]);
+    const refresh = useCallback(async () => { 
+        await Promise.all([
+            musicFetchers.fetchAndStoreTracksByAlbum(id),
+            musicFetchers.fetchAndStoreAlbum(id),
+            musicFetchers.fetchAndStoreSimilarAlbums(id)
+        ]);
+    }, [id]);
 
     // Auto-fetch the track data periodically
     useEffect(() => {
@@ -76,7 +82,7 @@ const Album: React.FC = () => {
 
     return (
         <TrackListView
-            trackIds={albumTracks || []}
+            trackIds={albumTrackIds || []}
             title={album?.Name}
             artist={album?.AlbumArtist}
             entityId={album?.PrimaryImageItemId || album.Id}

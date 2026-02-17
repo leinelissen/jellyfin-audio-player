@@ -1,96 +1,54 @@
-import { AlbumTrack, CodecMetadata } from '@/store/music/types';
-import { Platform } from 'react-native';
-import { Track } from 'react-native-track-player';
-import { asyncFetchStore, fetchApi, getImage, generateConfig } from './lib';
+import type { Track as PlayerTrack } from 'react-native-track-player';
+import { db } from '@/store';
+import sources from '@/store/sources/entity';
+import { JellyfinDriver } from '@/store/sources/drivers/jellyfin/driver';
+import { EmbyDriver } from '@/store/sources/drivers/emby/driver';
+import type { Source, SourceDriver, SourceType } from '@/store/sources/types';
+import type { AlbumTrack } from '@/store/music/types';
+import { getCredentials, getImage } from './lib';
 
-const trackOptionsOsOverrides: Record<typeof Platform.OS, Record<string, string>> = {
-    ios: {
-        Container: 'mp3,aac,m4a|aac,m4b|aac,flac,alac,m4a|alac,m4b|alac,wav,m4a,aiff,aif',
-    },
-    android: {
-        Container: 'mp3,aac,flac,wav,ogg,ogg|vorbis,ogg|opus,mka|mp3,mka|opus,mka|mp3',
-    },
-    macos: {},
-    web: {},
-    windows: {},
-};
+async function getDriver(): Promise<{ driver: SourceDriver; source: Source } | null> {
+    const result = await db.select().from(sources).limit(1);
+    const row = result[0];
 
-const baseTrackOptions: Record<string, string> = {
-    TranscodingProtocol: 'http',
-    TranscodingContainer: 'aac',
-    AudioCodec: 'aac',
-    Container: 'mp3,aac',
-    audioBitRate: '320000',
-    ...trackOptionsOsOverrides[Platform.OS],
-} as const;
+    if (!row) {
+        return null;
+    }
 
-/**
- * Generate the track streaming url from the trackId
- */
-export function generateTrackUrl(trackId: string) {
-    const credentials = asyncFetchStore().getState().settings.credentials;
-    const trackOptions = {
-        ...baseTrackOptions,
-        UserId: credentials?.user_id || '',
-        api_key: credentials?.access_token || '',
-        DeviceId: credentials?.device_id || '',
+    const source: Source = {
+        id: row.id,
+        uri: row.uri,
+        userId: row.userId || undefined,
+        accessToken: row.accessToken || undefined,
+        deviceId: row.deviceId || undefined,
+        type: row.type as SourceType,
     };
 
-    const trackParams = new URLSearchParams(trackOptions).toString();
-    const url = encodeURI(`${credentials?.uri}/Audio/${trackId}/universal?`) + trackParams;
+    if (source.type.startsWith('jellyfin')) {
+        return { driver: new JellyfinDriver(source), source };
+    }
 
-    return url;
+    if (source.type.startsWith('emby')) {
+        return { driver: new EmbyDriver(source), source };
+    }
+
+    return null;
 }
 
-/**
- * Generate a track object from a Jellyfin ItemId so that
- * react-native-track-player can easily consume it.
- */
-export async function generateTrack(track: AlbumTrack): Promise<Track> {
-    // Also construct the URL for the stream
-    const url = generateTrackUrl(track.Id);
-    
-    // Get credentials and generate authentication headers
-    const credentials = asyncFetchStore().getState().settings.credentials;
-    const config = generateConfig(credentials);
-    const headers = config.headers;
+export async function generateTrack(track: AlbumTrack): Promise<PlayerTrack> {
+    const driverResult = await getDriver();
+    const credentials = await getCredentials();
+    const artwork = credentials ? getImage(track, credentials) : undefined;
+    const url = driverResult ? await driverResult.driver.getStreamUrl(track.Id) : '';
 
     return {
+        id: track.Id,
         url,
-        backendId: track.Id,
         title: track.Name,
-        artist: track.Artists.join(', '),
-        album: track.Album,
-        duration: track.RunTimeTicks,
-        artwork: getImage(track),
-        headers,
-        bitRate: baseTrackOptions.audioBitRate,
-    };
-}
-
-
-const trackParams = {
-    SortBy: 'AlbumArtist,SortName',
-    SortOrder: 'Ascending',
-    IncludeItemTypes: 'Audio',
-    Recursive: 'true',
-    Fields: 'PrimaryImageAspectRatio,SortName,BasicSyncInfo,DateCreated',
-};
-
-/**
- * Retrieve all possible tracks that can be found in Jellyfin
- */
-export async function retrieveAllTracks() {
-    return fetchApi<{ Items: AlbumTrack[] }>(({ user_id }) => `/Users/${user_id}/Items?${trackParams}`)
-        .then((d) => d.Items);
-}
-
-export async function retrieveTrackCodecMetadata(trackId: string): Promise<CodecMetadata> {
-    const url = generateTrackUrl(trackId);
-    const response = await fetch(url, { method: 'HEAD' });
-
-    return {
-        contentType: response.headers.get('Content-Type') || undefined,
-        isDirectPlay: response.headers.has('Content-Length'),
-    };
+        artist: track.AlbumArtist || undefined,
+        album: track.Album || undefined,
+        artwork,
+        duration: track.RunTimeTicks ? track.RunTimeTicks / 10_000_000 : undefined,
+        backendId: track.Id,
+    } as PlayerTrack;
 }

@@ -1,113 +1,69 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux';
-import { persistStore, persistReducer, PersistConfig, createMigrate, PersistState } from 'redux-persist';
-import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
+import { drizzle } from 'drizzle-orm/op-sqlite';
+import { open } from '@op-engineering/op-sqlite';
+import { migrate } from 'drizzle-orm/op-sqlite/migrator';
+import migrations from './database/migrations/migrations.js';
 
-import settings from './settings';
-import music, { initialState as musicInitialState } from './music';
-import downloads, { initialState as downloadsInitialState } from './downloads';
-import sleepTimer from './sleep-timer';
-import search from './search';
-import { ColorScheme } from './settings/types';
-import MigratedStorage from '@/utility/MigratedStorage';
+// Import all schema tables
+import sources from './sources/entity';
+import settings from './settings/entity';
+import sleepTimer from './sleep-timer/entity';
+import artists from './artists/entity';
+import albums from './albums/entity';
+import tracks from './tracks/entity';
+import playlists from './playlists/entity';
+import downloads from './downloads/entity';
+import searchQueries from './search-queries/entity';
+import albumArtists from './album-artists/entity';
+import trackArtists from './track-artists/entity';
+import playlistTracks from './playlist-tracks/entity';
+import albumSimilar from './album-similar/entity';
+import syncCursors from './sync-cursors/entity';
 
-const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
-    key: 'root',
-    storage: MigratedStorage,
-    version: 2,
-    stateReconciler: autoMergeLevel2,
-    migrate: createMigrate({
-        // @ts-expect-error migrations are poorly typed
-        1: (state: AppState & PersistState) => {
-            return {
-                ...state,
-                settings: state.settings,
-                downloads: downloadsInitialState,
-                music: musicInitialState
-            };
-        },
-        // @ts-expect-error migrations are poorly typed
-        2: (state: AppState) => {
-            return {
-                ...state,
-                downloads: {
-                    ...state.downloads,
-                    queued: []
-                }
-            };
-        },
-        // @ts-expect-error migrations are poorly typed
-        3: (state: AppState) => {
-            return {
-                ...state,
-                settings: {
-                    ...state.settings,
-                    enablePlaybackReporting: true,
-                }
-            };
-        },
-        // @ts-expect-error migrations are poorly typed
-        4: (state: AppState) => {
-            return {
-                ...state,
-                settings: {
-                    ...state.settings,
-                    colorScheme: ColorScheme.System,
-                }
-            };
-        },
-        // 4: (state: AppState) => {
-        //     return {
-        //         ...state,
-        //         sleepTimer: {
-        //             date: null,
-        //         }
-        //     };
-        // },
-        // @ts-expect-error migrations are poorly typed
-        5: (state: AppState) => {
-            // @ts-expect-error
-            const credentials = state.settings.jellyfin && { 
-                // @ts-expect-error
-                ...(state.settings.jellyfin as AppState['settings']['credentials']),
-                type: 'jellyfin',
-            };
-
-            return {
-                ...state,
-                settings: {
-                    ...state.settings,
-                    credentials,
-                },
-            };
-        },
-    })
+// Combined schema for drizzle
+const schema = {
+    sources,
+    settings,
+    sleepTimer,
+    artists,
+    albums,
+    tracks,
+    playlists,
+    downloads,
+    searchQueries,
+    albumArtists,
+    trackArtists,
+    playlistTracks,
+    albumSimilar,
+    syncCursors,
 };
 
-const reducers = combineReducers({
-    settings,
-    music: music.reducer,
-    downloads: downloads.reducer,
-    sleepTimer: sleepTimer.reducer,
-    search: search.reducer,
+// Open the SQLite database
+export const sqliteDb = open({
+    name: 'fintunes.db',
+    location: '../databases',
 });
 
-const persistedReducer = persistReducer(persistConfig, reducers);
+// Create drizzle instance with schema - exported as singleton
+export const db = drizzle(sqliteDb, { schema });
 
-const store = configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) => (
-        getDefaultMiddleware({ serializableCheck: false, immutableCheck: false })
-    ),
-});
+/**
+ * Run database migrations
+ * Migrations should be generated using drizzle-kit
+ */
+export async function runMigrations() {
+    try {
+        await migrate(db, migrations);
+        console.log('Database migrations completed');
+    } catch (error) {
+        console.error('Migration error:', error);
+        throw error;
+    }
+}
 
-export type AppState = ReturnType<typeof reducers> & { _persist: PersistState };
-export type AppDispatch = typeof store.dispatch;
-export type AsyncThunkAPI = { state: AppState, dispatch: AppDispatch };
-export type Store = typeof store;
-export const useTypedSelector: TypedUseSelectorHook<AppState> = useSelector;
-export const useAppDispatch: () => AppDispatch = useDispatch;
-
-export const persistedStore = persistStore(store);
-
-export default store;
+/**
+ * Initialize the database
+ */
+export async function initializeDatabase() {
+    await runMigrations();
+    return db;
+}

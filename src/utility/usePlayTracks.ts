@@ -1,10 +1,14 @@
-import { useTypedSelector } from '@/store';
 import { useCallback } from 'react';
 import TrackPlayer, { Track } from 'react-native-track-player';
 import { shuffle as shuffleArray } from 'lodash';
 import { generateTrack } from './JellyfinApi/track';
+import { useTracks } from '@/store/music/hooks';
+import { useDownloads } from '@/store/downloads/hooks';
+import { useSourceId } from '@/store/db/useSourceId';
 import type { AlbumTrack } from '@/store/music/types';
-import type { DownloadEntity } from '@/store/downloads/types';
+import type { Download } from '@/store/downloads/types';
+
+type DownloadRecord = Record<string, Download>;
 
 interface PlayOptions {
     play: boolean;
@@ -33,7 +37,7 @@ const defaults: PlayOptions = {
 export async function playTracks(
     trackIds: string[] | undefined,
     tracks: Record<string, AlbumTrack>,
-    downloads: Record<string, DownloadEntity>,
+    downloads: DownloadRecord,
     options: Partial<PlayOptions> = {},
 ): Promise<Track[] | undefined> {
     if (!trackIds) {
@@ -61,9 +65,14 @@ export async function playTracks(
 
         // Check if a downloaded version exists, and if so rewrite the URL
         const download = downloads[trackId];
-        if (download?.location) {
-            generatedTrack.url = 'file://' + download.location;
+        if (download?.isComplete) {
+            // Handle both old Redux format (location) and new DB format (filename)
+            const audioPath = 'filename' in download ? download.filename : 'location' in download ? download.location : null;
+            if (audioPath) {
+                generatedTrack.url = 'file://' + audioPath;
+            }
         }
+        // Check for downloaded image (both old and new format)
         if (download?.image) {
             generatedTrack.artwork = 'file://' + download.image;
         }
@@ -165,8 +174,9 @@ export async function playTracks(
  * supplied id.
  */
 export default function usePlayTracks() {
-    const tracksEntities = useTypedSelector(state => state.music.tracks.entities);
-    const downloadsEntities = useTypedSelector(state => state.downloads.entities);
+    const sourceId = useSourceId();
+    const { tracks: tracksEntities } = useTracks(sourceId);
+    const { entities: downloadsEntities } = useDownloads(sourceId);
 
     return useCallback(
         (trackIds: string[] | undefined, options: Partial<PlayOptions> = {}) =>

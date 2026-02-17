@@ -30,21 +30,21 @@ export function createRecentAlbumsTemplate(): ListTemplate {
 
     console.log('[AlbumsList] Recent albums count:', albums.length);
 
-        const items = albums.map(album => ({
-            type: 'default' as const,
-            title: { text: album.Name },
-            detailedText: { text: album.AlbumArtist || t('unknown-artist') },
-            onPress: async () => {
-                console.log('[AlbumsList] Album selected:', album.Name);
-                try {
-                    const detailTemplate = await createAlbumDetailTemplate(album);
-                    await detailTemplate.push();
-                    console.log('[AlbumsList] Album detail pushed');
-                } catch (error) {
-                    console.error('[AlbumsList] Error pushing album detail:', error);
-                }
-            },
-        }));
+    const items = albums.map(album => ({
+        type: 'default' as const,
+        title: { text: album.Name },
+        detailedText: { text: album.AlbumArtist || t('unknown-artist') },
+        onPress: async () => {
+            console.log('[AlbumsList] Album selected:', album.Name);
+            try {
+                const detailTemplate = await createAlbumDetailTemplate(album);
+                await detailTemplate.push();
+                console.log('[AlbumsList] Album detail pushed');
+            } catch (error) {
+                console.error('[AlbumsList] Error pushing album detail:', error);
+            }
+        },
+    }));
 
     return new ListTemplate({
         title: { text: t('recent-albums') },

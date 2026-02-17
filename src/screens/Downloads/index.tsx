@@ -2,11 +2,13 @@ import useDefaultStyles from '@/components/Colors';
 import React, { useCallback, useMemo } from 'react';
 import { Alert, FlatListProps, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAppDispatch, useTypedSelector } from '@/store';
 import formatBytes from '@/utility/formatBytes';
 import TrashIcon from '@/assets/icons/trash.svg';
 import ArrowClockwise from '@/assets/icons/arrow-clockwise.svg';
-import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/actions';
+import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/queue';
+import { useDownloads } from '@/store/downloads/hooks';
+import { useTracks } from '@/store/music/hooks';
+import { useSourceId } from '@/store/db/useSourceId';
 import Button from '@/components/Button';
 import DownloadIcon from '@/components/DownloadIcon';
 import styled from 'styled-components/native';
@@ -37,11 +39,11 @@ const ErrorWrapper = styled.View`
 
 function Downloads() {
     const defaultStyles = useDefaultStyles();
-    const dispatch = useAppDispatch();
     const getImage = useGetImage();
+    const sourceId = useSourceId();
 
-    const { entities, ids } = useTypedSelector((state) => state.downloads);
-    const tracks = useTypedSelector((state) => state.music.tracks.entities);
+    const { entities, ids } = useDownloads();
+    const { tracks } = useTracks(sourceId);
 
     // Calculate the total download size
     const totalDownloadSize = useMemo(() => (
@@ -53,9 +55,9 @@ function Downloads() {
      */
 
     // Delete a single downloaded track
-    const handleDelete = useCallback((id: string) => {
-        dispatch(removeDownloadedTrack(id));
-    }, [dispatch]);
+    const handleDelete = useCallback(async (id: string) => {
+        await removeDownloadedTrack(id);
+    }, []);
 
     // Delete all downloaded tracks
     const handleDeleteAllTracks = useCallback(() => {
@@ -76,9 +78,9 @@ function Downloads() {
     }, [handleDelete, ids]);
 
     // Retry a single failed track
-    const retryTrack = useCallback((id: string) => {
-        dispatch(queueTrackForDownload(id));
-    }, [dispatch]);
+    const retryTrack = useCallback(async (id: string) => {
+        await queueTrackForDownload(id);
+    }, []);
 
     // Retry all failed tracks
     const failedIds = useMemo(() => ids.filter((id) => !entities[id]?.isComplete), [ids, entities]);

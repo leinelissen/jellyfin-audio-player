@@ -1,9 +1,18 @@
-import { useTypedSelector, type AppState, type Store } from '@/store';
 import { Platform } from 'react-native';
 import { version } from '../../../package.json';
 import { Album, AlbumTrack, ArtistItem, Playlist } from '@/store/music/types';
+import { db } from '@/store';
+import sources from '@/store/sources/entity';
+import { useLiveQuery } from '@/store/live-queries';
+import { useCallback } from 'react';
 
-type Credentials = AppState['settings']['credentials'];
+type Credentials = {
+    uri: string;
+    userId: string | null;
+    accessToken: string | null;
+    deviceId: string | null;
+    type: string;
+} | undefined;
 
 /** Map the output of `Platform.OS`, so that Jellyfin can understand it. */
 const deviceMap: Record<typeof Platform['OS'], string> = {
@@ -16,33 +25,33 @@ const deviceMap: Record<typeof Platform['OS'], string> = {
 
 /**
  * This is a convenience function that converts a set of Jellyfin credentials
- * from the Redux store to a HTTP Header that authenticates the user against the
+ * from the database to a HTTP Header that authenticates the user against the
  * Jellyfin server.
  */
 export function generateConfig(credentials: Credentials): RequestInit {
-    switch (credentials?.type) {
-        case 'jellyfin':
-            return {
-                headers: {
-                    'Authorization': `MediaBrowser Client="Fintunes", Device="${deviceMap[Platform.OS]}", DeviceId="${credentials?.device_id}", Version="${version}", Token="${credentials?.access_token}"`
-                }
-            };
-        case 'emby':
-            return {
-                headers: {
-                    'X-Emby-Authorization': `MediaBrowser Client="Fintunes", Device="${deviceMap[Platform.OS]}", DeviceId="${credentials?.device_id}", Version="${version}", Token="${credentials?.access_token}"`
-                }
-            };
-        default:
-            return {};
+    const type = credentials?.type || '';
+    if (type.startsWith('jellyfin')) {
+        return {
+            headers: {
+                'Authorization': `MediaBrowser Client="Fintunes", Device="${deviceMap[Platform.OS]}", DeviceId="${credentials?.deviceId}", Version="${version}", Token="${credentials?.accessToken}"`
+            }
+        };
+    } else if (type.startsWith('emby')) {
+        return {
+            headers: {
+                'X-Emby-Authorization': `MediaBrowser Client="Fintunes", Device="${deviceMap[Platform.OS]}", DeviceId="${credentials?.deviceId}", Version="${version}", Token="${credentials?.accessToken}"`
+            }
+        };
     }
+    return {};
 }
 
 /**
- * Retrieve a copy of the store without getting caught in import cycles. 
+ * Get credentials from database
  */
-export function asyncFetchStore() {
-    return require('@/store').default as Store;
+export async function getCredentials(): Promise<Credentials> {
+    const result = await db.select().from(sources).limit(1);
+    return result[0] as Credentials;
 }
 
 export type PathOrCredentialInserter = string | ((credentials: NonNullable<Credentials>) => string);
@@ -58,8 +67,8 @@ export async function fetchApi<T>(
     providedConfig?: RequestInit,
     parseResponse = true
 ) {
-    // Retrieve the latest credentials from the Redux store
-    const credentials = asyncFetchStore().getState().settings.credentials;
+    // Retrieve the latest credentials from the database
+    const credentials = await getCredentials();
 
     // GUARD: Check that the credentials are present
     if (!credentials) {
@@ -120,32 +129,17 @@ function formatImageUri(ItemId: string | number, baseUri: string): string {
 
 /**
  * Retrieve an image URL for a given ItemId
+ * Note: This function is synchronous and does not check for downloaded images.
+ * Downloaded images should be handled separately if needed.
  */
-export function getImage(item: string | number | Album | AlbumTrack | Playlist | ArtistItem | null, credentials?: AppState['settings']['credentials']): string | undefined {
-    // Either accept provided credentials, or retrieve them directly from the store
-    const state = asyncFetchStore().getState();
-    const { uri: serverUri } = credentials ?? state.settings.credentials ?? {};
+export function getImage(item: string | number | Album | AlbumTrack | Playlist | ArtistItem | null, credentials?: Credentials): string | undefined {
+    const serverUri = credentials?.uri;
 
     if (!item || !serverUri) {
         return undefined;
     }
 
-    // Get the item ID
-    const itemId = typeof item === 'string' || typeof item === 'number' 
-        ? item 
-        : 'PrimaryImageItemId' in item 
-            ? item.PrimaryImageItemId || item.Id 
-            : 'AlbumId' in item 
-                ? item.AlbumId || item.Id 
-                : item.Id;
-
-    // Check if we have a downloaded image for this item
-    const downloadEntity = state.downloads.entities[itemId];
-    if (downloadEntity?.image) {
-        return downloadEntity.image;
-    }
-
-    // If no downloaded image, fall back to server URL
+    // Return server URL for the image
     if (typeof item === 'string' || typeof item === 'number') {
         if (__DEV__) {
             console.warn('useGetImage: supplied item is string or number. Please submit an item object instead.', { item });
@@ -164,11 +158,14 @@ export function getImage(item: string | number | Album | AlbumTrack | Playlist |
 
 /**
  * Create a hook that can convert ItemIds to image URLs
+ * A hook that returns a function that can be used to generate an image source object
+ * that can be used with an Image component.
  */
 export function useGetImage() {
-    const credentials = useTypedSelector((state) => state.settings.credentials);
+    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
+    const credentials = sourceData?.[0];
 
-    return (item: Parameters<typeof getImage>[0]) => {
+    return useCallback((item: Parameters<typeof getImage>[0]) => {
         return getImage(item, credentials);
-    };
+    }, [credentials]);
 }

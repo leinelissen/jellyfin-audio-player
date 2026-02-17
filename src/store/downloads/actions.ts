@@ -1,86 +1,110 @@
-import { createAction, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
-import { AppState } from '@/store';
-import { downloadFile, unlink, DocumentDirectoryPath, exists } from 'react-native-fs';
-import { DownloadEntity } from './types';
-import { generateTrackUrl } from '@/utility/JellyfinApi/track';
+import { db, sqliteDb } from '@/store';
+import downloads from './entity';
+import type { Download } from './types';
+import { eq } from 'drizzle-orm';
 
-import { getImage } from '@/utility/JellyfinApi/lib';
-import { getExtensionForUrl } from '@/utility/mimeType';
+export async function getAllDownloads(): Promise<Download[]> {
+    const result = await db.select().from(downloads);
+    return result as Download[];
+}
 
-export const downloadAdapter = createEntityAdapter<DownloadEntity>();
+export async function getDownload(id: string): Promise<Download | undefined> {
+    const result = await db
+        .select()
+        .from(downloads)
+        .where(eq(downloads.id, id))
+        .limit(1);
+    
+    return result[0] as Download | undefined;
+}
 
-export const queueTrackForDownload = createAction<string>('download/queue');
-export const initializeDownload = createAction<{ id: string, size?: number, jobId?: number, location: string, image?: string }>('download/initialize');
-export const progressDownload = createAction<{ id: string, progress: number, jobId?: number }>('download/progress');
-export const completeDownload = createAction<{ id: string, location: string, size?: number, image?: string }>('download/complete');
-export const failDownload = createAction<{ id: string }>('download/fail');
+export async function initializeDownload(
+    sourceId: string,
+    id: string,
+    hash?: string,
+    filename?: string,
+    mimetype?: string
+): Promise<void> {
+    const now = Date.now();
+    
+    await db.insert(downloads).values({
+        sourceId,
+        id,
+        hash: hash || null,
+        filename: filename || null,
+        mimetype: mimetype || null,
+        progress: 0,
+        isFailed: false,
+        isComplete: false,
+        metadataJson: null,
+        createdAt: now,
+        updatedAt: now,
+    }).onConflictDoUpdate({
+        target: downloads.id,
+        set: {
+            hash: hash || null,
+            filename: filename || null,
+            mimetype: mimetype || null,
+            progress: 0,
+            isFailed: false,
+            isComplete: false,
+            updatedAt: now,
+        },
+    });
 
-export const downloadTrack = createAsyncThunk(
-    '/downloads/track',
-    async (id: string, { dispatch, getState }) => {
-        // Generate the URL we can use to download the file
-        const entity = (getState() as AppState).music.tracks.entities[id];
-        const audioUrl = generateTrackUrl(id);
-        const imageUrl = getImage(entity);
+    sqliteDb.flushPendingReactiveQueries();
+}
 
-        // Get the content-type from the URL by doing a HEAD-only request
-        const [audioExt, imageExt] = await Promise.all([
-            getExtensionForUrl(audioUrl),
-            // Image files may be absent
-            imageUrl ? getExtensionForUrl(imageUrl).catch(() => null) : null
-        ]);
+export async function updateDownloadProgress(
+    id: string,
+    progress: number
+): Promise<void> {
+    await db.update(downloads)
+        .set({
+            progress,
+            updatedAt: Date.now(),
+        })
+        .where(eq(downloads.id, id));
 
-        // Then generate the proper location
-        const audioLocation = `${DocumentDirectoryPath}/${id}.${audioExt}`;
-        const imageLocation = imageExt ? `${DocumentDirectoryPath}/${id}.${imageExt}` : undefined;
+    sqliteDb.flushPendingReactiveQueries();
+}
 
-        // Actually kick off the download 
-        const { promise: audioPromise } = downloadFile({
-            fromUrl: audioUrl,
-            progressInterval: 1000,
-            background: true,
-            begin: ({ jobId, contentLength }) => {
-                // Dispatch the initialization
-                dispatch(initializeDownload({ id, jobId, size: contentLength, location: audioLocation, image: imageLocation }));
-            },
-            progress: (result) => {
-                // Dispatch a progress update
-                dispatch(progressDownload({ id, progress: result.bytesWritten / result.contentLength }));
-            },
-            toFile: audioLocation,
-        });
+export async function completeDownload(
+    id: string,
+    filename?: string
+): Promise<void> {
+    const updates: any = {
+        isComplete: true,
+        isFailed: false,
+        progress: 1,
+        updatedAt: Date.now(),
+    };
 
-        const { promise: imagePromise } = imageExt && imageLocation
-            ? downloadFile({
-                fromUrl: imageUrl!,
-                toFile: imageLocation,
-                background: true,
-            })
-            : { promise: Promise.resolve(null) };
-
-        // Await job completion
-        const [audioResult, imageResult] = await Promise.all([audioPromise, imagePromise]);
-        const totalSize = audioResult.bytesWritten + (imageResult?.bytesWritten || 0);
-        dispatch(completeDownload({ id, location: audioLocation, size: totalSize, image: imageLocation }));
-    },
-);
-
-export const removeDownloadedTrack = createAsyncThunk(
-    '/downloads/remove/track',
-    async (id: string, { getState }) => {
-        // Retrieve the state
-        const { downloads: { entities } } = getState() as AppState;
-
-        // Attempt to retrieve the entity from the state
-        const download = entities[id];
-        if (!download) {
-            throw new Error('Attempted to remove unknown downloaded track.');
-        }
-
-        // Then unlink the file, if it exists
-        if (download.location && await exists(download.location)) {
-            return unlink(download.location);
-        }
+    if (filename) {
+        updates.filename = filename;
     }
-);
 
+    await db.update(downloads)
+        .set(updates)
+        .where(eq(downloads.id, id));
+
+    sqliteDb.flushPendingReactiveQueries();
+}
+
+export async function failDownload(id: string): Promise<void> {
+    await db.update(downloads)
+        .set({
+            isFailed: true,
+            isComplete: false,
+            progress: 0,
+            updatedAt: Date.now(),
+        })
+        .where(eq(downloads.id, id));
+
+    sqliteDb.flushPendingReactiveQueries();
+}
+
+export async function removeDownload(id: string): Promise<void> {
+    await db.delete(downloads).where(eq(downloads.id, id));
+    sqliteDb.flushPendingReactiveQueries();
+}

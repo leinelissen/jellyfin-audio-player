@@ -2,13 +2,15 @@ import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@/screens';
-import { useAppDispatch, useTypedSelector } from '@/store';
 import { setOnboardingStatus } from '@/store/settings/actions';
 import { t } from '@/localisation';
 import Button from '@/components/Button';
 import { Header, Text as BaseText } from '@/components/Typography';
 import { ShadowWrapper } from '@/components/Shadow';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import sources from '@/store/sources/entity';
 
 const Container = styled(SafeAreaView)`
     flex: 1;
@@ -38,9 +40,9 @@ const Logo = styled.Image`
 `;
 
 function Onboarding() {
-    // Get account from Redux and dispatcher
-    const account = useTypedSelector(state => state.settings.credentials);
-    const dispatch = useAppDispatch();
+    // Get account from database
+    const { data: sourceData } = useLiveQuery(db.select().from(sources).limit(1));
+    const account = sourceData?.[0];
 
     // Also retrieve the navigation handler so that we can open the modal in
     // which the Jellyfin server is set
@@ -51,9 +53,9 @@ function Onboarding() {
     // status to true, so that the app becomes available.
     useEffect(() => {
         if (account) {
-            dispatch(setOnboardingStatus(true));
+            setOnboardingStatus(true);
         }
-    }, [account, dispatch]);
+    }, [account]);
     
     return (
         <Container>
