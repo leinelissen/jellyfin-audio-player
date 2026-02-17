@@ -9,9 +9,9 @@ const albumArtists = sqliteTable('album_artists', {
     albumId: text('album_id').notNull(),
     artistId: text('artist_id').notNull(),
     orderIndex: integer('order_index'),
-}, (table) => ({
-    pk: primaryKey({ columns: [table.sourceId, table.albumId, table.artistId] }),
-    sourceArtistIdx: index('album_artists_source_artist_idx').on(table.sourceId, table.artistId),
-}));
+}, (table) => [
+    primaryKey({ columns: [table.sourceId, table.albumId, table.artistId] }),
+    index('album_artists_source_artist_idx').on(table.sourceId, table.artistId),
+]);
 
 export default albumArtists;

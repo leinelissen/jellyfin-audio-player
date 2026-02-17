@@ -14,8 +14,8 @@ const playlists = sqliteTable('playlists', {
     metadataJson: text('metadata_json'), // JSON-encoded additional fields
     createdAt: integer('created_at').notNull(),
     updatedAt: integer('updated_at').notNull(),
-}, (table) => ({
-    sourceNameIdx: index('playlists_source_name_idx').on(table.sourceId, table.name),
-}));
+}, (table) => [
+    index('playlists_source_name_idx').on(table.sourceId, table.name),
+]);
 
 export default playlists;

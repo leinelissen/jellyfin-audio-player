@@ -13,8 +13,8 @@ const searchQueries = sqliteTable('search_queries', {
     metadataJson: text('metadata_json'), // JSON-encoded additional fields
     createdAt: integer('created_at').notNull(),
     updatedAt: integer('updated_at').notNull(),
-}, (table) => ({
-    sourceTimestampIdx: index('search_queries_source_timestamp_idx').on(table.sourceId, table.timestamp),
-}));
+}, (table) => [
+    index('search_queries_source_timestamp_idx').on(table.sourceId, table.timestamp),
+]);
 
 export default searchQueries;

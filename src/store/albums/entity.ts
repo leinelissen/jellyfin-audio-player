@@ -16,9 +16,9 @@ const albums = sqliteTable('albums', {
     metadataJson: text('metadata_json'), // JSON-encoded additional fields
     createdAt: integer('created_at').notNull(),
     updatedAt: integer('updated_at').notNull(),
-}, (table) => ({
-    sourceNameIdx: index('albums_source_name_idx').on(table.sourceId, table.name),
-    sourceYearIdx: index('albums_source_year_idx').on(table.sourceId, table.productionYear),
-}));
+}, (table) => [
+    index('albums_source_name_idx').on(table.sourceId, table.name),
+    index('albums_source_year_idx').on(table.sourceId, table.productionYear),
+]);
 
 export default albums;

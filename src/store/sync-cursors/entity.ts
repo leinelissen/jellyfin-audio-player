@@ -11,8 +11,8 @@ const syncCursors = sqliteTable('sync_cursors', {
     pageSize: integer('page_size').notNull(),
     completed: integer('completed', { mode: 'boolean' }).notNull(),
     updatedAt: integer('updated_at').notNull(),
-}, (table) => ({
-    pk: primaryKey({ columns: [table.sourceId, table.entityType] }),
-}));
+}, (table) => [
+    primaryKey({ columns: [table.sourceId, table.entityType] }),
+]);
 
 export default syncCursors;
