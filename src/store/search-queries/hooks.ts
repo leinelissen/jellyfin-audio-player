@@ -2,21 +2,17 @@
  * Database-backed hooks for search queries
  */
 
-import { useMemo } from 'react';
 import { useLiveQuery } from '@/store/live-queries';
 import { db } from '@/store';
 import searchQueries from './entity';
-import { eq, desc } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 
 export function useSearchQueries(sourceId?: string, limit?: number) {
-    const { data, error } = useLiveQuery(
-        sourceId 
-            ? db.select().from(searchQueries).where(eq(searchQueries.sourceId, sourceId)).orderBy(desc(searchQueries.timestamp)).limit(limit || 100)
-            : db.select().from(searchQueries).orderBy(desc(searchQueries.timestamp)).limit(limit || 100)
+    return useLiveQuery(
+        db.query.searchQueries.findMany({
+            where: sourceId ? eq(searchQueries.sourceId, sourceId) : undefined,
+            orderBy: (query, { desc }) => [desc(query.timestamp)],
+            limit: limit || 100,
+        })
     );
-    
-    return useMemo(() => ({
-        data: data ?? [],
-        error,
-    }), [data, error]);
 }

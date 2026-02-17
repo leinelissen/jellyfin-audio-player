@@ -8,11 +8,9 @@ import { eq } from 'drizzle-orm';
 import settings from './entity';
 
 export function useAppSettings() {
-    const { data, error } = useLiveQuery(
-        db.select().from(settings)
-            .where(eq(settings.id, 1))
-            .limit(1)
+    return useLiveQuery(
+        db.query.settings.findFirst({
+            where: eq(settings.id, 1),
+        })
     );
-
-    return { data: data?.[0], error };
 }

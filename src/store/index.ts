@@ -5,7 +5,7 @@ import migrations from './database/migrations/migrations.js';
 
 // Import all schema tables
 import sources from './sources/entity';
-import appSettings from './settings/entity.js';
+import settings from './settings/entity';
 import sleepTimer from './sleep-timer/entity';
 import artists from './artists/entity';
 import albums from './albums/entity';
@@ -22,7 +22,7 @@ import syncCursors from './sync-cursors/entity';
 // Combined schema for drizzle
 const schema = {
     sources,
-    appSettings,
+    settings,
     sleepTimer,
     artists,
     albums,
