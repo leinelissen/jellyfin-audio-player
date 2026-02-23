@@ -34,5 +34,19 @@
     "set-server-instruction": "Serveringiz URL manzilini kiriting. Protokol va portni kiritishni unutmang.",
     "server-url": "Server URL manzili",
     "access-token": "Kirish tokeni",
-    "user-id": "Foydalanuvchi IDsi"
+    "user-id": "Foydalanuvchi IDsi",
+    "setting-cache-description": "Agar kutubxonangizni yangilagan bo‘lsangiz-u, lekin ilova keshda saqlanib qolgan ma’lumotlarni ko‘rsatayotgan bo‘lsa, ushbu tugma yordamida keshni majburiy tozalashingiz mumkin. Bu ilovadagi kutubxonani noldan qayta yuklab oladi.",
+    "reset-cache": "Keshni tozalash",
+    "recent-albums": "Oxirgi albomlar",
+    "error-reporting": "Xatoliklar haqida hisobot",
+    "error-reporting-description": "Ushbu ilovadan foydalanish davomida xatoliklar yuzaga kelishi mumkin. Bunday xatoliklar haqida hisobot yuborish ilovaning yanada xavfsiz va barqaror ishlashiga yordam beradi.",
+    "error-reporting-rationale": "Xatoliklar haqida hisobot yuborish funksiyasini yoqganingizda, har safar xatolik yuz berganda avtomatik ravishda hisobot yaratiladi va serverga yuboriladi. Ushbu hisobot qurilma turi, dastur talqini va xatolikning oʻzi kabi foydali diagnostika ma’lumotlarini oʻz ichiga oladi.",
+    "why-use-tracking": "Nima uchun kuzatuvdan foydalaniladi?",
+    "why-use-tracking-description": "Kuzatuv (Tracing) g‘alati xatoliklar va e’tibordan chetda qolgan holatlar haqida xabar berish orqali ilovani ishlab chiqish jarayonini tezlashtirishga yordam beradi. Bu ilovaning yanada barqaror va mustahkam bo‘lishini ta’minlaydi va natijada hamma uchun foydalanish tajribasini yaxshilaydi.",
+    "what-data-is-gathered": "Qanday ma’lumotlar yig‘iladi?",
+    "what-data-is-gathered-description": "Biz xatolik, qurilma turi, operatsion tizim talqini, ilova talqini va qurilma ID-sini qayd etamiz. Xatoliklar haqidagi hech qanday hisobotda ilovaning joriy holati (shaxsiy ma’lumotlar) yuborilmaydi. Qurilma ID-si bu qurilma sozlamalarida nolga tushirilishi mumkin bo‘lgan takrorlanmas xesh-kod bo‘lib, biz ushbu identifikator orqali hech qanday shaxsiy ma’lumotni aniqlay olmaymiz.",
+    "where-is-data-stored": "Ma’lumotlar qayerda saqlanadi?",
+    "where-is-data-stored-description": "Sentry bekendi bizning shaxsiy infratuzilmamizda joylashgan. Serverlar, ma’lumotlar bazalari, ilova va ma’lumotlar jurnallariga (loglar) bizdan boshqa hech kim, ayniqsa Sentry xodimlarining kirish imkoniyati yo‘q. Infratuzilma Yevropa Ittifoqi hududida joylashgan.",
+    "enable-error-reporting": "Xatoliklar haqida hisobot yuborishni yoqishni xohlaysizmi?",
+    "enable-error-reporting-description": "Bu xatoliklar va nosozliklar haqidagi hisobotlarni bizga yuborish orqali ilovadan foydalanish tajribasini yaxshilashga yordam beradi."
 }
