@@ -14,7 +14,7 @@
     "privacy-policy": "Maxfiylik siyosati",
     "delete": "O'chirish",
     "cancel": "Bekor qilish",
-    "play": "Hozir O'yna",
+    "play": "Ijro",
     "play-next": "Keyingi ijro",
     "play-album": "Albomni tinglash",
     "queue": "Navbat",
@@ -78,5 +78,16 @@
     "color-scheme-light": "Yorug‘ rejim",
     "artists": "Ijrochilar",
     "artist": "Ijrochi",
-    "sleep-timer": "Uyqu taymeri"
+    "sleep-timer": "Uyqu taymeri",
+    "disc": "Disk",
+    "lyrics": "Qoʻshiq matnlari",
+    "direct-play": "To‘g‘ridan-to‘g‘ri ijro",
+    "transcoded": "Transcodlangan",
+    "khz": "kGz",
+    "kbps": "kbps",
+    "browse": "Ko‘zdan kechirish",
+    "shuffle": "Aralashtirish",
+    "tracks": "treklar",
+    "unknown-artist": "Noma’lum ijrochi",
+    "unknown-track": "Nomalum trek"
 }
