@@ -1,1 +1,18 @@
-{}
+{
+    "search": "Qidiruv",
+    "onboarding-welcome": "Welcome!",
+    "settings": "Sozlamalar",
+    "library": "Kutubxona",
+    "setting-cache": "Kesh",
+    "enable": "Yoqish",
+    "disable": "Oʻchirish",
+    "downloads": "Yuklashlar",
+    "total-download-size": "Yuklab olish hajmi",
+    "playing-on": "Oʻynamoqda",
+    "color-scheme-system": "Sistema",
+    "color-scheme-dark": "Tunggi rejim",
+    "privacy-policy": "Maxfiylik siyosati.",
+    "delete": "O'chirish",
+    "cancel": "Bekor q.",
+    "play": "Hozir O'yna"
+}
