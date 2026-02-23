@@ -1,6 +1,6 @@
 {
     "search": "Qidiruv",
-    "onboarding-welcome": "Welcome!",
+    "onboarding-welcome": "Xush kelibsiz!",
     "settings": "Sozlamalar",
     "library": "Kutubxona",
     "setting-cache": "Kesh",
@@ -14,5 +14,22 @@
     "privacy-policy": "Maxfiylik siyosati.",
     "delete": "O'chirish",
     "cancel": "Bekor q.",
-    "play": "Hozir O'yna"
+    "play": "Hozir O'yna",
+    "play-next": "Keyingi ijro",
+    "play-album": "Albomni tinglash",
+    "queue": "Navbat",
+    "add-to-queue": "Navbatga qo'shish",
+    "clear-queue": "Navbatni tozalash",
+    "no-results": "Natija topilmadi…",
+    "album": "Albom",
+    "albums": "Albomlar",
+    "all-albums": "Barcha albomlar",
+    "recent-searches": "Oxirgi qidiruvlar",
+    "clear-history": "Tarixni tozalash",
+    "music": "Musiqa",
+    "now-playing": "Ijro etilmoqda",
+    "onboarding-intro": "Fintunes musiqa kutubxonangizni istalgan joydan striming qilish imkonini beradi, shuningdek, fonda ijro etish va kasting (boshqa qurilmaga uzatish) funksiyalarini to‘liq qo‘llab-quvvatlaydi.",
+    "onboarding-cta": "Ishni boshlash uchun sizga Jellyfin (yoki Emby) serveri kerak bo‘ladi. Server manzilingizni kiritish va tizimga kirish uchun quyidagi tugmani bosing.",
+    "set-server": "Serverni oʻrnatish",
+    "set-server-instruction": "Serveringiz URL manzilini kiriting. Protokol va portni kiritishni unutmang."
 }
