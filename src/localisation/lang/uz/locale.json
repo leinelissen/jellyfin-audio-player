@@ -75,5 +75,8 @@
     "playback-reporting-description": "Ijro hisoboti yordamida barcha ijro jarayonlari serveringizga uzatiladi. Bu sizga eng ko‘p tinglangan qo‘shiqlaringizni kuzatish imkonini beradi, ayniqsa ListenBrainz yoki LastFM kabi plaginlar yordamida.",
     "color-scheme": "Ranglar sxemasi",
     "color-scheme-description": "Standart holatda Fintunes operatsion tizimingizning ranglar sxemasiga moslashadi. Biroq, Fintunes har doim to‘q yoki yorug‘ rejimda bo‘lishini ta’minlash uchun ushbu sozlamani o‘zgartirishingiz mumkin.",
-    "color-scheme-light": "Yorug‘ rejim"
+    "color-scheme-light": "Yorug‘ rejim",
+    "artists": "Ijrochilar",
+    "artist": "Ijrochi",
+    "sleep-timer": "Uyqu taymeri"
 }
