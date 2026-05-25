@@ -1,0 +1,1 @@
+Reprodutor de áudio via streaming para o Jellyfin
