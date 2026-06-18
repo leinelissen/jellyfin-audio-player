@@ -47,7 +47,7 @@ This project is built on React Native, and first of all requires [NodeJS](https:
 [XCode](https://developer.apple.com/download/) is required to build the iOS application. It also comes bundles with iOS simulators which make development exceedingly easy. This does mean that iOS development is limited to macs.
 
 #### Android prerequisites
-[Android Studio](https://developer.android.com/studio/install) is recommended for development as it includes the Android SDK as well as Android Simulators for devleopment. At the very least, installing the Android SDK is neccessary for building any version of the app.
+[Android Studio](https://developer.android.com/studio/install) is recommended for development as it includes the Android SDK as well as Android Simulators for development. At the very least, installing the Android SDK is necessary for building any version of the app.
 
 ### Development Build
 As soon as all prerequisites are covered, you can start development in either iOS or Android simulators by running the following
