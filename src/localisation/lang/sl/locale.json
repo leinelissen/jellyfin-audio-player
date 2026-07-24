@@ -81,11 +81,12 @@
     "disc": "Disk",
     "lyrics": "Besedilo",
     "khz": "kHz",
-    "transcoded": "Transcode",
+    "transcoded": "prekodiraj [▲]",
     "browse": "Prebrskaj",
     "play": "Predvajaj",
     "shuffle": "Naključno",
     "tracks": "skladbe",
     "unknown-artist": "Neznan izvajalec",
-    "unknown-track": "Neznana skladba"
+    "unknown-track": "Neznana skladba",
+    "direct-play": "Neposredno:"
 }
