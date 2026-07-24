@@ -88,5 +88,6 @@
     "shuffle": "Stokk",
     "tracks": "spor",
     "unknown-artist": "Ukjent artist",
-    "unknown-track": "Ukjent spor"
+    "unknown-track": "Ukjent spor",
+    "direct-play": "Direkte"
 }
