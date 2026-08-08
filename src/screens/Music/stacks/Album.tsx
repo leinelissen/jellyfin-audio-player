@@ -32,8 +32,8 @@ function SimilarAlbum({ id }: { id: string }) {
     const album = useTypedSelector((state) => state.music.albums.entities[id]);
 
     const handlePress = useCallback(() => {
-        album && navigation.push('Album', { id, album });
-    }, [id, album, navigation]);
+        navigation.push('Album', { id });
+    }, [id, navigation]);
     
     return (
         <Pressable

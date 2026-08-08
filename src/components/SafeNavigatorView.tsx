@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef } from 'react';
+import React, { ForwardedRef, forwardRef, Ref } from 'react';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { FlatList, FlatListProps, ScrollView, ScrollViewProps, SectionList, SectionListProps } from 'react-native';
 import useCurrentTrack from '../utility/useCurrentTrack';
@@ -12,7 +12,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export function SafeScrollView({
     contentContainerStyle,
     ...props
-}: ScrollViewProps) {
+}: ScrollViewProps & { ref?: Ref<ScrollView> }) {
     const { top, bottom } = useNavigationOffsets();
 
     return (

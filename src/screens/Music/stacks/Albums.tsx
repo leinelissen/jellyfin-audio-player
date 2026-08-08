@@ -12,7 +12,6 @@ import { selectAlbumsByAlphabet } from '@/store/music/selectors';
 import AlphabetScroller from '@/components/AlphabetScroller';
 import styled from 'styled-components/native';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
-import { Album } from '@/store/music/types';
 import { Text } from '@/components/Typography';
 import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp } from '@/screens/types';
@@ -112,7 +111,7 @@ const Albums: React.FC = () => {
 
     // Set callbacks
     const retrieveData = useCallback(() => dispatch(fetchAllAlbums()), [dispatch]);
-    const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
+    const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id }), [navigation]);
     const selectLetter = useCallback(({ letter }: { letter: string, index: number }) => { 
         const index = flatData.findIndex((item) => (
             typeof item === 'string' && item === letter

@@ -337,7 +337,7 @@ export default function Search() {
                 break;
             }
             case 'MusicAlbum':
-                navigation.navigate('Album', { id, album: searchItems?.[id] as Album });
+                navigation.navigate('Album', { id });
                 break;
             case 'MusicArtist':
                 {

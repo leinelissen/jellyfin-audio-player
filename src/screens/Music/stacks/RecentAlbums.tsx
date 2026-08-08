@@ -12,7 +12,6 @@ import { Header } from '@/components/Typography';
 import ListButton from '@/components/ListButton';
 import { t } from '@/localisation';
 import useDefaultStyles from '@/components/Colors';
-import { Album } from '@/store/music/types';
 import Divider from '@/components/Divider';
 import styled from 'styled-components/native';
 import { ShadowWrapper } from '@/components/Shadow';
@@ -73,7 +72,7 @@ const RecentAlbums: React.FC = () => {
 
     // Set callbacks
     const retrieveData = useCallback(() => dispatch(fetchRecentAlbums()), [dispatch]);
-    const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
+    const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id }), [navigation]);
 
     // Retrieve data on mount
     useEffect(() => { retrieveData(); }, [retrieveData]);

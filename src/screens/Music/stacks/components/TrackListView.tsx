@@ -1,5 +1,5 @@
-import React, { PropsWithChildren, useCallback, useMemo } from 'react';
-import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
+import React, { PropsWithChildren, useCallback, useEffect, useMemo } from 'react';
+import { Platform, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { useGetImage } from '@/utility/JellyfinApi/lib';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
@@ -95,6 +95,7 @@ const TrackListView: React.FC<TrackListViewProps> = ({
 }) => {
     const defaultStyles = useDefaultStyles();
     const offsets = useNavigationOffsets();
+    const ref = React.useRef<ScrollView>(null);
 
     // Retrieve state
     const tracks = useTypedSelector((state) => state.music.tracks.entities);
@@ -165,12 +166,21 @@ const TrackListView: React.FC<TrackListViewProps> = ({
         downloadedTracks.forEach((trackId) => dispatch(removeDownloadedTrack(trackId)));
     }, [dispatch, downloadedTracks]);
 
+    // Scroll to top on navigation
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            ref.current?.scrollTo({ y: 0 });
+        });
+        return unsubscribe;
+    }, [navigation]);
+
     return (
         <SafeScrollView
             style={defaultStyles.view}
             refreshControl={
                 <RefreshControl refreshing={isLoading} onRefresh={refresh} progressViewOffset={offsets.top} />
             }
+            ref={ref}
         >
             <View style={{ padding: 24, paddingTop: 32, paddingBottom: 32 }}>
                 <AlbumImageContainer>
