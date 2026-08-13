@@ -1,113 +1,56 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { useSelector, TypedUseSelectorHook, useDispatch } from 'react-redux';
-import { persistStore, persistReducer, PersistConfig, createMigrate, PersistState } from 'redux-persist';
-import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
+import { drizzle } from 'drizzle-orm/op-sqlite';
+import { open } from '@op-engineering/op-sqlite';
+import { migrate } from 'drizzle-orm/op-sqlite/migrator';
+import migrations from './database/migrations/migrations.js';
+import { relations, schema } from './database/relations';
 
-import settings from './settings';
-import music, { initialState as musicInitialState } from './music';
-import downloads, { initialState as downloadsInitialState } from './downloads';
-import sleepTimer from './sleep-timer';
-import search from './search';
-import { ColorScheme } from './settings/types';
-import MigratedStorage from '@/utility/MigratedStorage';
+import { driverRegistry } from './sources/drivers/registry';
+import Settings from './settings/manager';
 
-const persistConfig: PersistConfig<Omit<AppState, '_persist'>> = {
-    key: 'root',
-    storage: MigratedStorage,
-    version: 2,
-    stateReconciler: autoMergeLevel2,
-    migrate: createMigrate({
-        // @ts-expect-error migrations are poorly typed
-        1: (state: AppState & PersistState) => {
-            return {
-                ...state,
-                settings: state.settings,
-                downloads: downloadsInitialState,
-                music: musicInitialState
-            };
-        },
-        // @ts-expect-error migrations are poorly typed
-        2: (state: AppState) => {
-            return {
-                ...state,
-                downloads: {
-                    ...state.downloads,
-                    queued: []
-                }
-            };
-        },
-        // @ts-expect-error migrations are poorly typed
-        3: (state: AppState) => {
-            return {
-                ...state,
-                settings: {
-                    ...state.settings,
-                    enablePlaybackReporting: true,
-                }
-            };
-        },
-        // @ts-expect-error migrations are poorly typed
-        4: (state: AppState) => {
-            return {
-                ...state,
-                settings: {
-                    ...state.settings,
-                    colorScheme: ColorScheme.System,
-                }
-            };
-        },
-        // 4: (state: AppState) => {
-        //     return {
-        //         ...state,
-        //         sleepTimer: {
-        //             date: null,
-        //         }
-        //     };
-        // },
-        // @ts-expect-error migrations are poorly typed
-        5: (state: AppState) => {
-            // @ts-expect-error
-            const credentials = state.settings.jellyfin && { 
-                // @ts-expect-error
-                ...(state.settings.jellyfin as AppState['settings']['credentials']),
-                type: 'jellyfin',
-            };
-
-            return {
-                ...state,
-                settings: {
-                    ...state.settings,
-                    credentials,
-                },
-            };
-        },
-    })
-};
-
-const reducers = combineReducers({
-    settings,
-    music: music.reducer,
-    downloads: downloads.reducer,
-    sleepTimer: sleepTimer.reducer,
-    search: search.reducer,
+// Open the SQLite database
+export const sqliteDb = open({
+    name: 'fintunes.db',
 });
 
-const persistedReducer = persistReducer(persistConfig, reducers);
+console.log('[DB] Database path:', sqliteDb.getDbPath());
 
-const store = configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) => (
-        getDefaultMiddleware({ serializableCheck: false, immutableCheck: false })
-    ),
-});
+// Create drizzle instance with v2 relations — exported as singleton
+export const db = drizzle(sqliteDb, { schema, relations });
 
-export type AppState = ReturnType<typeof reducers> & { _persist: PersistState };
-export type AppDispatch = typeof store.dispatch;
-export type AsyncThunkAPI = { state: AppState, dispatch: AppDispatch };
-export type Store = typeof store;
-export const useTypedSelector: TypedUseSelectorHook<AppState> = useSelector;
-export const useAppDispatch: () => AppDispatch = useDispatch;
+/**
+ * Run database migrations
+ * Migrations should be generated using drizzle-kit
+ */
+export async function runMigrations() {
+    try {
+        await migrate(db, migrations);
+        console.log('Database migrations completed');
+    } catch (error) {
+        console.error('Migration error:', error);
+        // TODO: Swallow errors, there is an issue where some migrations fail
+        // throw error;
+    }
+}
 
-export const persistedStore = persistStore(store);
+// Singleton promise so that concurrent calls to initialiseDatabase (e.g. from
+// React Fast Refresh double-mounting) share a single in-flight initialisation
+// rather than racing against each other and re-running migrations.
+let initialisationPromise: Promise<typeof db> | null = null;
 
-export default store;
+/**
+ * Initialise the database.
+ * Safe to call multiple times — subsequent calls return the same promise.
+ */
+export function initialiseDatabase(): Promise<typeof db> {
+    if (!initialisationPromise) {
+        initialisationPromise = (async () => {
+            await runMigrations();
+            await Promise.all([
+                driverRegistry.initialise(),
+                Settings.initialise(),
+            ]);
+            return db;
+        })();
+    }
+    return initialisationPromise;
+}

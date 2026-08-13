@@ -1,18 +1,18 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Album } from '@/store/music/types';
+import type { EntityId } from '@/store/types';
 
 export type StackParams = {
     [key: string]: Record<string, unknown> | object | undefined;
     Albums: undefined;
-    Album: { id: string, album: Album };
+    Album: { id: EntityId };
     Artists: undefined;
-    Artist: { id: string; name: string };
+    Artist: { id: EntityId };
     Playlists: undefined;
-    Playlist: { id: string; };
+    Playlist: { id: EntityId };
     RecentAlbums: undefined;
     Search: undefined;
     SetJellyfinServer: undefined;
-    TrackPopupMenu: { trackId: string };
+    TrackPopupMenu: { trackId: EntityId };
     Lyrics: undefined;
 };
 

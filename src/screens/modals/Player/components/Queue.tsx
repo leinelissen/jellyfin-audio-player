@@ -3,6 +3,8 @@ import useQueue from '@/utility/useQueue';
 import { View, StyleSheet, ListRenderItemInfo, FlatList } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import useCurrentTrack from '@/utility/useCurrentTrack';
+import { useTracksByIds } from '@/store/tracks/hooks';
+import type { EntityId } from '@/store/types';
 import TouchableHandler from '@/components/TouchableHandler';
 import TrackPlayer, { RepeatMode, Track } from 'react-native-track-player';
 import { t } from '@/localisation';
@@ -74,6 +76,10 @@ interface Props {
 export default function Queue({ header }: Props) {
     const defaultStyles = useDefaultStyles();
     const queue = useQueue();
+    const queueEntityIds = queue
+        .map(t => t.entityId as EntityId | undefined)
+        .filter((id): id is EntityId => Array.isArray(id) && id.length === 2);
+    const dbTracks = useTracksByIds(queueEntityIds);
     const [repeatMode, setRepeatMode] = useState(RepeatMode.Off);
     const { index: currentIndex } = useCurrentTrack();
 
@@ -175,7 +181,10 @@ export default function Queue({ header }: Props) {
                             </TextHalfOpacity>
                         </View>
                         <View>
-                            <DownloadIcon trackId={track.backendId} fill={currentIndex === index ? defaultStyles.themeColor.color + '80' : undefined} />
+                            <DownloadIcon
+                                track={dbTracks.get(track.entityId?.[1] as string) ?? null}
+                                fill={currentIndex === index ? defaultStyles.themeColor.color + '80' : undefined}
+                            />
                         </View>
                     </QueueItem>
                 </TouchableHandler>

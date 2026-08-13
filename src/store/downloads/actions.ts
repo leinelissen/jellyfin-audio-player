@@ -1,86 +1,119 @@
-import { createAction, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
-import { AppState } from '@/store';
-import { downloadFile, unlink, DocumentDirectoryPath, exists } from 'react-native-fs';
-import { DownloadEntity } from './types';
-import { generateTrackUrl } from '@/utility/JellyfinApi/track';
+import { db, sqliteDb } from '@/store';
+import { and, eq } from 'drizzle-orm';
+import downloads from './entity';
 
-import { getImage } from '@/utility/JellyfinApi/lib';
-import { getExtensionForUrl } from '@/utility/mimeType';
+import type { EntityId } from '@/store/types';
 
-export const downloadAdapter = createEntityAdapter<DownloadEntity>();
+export async function getAllDownloads() {
+    return db.select().from(downloads).all();
+}
 
-export const queueTrackForDownload = createAction<string>('download/queue');
-export const initializeDownload = createAction<{ id: string, size?: number, jobId?: number, location: string, image?: string }>('download/initialize');
-export const progressDownload = createAction<{ id: string, progress: number, jobId?: number }>('download/progress');
-export const completeDownload = createAction<{ id: string, location: string, size?: number, image?: string }>('download/complete');
-export const failDownload = createAction<{ id: string }>('download/fail');
+export async function getDownload([sourceId, id]: EntityId) {
+    return db.select().from(downloads)
+        .where(and(eq(downloads.sourceId, sourceId), eq(downloads.id, id)))
+        .get();
+}
 
-export const downloadTrack = createAsyncThunk(
-    '/downloads/track',
-    async (id: string, { dispatch, getState }) => {
-        // Generate the URL we can use to download the file
-        const entity = (getState() as AppState).music.tracks.entities[id];
-        const audioUrl = generateTrackUrl(id);
-        const imageUrl = getImage(entity);
+export interface InitialiseDownloadParams {
+    filename: string;
+    mimetype: string;
+    hash?: string;
+    fileSize?: number;
+}
 
-        // Get the content-type from the URL by doing a HEAD-only request
-        const [audioExt, imageExt] = await Promise.all([
-            getExtensionForUrl(audioUrl),
-            // Image files may be absent
-            imageUrl ? getExtensionForUrl(imageUrl).catch(() => null) : null
-        ]);
+export async function initialiseDownload(
+    [sourceId, id]: EntityId,
+    {
+        filename,
+        mimetype,
+        hash,
+        fileSize,
+    }: InitialiseDownloadParams
+): Promise<void> {
+    await db.insert(downloads).values({
+        sourceId,
+        id,
+        hash: hash ?? null,
+        filename: filename,
+        mimetype: mimetype,
+        fileSize: fileSize ?? null,
+        progress: 0,
+        isFailed: false,
+        isComplete: false,
+        metadata: null,
+    }).onConflictDoUpdate({
+        target: downloads.id,
+        set: {
+            hash: hash ?? null,
+            filename: filename,
+            mimetype: mimetype,
+            fileSize: fileSize ?? null,
+            progress: 0,
+            isFailed: false,
+            isComplete: false,
+        },
+    });
 
-        // Then generate the proper location
-        const audioLocation = `${DocumentDirectoryPath}/${id}.${audioExt}`;
-        const imageLocation = imageExt ? `${DocumentDirectoryPath}/${id}.${imageExt}` : undefined;
+    await sqliteDb.flushPendingReactiveQueries();
+}
 
-        // Actually kick off the download 
-        const { promise: audioPromise } = downloadFile({
-            fromUrl: audioUrl,
-            progressInterval: 1000,
-            background: true,
-            begin: ({ jobId, contentLength }) => {
-                // Dispatch the initialization
-                dispatch(initializeDownload({ id, jobId, size: contentLength, location: audioLocation, image: imageLocation }));
-            },
-            progress: (result) => {
-                // Dispatch a progress update
-                dispatch(progressDownload({ id, progress: result.bytesWritten / result.contentLength }));
-            },
-            toFile: audioLocation,
-        });
+export async function updateDownloadProgress(
+    [sourceId, id]: EntityId,
+    progress: number,
+): Promise<void> {
+    await db.update(downloads)
+        .set({ progress })
+        .where(and(eq(downloads.sourceId, sourceId), eq(downloads.id, id)));
 
-        const { promise: imagePromise } = imageExt && imageLocation
-            ? downloadFile({
-                fromUrl: imageUrl!,
-                toFile: imageLocation,
-                background: true,
-            })
-            : { promise: Promise.resolve(null) };
+    await sqliteDb.flushPendingReactiveQueries();
+}
 
-        // Await job completion
-        const [audioResult, imageResult] = await Promise.all([audioPromise, imagePromise]);
-        const totalSize = audioResult.bytesWritten + (imageResult?.bytesWritten || 0);
-        dispatch(completeDownload({ id, location: audioLocation, size: totalSize, image: imageLocation }));
-    },
-);
+export interface CompleteDownloadParams {
+    filename: string;
+    fileSize?: number;
+    artworkPath?: string;
+}
 
-export const removeDownloadedTrack = createAsyncThunk(
-    '/downloads/remove/track',
-    async (id: string, { getState }) => {
-        // Retrieve the state
-        const { downloads: { entities } } = getState() as AppState;
+export async function completeDownload(
+    [sourceId, id]: EntityId,
+    {
+        filename,
+        fileSize,
+        artworkPath,
+    }: CompleteDownloadParams
+): Promise<void> {
+    const updates: Partial<typeof downloads.$inferInsert> = {
+        isComplete: true,
+        isFailed: false,
+        progress: 1,
+        filename,
+    };
 
-        // Attempt to retrieve the entity from the state
-        const download = entities[id];
-        if (!download) {
-            throw new Error('Attempted to remove unknown downloaded track.');
-        }
+    if (fileSize != null) updates.fileSize = fileSize;
+    if (artworkPath) updates.artworkPath = artworkPath;
 
-        // Then unlink the file, if it exists
-        if (download.location && await exists(download.location)) {
-            return unlink(download.location);
-        }
-    }
-);
+    await db.update(downloads)
+        .set(updates)
+        .where(and(eq(downloads.sourceId, sourceId), eq(downloads.id, id)));
 
+    await sqliteDb.flushPendingReactiveQueries();
+}
+
+export async function failDownload([sourceId, id]: EntityId): Promise<void> {
+    await db.update(downloads)
+        .set({
+            isFailed: true,
+            isComplete: false,
+            progress: 0,
+        })
+        .where(and(eq(downloads.sourceId, sourceId), eq(downloads.id, id)));
+
+    await sqliteDb.flushPendingReactiveQueries();
+}
+
+export async function removeDownload([sourceId, id]: EntityId): Promise<void> {
+    await db.delete(downloads)
+        .where(and(eq(downloads.sourceId, sourceId), eq(downloads.id, id)));
+
+    await sqliteDb.flushPendingReactiveQueries();
+}

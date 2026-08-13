@@ -6,6 +6,7 @@ import useDefaultStyles from '@/components/Colors';
 import styled, { css } from 'styled-components/native';
 import { useMemo } from 'react';
 import { t } from '@/localisation';
+import type { TrackMediaStream } from '@/store/sources/types';
 
 const Container = styled.View`
     flex-direction: row;
@@ -39,9 +40,11 @@ export default function MediaInformation() {
     const styles = useDefaultStyles();
     const { track, albumTrack } = useCurrentTrack();
 
-    const mediaStream = useMemo(() => (
-        albumTrack?.MediaStreams?.find((d) => d.Type === 'Audio')
+    const mediaStream = useMemo((): TrackMediaStream | undefined => (
+        albumTrack?.metadata?.MediaStreams?.find((d) => d.Type === 'Audio')
     ), [albumTrack]);
+
+    const codec = albumTrack?.metadata?.Codec;
 
     if (!albumTrack || !track) {
         return null;
@@ -52,23 +55,23 @@ export default function MediaInformation() {
             <WaveformIcon fill={styles.icon.color} height={16} width={16} />
             <Info>
                 <Label numberOfLines={1} $overflow>
-                    {albumTrack.Codec?.isDirectPlay ? t('direct-play') : t('transcoded')}
+                    {codec?.isDirectPlay ? t('direct-play') : t('transcoded')}
                 </Label>
                 <Label numberOfLines={1}>
-                    {albumTrack.Codec?.isDirectPlay
-                        ? mediaStream?.Codec.toUpperCase()
-                        : albumTrack.Codec?.contentType?.replace('audio/', '').toUpperCase()
+                    {codec?.isDirectPlay
+                        ? mediaStream?.Codec?.toUpperCase()
+                        : codec?.contentType?.replace('audio/', '').toUpperCase()
                     }
                 </Label>
                 {mediaStream && (
                     <>
                         <Label numberOfLines={1}>
-                            {((albumTrack.Codec?.isDirectPlay ? mediaStream.BitRate : track.bitRate) / 1000)
+                            {(((codec?.isDirectPlay ? mediaStream.BitRate : track.bitRate) ?? 0) / 1000)
                                 .toFixed(0)}
                             {t('kbps')}
                         </Label>
                         <Label numberOfLines={1}>
-                            {(mediaStream.SampleRate / 1000).toFixed(1)}
+                            {((mediaStream.SampleRate ?? 0) / 1000).toFixed(1)}
                             {t('khz')}
                         </Label>
                     </>

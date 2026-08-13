@@ -31,7 +31,7 @@ function SearchStack() {
                 >
                     <Stack.Screen name="Search" component={Search} options={{ headerTitle: t('search'), headerShown: false }} />
                     <Stack.Screen name="Album" component={Album} options={{ headerTitle: t('album') }} />
-                    <Stack.Screen name="Artist" component={Artist} options={({ route }) => ({ headerTitle: route.params.name })} />
+                    <Stack.Screen name="Artist" component={Artist} options={{ headerTitle: t('artist') }} />
                     <Stack.Screen name="Playlist" component={Playlist} options={{ headerTitle: t('playlist') }} />
                 </Stack.Navigator>
                 <NowPlaying />

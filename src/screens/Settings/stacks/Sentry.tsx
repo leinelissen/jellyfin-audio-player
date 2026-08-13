@@ -1,7 +1,7 @@
 import { Paragraph, Text } from '@/components/Typography';
 
 import React, { useEffect, useState } from 'react';
-import { Switch } from 'react-native-gesture-handler';
+import { Switch } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import { isSentryEnabled, setSentryStatus } from '@/utility/Sentry';
 import Accordion from 'react-native-collapsible/Accordion';

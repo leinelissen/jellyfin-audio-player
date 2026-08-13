@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { t } from '@/localisation';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
+
 import ListButton from '@/components/ListButton';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
 
@@ -16,8 +16,7 @@ import PlaybackReporting from './stacks/PlaybackReporting';
 import { SafeScrollView } from '@/components/SafeNavigatorView';
 import PrivacyPolicy from './components/PrivacyPolicy';
 
-export function SettingsList() {
-    const navigation = useNavigation<SettingsNavigationProp>();
+export function SettingsList({ navigation }: { navigation: SettingsNavigationProp }) {
     const handleLibraryClick = useCallback(() => { navigation.navigate('Library'); }, [navigation]);
     const handleCacheClick = useCallback(() => { navigation.navigate('Cache'); }, [navigation]);
     const handleSentryClick = useCallback(() => { navigation.navigate('Sentry'); }, [navigation]);

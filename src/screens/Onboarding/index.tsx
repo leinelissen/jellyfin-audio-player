@@ -2,13 +2,15 @@ import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@/screens';
-import { useAppDispatch, useTypedSelector } from '@/store';
-import { setOnboardingStatus } from '@/store/settings/actions';
+import Settings from '@/store/settings/manager';
 import { t } from '@/localisation';
 import Button from '@/components/Button';
 import { Header, Text as BaseText } from '@/components/Typography';
 import { ShadowWrapper } from '@/components/Shadow';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLiveQuery } from '@/store/live-queries';
+import { db } from '@/store';
+import sources from '@/store/sources/entity';
 
 const Container = styled(SafeAreaView)`
     flex: 1;
@@ -26,7 +28,7 @@ const Text = styled(BaseText)`
 
 const ButtonContainer = styled.View`
     margin-top: 50px;
-`; 
+`;
 
 const Logo = styled.Image`
     width: 150px;
@@ -38,23 +40,23 @@ const Logo = styled.Image`
 `;
 
 function Onboarding() {
-    // Get account from Redux and dispatcher
-    const account = useTypedSelector(state => state.settings.credentials);
-    const dispatch = useAppDispatch();
+    // Get account from database
+    const { data: sourceData } = useLiveQuery(() => db.select().from(sources));
+    const account = sourceData?.[0];
 
     // Also retrieve the navigation handler so that we can open the modal in
     // which the Jellyfin server is set
     const navigation = useNavigation<NavigationProp>();
     const handleClick = useCallback(() => navigation.navigate('SetJellyfinServer'), [navigation]);
-    
+
     // We'll also respond to any change in the account, setting the onboarding
     // status to true, so that the app becomes available.
     useEffect(() => {
         if (account) {
-            dispatch(setOnboardingStatus(true));
+            Settings.update({ isOnboardingComplete: true });
         }
-    }, [account, dispatch]);
-    
+    }, [account]);
+
     return (
         <Container>
             <TextContainer contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>

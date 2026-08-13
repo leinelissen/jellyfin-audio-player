@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import FastImage, { FastImageProps, Source } from '@d11/react-native-fast-image';
 import { Dimensions } from 'react-native';
-import { useUserOrSystemScheme } from '@/components/Colors';
+import { useScheme } from '@/components/Colors';
 
 const Screen = Dimensions.get('screen');
 export const AlbumWidth = Screen.width / 2 - 24;
@@ -32,7 +32,7 @@ const defaultImageDark = require('@/assets/images/empty-album-dark.png');
 const defaultImageLight = require('@/assets/images/empty-album-light.png');
 
 function AlbumImage(props: FastImageProps) {
-    const colorScheme = useUserOrSystemScheme();
+    const colorScheme = useScheme();
     const defaultImage = colorScheme === 'light' ? defaultImageLight : defaultImageDark;
 
     // If no source is provided, use the default image as the main source

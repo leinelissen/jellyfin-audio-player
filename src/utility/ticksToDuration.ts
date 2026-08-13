@@ -6,4 +6,5 @@ function ticksToDuration(ticks: number) {
     return `${hours > 0 ? hours + ':' : ''}${(minutes % 60).toString().padStart(hours > 0 ? 2 : 0, '0')}:${(seconds % 60).toString().padStart(2, '0')}`;
 }
 
+export { ticksToDuration };
 export default ticksToDuration;

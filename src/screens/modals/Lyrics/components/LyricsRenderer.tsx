@@ -82,7 +82,7 @@ export default function LyricsRenderer({ size = 'full' }: LyricsRendererProps) {
     }
 
     // GUARD: If the track has no lyrics, close the modal
-    if (!albumTrack.HasLyrics || !albumTrack.Lyrics) {
+    if (!albumTrack.lyrics) {
         navigation.goBack();
         return null;
     }
@@ -101,18 +101,18 @@ export default function LyricsRenderer({ size = 'full' }: LyricsRendererProps) {
             >
                 <LyricsProgress
                     start={0}
-                    end={albumTrack.Lyrics.Lyrics[0].Start - TIME_OFFSET}
+                    end={albumTrack.lyrics.Lyrics[0].Start - TIME_OFFSET}
                     position={currentTime}
                     index={-1}
                     onActive={handleActive}
                     onLayout={handleLayoutChange}
                 />
-                {albumTrack.Lyrics.Lyrics.map((lyrics, i) => {
+                {albumTrack.lyrics.Lyrics.map((lyricLine, i) => {
                     const props: LyricsProgressProps = {
-                        start: lyrics.Start - TIME_OFFSET,
-                        end: albumTrack.Lyrics!.Lyrics.length === i + 1
-                            ? track.RunTimeTicks
-                            : albumTrack.Lyrics!.Lyrics[i + 1]?.Start - TIME_OFFSET
+                        start: lyricLine.Start - TIME_OFFSET,
+                        end: albumTrack.lyrics!.Lyrics.length === i + 1
+                            ? albumTrack.runTimeTicks ?? 0
+                            : albumTrack.lyrics!.Lyrics[i + 1]?.Start - TIME_OFFSET
                         ,
                         position: currentTime,
                         onLayout: handleLayoutChange,
@@ -120,11 +120,11 @@ export default function LyricsRenderer({ size = 'full' }: LyricsRendererProps) {
                         index: i,
                     };
 
-                    return lyrics.Text ? (
+                    return lyricLine.Text ? (
                         <LyricsLine
                             key={`lyric_${i}`}
                             {...props}
-                            text={lyrics.Text}
+                            text={lyricLine.Text}
                             size={size}
                         />
                     ) : (

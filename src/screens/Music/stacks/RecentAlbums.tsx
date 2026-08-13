@@ -1,23 +1,24 @@
-import React, { useCallback, useEffect } from 'react';
-import { useGetImage } from '@/utility/JellyfinApi/lib';
-import { Text, StyleSheet } from 'react-native';
+import React, { useCallback } from 'react';
+import Artwork from '@/store/sources/artwork-manager';
+import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch, useTypedSelector } from '@/store';
-import { fetchRecentAlbums } from '@/store/music/actions';
+import { useRecentAlbums } from '@/store/albums/hooks';
+import Sync from '@/store/sources/sync-manager';
+import useSyncAction from '@/utility/useSyncAction';
 import TouchableHandler from '@/components/TouchableHandler';
 import ListContainer from './components/ListContainer';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
-import { useRecentAlbums } from '@/store/music/selectors';
 import { Header } from '@/components/Typography';
 import ListButton from '@/components/ListButton';
 import { t } from '@/localisation';
 import useDefaultStyles from '@/components/Colors';
-import { Album } from '@/store/music/types';
+import type { Album } from '@/store/albums/types';
 import Divider from '@/components/Divider';
 import styled from 'styled-components/native';
 import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp } from '@/screens/types';
 import { SafeFlatList } from '@/components/SafeNavigatorView';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     columnWrapper: {
@@ -61,40 +62,40 @@ const NavigationHeader: React.FC = () => {
 const RecentAlbums: React.FC = () => {
     const defaultStyles = useDefaultStyles();
 
-    // Retrieve data from store
-    const { entities: albums } = useTypedSelector((state) => state.music.albums);
-    const recentAlbums = useRecentAlbums(24);
-    const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
+    // Retrieve data from store — album entities directly, no ID mapping needed
+    const { data: recentAlbums } = useRecentAlbums(24);
 
     // Initialise helpers
-    const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
-    const getImage = useGetImage();
 
     // Set callbacks
-    const retrieveData = useCallback(() => dispatch(fetchRecentAlbums()), [dispatch]);
-    const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
+    const [isLoading, retrieveData] = useSyncAction(() => Sync.syncAlbums());
 
-    // Retrieve data on mount
-    useEffect(() => { retrieveData(); }, [retrieveData]);
+    const selectAlbum = useCallback((album: Album) => {
+        navigation.navigate('Album', { id: [album.sourceId, album.id] });
+    }, [navigation]);
 
     return (
         <SafeFlatList
-            data={recentAlbums}
+            data={recentAlbums ?? []}
             refreshing={isLoading}
             onRefresh={retrieveData}
             numColumns={2}
-            keyExtractor={d => d}
+            keyExtractor={album => album.id}
             columnWrapperStyle={styles.columnWrapper}
             ListHeaderComponent={NavigationHeader}
-            renderItem={({ item }) => (
-                <TouchableHandler id={item} onPress={selectAlbum} testID={`select-album-${item}`}>
+            renderItem={({ item: album }) => (
+                <TouchableHandler
+                    id={album}
+                    onPress={selectAlbum}
+                    testID={`select-album-${album.id}`}
+                >
                     <AlbumItem>
                         <ShadowWrapper size="medium">
-                            <AlbumImage source={{ uri: getImage(albums[item]) }} style={defaultStyles.imageBackground} />
+                            <AlbumImage source={{ uri: Artwork.getUrl(album) }} style={defaultStyles.imageBackground} />
                         </ShadowWrapper>
-                        <Text style={defaultStyles.text} numberOfLines={1}>{albums[item]?.Name}</Text>
-                        <Text style={defaultStyles.textHalfOpacity} numberOfLines={1}>{albums[item]?.AlbumArtist}</Text>
+                        <Text style={defaultStyles.text} numberOfLines={1}>{album.name}</Text>
+                        <Text style={defaultStyles.textHalfOpacity} numberOfLines={1}>{album.albumArtist}</Text>
                     </AlbumItem>
                 </TouchableHandler>
             )}

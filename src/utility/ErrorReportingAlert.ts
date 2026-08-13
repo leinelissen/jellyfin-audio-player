@@ -1,24 +1,24 @@
 import { useEffect } from 'react';
 import { Alert } from 'react-native';
-import { useAppDispatch, useTypedSelector } from '@/store';
 import { t } from '@/localisation';
-import { setReceivedErrorReportingAlert } from '@/store/settings/actions';
+import Settings from '@/store/settings/manager';
 import { setSentryStatus } from './Sentry';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '@/screens/types';
+import { useAppSettings } from '@/store/settings/hooks';
 
 /**
  * This will send out an alert message asking the user if they want to enable
  * error reporting.
  */
 export default function ErrorReportingAlert() {
-    const { hasReceivedErrorReportingAlert } = useTypedSelector(state => state.settings);
+    const { data: settings } = useAppSettings();
+    const hasReceivedErrorReportingAlert = settings?.hasReceivedErrorReportingAlert;
     const navigation = useNavigation<NavigationProp>();
-    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        // Only send out alert if we haven't done so ever
-        if (!hasReceivedErrorReportingAlert) {
+        // Only send out alert if settings have loaded and we haven't done so ever
+        if (hasReceivedErrorReportingAlert === false) {
             // Generate the alert
             Alert.alert(
                 t('enable-error-reporting'),
@@ -50,10 +50,10 @@ export default function ErrorReportingAlert() {
 
             // Store the flag that we have sent out the alert, so that we don't
             // have to do so anymore in the future.
-            dispatch(setReceivedErrorReportingAlert());
+            Settings.update({ hasReceivedErrorReportingAlert: true });
         }
         
-    }, [dispatch, hasReceivedErrorReportingAlert, navigation]);
+    }, [hasReceivedErrorReportingAlert, navigation]);
 
     return null;
 }

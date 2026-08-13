@@ -1,19 +1,19 @@
 import { Paragraph } from '@/components/Typography';
 import React, { useCallback } from 'react';
-import { Switch } from 'react-native-gesture-handler';
+import { Switch } from 'react-native';
 import { t } from '@/localisation';
-import { useAppDispatch, useTypedSelector } from '@/store';
-import { setEnablePlaybackReporting } from '@/store/settings/actions';
+import Settings from '@/store/settings/manager';
 import Container from '../components/Container';
 import { SwitchContainer, SwitchLabel } from '../components/Switch';
+import { useAppSettings } from '@/store/settings/hooks';
 
 export default function PlaybackReporting() {
-    const isEnabled = useTypedSelector((state) => state.settings.enablePlaybackReporting);
-    const dispatch = useAppDispatch();
+    const { data: settings } = useAppSettings();
+    const isEnabled = settings?.enablePlaybackReporting ?? true;
 
     const toggleSwitch = useCallback(() => {
-        dispatch(setEnablePlaybackReporting(!isEnabled));
-    }, [isEnabled, dispatch]);
+        Settings.update({ enablePlaybackReporting: !isEnabled });
+    }, [isEnabled]);
 
     return (
         <Container>

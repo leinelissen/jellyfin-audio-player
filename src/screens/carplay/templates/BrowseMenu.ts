@@ -24,7 +24,7 @@ export function createBrowseMenu(): ListTemplate {
                     onPress: async () => {
                         console.log('[BrowseMenu] Recent Albums selected');
                         try {
-                            const template = createRecentAlbumsTemplate();
+                            const template = await createRecentAlbumsTemplate();
                             await template.push();
                             console.log('[BrowseMenu] Recent Albums template pushed');
                         } catch (error) {
@@ -39,7 +39,7 @@ export function createBrowseMenu(): ListTemplate {
                     onPress: async () => {
                         console.log('[BrowseMenu] All Albums selected');
                         try {
-                            const template = createAllAlbumsTemplate();
+                            const template = await createAllAlbumsTemplate();
                             await template.push();
                             console.log('[BrowseMenu] All Albums template pushed');
                         } catch (error) {
@@ -54,7 +54,7 @@ export function createBrowseMenu(): ListTemplate {
                     onPress: async () => {
                         console.log('[BrowseMenu] Playlists selected');
                         try {
-                            const template = createPlaylistsTemplate();
+                            const template = await createPlaylistsTemplate();
                             await template.push();
                             console.log('[BrowseMenu] Playlists template pushed');
                         } catch (error) {
@@ -69,7 +69,7 @@ export function createBrowseMenu(): ListTemplate {
                     onPress: async () => {
                         console.log('[BrowseMenu] Artists selected');
                         try {
-                            const template = createArtistsTemplate();
+                            const template = await createArtistsTemplate();
                             await template.push();
                             console.log('[BrowseMenu] Artists template pushed');
                         } catch (error) {

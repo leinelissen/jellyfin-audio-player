@@ -1,18 +1,16 @@
-import React, { useCallback, useEffect, useRef, useMemo } from 'react';
-import { useGetImage } from '@/utility/JellyfinApi/lib';
+import React, { useCallback, useRef, useMemo } from 'react';
+import Artwork from '@/store/sources/artwork-manager';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { differenceInDays } from 'date-fns';
-import { useAppDispatch, useTypedSelector } from '@/store';
-import { fetchAllAlbums } from '@/store/music/actions';
-import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
+import { useAlbumsByAlphabet } from '@/store/albums/hooks';
+import Sync from '@/store/sources/sync-manager';
+import useSyncAction from '@/utility/useSyncAction';
 import TouchableHandler from '@/components/TouchableHandler';
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
-import { selectAlbumsByAlphabet } from '@/store/music/selectors';
 import AlphabetScroller from '@/components/AlphabetScroller';
 import styled from 'styled-components/native';
 import useDefaultStyles, { ColoredBlurView } from '@/components/Colors';
-import { Album } from '@/store/music/types';
+import type { Album } from '@/store/albums/types';
 import { Text } from '@/components/Typography';
 import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp } from '@/screens/types';
@@ -29,8 +27,8 @@ const SectionText = styled(Text)`
     font-weight: 400;
 `;
 
-const SectionHeading = React.memo(function SectionHeading(props: { 
-    label: string; 
+const SectionHeading = React.memo(function SectionHeading(props: {
+    label: string;
 }) {
     const { top } = useNavigationOffsets();
     const { label } = props;
@@ -47,11 +45,9 @@ const SectionHeading = React.memo(function SectionHeading(props: {
 });
 
 interface GeneratedAlbumItemProps {
-    id: string | number;
+    album: Album;
     imageUrl?: string | null;
-    name: string;
-    artist: string;
-    onPress: (id: string) => void;
+    onPress: (album: Album) => void;
 }
 
 const HalfOpacity = styled.Text`
@@ -60,99 +56,91 @@ const HalfOpacity = styled.Text`
 
 const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: GeneratedAlbumItemProps) {
     const defaultStyles = useDefaultStyles();
-    const { id, imageUrl, name, artist, onPress } = props;
+    const { album, imageUrl, onPress } = props;
+
+    const handlePress = useCallback(() => {
+        onPress(album);
+    }, [album, onPress]);
 
     return (
-        <TouchableHandler id={id as string} onPress={onPress}>
+        <TouchableHandler id={album.id} onPress={handlePress}>
             <AlbumItem>
                 <ShadowWrapper size="medium">
                     <AlbumImage source={imageUrl ? { uri: imageUrl } : undefined} style={[defaultStyles.imageBackground]} />
                 </ShadowWrapper>
-                <Text numberOfLines={1} style={defaultStyles.text}>{name}</Text>
-                <HalfOpacity style={defaultStyles.text} numberOfLines={1}>{artist}</HalfOpacity>
+                <Text numberOfLines={1} style={defaultStyles.text}>{album.name}</Text>
+                <HalfOpacity style={defaultStyles.text} numberOfLines={1}>{album.albumArtist}</HalfOpacity>
             </AlbumItem>
         </TouchableHandler>
     );
 });
 
-const Albums: React.FC = () => {
-    // Retrieve data from store
-    const { entities: albums } = useTypedSelector((state) => state.music.albums);
-    const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
-    const lastRefreshed = useTypedSelector((state) => state.music.albums.lastRefreshed);
-    const sections = useTypedSelector(selectAlbumsByAlphabet);
-    
-    // Initialise helpers
-    const dispatch = useAppDispatch();
-    const navigation = useNavigation<NavigationProp>();
-    const getImage = useGetImage();
-    const listRef = useRef<FlashListRef<string | string[]>>(null);
+// Each row in the FlashList is either a section-header string or a pair of
+// album entities (rendered side-by-side). We bake the album objects into the row
+// items so that renderItem never needs to look them up by id.
+type SectionRow = { type: 'header'; label: string } | { type: 'row'; albums: Album[] };
 
-    // Convert sections to flat array format for FlashList
-    const flatData = useMemo(() => {
-        const data: (string | string[])[] = [];
-        sections.forEach((section) => {
-            if (!section.data.length || !section.data[0].length) return;
-            // Add section header
-            data.push(section.label);
-            // Add section items
-            section.data.forEach((item) => {
-                data.push(item);
-            });
-        });
-        return data;
+const Albums: React.FC = () => {
+    const sections = useAlbumsByAlphabet();
+
+    const navigation = useNavigation<NavigationProp>();
+
+    const listRef = useRef<FlashListRef<SectionRow>>(null);
+
+    // Build a flat list of header + row items for FlashList
+    const flatData = useMemo<SectionRow[]>(() => {
+        const rows: SectionRow[] = [];
+        for (const section of sections) {
+            if (section.data.length === 0) continue;
+            rows.push({ type: 'header', label: section.label });
+            // Chunk albums into pairs for the two-column grid
+            for (let i = 0; i < section.data.length; i += 2) {
+                rows.push({ type: 'row', albums: section.data.slice(i, i + 2) });
+            }
+        }
+        return rows;
     }, [sections]);
 
-    // Compute sticky header indices
-    const stickyHeaderIndices = useMemo(() => {
-        return flatData
-            .map((item, index) => typeof item === 'string' ? index : null)
-            .filter((item): item is number => item !== null);
-    }, [flatData]);
+    const stickyHeaderIndices = useMemo(
+        () => flatData
+            .map((item, index) => item.type === 'header' ? index : null)
+            .filter((i): i is number => i !== null),
+        [flatData]
+    );
 
-    // Set callbacks
-    const retrieveData = useCallback(() => dispatch(fetchAllAlbums()), [dispatch]);
-    const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
-    const selectLetter = useCallback(({ letter }: { letter: string, index: number }) => { 
-        const index = flatData.findIndex((item) => (
-            typeof item === 'string' && item === letter
-        ));
+    const [isLoading, retrieveData] = useSyncAction(Sync.syncAlbums);
+
+    const selectAlbum = useCallback((album: Album) => {
+        navigation.navigate('Album', { id: [album.sourceId, album.id] });
+    }, [navigation]);
+
+    const selectLetter = useCallback(({ letter }: { letter: string; index: number }) => {
+        const index = flatData.findIndex(
+            item => item.type === 'header' && item.label === letter
+        );
         if (index !== -1) {
             listRef.current?.scrollToIndex({ index, animated: false });
         }
     }, [flatData]);
 
-    const renderItem = useCallback(({ item }: { item: string | string[]; index: number }) => {
-        if (typeof item === 'string') {
-            return (
-                <SectionHeading 
-                    label={item} 
-                />
-            );
+    const renderItem = useCallback(({ item }: { item: SectionRow }) => {
+        if (item.type === 'header') {
+            return <SectionHeading label={item.label} />;
         }
         return (
             <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }}>
-                {item.map((id, i) => (
+                {item.albums.map(album => (
                     <GeneratedAlbumItem
-                        key={i}
-                        id={id}
-                        imageUrl={getImage(albums[id])}
-                        name={albums[id]?.Name || ''}
-                        artist={albums[id]?.AlbumArtist || ''}
+                        key={album.id}
+                        album={album}
+                        imageUrl={Artwork.getUrl(album)}
                         onPress={selectAlbum}
                     />
                 ))}
             </View>
         );
-    }, [albums, getImage, selectAlbum]);
+    }, [selectAlbum]);
 
-    // Retrieve data on mount
-    useEffect(() => { 
-        if (!lastRefreshed || differenceInDays(lastRefreshed, new Date()) > ALBUM_CACHE_AMOUNT_OF_DAYS) {
-            retrieveData(); 
-        }
-    });
-    
     return (
         <>
             <AlphabetScroller onSelect={selectLetter} />
@@ -163,7 +151,10 @@ const Albums: React.FC = () => {
                 ref={listRef}
                 renderItem={renderItem}
                 stickyHeaderIndices={stickyHeaderIndices}
-                getItemType={(item) => typeof item === 'string' ? 'sectionHeader' : 'row'}
+                getItemType={item => item.type}
+                keyExtractor={(item, index) =>
+                    item.type === 'header' ? `header-${item.label}` : `row-${index}`
+                }
             />
         </>
     );

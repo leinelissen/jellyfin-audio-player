@@ -1,18 +1,16 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react';
-import { Provider } from 'react-redux';
 import TrackPlayer, { Capability } from 'react-native-track-player';
-import { PersistGate } from 'redux-persist/integration/react';
 import Routes from '../screens';
-import store, { persistedStore } from '@/store';
 import {
     NavigationContainer,
     DefaultTheme,
     DarkTheme as BaseDarkTheme,
 } from '@react-navigation/native';
-import { ColorSchemeProvider, themes, useUserOrSystemScheme } from './Colors';
-import DownloadManager from './DownloadManager';
+import { ColorSchemeProvider, themes, useScheme } from './Colors';
+
 import AppLoading from './AppLoading';
 import { captureException } from '@sentry/react-native';
+import AppDatabaseProvider from './AppDatabaseProvider';
 
 const LightTheme = {
     ...DefaultTheme,
@@ -35,7 +33,7 @@ const DarkTheme = {
  * right theme is selected based on OS color scheme settings along with user preferences.
  */
 function ThemedNavigationContainer({ children }: PropsWithChildren<{}>) {
-    const scheme = useUserOrSystemScheme();
+    const scheme = useScheme();
 
     return (
         <NavigationContainer
@@ -53,7 +51,7 @@ export default function App(): React.JSX.Element | null {
 
     useEffect(() => {
         async function setupTrackPlayer() {
-            await TrackPlayer.setupPlayer({ 
+            await TrackPlayer.setupPlayer({
                 autoHandleInterruptions: true,
             });
             await TrackPlayer.updateOptions({
@@ -86,15 +84,12 @@ export default function App(): React.JSX.Element | null {
     }
 
     return (
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistedStore}>
-                <ColorSchemeProvider>
-                    <ThemedNavigationContainer>
-                        <Routes />
-                        <DownloadManager />
-                    </ThemedNavigationContainer>
-                </ColorSchemeProvider>
-            </PersistGate>
-        </Provider>
+        <AppDatabaseProvider>
+            <ColorSchemeProvider>
+                <ThemedNavigationContainer>
+                    <Routes />
+                </ThemedNavigationContainer>
+            </ColorSchemeProvider>
+        </AppDatabaseProvider>
     );
 }

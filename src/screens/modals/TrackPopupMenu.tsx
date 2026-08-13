@@ -1,7 +1,10 @@
 import React, { useCallback } from 'react';
 import { useNavigation, StackActions, useRoute, RouteProp } from '@react-navigation/native';
 import { StackParams } from '@/screens/types';
-import { useAppDispatch, useTypedSelector } from '@/store';
+import { useTrackWithDownload } from '@/store/tracks/hooks';
+
+
+import { Downloads } from '@/store/downloads/download-manager';
 import { Header, SubHeader } from '@/components/Typography';
 import styled from 'styled-components/native';
 import { t } from '@/localisation';
@@ -12,10 +15,8 @@ import TrashIcon from '@/assets/icons/trash.svg';
 
 import { WrappableButton, WrappableButtonRow } from '@/components/WrappableButtonRow';
 import CoverImage from '@/components/CoverImage';
-import { queueTrackForDownload, removeDownloadedTrack } from '@/store/downloads/actions';
 import usePlayTracks from '@/utility/usePlayTracks';
-import { selectIsDownloaded } from '@/store/downloads/selectors';
-import { useGetImage } from '@/utility/JellyfinApi/lib';
+import Artwork from '@/store/sources/artwork-manager';
 import { ColoredBlurView } from '@/components/Colors';
 
 type Route = RouteProp<StackParams, 'TrackPopupMenu'>;
@@ -27,59 +28,56 @@ const Container = styled.View`
     flex-direction: column;
 `;
 
-const Artwork = styled(CoverImage)`
+const ArtworkImage = styled(CoverImage)`
     margin: 0 auto 25px auto;
 `;
 
 function TrackPopupMenu() {
     // Retrieve trackId from route
     const { params: { trackId } } = useRoute<Route>();
-
     // Retrieve helpers
     const navigation = useNavigation();
-    const dispatch = useAppDispatch();
     const playTracks = usePlayTracks();
-    const getImage = useGetImage();
 
-    // Retrieve data from store
-    const track = useTypedSelector((state) => state.music.tracks.entities[trackId]);
-    const isDownloaded = useTypedSelector(selectIsDownloaded(trackId));
+
+    const { data: track } = useTrackWithDownload(trackId);
+    const isDownloaded = !!track?.download;
 
     // Set callback to close the modal
     const closeModal = useCallback(() => {
-        navigation.dispatch(StackActions.popToTop());    
+        navigation.dispatch(StackActions.popToTop());
     }, [navigation]);
 
     // Callback for adding the track to the queue as the next song
     const handlePlayNext = useCallback(() => {
-        playTracks([trackId], { method: 'add-after-currently-playing', play: false });
+        if (track) playTracks([track], { method: 'add-after-currently-playing', play: false });
         closeModal();
-    }, [playTracks, closeModal, trackId]);
+    }, [playTracks, closeModal, track]);
 
     // Callback for adding the track to the end of the queue
     const handleAddToQueue = useCallback(() => {
-        playTracks([trackId], { method: 'add-to-end', play: false });
+        if (track) playTracks([track], { method: 'add-to-end', play: false });
         closeModal();
-    }, [playTracks, closeModal, trackId]);
+    }, [playTracks, closeModal, track]);
 
     // Callback for downloading the track
-    const handleDownload = useCallback(() => {
-        dispatch(queueTrackForDownload(trackId));
+    const handleDownload = useCallback(async () => {
+        if (track) await Downloads.enqueue(track);
         closeModal();
-    }, [trackId, dispatch, closeModal]);
+    }, [track, closeModal]);
 
     // Callback for removing the downloaded track
-    const handleDelete = useCallback(() => {
-        dispatch(removeDownloadedTrack(trackId));
+    const handleDelete = useCallback(async () => {
+        if (track?.download) await Downloads.remove(track.download);
         closeModal();
-    }, [trackId, dispatch, closeModal]);
+    }, [track, closeModal]);
 
     return (
         <ColoredBlurView style={{flex: 1}}>
             <Container>
-                <Artwork src={getImage(track)} />
-                <Header>{track?.Name}</Header>
-                <SubHeader style={{ marginBottom: 18 }}>{track?.AlbumArtist} {track?.Album ? '— ' + track?.Album : ''}</SubHeader>
+                <ArtworkImage src={track ? Artwork.getUrl(track) : undefined} />
+                <Header>{track?.name}</Header>
+                <SubHeader style={{ marginBottom: 18 }}>{track?.albumArtist} {track?.album ? '— ' + track?.album : ''}</SubHeader>
                 <WrappableButtonRow>
                     <WrappableButton title={t('play-next')} icon={PlayIcon} onPress={handlePlayNext} />
                     <WrappableButton title={t('add-to-queue')} icon={QueueAppendIcon} onPress={handleAddToQueue} />

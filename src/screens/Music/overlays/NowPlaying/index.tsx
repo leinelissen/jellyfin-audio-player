@@ -180,38 +180,38 @@ function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean })
                         borderRadius: 100,
                     }}
                 >
-                <InnerContainer onPress={openNowPlayingModal} activeOpacity={0.5} testID="open-player-modal">
-                    <ShadowWrapper size="small">
-                        <Cover source={{ uri: (track.artwork || '') as string }} style={defaultStyles.imageBackground} />
-                    </ShadowWrapper>
-                    <TrackNameContainer>
-                        <Text numberOfLines={1}>{track.title}</Text>
-                        {(track.artist || track.album) && (
-                            <Text style={{ opacity: 0.5 }} numberOfLines={1}>
-                                {track.artist}{track.album ? ` — ${track.album}` : ''}
-                            </Text>
-                        )}
-                    </TrackNameContainer>
-                    <ActionButton>
-                        <SelectActionButton />
-                    </ActionButton>
-                    <ProgressTrack
-                        style={[
-                            { transform: [{ translateX: bufferAnimation.current }]},
-                            defaultStyles.themeBackground,
-                        ]}
-                        opacity={0.15}
-                        stroke={4}
-                    />
-                    <ProgressTrack
-                        style={[
-                            { transform: [{ translateX: progressAnimation.current }]},
-                            defaultStyles.themeBackground,
-                        ]}
-                        stroke={4}
-                    />
-                </InnerContainer>
-            </LiquidGlassView>
+                    <InnerContainer onPress={openNowPlayingModal} activeOpacity={0.5} testID="open-player-modal">
+                        <ShadowWrapper size="small">
+                            <Cover source={{ uri: (track.artwork || '') as string }} style={defaultStyles.imageBackground} />
+                        </ShadowWrapper>
+                        <TrackNameContainer>
+                            <Text numberOfLines={1}>{track.title}</Text>
+                            {(track.artist || track.album) && (
+                                <Text style={{ opacity: 0.5 }} numberOfLines={1}>
+                                    {track.artist}{track.album ? ` — ${track.album}` : ''}
+                                </Text>
+                            )}
+                        </TrackNameContainer>
+                        <ActionButton>
+                            <SelectActionButton />
+                        </ActionButton>
+                        <ProgressTrack
+                            style={[
+                                { transform: [{ translateX: bufferAnimation.current }]},
+                                defaultStyles.themeBackground,
+                            ]}
+                            opacity={0.15}
+                            stroke={4}
+                        />
+                        <ProgressTrack
+                            style={[
+                                { transform: [{ translateX: progressAnimation.current }]},
+                                defaultStyles.themeBackground,
+                            ]}
+                            stroke={4}
+                        />
+                    </InnerContainer>
+                </LiquidGlassView>
             </Animated.View>
         </Container>
     );

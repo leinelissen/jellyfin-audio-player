@@ -4,11 +4,9 @@
     "types": ["jest", "node"],
     "baseUrl": "./src",
     "paths": {
-      "@/*": [
-        "*"
-      ],
+      "@/*": ["*"],
     },
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["**/node_modules", "**/Pods"]
+  "exclude": ["**/node_modules", "**/Pods"],
 }

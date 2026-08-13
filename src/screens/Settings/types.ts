@@ -6,6 +6,9 @@ export type SettingsStackParams = {
     Library: undefined;
     Cache: undefined;
     Sentry: undefined;
+    'Playback Reporting': undefined;
+    'Color Scheme': undefined;
+    PrivacyPolicy: undefined;
 };
 
-export type SettingsNavigationProp = StackNavigationProp<SettingsStackParams>; 
+export type SettingsNavigationProp = StackNavigationProp<SettingsStackParams>;

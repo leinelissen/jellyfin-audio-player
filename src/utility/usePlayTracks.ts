@@ -1,21 +1,20 @@
-import { useTypedSelector } from '@/store';
 import { useCallback } from 'react';
-import TrackPlayer, { Track } from 'react-native-track-player';
+import TrackPlayer, { type Track } from 'react-native-track-player';
 import { shuffle as shuffleArray } from 'lodash';
-import { generateTrack } from './JellyfinApi/track';
-import type { AlbumTrack } from '@/store/music/types';
-import type { DownloadEntity } from '@/store/downloads/types';
+import { generateTrack } from './track';
+import type { TrackWithDownload } from '@/store/tracks/hooks';
+import type { Download } from '@/store/downloads/types';
 
-interface PlayOptions {
+export interface PlayOptions {
     play: boolean;
     shuffle: boolean;
     method: 'add-to-end' | 'add-after-currently-playing' | 'replace';
-    /** 
+    /**
      * The index for the track that should start out playing. This ensures that
      * no intermediate tracks are played (however briefly) while the queue skips
      * to this index.
-     * 
-     * NOTE: This option is only available with the `replace` method. 
+     *
+     * NOTE: This option is only available with the `replace` method.
      */
     playIndex?: number;
 }
@@ -27,132 +26,83 @@ const defaults: PlayOptions = {
 };
 
 /**
- * Core playback logic that can be used outside of React components
- * Used by both usePlayTracks hook and CarPlay templates
+ * Core playback logic. Accepts a list of tracks (each with its download row
+ * attached), generates a react-native-track-player entry for each one
+ * (swapping in a local file URL when a completed download exists) and hands
+ * the queue off to TrackPlayer.
  */
 export async function playTracks(
-    trackIds: string[] | undefined,
-    tracks: Record<string, AlbumTrack>,
-    downloads: Record<string, DownloadEntity>,
+    tracks: TrackWithDownload[] | undefined,
     options: Partial<PlayOptions> = {},
 ): Promise<Track[] | undefined> {
-    if (!trackIds) {
+    if (!tracks?.length) {
         return;
     }
 
-    // GUARD: Check options and queue
-    const {
-        play,
-        shuffle,
-        method,
-    } = Object.assign({}, defaults, options);
+    const { play, shuffle, method } = { ...defaults, ...options };
 
-    // Convert all trackIds to the relevant format for react-native-track-player
-    const generatedTracks = (await Promise.all(trackIds.map(async (trackId) => {
-        const track = tracks[trackId];
+    const generatedTracks = (
+        await Promise.all(
+            tracks.map(async ({ download: rawDownload, ...track }) => {
+                const download = rawDownload as Download | null;
+                const generatedTrack = await generateTrack(track);
 
-        // GUARD: Check that the track actually exists in Redux
-        if (!trackId || !track) {
-            return;
-        }
+                if (download?.isComplete && download.filename) {
+                    generatedTrack.url = 'file://' + download.filename;
+                }
+                if (download?.image) {
+                    generatedTrack.artwork = 'file://' + download.image;
+                }
 
-        // Retrieve the generated track from Jellyfin
-        const generatedTrack = await generateTrack(track);
+                return generatedTrack;
+            }),
+        )
+    ).filter((t): t is Track => t !== undefined);
 
-        // Check if a downloaded version exists, and if so rewrite the URL
-        const download = downloads[trackId];
-        if (download?.location) {
-            generatedTrack.url = 'file://' + download.location;
-        }
-        if (download?.image) {
-            generatedTrack.artwork = 'file://' + download.image;
-        }
-
-        return generatedTrack;
-    }))).filter((t): t is Track => typeof t !== 'undefined');
-
-    // Potentially shuffle all tracks
     const newTracks = shuffle ? shuffleArray(generatedTracks) : generatedTracks;
 
-    console.log('[playTracks] Generated tracks:', newTracks.length, 'tracks');
-    console.log('[playTracks] First track URL:', newTracks[0]?.url);
-
-    // Then, we'll need to check where to add the track
-    switch(method) {
+    switch (method) {
         case 'add-to-end': {
             await TrackPlayer.add(newTracks);
-            console.log('[playTracks] Added tracks to end, queue size:', (await TrackPlayer.getQueue()).length);
-
-            // Then we'll skip to it and play it
             if (play) {
-                await TrackPlayer.skip((await TrackPlayer.getQueue()).length - newTracks.length);
+                await TrackPlayer.skip(
+                    (await TrackPlayer.getQueue()).length - newTracks.length,
+                );
                 await TrackPlayer.play();
-                console.log('[playTracks] Playback started');
             }
-
             break;
         }
+
         case 'add-after-currently-playing': {
-            // Try and locate the current track
             const currentTrackIndex = await TrackPlayer.getActiveTrackIndex();
+            if (currentTrackIndex === undefined) break;
 
-            if (currentTrackIndex === undefined) {
-                break;
-            }
-            
-            // TrackPlayer.add wants the index of the track to insert in front of,
-            // or just one more
-            const targetTrack = currentTrackIndex + 1;
-
-            // Depending on whether this track exists, we either add it there,
-            // or at the end of the queue.
-            await TrackPlayer.add(newTracks, targetTrack);
-            console.log('[playTracks] Added tracks after current');
-
+            await TrackPlayer.add(newTracks, currentTrackIndex + 1);
             if (play) {
                 await TrackPlayer.skip(currentTrackIndex + 1);
                 await TrackPlayer.play();
-                console.log('[playTracks] Playback started');
             }
-
             break;
         }
-        case 'replace': {
-            // Reset the queue first
-            await TrackPlayer.reset();
-            console.log('[playTracks] Queue reset');
 
-            // GUARD: Check if we need to skip to a particular index
+        case 'replace': {
+            await TrackPlayer.reset();
+
             if (options.playIndex !== undefined) {
-                // If so, we'll split the tracks into tracks before the
-                // index that should be played, and the queue of tracks that
-                // will start playing
                 const before = newTracks.slice(0, options.playIndex);
                 const current = newTracks.slice(options.playIndex);
 
-                // First, we'll add the current queue and (optionally) force
-                // it to start playing.
                 await TrackPlayer.add(current);
-                console.log('[playTracks] Added current tracks, starting at index:', options.playIndex);
                 if (play) {
                     await TrackPlayer.play();
-                    console.log('[playTracks] Playback started');
                 }
-
-                // Then, we'll insert the "previous" tracks after the queue
-                // has started playing. This ensures that these tracks won't
-                // trigger any events on the track player.
                 await TrackPlayer.add(before, 0);
             } else {
                 await TrackPlayer.add(newTracks);
-                console.log('[playTracks] Added all tracks, queue size:', (await TrackPlayer.getQueue()).length);
                 if (play) {
                     await TrackPlayer.play();
-                    const state = await TrackPlayer.getPlaybackState();
-                    console.log('[playTracks] Playback started, state:', state);
                 }
             }
-
             break;
         }
     }
@@ -161,16 +111,12 @@ export async function playTracks(
 }
 
 /**
- * Generate a callback function that starts playing a full album given its
- * supplied id.
+ * React hook that returns a stable callback wrapping playTracks.
  */
 export default function usePlayTracks() {
-    const tracksEntities = useTypedSelector(state => state.music.tracks.entities);
-    const downloadsEntities = useTypedSelector(state => state.downloads.entities);
-
     return useCallback(
-        (trackIds: string[] | undefined, options: Partial<PlayOptions> = {}) =>
-            playTracks(trackIds, tracksEntities, downloadsEntities, options),
-        [downloadsEntities, tracksEntities]
+        (tracks: TrackWithDownload[] | undefined, options: Partial<PlayOptions> = {}) =>
+            playTracks(tracks, options),
+        [],
     );
 }

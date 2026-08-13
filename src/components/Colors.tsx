@@ -2,9 +2,9 @@ import { BlurView, BlurViewProps } from '@sbaiahmed1/react-native-blur';
 import React, { PropsWithChildren } from 'react';
 import { useContext } from 'react';
 import { ColorSchemeName, Platform, StyleSheet, View, useColorScheme } from 'react-native';
-import { useTypedSelector } from '@/store';
 import { ColorScheme } from '@/store/settings/types';
 import { useAccessibilitySetting } from 'react-native-accessibility-settings';
+import { useAppSettings } from '@/store/settings/hooks';
 
 const majorPlatformVersion = typeof Platform.Version === 'string' ? parseInt(Platform.Version, 10) : Platform.Version;
 
@@ -13,97 +13,100 @@ const majorPlatformVersion = typeof Platform.Version === 'string' ? parseInt(Pla
  * don't have to be generate on every individual component render
  */
 function generateStyles(scheme: ColorSchemeName, highContrast: boolean) {
-    return StyleSheet.create({
-        text: {
-            color: scheme === 'dark' ? '#fff' : '#000',
-            fontSize: 14,
-            fontFamily: 'Inter',
-        },
-        textSmall: {
-            color: scheme === 'dark' ? '#fff' : '#000',
-            fontSize: 12,
-            lineHeight: 20,
-            opacity: 0.5,
-        },
-        textHalfOpacity: {
-            color: highContrast
-                ? (scheme === 'dark' ? '#ffffffbb' : '#000000bb')
-                : (scheme === 'dark' ? '#ffffff88' : '#00000088'),
-            fontSize: 14,
-        },
-        textQuarterOpacity: {
-            color: highContrast
-                ? (scheme === 'dark' ? '#ffffff88' : '#00000088')
-                : (scheme === 'dark' ? '#ffffff44' : '#00000044'),
-            fontSize: 14,
-        },
-        view: {
-            backgroundColor: scheme === 'dark' ? '#111111' : '#ffffff',
-        },
-        border: {
-            borderColor: scheme === 'dark' ? '#262626' : '#ddd',
-        },
-        activeBackground: {
-            backgroundColor: highContrast 
-                ? `#8b513c${scheme === 'dark' ? '26' : '10'}`
-                : `#FF3C00${scheme === 'dark' ? '26' : '16'}`,
-        },
-        imageBackground: {
-            backgroundColor: scheme === 'dark' ? '#191919' : '#eee',
-            borderWidth: 0.5,
-            borderColor: scheme === 'dark' ? '#262626' : '#ddd',
-        },
-        modal: {
-            backgroundColor: scheme === 'dark' ? '#000' : '#fff',
-        },
-        modalInner: {
-            backgroundColor: scheme === 'dark' ? '#000' : '#fff',
-        },
-        button: {
-            backgroundColor: highContrast
-                ? (scheme === 'dark' ? '#ffffff0f' : '#0000000f')
-                : (scheme === 'dark' ? '#ffffff09' : '#00000009'),
-        },
-        input: {
-            backgroundColor: scheme === 'dark' ? '#191919' : '#f3f3f3',
-            color: scheme === 'dark' ? '#fff' : '#000',
-        },
-        trackBackground: {
-            backgroundColor: scheme === 'dark' ? '#161616' : '#fff',
-        },
-        stackHeader: {
-            color: scheme === 'dark' ? 'white' : 'black'
-        },
-        icon: {
-            color: scheme === 'dark' ? '#ffffff4d' : '#0000004d',
-        },
-        divider: {
-            backgroundColor: scheme === 'dark' ? '#333' : '#eee',
-        },
-        filter: {
-            backgroundColor: scheme === 'dark' ? '#191919' : '#f3f3f3',
-        },
-        themeColor: {
-            color: highContrast 
-                ? scheme === 'dark' ? '#FF7A1C' : '#c93400'
-                : '#FF3C00',
-        },
-        themeColorHalfOpacity: {
-            color: highContrast 
-                ? scheme === 'dark' ? '#FF7A1Cbb' : '#c93400bb'
-                : '#FF3C0088',
-        },
-        themeColorQuarterOpacity: {
-            color: highContrast 
-                ? scheme === 'dark' ? '#FF7A1C88' : '#c9340088'
-                : '#FF3C0044',
-        },
-        themeBackground: {
-            backgroundColor: highContrast 
-                ? scheme === 'dark' ? '#FF7A1C' : '#c93400'
-                : '#FF3C00',
-        }
-    });
+    return {
+        isDark: scheme === 'dark',
+        ...StyleSheet.create({
+            text: {
+                color: scheme === 'dark' ? '#fff' : '#000',
+                fontSize: 14,
+                fontFamily: 'Inter',
+            },
+            textSmall: {
+                color: scheme === 'dark' ? '#fff' : '#000',
+                fontSize: 12,
+                lineHeight: 20,
+                opacity: 0.5,
+            },
+            textHalfOpacity: {
+                color: highContrast
+                    ? (scheme === 'dark' ? '#ffffffbb' : '#000000bb')
+                    : (scheme === 'dark' ? '#ffffff88' : '#00000088'),
+                fontSize: 14,
+            },
+            textQuarterOpacity: {
+                color: highContrast
+                    ? (scheme === 'dark' ? '#ffffff88' : '#00000088')
+                    : (scheme === 'dark' ? '#ffffff44' : '#00000044'),
+                fontSize: 14,
+            },
+            view: {
+                backgroundColor: scheme === 'dark' ? '#111111' : '#ffffff',
+            },
+            border: {
+                borderColor: scheme === 'dark' ? '#262626' : '#ddd',
+            },
+            activeBackground: {
+                backgroundColor: highContrast
+                    ? `#8b513c${scheme === 'dark' ? '26' : '10'}`
+                    : `#FF3C00${scheme === 'dark' ? '26' : '16'}`,
+            },
+            imageBackground: {
+                backgroundColor: scheme === 'dark' ? '#191919' : '#eee',
+                borderWidth: 0.5,
+                borderColor: scheme === 'dark' ? '#262626' : '#ddd',
+            },
+            modal: {
+                backgroundColor: scheme === 'dark' ? '#000' : '#fff',
+            },
+            modalInner: {
+                backgroundColor: scheme === 'dark' ? '#000' : '#fff',
+            },
+            button: {
+                backgroundColor: highContrast
+                    ? (scheme === 'dark' ? '#ffffff0f' : '#0000000f')
+                    : (scheme === 'dark' ? '#ffffff09' : '#00000009'),
+            },
+            input: {
+                backgroundColor: scheme === 'dark' ? '#191919' : '#f3f3f3',
+                color: scheme === 'dark' ? '#fff' : '#000',
+            },
+            trackBackground: {
+                backgroundColor: scheme === 'dark' ? '#161616' : '#fff',
+            },
+            stackHeader: {
+                color: scheme === 'dark' ? 'white' : 'black'
+            },
+            icon: {
+                color: scheme === 'dark' ? '#ffffff4d' : '#0000004d',
+            },
+            divider: {
+                backgroundColor: scheme === 'dark' ? '#333' : '#eee',
+            },
+            filter: {
+                backgroundColor: scheme === 'dark' ? '#191919' : '#f3f3f3',
+            },
+            themeColor: {
+                color: highContrast
+                    ? scheme === 'dark' ? '#FF7A1C' : '#c93400'
+                    : '#FF3C00',
+            },
+            themeColorHalfOpacity: {
+                color: highContrast
+                    ? scheme === 'dark' ? '#FF7A1Cbb' : '#c93400bb'
+                    : '#FF3C0088',
+            },
+            themeColorQuarterOpacity: {
+                color: highContrast
+                    ? scheme === 'dark' ? '#FF7A1C88' : '#c9340088'
+                    : '#FF3C0044',
+            },
+            themeBackground: {
+                backgroundColor: highContrast
+                    ? scheme === 'dark' ? '#FF7A1C' : '#c93400'
+                    : '#FF3C00',
+            }
+        }),
+    };
 }
 
 // Prerender both stylesheets
@@ -119,10 +122,12 @@ export const ColorSchemeContext = React.createContext(themes.dark);
 
 /**
  * This hook returns the proper color scheme, taking into account potential user overrides.
+ * Private — only used within this module by ColorSchemeProvider.
  */
-export function useUserOrSystemScheme() {
+function useUserOrSystemScheme() {
     const systemScheme = useColorScheme();
-    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
+    const { data: settings } = useAppSettings();
+    const userScheme = settings?.colorScheme || ColorScheme.System;
     return userScheme === ColorScheme.System ? systemScheme : userScheme;
 }
 
@@ -145,7 +150,16 @@ export function ColorSchemeProvider({ children }: PropsWithChildren<{}>) {
 }
 
 /**
- * Retrieves the default styles object in hook form 
+ * Returns 'dark' or 'light' based on the resolved color scheme from context.
+ * Use this instead of useUserOrSystemScheme outside of this module.
+ */
+export function useScheme(): 'dark' | 'light' {
+    const theme = useDefaultStyles();
+    return theme === themes.dark || theme === themes['dark-highcontrast'] ? 'dark' : 'light';
+}
+
+/**
+ * Retrieves the default styles object in hook form
  */
 export default function useDefaultStyles() {
     return useContext(ColorSchemeContext);
@@ -165,16 +179,14 @@ export function DefaultStylesProvider(props: DefaultStylesProviderProps) {
 }
 
 export function ColoredBlurView({ children, style, ...props }: PropsWithChildren<BlurViewProps>) {
-    const systemScheme = useColorScheme();
-    const userScheme = useTypedSelector((state) => state.settings.colorScheme);
-    const scheme = userScheme === ColorScheme.System ? systemScheme : userScheme;
+    const scheme = useScheme();
 
     return Platform.OS === 'ios' ? (
         <View style={[style, { overflow: 'hidden' }]}>
             <BlurView
-                style={[ StyleSheet.absoluteFill, { overflow: 'hidden'} ]}
+                style={[StyleSheet.absoluteFill, { overflow: 'hidden' }]}
                 {...props}
-                blurType={Platform.OS === 'ios' && majorPlatformVersion >= 13 
+                blurType={Platform.OS === 'ios' && majorPlatformVersion >= 13
                     ? scheme === 'dark' ? 'systemMaterialDark' : 'systemMaterialLight'
                     : scheme === 'dark' ? 'extraDark' : 'xlight'
                 }
@@ -182,9 +194,9 @@ export function ColoredBlurView({ children, style, ...props }: PropsWithChildren
             {children}
         </View>
     ) : (
-        <View {...props} style={[ style, {
+        <View {...props} style={[style, {
             backgroundColor: scheme === 'light' ? '#f6f6f6fb' : '#333333fb',
-        } ]}>
+        }]}>
             {children}
         </View>
     );

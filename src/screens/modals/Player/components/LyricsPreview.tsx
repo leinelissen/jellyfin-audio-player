@@ -117,7 +117,7 @@ function InnerLyricsPreview() {
 export default function LyricsPreview() {
     const { albumTrack } = useCurrentTrack();
 
-    if (!albumTrack?.HasLyrics) {
+    if (!albumTrack?.lyrics) {
         return null;
     }
 

@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { chunk } from 'lodash';
-import { useGetImage } from '@/utility/JellyfinApi/lib';
+import Artwork from '@/store/sources/artwork-manager';
 import { View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import styled from 'styled-components/native';
-import { differenceInDays } from 'date-fns';
-import { useAppDispatch, useTypedSelector } from '@/store';
-import { fetchAllAlbums } from '@/store/music/actions';
-import { ALBUM_CACHE_AMOUNT_OF_DAYS } from '@/CONSTANTS';
+import { useArtist } from '@/store/artists/hooks';
+import { useAlbumsByArtist } from '@/store/albums/hooks';
+import Sync from '@/store/sources/sync-manager';
+import useSyncAction from '@/utility/useSyncAction';
 import TouchableHandler from '@/components/TouchableHandler';
 import useDefaultStyles from '@/components/Colors';
-import { Album } from '@/store/music/types';
+import type { Album } from '@/store/albums/types';
 import { SubHeader, Text } from '@/components/Typography';
 import { ShadowWrapper } from '@/components/Shadow';
 import { NavigationProp, StackParams } from '@/screens/types';
@@ -18,15 +18,14 @@ import { SafeFlatList } from '@/components/SafeNavigatorView';
 import CoverImage from '@/components/CoverImage';
 import CollapsibleText from '@/components/CollapsibleText';
 import { t } from '@/localisation';
+import type { EntityId } from '@/store/types';
 
 import AlbumImage, { AlbumItem } from './components/AlbumImage';
 
 interface GeneratedAlbumItemProps {
-    id: string | number;
+    album: Album;
     imageUrl: string | undefined;
-    name: string;
-    artist: string;
-    onPress: (id: string) => void;
+    onPress: (album: Album) => void;
 }
 
 const HalfOpacity = styled.Text`
@@ -41,85 +40,74 @@ const ArtistImageContainer = styled.View`
 
 const GeneratedAlbumItem = React.memo(function GeneratedAlbumItem(props: GeneratedAlbumItemProps) {
     const defaultStyles = useDefaultStyles();
-    const { id, imageUrl, name, artist, onPress } = props;
+    const { album, imageUrl, onPress } = props;
+
+    const handlePress = useCallback(() => {
+        onPress(album);
+    }, [album, onPress]);
 
     return (
-        <TouchableHandler id={id as string} onPress={onPress}>
+        <TouchableHandler id={album.id} onPress={handlePress}>
             <AlbumItem>
                 <ShadowWrapper size="medium">
                     <AlbumImage source={{ uri: imageUrl }} style={[defaultStyles.imageBackground]} />
                 </ShadowWrapper>
-                <Text numberOfLines={1} style={defaultStyles.text}>{name}</Text>
-                <HalfOpacity style={defaultStyles.text} numberOfLines={1}>{artist}</HalfOpacity>
+                <Text numberOfLines={1} style={defaultStyles.text}>{album.name}</Text>
+                <HalfOpacity style={defaultStyles.text} numberOfLines={1}>{album.albumArtist}</HalfOpacity>
             </AlbumItem>
         </TouchableHandler>
     );
 });
 
-
 export default function Artist() {
-    const { params } = useRoute<RouteProp<StackParams, 'Artist'>>();
+    const { params: { id } } = useRoute<RouteProp<StackParams, 'Artist'>>();
 
-    // Retrieve data from store
-    const { ids: allAlbumIds, entities: albums } = useTypedSelector((state) => state.music.albums);
-    const isLoading = useTypedSelector((state) => state.music.albums.isLoading);
-    const lastRefreshed = useTypedSelector((state) => state.music.albums.lastRefreshed);
-    const artist = useTypedSelector((state) => state.music.artists.entities[params.id]);
+    const entityId = useMemo<EntityId>(() => id, [id]);
 
-    const albumIds = useMemo(() => {
-        return allAlbumIds.filter(id => {
-            const album = albums[id];
-            return album?.ArtistItems?.find(item => item.Id === params.id);
-        });
-    }, [allAlbumIds, albums, params.id]);
+    const { data: artist } = useArtist(entityId);
+    const { data: artistWithAlbums } = useAlbumsByArtist(entityId);
+    const albums = artistWithAlbums?.albums ?? [];
 
-    // Initialise helpers
-    const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp>();
-    const getImage = useGetImage();
 
-    // Set callbacks
-    const retrieveData = useCallback(() => {
-        dispatch(fetchAllAlbums());
-    }, [dispatch]);
-    const selectAlbum = useCallback((id: string) => navigation.navigate('Album', { id, album: albums[id] as Album }), [navigation, albums]);
-    const generateItem = useCallback(({ item }: { item: string[] }) => {
+    const [isLoading, retrieveData] = useSyncAction(() => Sync.syncAlbums(entityId[0]));
+
+    const selectAlbum = useCallback((album: Album) => {
+        navigation.navigate('Album', { id: [album.sourceId, album.id] });
+    }, [navigation]);
+
+    const generateItem = useCallback(({ item }: { item: Album[] }) => {
         return (
-            <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }} key={item.join('-')}>
-                {item.map((id) => (
+            <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 }} key={item.map(a => a.id).join('-')}>
+                {item.map((album) => (
                     <GeneratedAlbumItem
-                        key={id}
-                        id={id}
-                        imageUrl={getImage(albums[id])}
-                        name={albums[id]?.Name || ''}
-                        artist={albums[id]?.AlbumArtist || ''}
+                        key={album.id}
+                        album={album}
+                        imageUrl={Artwork.getUrl(album)}
                         onPress={selectAlbum}
                     />
                 ))}
             </View>
         );
-    }, [albums, getImage, selectAlbum]);
+    }, [selectAlbum]);
 
-    // Retrieve data on mount
-    useEffect(() => { 
-        // GUARD: Only refresh this API call every set amounts of days
-        if (!lastRefreshed || differenceInDays(lastRefreshed, new Date()) > ALBUM_CACHE_AMOUNT_OF_DAYS) {
-            retrieveData(); 
-        }
-    });
+    const artistMetadata = useMemo(() => {
+        if (!artist?.metadata) return null;
+        return artist.metadata as { Overview?: string };
+    }, [artist?.metadata]);
 
     return (
         <SafeFlatList
             ListHeaderComponent={
                 <View style={{ padding: 24, paddingTop: 0, paddingBottom: 8 }}>
                     <ArtistImageContainer>
-                        <CoverImage src={getImage(artist)} margin={48} height={200} />
+                        <CoverImage src={artist ? Artwork.getUrl(artist) : undefined} margin={48} height={200} />
                     </ArtistImageContainer>
-                    {artist?.Overview ? <CollapsibleText text={artist.Overview} /> : null}
+                    {artistMetadata?.Overview ? <CollapsibleText text={artistMetadata.Overview} /> : null}
                     <SubHeader>{t('albums')}</SubHeader>
                 </View>
             }
-            data={chunk(albumIds, 2)}
+            data={chunk(albums, 2)}
             refreshing={isLoading}
             onRefresh={retrieveData}
             renderItem={generateItem}

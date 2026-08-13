@@ -3,7 +3,7 @@ import { StatusBar, StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { t } from '@/localisation';
-import useDefaultStyles, { ColoredBlurView, useUserOrSystemScheme } from '@/components/Colors';
+import useDefaultStyles, { ColoredBlurView, useScheme } from '@/components/Colors';
 import { StackParams } from '@/screens/types';
 import NowPlaying from './overlays/NowPlaying';
 
@@ -20,7 +20,7 @@ const Stack = createStackNavigator<StackParams>();
 
 function MusicStack() {
     const defaultStyles = useDefaultStyles();
-    const scheme = useUserOrSystemScheme();
+    const scheme = useScheme();
 
     return (
         <SafeAreaProvider>
@@ -37,7 +37,7 @@ function MusicStack() {
                     <Stack.Screen name="Albums" component={Albums} options={{ headerTitle: t('albums') }} />
                     <Stack.Screen name="Album" component={Album} options={{ headerTitle: t('album') }} />
                     <Stack.Screen name="Artists" component={Artists} options={{ headerTitle: t('artists') }} />
-                    <Stack.Screen name="Artist" component={Artist} options={({ route }) => ({ headerTitle: route.params.name })} />
+                    <Stack.Screen name="Artist" component={Artist} options={{ headerTitle: t('artist') }} />
                     <Stack.Screen name="Playlists" component={Playlists} options={{ headerTitle: t('playlists') }} />
                     <Stack.Screen name="Playlist" component={Playlist} options={{ headerTitle: t('playlist') }} />
                 </Stack.Navigator>

@@ -7,20 +7,21 @@ import { CompositeNavigationProp } from '@react-navigation/native';
 
 import SearchStack from './Search';
 import Music from './Music';
-import Settings from './Settings';
+import SettingsScreen from './Settings';
 import Downloads from './Downloads';
 import Onboarding from './Onboarding';
 import TrackPopupMenu from './modals/TrackPopupMenu';
 import SetJellyfinServer from './modals/SetJellyfinServer';
 import ErrorReportingPopup from './modals/ErrorReportingPopup';
 
-import { useTypedSelector } from '@/store';
 import { t } from '@/localisation';
 import ErrorReportingAlert from '@/utility/ErrorReportingAlert';
 import useDefaultStyles from '@/components/Colors';
 import Player from './modals/Player';
 import { StackParams } from './types';
 import Lyrics from './modals/Lyrics';
+import { useAppSettings } from '@/store/settings/hooks';
+import Settings from '@/store/settings/manager';
 
 const Stack = createNativeStackNavigator<StackParams>();
 const Tab = createNativeBottomTabNavigator();
@@ -32,11 +33,11 @@ type Screens = {
 
 function Screens() {
     const styles = useDefaultStyles();
-    const isOnboardingComplete = useTypedSelector(state => state.settings.isOnboardingComplete);
+    const { isOnboardingComplete } = useAppSettings().data || Settings.get() || {};
 
     // GUARD: If onboarding has not been completed, we instead render the
     // onboarding component, so that the user can get setup in the app.
-    if (!isOnboardingComplete) {
+    if (isOnboardingComplete === false) {
         return <Onboarding />;
     }
 
@@ -57,7 +58,7 @@ function Screens() {
                     name="MusicTab"
                     component={Music}
                     options={{
-                        tabBarLabel: t('music'), 
+                        tabBarLabel: t('music'),
                         tabBarIcon: Platform.select({
                             ios: {
                                 type: 'sfSymbol',
@@ -74,7 +75,7 @@ function Screens() {
                     name="SearchTab"
                     component={SearchStack}
                     options={{
-                        tabBarLabel: t('search'), 
+                        tabBarLabel: t('search'),
                         ...Platform.select({
                             ios: {
                                 tabBarSystemItem: 'search',
@@ -92,7 +93,7 @@ function Screens() {
                     name="Downloads"
                     component={Downloads}
                     options={{
-                        tabBarLabel: t('downloads'), 
+                        tabBarLabel: t('downloads'),
                         ...Platform.select({
                             ios: {
                                 tabBarSystemItem: 'downloads',
@@ -108,9 +109,9 @@ function Screens() {
                 />
                 <Tab.Screen
                     name="Settings"
-                    component={Settings}
+                    component={SettingsScreen}
                     options={{
-                        tabBarLabel: t('settings'), 
+                        tabBarLabel: t('settings'),
                         tabBarIcon: Platform.select({
                             ios: {
                                 type: 'sfSymbol',

@@ -1,0 +1,48 @@
+diff --git a/op-sqlite/session.cjs b/op-sqlite/session.cjs
+index 949ffbbb6affc930c0393ff02533b49f32c16da3..cc2f700a3614d48b381825debe699de46be8cc98 100644
+--- a/op-sqlite/session.cjs
++++ b/op-sqlite/session.cjs
+@@ -91,7 +91,8 @@ var OPSQLitePreparedQuery = class extends __sqlite_core_session_ts.SQLitePrepare
+ 		const { query, logger, customResultMapper, client } = this;
+ 		const params = (0, __sql_sql_ts.fillPlaceholders)(query.params, placeholderValues ?? {});
+ 		logger.logQuery(query.sql, params);
+-		return customResultMapper(client.execute(query.sql, params).rows?._array || []);
++		const result = await client.execute(query.sql, params);
++		return customResultMapper(result.rows || []);
+ 	}
+ 	async get(placeholderValues) {
+ 		if (this.isRqbV2Query) return this.getRqbV2(placeholderValues);
+@@ -111,7 +112,8 @@ var OPSQLitePreparedQuery = class extends __sqlite_core_session_ts.SQLitePrepare
+ 		const { customResultMapper, query, logger, client } = this;
+ 		const params = (0, __sql_sql_ts.fillPlaceholders)(query.params, placeholderValues ?? {});
+ 		logger.logQuery(query.sql, params);
+-		const row = (client.execute(query.sql, params).rows?._array || [])[0];
++		const result = await client.execute(query.sql, params);
++		const row = (result.rows || [])[0];
+ 		if (!row) return;
+ 		return customResultMapper([row]);
+ 	}
+diff --git a/op-sqlite/session.js b/op-sqlite/session.js
+index e39afe1383ecff6c0d285afa3c12a332c9441f1a..25d454d96bde70802af6cc34401a3403771f7148 100644
+--- a/op-sqlite/session.js
++++ b/op-sqlite/session.js
+@@ -90,7 +90,8 @@ var OPSQLitePreparedQuery = class extends SQLitePreparedQuery$1 {
+ 		const { query, logger, customResultMapper, client } = this;
+ 		const params = fillPlaceholders(query.params, placeholderValues ?? {});
+ 		logger.logQuery(query.sql, params);
+-		return customResultMapper(client.execute(query.sql, params).rows?._array || []);
++		const result = await client.execute(query.sql, params);
++		return customResultMapper(result.rows || []);
+ 	}
+ 	async get(placeholderValues) {
+ 		if (this.isRqbV2Query) return this.getRqbV2(placeholderValues);
+@@ -110,7 +111,8 @@ var OPSQLitePreparedQuery = class extends SQLitePreparedQuery$1 {
+ 		const { customResultMapper, query, logger, client } = this;
+ 		const params = fillPlaceholders(query.params, placeholderValues ?? {});
+ 		logger.logQuery(query.sql, params);
+-		const row = (client.execute(query.sql, params).rows?._array || [])[0];
++		const result = await client.execute(query.sql, params);
++		const row = (result.rows || [])[0];
+ 		if (!row) return;
+ 		return customResultMapper([row]);
+ 	}

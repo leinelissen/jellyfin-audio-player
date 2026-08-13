@@ -1,33 +1,29 @@
-import { useTypedSelector } from '@/store';
-import { AlbumTrack } from '@/store/music/types';
-import { useEffect, useMemo, useState } from 'react';
+import { useTrack } from '@/store/tracks/hooks';
+import type { Track as DbTrack } from '@/store/tracks/types';
+import { useEffect, useState } from 'react';
 import TrackPlayer, { Event, useTrackPlayerEvents, Track } from 'react-native-track-player';
 
 interface CurrentTrackResponse {
     track: Track | undefined;
-    albumTrack: AlbumTrack | undefined;
+    albumTrack: DbTrack | undefined | null;
     index: number | undefined;
 }
 
 /**
- * This hook retrieves the current playing track from TrackPlayer
+ * This hook retrieves the current playing track from TrackPlayer, and looks
+ * up the corresponding database record using the track's entityId.
  */
 export default function useCurrentTrack(): CurrentTrackResponse {
     const [track, setTrack] = useState<Track | undefined>();
     const [index, setIndex] = useState<number | undefined>();
 
-    // Retrieve entities from the store
-    const entities = useTypedSelector((state) => state.music.tracks.entities);
+    // Look up the full track record from the database using the entity ID
+    // stored on the player track. entityId is set to [sourceId, itemId] when
+    // the track is generated, which maps directly to the DB primary key.
+    const { data: albumTrack } = useTrack(track?.entityId ?? [undefined, undefined]);
 
-    // Attempt to extract the track from the store
-    const albumTrack = useMemo(() => (
-        entities[track?.backendId]
-    ), [track?.backendId, entities]);
-
-    // Then execute the function on component mount and track changes
-    useEffect(() => { 
-        // Async function that retrieves the current track whenever the hook is
-        // first executed
+    // Attempt to retrieve the currently active track on mount
+    useEffect(() => {
         async function getTrack() {
             const queue = await TrackPlayer.getQueue();
             const currentTrackIndex = await TrackPlayer.getActiveTrackIndex();
