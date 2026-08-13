@@ -74,20 +74,22 @@ export async function playTracks(
     // Potentially shuffle all tracks
     const newTracks = shuffle ? shuffleArray(generatedTracks) : generatedTracks;
 
-    console.log('[playTracks] Generated tracks:', newTracks.length, 'tracks');
-    console.log('[playTracks] First track URL:', newTracks[0]?.url);
+    if (__DEV__) {
+        console.log('[playTracks] Generated tracks:', newTracks.length, 'tracks');
+        console.log('[playTracks] First track URL:', newTracks[0]?.url);
+    }
 
     // Then, we'll need to check where to add the track
     switch(method) {
         case 'add-to-end': {
             await TrackPlayer.add(newTracks);
-            console.log('[playTracks] Added tracks to end, queue size:', (await TrackPlayer.getQueue()).length);
+            if (__DEV__) console.log('[playTracks] Added tracks to end, queue size:', (await TrackPlayer.getQueue()).length);
 
             // Then we'll skip to it and play it
             if (play) {
                 await TrackPlayer.skip((await TrackPlayer.getQueue()).length - newTracks.length);
                 await TrackPlayer.play();
-                console.log('[playTracks] Playback started');
+                if (__DEV__) console.log('[playTracks] Playback started');
             }
 
             break;
@@ -107,12 +109,12 @@ export async function playTracks(
             // Depending on whether this track exists, we either add it there,
             // or at the end of the queue.
             await TrackPlayer.add(newTracks, targetTrack);
-            console.log('[playTracks] Added tracks after current');
+            if (__DEV__) console.log('[playTracks] Added tracks after current');
 
             if (play) {
                 await TrackPlayer.skip(currentTrackIndex + 1);
                 await TrackPlayer.play();
-                console.log('[playTracks] Playback started');
+                if (__DEV__) console.log('[playTracks] Playback started');
             }
 
             break;
@@ -120,7 +122,7 @@ export async function playTracks(
         case 'replace': {
             // Reset the queue first
             await TrackPlayer.reset();
-            console.log('[playTracks] Queue reset');
+            if (__DEV__) console.log('[playTracks] Queue reset');
 
             // GUARD: Check if we need to skip to a particular index
             if (options.playIndex !== undefined) {
@@ -133,10 +135,10 @@ export async function playTracks(
                 // First, we'll add the current queue and (optionally) force
                 // it to start playing.
                 await TrackPlayer.add(current);
-                console.log('[playTracks] Added current tracks, starting at index:', options.playIndex);
+                if (__DEV__) console.log('[playTracks] Added current tracks, starting at index:', options.playIndex);
                 if (play) {
                     await TrackPlayer.play();
-                    console.log('[playTracks] Playback started');
+                    if (__DEV__) console.log('[playTracks] Playback started');
                 }
 
                 // Then, we'll insert the "previous" tracks after the queue
@@ -145,11 +147,11 @@ export async function playTracks(
                 await TrackPlayer.add(before, 0);
             } else {
                 await TrackPlayer.add(newTracks);
-                console.log('[playTracks] Added all tracks, queue size:', (await TrackPlayer.getQueue()).length);
+                if (__DEV__) console.log('[playTracks] Added all tracks, queue size:', (await TrackPlayer.getQueue()).length);
                 if (play) {
                     await TrackPlayer.play();
                     const state = await TrackPlayer.getPlaybackState();
-                    console.log('[playTracks] Playback started, state:', state);
+                    if (__DEV__) console.log('[playTracks] Playback started, state:', state);
                 }
             }
 
