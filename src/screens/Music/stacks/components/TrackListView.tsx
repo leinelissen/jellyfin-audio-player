@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         textAlign: 'right',
     },
     activeText: {
-        fontWeight: '500',
+        fontWeight: '600',
     },
     discContainer: {
         flexDirection: 'row',
@@ -191,86 +191,91 @@ const TrackListView: React.FC<TrackListViewProps> = ({
                                     <Divider />
                                 </View>
                             )}
-                            {groupTrackIds.map((trackId, i) =>
-                                <TouchableHandler
-                                    key={trackId}
-                                    id={trackId}
-                                    onPress={selectTrack}
-                                    onLongPress={longPressTrack}
-                                    testID={`play-track-${trackId}`}
-                                >
-                                    <TrackContainer
-                                        isPlaying={currentTrack?.backendId === trackId || false}
-                                        style={[
-                                            defaultStyles.border,
-                                            currentTrack?.backendId === trackId ? defaultStyles.activeBackground : null
-                                        ]}
+                            {groupTrackIds.map((trackId, i) => {
+                                const isCurrentlyPlaying = currentTrack?.backendId === trackId || false;
+                                return (
+                                    <TouchableHandler
+                                        key={trackId}
+                                        id={trackId}
+                                        onPress={selectTrack}
+                                        onLongPress={longPressTrack}
+                                        testID={`play-track-${trackId}`}
                                     >
-                                        <Text
+                                        <TrackContainer
+                                            isPlaying={isCurrentlyPlaying}
                                             style={[
-                                                styles.index,
-                                                defaultStyles.textQuarterOpacity,
-                                                currentTrack?.backendId === trackId && styles.activeText,
-                                                currentTrack?.backendId === trackId && defaultStyles.themeColorQuarterOpacity,
-                                                indexWidth,
+                                                defaultStyles.border,
+                                                isCurrentlyPlaying && defaultStyles.activeBackground,
                                             ]}
-                                            numberOfLines={1}
                                         >
-                                            {listNumberingStyle === 'index'
-                                                ? i + 1
-                                                : tracks[trackId]?.IndexNumber}
-                                        </Text>
-                                        <View style={{ flexShrink: 1 }}>
                                             <Text
                                                 style={[
-                                                    currentTrack?.backendId === trackId && styles.activeText,
-                                                    currentTrack?.backendId === trackId && defaultStyles.themeColor,
-                                                    {
-                                                        flexShrink: 1,
-                                                        marginRight: 4,
-                                                    }
+                                                    styles.index,
+                                                    defaultStyles.textQuarterOpacity,
+                                                    isCurrentlyPlaying && styles.activeText,
+                                                    isCurrentlyPlaying && defaultStyles.themeColorHalfOpacity,
+                                                    indexWidth,
                                                 ]}
                                                 numberOfLines={1}
                                             >
-                                                {tracks[trackId]?.Name}
+                                                {listNumberingStyle === 'index'
+                                                    ? i + 1
+                                                    : tracks[trackId]?.IndexNumber}
                                             </Text>
-                                            {itemDisplayStyle === 'playlist' && (
+                                            <View style={{ flexShrink: 1 }}>
                                                 <Text
                                                     style={[
-                                                        currentTrack?.backendId === trackId && styles.activeText,
-                                                        currentTrack?.backendId === trackId && defaultStyles.themeColor,
+                                                        isCurrentlyPlaying && styles.activeText,
+                                                        isCurrentlyPlaying && defaultStyles.themeColor,
                                                         {
                                                             flexShrink: 1,
                                                             marginRight: 4,
-                                                            opacity: currentTrack?.backendId === trackId ? 0.5 : 0.25,
                                                         }
                                                     ]}
                                                     numberOfLines={1}
                                                 >
-                                                    {tracks[trackId]?.Artists.join(', ')}
+                                                    {tracks[trackId]?.Name}
                                                 </Text>
-                                            )}
-                                        </View>
-                                        <View style={{ marginLeft: 'auto', flexDirection: 'row' }}>
-                                            <Text
-                                                style={[
-                                                    { marginRight: 12 },
-                                                    defaultStyles.textQuarterOpacity,
-                                                    currentTrack?.backendId === trackId && styles.activeText,
-                                                    currentTrack?.backendId === trackId && defaultStyles.themeColorQuarterOpacity,
-                                                ]}
-                                                numberOfLines={1}
-                                            >
-                                                {ticksToDuration(tracks[trackId]?.RunTimeTicks || 0)}
-                                            </Text>
-                                            <DownloadIcon
-                                                trackId={trackId}
-                                                fill={currentTrack?.backendId === trackId ? defaultStyles.themeColorQuarterOpacity.color : undefined}
-                                            />
-                                        </View>
-                                    </TrackContainer>
-                                </TouchableHandler>
-                            )}
+                                                {itemDisplayStyle === 'playlist' && (
+                                                    <Text
+                                                        style={[
+                                                            isCurrentlyPlaying && styles.activeText,
+                                                            isCurrentlyPlaying && defaultStyles.themeColor,
+                                                            {
+                                                                flexShrink: 1,
+                                                                marginRight: 4,
+                                                                opacity: isCurrentlyPlaying ? 0.5 : 0.25,
+                                                            }
+                                                        ]}
+                                                        numberOfLines={1}
+                                                    >
+                                                        {tracks[trackId]?.Artists.join(', ')}
+                                                    </Text>
+                                                )}
+                                            </View>
+                                            <View style={{ marginLeft: 'auto', flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+                                                <Text
+                                                    style={[
+                                                        defaultStyles.textQuarterOpacity,
+                                                        isCurrentlyPlaying && styles.activeText,
+                                                        isCurrentlyPlaying && defaultStyles.themeColorHalfOpacity,
+                                                    ]}
+                                                    numberOfLines={1}
+                                                >
+                                                    {ticksToDuration(tracks[trackId]?.RunTimeTicks || 0)}
+                                                </Text>
+                                                <DownloadIcon
+                                                    trackId={trackId}
+                                                    fill={isCurrentlyPlaying 
+                                                        ? defaultStyles.themeColorHalfOpacity.color 
+                                                        : undefined
+                                                    }
+                                                />
+                                            </View>
+                                        </TrackContainer>
+                                    </TouchableHandler>
+                                );
+                            })}
                         </View>
                     ))}
                     <Text style={{ paddingTop: 24, paddingBottom: 12, textAlign: 'center', opacity: 0.5 }}>
