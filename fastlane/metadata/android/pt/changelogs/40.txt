@@ -1,0 +1,7 @@
+Estamos satisfeitos em trazer algumas melhorias úteis nesta atualização!
+
+O desempenho para grandes coleções de álbuns foi significativamente aprimorado, fazendo a navegação pela sua biblioteca musical mais suave e responsiva.
+
+Também corrigimos um problema que estava causando o corte da parte superior da app no Android 15 e versões mais recentes. A app agora deve ser exibida corretamente nos dispositivos Android mais recentes.
+
+Obrigado por usar o Fintunes!

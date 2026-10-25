@@ -1,0 +1,1 @@
+Esta versão corrige um problema em que o Fintunes só conseguia reproduzir o primeiro disco num álbum com múltiplos discos. Além disso, graças aos nossos incríveis colaboradores de idiomas, o Fintunes agora está disponível em tâmil. Adicionalmente, 12 idiomas foram atualizados. Aproveite desta nova versão do Fintunes e considere entrar no nosso servidor Discord!

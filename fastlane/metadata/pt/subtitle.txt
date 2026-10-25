@@ -1,0 +1,1 @@
+Reprodutor para Jellyfin
