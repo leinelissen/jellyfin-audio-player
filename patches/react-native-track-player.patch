@@ -652,39 +652,24 @@ index b2409a09939164c49c0f7a16bb6d3284e8eab8fb..db910e952b7fb6825aac1e8f663163e1
      }
  }
 diff --git a/android/src/main/java/com/doublesymmetry/trackplayer/service/MusicService.kt b/android/src/main/java/com/doublesymmetry/trackplayer/service/MusicService.kt
-index afa6b0f335714de0cc8741d5bbdd51b4e04bb3bb..13b2151c24bf892ce218ff0ff65adae6aa07b83b 100644
+index afa6b0f335714de0cc8741d5bbdd51b4e04bb3bb..c417e7b46c1286ccf4eecc0f0775676f297b66fe 100644
 --- a/android/src/main/java/com/doublesymmetry/trackplayer/service/MusicService.kt
 +++ b/android/src/main/java/com/doublesymmetry/trackplayer/service/MusicService.kt
-@@ -739,9 +739,22 @@ class MusicService : HeadlessJsTaskService() {
-         return bundle
-     }
+@@ -741,7 +741,7 @@ class MusicService : HeadlessJsTaskService() {
  
-+    @MainThread
-+    private fun getReactContextSafely(): com.facebook.react.bridge.ReactContext? {
-+        return try {
-+            val reactHostField = HeadlessJsTaskService::class.java.getDeclaredField("mReactHost")
-+            reactHostField.isAccessible = true
-+            val reactHost = reactHostField.get(this) as? com.facebook.react.ReactHost
-+            reactHost?.currentReactContext
-+        } catch (e: Exception) {
-+            // Fallback for older React Native versions or if field is not available
-+            null
-+        }
-+    }
-+
      @MainThread
      private fun emit(event: String, data: Bundle? = null) {
 -        reactNativeHost.reactInstanceManager.currentReactContext
-+        getReactContextSafely()
++        reactContext
              ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
              ?.emit(event, data?.let { Arguments.fromBundle(it) })
      }
-@@ -751,7 +764,7 @@ class MusicService : HeadlessJsTaskService() {
+@@ -751,7 +751,7 @@ class MusicService : HeadlessJsTaskService() {
          val payload = Arguments.createArray()
          data.forEach { payload.pushMap(Arguments.fromBundle(it)) }
  
 -        reactNativeHost.reactInstanceManager.currentReactContext
-+        getReactContextSafely()
++        reactContext
              ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
              ?.emit(event, payload)
      }
