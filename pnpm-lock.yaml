@@ -9,7 +9,7 @@ patchedDependencies:
     hash: 2ab8be0081e20edc9203f48ede10d78ffcdb6eb30798e0d0b92d8d29b19777fc
     path: patches/@iternio__react-native-auto-play.patch
   react-native-track-player:
-    hash: e7b3a1d9dfe94a2a6a4067d693dff8c4d67147057264361b27db20fd497ef184
+    hash: 243ecaf4492d8c078ab4a585fe082e33f44a13cb7ca53fcaa6e890942d9cb87e
     path: patches/react-native-track-player.patch
   react-native-webview:
     hash: 2bf2ed0feba988e3f2d2ebc497218220b351ab5157dc5fedf7085f8525cacb65
@@ -129,7 +129,7 @@ importers:
         version: 15.15.2(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3)
       react-native-track-player:
         specifier: 4.1.2
-        version: 4.1.2(patch_hash=e7b3a1d9dfe94a2a6a4067d693dff8c4d67147057264361b27db20fd497ef184)(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3)
+        version: 4.1.2(patch_hash=243ecaf4492d8c078ab4a585fe082e33f44a13cb7ca53fcaa6e890942d9cb87e)(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3)
       react-native-webview:
         specifier: ^13.16.0
         version: 13.16.0(patch_hash=2bf2ed0feba988e3f2d2ebc497218220b351ab5157dc5fedf7085f8525cacb65)(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3)
@@ -11250,7 +11250,7 @@ snapshots:
       react-native: 0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3)
       warn-once: 0.1.1
 
-  react-native-track-player@4.1.2(patch_hash=e7b3a1d9dfe94a2a6a4067d693dff8c4d67147057264361b27db20fd497ef184)(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3):
+  react-native-track-player@4.1.2(patch_hash=243ecaf4492d8c078ab4a585fe082e33f44a13cb7ca53fcaa6e890942d9cb87e)(react-native@0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3))(react@19.2.3):
     dependencies:
       react: 19.2.3
       react-native: 0.83.1(@babel/core@7.28.6)(@react-native-community/cli@20.1.1(typescript@5.9.3))(@react-native/metro-config@0.83.1(@babel/core@7.28.6))(@types/react@19.2.9)(react@19.2.3)
