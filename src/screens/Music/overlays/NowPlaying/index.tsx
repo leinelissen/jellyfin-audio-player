@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components/native';
 import PlayIcon from '@/assets/icons/play.svg';
 import PauseIcon from '@/assets/icons/pause.svg';
 import useCurrentTrack from '@/utility/useCurrentTrack';
-import TrackPlayer, { State, usePlaybackState, useProgress } from 'react-native-track-player';
+import TrackPlayer, { useIsPlaying, useProgress } from 'react-native-track-player';
 import usePrevious from '@/utility/usePrevious';
 import { Text } from '@/components/Typography';
 
@@ -70,33 +70,31 @@ const ActionButton = styled.Pressable`
 `;
 
 function SelectActionButton() {
-    const { state } = usePlaybackState();
+    const { playing, bufferingDuringPlay } = useIsPlaying();
     const defaultStyles = useDefaultStyles();
 
-    switch(state) {
-        case State.Playing:
-            return (
-                <Pressable onPress={TrackPlayer.pause}>
-                    <PauseIcon fill={defaultStyles.text.color} height={18} width={18} />
-                </Pressable>
-            );
-        case State.Stopped:
-        case State.Paused:
-            return (
-                <Pressable onPress={TrackPlayer.play}>
-                    <PlayIcon fill={defaultStyles.text.color} height={18} width={18} />
-                </Pressable>
-            );
-        case State.Buffering:
-        case State.Connecting:
-            return (
-                <Pressable onPress={TrackPlayer.pause}>
-                    <ActivityIndicator />
-                </Pressable>
-            );
-        default:
-            return null;
+    // GUARD: Don't show a button while the player state is still unknown
+    if (playing === undefined) {
+        return null;
     }
+
+    if (bufferingDuringPlay) {
+        return (
+            <Pressable onPress={TrackPlayer.pause}>
+                <ActivityIndicator />
+            </Pressable>
+        );
+    }
+
+    return playing ? (
+        <Pressable onPress={TrackPlayer.pause}>
+            <PauseIcon fill={defaultStyles.text.color} height={18} width={18} />
+        </Pressable>
+    ) : (
+        <Pressable onPress={TrackPlayer.play}>
+            <PlayIcon fill={defaultStyles.text.color} height={18} width={18} />
+        </Pressable>
+    );
 }
 
 function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean }) {
@@ -139,7 +137,7 @@ function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean })
                 useNativeDriver: true,
             }).start();
         }
-        
+
         // Then, do the same for the progress animation
         const progressValule = calculateProgressTranslation(position, duration, NOW_PLAYING_POPOVER_WIDTH);
         if (position < (previousPosition || 0)) {
@@ -159,11 +157,11 @@ function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean })
 
     return (
         <Container
-            style={[{ 
+            style={[{
                 bottom: (Platform.OS === 'android' ? 104 : 83)
                     + (inset ? insets.bottom : 0)
                     + 12
-                    + offset 
+                    + offset
             }]}
         >
             <Animated.View style={ Platform.OS === 'android' && {
@@ -176,7 +174,7 @@ function NowPlaying({ offset = 0, inset }: { offset?: number, inset?: boolean })
                     glassOpacity={0.75}
                     glassTintColor={defaultStyles.view.backgroundColor}
                     isInteractive
-                    style={{ 
+                    style={{
                         borderRadius: 100,
                     }}
                 >

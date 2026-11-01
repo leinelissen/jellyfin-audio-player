@@ -1,4 +1,4 @@
-import TrackPlayer, { RepeatMode, State, Track } from 'react-native-track-player';
+import TrackPlayer, { RepeatMode, Track, isPlaying } from 'react-native-track-player';
 import { fetchApi } from './lib';
 
 /**
@@ -22,13 +22,13 @@ export async function sendPlaybackEvent(
 ) {
     // Extract all data from react-native-track-player
     const [
-        activeTrack, { position: currentPosition }, repeatMode, volume, { state },
+        activeTrack, { position: currentPosition }, repeatMode, volume, { playing },
     ] = await Promise.all([
         track || TrackPlayer.getActiveTrack(),
         TrackPlayer.getProgress(),
         TrackPlayer.getRepeatMode(),
         TrackPlayer.getVolume(),
-        TrackPlayer.getPlaybackState(),
+        isPlaying(),
     ]);
 
     // GUARD: Ensure that no empty events are sent out
@@ -38,7 +38,7 @@ export async function sendPlaybackEvent(
     const payload = {
         VolumeLevel: volume * 100,
         IsMuted: false,
-        IsPaused: state === State.Paused,
+        IsPaused: !playing,
         RepeatMode: RepeatModeMap[repeatMode],
         ShuffleMode: 'Sorted',
         PositionTicks: Math.round((lastPosition || currentPosition) * 10_000_000),
@@ -52,7 +52,7 @@ export async function sendPlaybackEvent(
     };
 
     // Generate a config from the credentials and dispatch the request
-    await fetchApi(path, { 
+    await fetchApi(path, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
