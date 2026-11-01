@@ -1,5 +1,5 @@
 import React from 'react';
-import TrackPlayer, { State, usePlaybackState } from 'react-native-track-player';
+import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
 import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { useHasNextQueue, useHasPreviousQueue } from '@/utility/useQueue';
@@ -74,26 +74,24 @@ export function NextButton({ fill }: { fill: string }) {
 }
 
 export function MainButton({ fill }: { fill: string }) {
-    const { state } = usePlaybackState();
+    const { playing } = useIsPlaying();
 
-    switch (state) {
-        case State.Playing:
-            return (
-                <TouchableOpacity onPress={pause}>
-                    <PauseIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />
-                </TouchableOpacity>
-            );
-        case State.Paused:
-            return (
-                <TouchableOpacity onPress={play}>
-                    <PlayIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />
-                </TouchableOpacity>
-            );
-        default:
-            return (
-                <TouchableOpacity onPress={pause} disabled>
-                    <PauseIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />
-                </TouchableOpacity>
-            );
+    // GUARD: Show a disabled button while the player state is still unknown
+    if (playing === undefined) {
+        return (
+            <TouchableOpacity onPress={pause} disabled>
+                <PauseIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />
+            </TouchableOpacity>
+        );
     }
+
+    return playing ? (
+        <TouchableOpacity onPress={pause}>
+            <PauseIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />
+        </TouchableOpacity>
+    ) : (
+        <TouchableOpacity onPress={play}>
+            <PlayIcon width={BUTTON_SIZE} height={BUTTON_SIZE} fill={fill} />
+        </TouchableOpacity>
+    );
 }
